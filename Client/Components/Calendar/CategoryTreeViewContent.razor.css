@@ -1,0 +1,18 @@
+﻿/*TODO: can be replaced with sass for bootstrap*/
+::deep .k-treeview > .k-treeview-lines {
+    padding-left: 0; /* ps-0 */
+}
+
+::deep .k-i-expand, ::deep .k-i-collapse {
+    font-size: calc(1.3rem + .6vw); /* h3 */
+}
+
+::deep .k-treeview-lines > .k-treeview-item > .k-mid > .k-checkbox-wrapper {
+    display: none; /* d-none */
+}
+
+::deep .k-treeview-lines > .k-treeview-item > .k-mid > .k-in {
+    pointer-events: none; /* pe-none */
+    box-shadow: none;
+}
+

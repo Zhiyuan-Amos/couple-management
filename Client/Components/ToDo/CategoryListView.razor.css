@@ -1,0 +1,4 @@
+﻿::deep .k-listview {
+    border-style: none;
+    height: 100% !important; /* TODO: SASS */
+}

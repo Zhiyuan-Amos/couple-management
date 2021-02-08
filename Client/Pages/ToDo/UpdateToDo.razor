@@ -1,0 +1,20 @@
+@page "/todo/{toDoId:guid}"
+
+@inherits UpdateToDoBase
+@using Couple.Client.Components.ToDo
+
+<CreateUpdateTopBar Title="Update To Do"
+                    IsEnabled="@IsEnabled"
+                    OnClickCallback="@Save" />
+<CreateUpdateForm @bind-Text="@ToUpdate.Text"
+                  Category="@ToUpdate.Category"
+                  OnClickCallback="@ShowSelectionWindow" />
+<button type="button"
+        @onclick="@Delete"
+        class="btn btn-danger rounded-0 position-absolute bottom-0 w-100">
+    Delete
+</button>
+<AnimatedCategoryListViewWithAdd @ref="AnimatedCategorySelectionListView"
+                                 OnConfirmCallback="@Select"
+                                 OnCancelCallback="@CancelSelection" />
+

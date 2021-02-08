@@ -1,0 +1,52 @@
+<Project Sdk="Microsoft.NET.Sdk.BlazorWebAssembly">
+
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+    <ServiceWorkerAssetsManifest>service-worker-assets.js</ServiceWorkerAssetsManifest>
+    <RestoreSources>$(RestoreSources);.nuget\packages;https://api.nuget.org/v3/index.json</RestoreSources>
+    <BlazorEnableTimeZoneSupport>true</BlazorEnableTimeZoneSupport>
+    <InvariantGlobalization>false</InvariantGlobalization>
+    <BlazorCacheBootResources>false</BlazorCacheBootResources>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Content Remove="compilerconfig.json" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include=".nuget\packages\Telerik.DataSource.2.0.8.nupkg" />
+    <None Include=".nuget\packages\Telerik.Documents.CMapUtils.2021.1.118.nupkg" />
+    <None Include=".nuget\packages\Telerik.Documents.Core.2021.1.118.nupkg" />
+    <None Include=".nuget\packages\Telerik.Documents.Fixed.2021.1.118.nupkg" />
+    <None Include=".nuget\packages\Telerik.Documents.Flow.2021.1.118.nupkg" />
+    <None Include=".nuget\packages\Telerik.Documents.Flow.FormatProviders.Pdf.2021.1.118.nupkg" />
+    <None Include=".nuget\packages\Telerik.Documents.ImageUtils.2021.1.118.nupkg" />
+    <None Include=".nuget\packages\Telerik.Documents.Spreadsheet.2021.1.118.nupkg" />
+    <None Include=".nuget\packages\Telerik.Documents.Spreadsheet.FormatProviders.OpenXml.2021.1.118.nupkg" />
+    <None Include=".nuget\packages\Telerik.Documents.Spreadsheet.FormatProviders.Pdf.2021.1.118.nupkg" />
+    <None Include=".nuget\packages\Telerik.Documents.Spreadsheet.FormatProviders.Xls.2021.1.118.nupkg" />
+    <None Include=".nuget\packages\Telerik.Documents.SpreadsheetStreaming.2021.1.118.nupkg" />
+    <None Include=".nuget\packages\Telerik.Recurrence.0.1.0.nupkg" />
+    <None Include=".nuget\packages\Telerik.UI.for.Blazor.2.21.0.nupkg" />
+    <None Include=".nuget\packages\Telerik.Zip.2021.1.118.nupkg" />
+    <None Include="compilerconfig.json" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AnthonyChu.AzureStaticWebApps.Blazor.Authentication" Version="0.0.2-preview" />
+    <PackageReference Include="Blazor-State" Version="3.4.4" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.Authorization" Version="5.0.2" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="5.0.2" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="5.0.2" PrivateAssets="all" />
+    <PackageReference Include="System.Net.Http.Json" Version="5.0.0" />
+    <PackageReference Include="Telerik.UI.for.Blazor" Version="2.21.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Shared\Couple.Shared.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ServiceWorker Include="wwwroot\service-worker.js" PublishedContent="wwwroot\service-worker.published.js" />
+  </ItemGroup>
+</Project>

@@ -1,0 +1,17 @@
+@page "/calendar/create"
+
+@inherits BlazorStateComponent
+@using Couple.Client.Components.Calendar
+
+<CreateUpdateTopBar Title="Create Event"
+                    IsEnabled="@IsEnabled"
+                    OnClickCallback="@Save" />
+<CreateUpdateForm @bind-Title="@ToCreate.Title" 
+                  @bind-Start="@ToCreate.Start" 
+                  @bind-End="@ToCreate.End"
+                  Added="@Added" 
+                  AddedChanged="@AddedChanged"
+                  Removed="@new()" 
+                  RemovedChanged="@RemovedChanged"
+                  Total="@ToCreate.ToDos" />
+

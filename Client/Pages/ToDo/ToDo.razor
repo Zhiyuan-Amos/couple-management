@@ -1,0 +1,15 @@
+@page "/todo"
+
+@inherits BlazorStateComponent
+@using Couple.Client.Components.ToDo
+
+<ToDoTopBar IsDropDown="@IsDropdown"
+            SelectedCategory="@SelectedCategory"
+            OnClickCallback="@ToggleVisibility"
+            OnSynchronisationCallback="@RefreshDataAsync" />
+<ToDoListView ToDos="@ToDos" />
+<BottomBar />
+<AddIcon OnClickCallback="@AddToDo" />
+<AnimatedCategoryListView @ref="CategoryListView"
+                          OnClickCallback="@Select" />
+

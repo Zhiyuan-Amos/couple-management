@@ -1,0 +1,42 @@
+@page "/profile"
+
+<nav class="navbar navbar-height fixed-top navbar-light bg-light px-3">
+</nav>
+
+<button type="button"
+        @onclick="@(_ => IsModalVisible = true)"
+        class="btn">
+    Pair
+</button>
+
+<BottomBar />
+
+<TelerikWindow Modal="true"
+               @bind-Visible="@IsModalVisible">
+    <WindowContent>
+        <input class="form-control"
+               placeholder="Enter email"
+               @bind-Value="@Email"
+               @bind-Value:event="oninput" />
+        <div class="d-flex justify-content-between">
+            <button type="button"
+                    @onclick="@(_ => IsModalVisible = false)"
+                    class="btn btn-secondary flex-grow-1">
+                Cancel
+            </button>
+            <button type="button"
+                    @onclick="@(_ => Confirm())"
+                    class="btn btn-primary flex-grow-1">
+                Ok
+            </button>
+        </div>
+    </WindowContent>
+</TelerikWindow>
+
+<style>
+    /* Can't wrap divs around WindowContent */
+    .k-window {
+        width: 75% /* w-75 */
+    }
+</style>
+

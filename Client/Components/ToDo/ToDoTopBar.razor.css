@@ -1,0 +1,13 @@
+﻿::deep .bi-chevron-down {
+    transition: all 0.3s linear 0.02s; /*default values of Telerik AnimationContainer*/
+    transform: rotate(0);
+    -webkit-transform: rotate(0);
+    -moz-transform: rotate(0);
+}
+
+::deep .toggle-up {
+    transform: rotate(180deg);
+    -webkit-transform: rotate(180deg);
+    -moz-transform: rotate(180deg);
+}
+

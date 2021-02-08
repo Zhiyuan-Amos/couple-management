@@ -1,0 +1,30 @@
+@using Couple.Client.ViewModel.ToDo
+
+@inherits BlazorStateComponent
+<div style="top: 56px; height: calc(100% - 56px)"
+     class="position-absolute w-100 bg-white px-3">
+    <TelerikTreeView Data="@Data"
+                     CheckedItems="@Selected"
+                     CheckedItemsChanged="@SelectedObjectsChanged"
+                     CheckBoxMode="@TreeViewCheckBoxMode.Multiple"
+                     CheckOnClick="@true">
+        <TreeViewBindings>
+            <TreeViewBinding ItemsField="ToDos">
+                <ItemTemplate>
+                    @{
+                        var categoryToDos = context as CategoryToDos;
+                        <h3 class="mb-0 user-select-none">@categoryToDos.Category</h3>
+                    }
+                </ItemTemplate>
+            </TreeViewBinding>
+            <TreeViewBinding Level="1">
+                <ItemTemplate>
+                    @{
+                        var toDo = context as ToDoViewModel;
+                        <h3 class="mb-0 user-select-none">@toDo.Text</h3>
+                    }
+                </ItemTemplate>
+            </TreeViewBinding>
+        </TreeViewBindings>
+    </TelerikTreeView>
+</div>

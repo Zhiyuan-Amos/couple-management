@@ -1,0 +1,13 @@
+{
+  "clientPrincipal": {
+    "identityProvider": "aad",
+    "userId": "id",
+    "userDetails": "email",
+    "userRoles": [
+      "anonymous",
+      "authenticated",
+      "user",
+      "name_yong_zhi_yuan"
+    ]
+  }
+}

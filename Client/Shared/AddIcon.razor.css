@@ -1,0 +1,14 @@
+﻿::deep .k-button.k-button-icon {
+    border-radius: 50px;
+    box-shadow: 2px 2px 3px #999;
+    bottom: 70px;
+    height: 60px;
+    position: fixed;
+    right: 30px;
+    width: 60px;
+}
+
+::deep .k-button > .k-i-plus {
+    font-size: 30px;
+}
+
