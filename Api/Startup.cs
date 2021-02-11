@@ -14,7 +14,6 @@ namespace Api
         public override void Configure(IFunctionsHostBuilder builder)
         {
             builder.Services.AddDbContext<EventContext>(options => dbParams(options));
-            builder.Services.AddDbContext<UserContext>(options => dbParams(options));
 
             if (builder.GetContext().EnvironmentName == "Development")
             {

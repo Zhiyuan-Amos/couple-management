@@ -11,13 +11,10 @@ namespace Api.Features
     public class DatabaseInitializerFunction
     {
         private readonly EventContext _eventContext;
-        private readonly UserContext _userContext;
 
-        public DatabaseInitializerFunction(EventContext eventContext,
-                                           UserContext userContext)
+        public DatabaseInitializerFunction(EventContext eventContext)
         {
             _eventContext = eventContext;
-            _userContext = userContext;
         }
 
         //[FunctionName("DatabaseInitializerFunction")]
@@ -26,9 +23,7 @@ namespace Api.Features
             ILogger log)
         {
             await _eventContext.Database.EnsureDeletedAsync();
-            await _userContext.Database.EnsureDeletedAsync();
             await _eventContext.Database.EnsureCreatedAsync();
-            await _userContext.Database.EnsureCreatedAsync();
             return new OkResult();
         }
     }

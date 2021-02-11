@@ -21,9 +21,6 @@ namespace Couple.Client.Shared
     public class BaseTopBarBase : BlazorStateComponent
     {
         [Inject]
-        protected NavigationManager NavigationManager { get; set; }
-
-        [Inject]
         protected HttpClient HttpClient { get; set; }
 
         [Inject]
@@ -36,8 +33,6 @@ namespace Couple.Client.Shared
         public EventCallback OnSynchronisationCallback { get; set; }
 
         private readonly JsonSerializerOptions options = new() { PropertyNameCaseInsensitive = true };
-
-        protected void NavigateToProfile() => NavigationManager.NavigateTo("/profile");
 
         protected async Task Synchronize()
         {
