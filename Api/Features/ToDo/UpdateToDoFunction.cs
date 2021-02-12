@@ -68,8 +68,10 @@ namespace Api.Features.ToDo
         {
             public Validator()
             {
-                RuleFor(c => c.Id).NotNull();
-                RuleFor(c => c.Text).NotEmpty();
+                RuleFor(dto => dto.Id).NotEmpty();
+                RuleFor(dto => dto.Text).NotEmpty();
+                RuleFor(dto => dto.Category).NotEmpty();
+                RuleFor(dto => dto.CreatedOn).NotEmpty();
             }
         }
     }

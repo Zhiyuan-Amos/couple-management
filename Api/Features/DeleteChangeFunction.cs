@@ -67,6 +67,13 @@ namespace Api.Features
             return new OkResult();
         }
 
-        public class Validator : AbstractValidator<DeleteChangeDto> { }
+        public class Validator : AbstractValidator<DeleteChangeDto>
+        {
+            public Validator()
+            {
+                RuleFor(dto => dto.Guids).NotEmpty();
+                RuleForEach(dto => dto.Guids).NotEmpty();
+            }
+        }
     }
 }

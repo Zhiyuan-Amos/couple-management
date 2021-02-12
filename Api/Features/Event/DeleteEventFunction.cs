@@ -1,5 +1,6 @@
 using Api.Data;
 using Api.Infrastructure;
+using Couple.Api.Validators;
 using Couple.Shared.Model;
 using Couple.Shared.Model.Calendar;
 using FluentValidation;
@@ -71,7 +72,9 @@ namespace Api.Features.Event
         {
             public Validator()
             {
-                RuleFor(c => c.Id).NotNull();
+                RuleFor(dto => dto.Id).NotEmpty();
+                RuleFor(dto => dto.Removed).NotNull();
+                RuleForEach(dto => dto.Removed).SetValidator(new ToDoDtoValidator());
             }
         }
     }
