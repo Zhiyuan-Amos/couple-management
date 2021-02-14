@@ -18,10 +18,11 @@ namespace Couple.Client.Pages.Calendar
         [Inject]
         protected LocalStore LocalStore { get; set; }
 
+        [Inject]
+        private EventStateContainer EventStateContainer { get; set; }
+
         [Parameter]
         public DateTime Selected { get; set; }
-
-        private EventDataState EventDataState => GetState<EventDataState>();
 
         protected List<EventViewModel> Events { get; set; }
 
@@ -53,7 +54,7 @@ namespace Couple.Client.Pages.Calendar
 
         private List<EventViewModel> GetEvents(DateTime dateTime)
         {
-            return EventDataState.TryGetEvents(dateTime, out var events)
+            return EventStateContainer.TryGetEvents(dateTime, out var events)
                 ? events
                     .Select(@event => new EventViewModel(
                         @event.Id,

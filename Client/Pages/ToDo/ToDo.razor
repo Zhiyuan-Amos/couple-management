@@ -1,12 +1,11 @@
 @page "/todo"
 
-@inherits BlazorStateComponent
 @using Couple.Client.Components.ToDo
 
 <ToDoTopBar IsDropDown="@IsDropdown"
             SelectedCategory="@SelectedCategory"
             OnClickCallback="@ToggleVisibility"
-            OnSynchronisationCallback="@RefreshDataAsync" />
+            OnSynchronisationCallback="@RefreshData" />
 <ToDoListView ToDos="@ToDos" />
 <BottomBar />
 <AddIcon OnClickCallback="@AddToDo" />

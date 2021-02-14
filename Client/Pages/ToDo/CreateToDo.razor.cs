@@ -6,8 +6,6 @@ using Microsoft.AspNetCore.Components;
 using System;
 using System.Net.Http.Json;
 using System.Threading.Tasks;
-using static Couple.Client.States.ToDo.SelectedCategoryState;
-using static Couple.Client.States.ToDo.ToDoDataState;
 
 namespace Couple.Client.Pages.ToDo
 {
@@ -22,7 +20,7 @@ namespace Couple.Client.Pages.ToDo
             ToCreate = new()
             {
                 Text = "",
-                Category = GetState<SelectedCategoryState>().SelectedCategory,
+                Category = SelectedCategoryStateContainer.SelectedCategory,
             };
         }
 
@@ -38,8 +36,8 @@ namespace Couple.Client.Pages.ToDo
             };
             await LocalStore.PutAsync("todo", toPersist);
 
-            await Mediator.Send(new RefreshToDosAction(LocalStore));
-            await Mediator.Send(new ModifySelectedCategoryAction(ToCreate.Category));
+            await ToDoStateContainer.RefreshAsync();
+            SelectedCategoryStateContainer.SelectedCategory = ToCreate.Category;
             NavigationManager.NavigateTo("/todo");
 
             var toCreate = new CreateToDoDto

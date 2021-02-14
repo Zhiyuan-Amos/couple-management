@@ -1,18 +1,25 @@
-﻿using BlazorState;
-using Couple.Client.Data;
+﻿using Couple.Client.Data;
 using Couple.Client.Data.ToDo;
-using MediatR;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading;
 using System.Threading.Tasks;
 
 namespace Couple.Client.States.ToDo
 {
-    public partial class ToDoDataState : State<ToDoDataState>
+    public class ToDoStateContainer
     {
+        private readonly LocalStore _localStore;
+
         private Dictionary<string, List<ToDoModel>> _categoryToToDos;
+        private Dictionary<Guid, ToDoModel> IdToToDo;
+        private List<string> _categories;
+
+        public ToDoStateContainer(LocalStore localStore)
+        {
+            _localStore = localStore;
+        }
+
         public Dictionary<string, List<ToDoModel>> CategoryToToDos
         {
             get
@@ -33,9 +40,6 @@ namespace Couple.Client.States.ToDo
                     .ToList();
             }
         }
-        private Dictionary<Guid, ToDoModel> IdToToDo { get; set; }
-
-        private List<string> _categories;
         public List<string> Categories
         {
             get => _categories.ToList();
@@ -75,33 +79,15 @@ namespace Couple.Client.States.ToDo
             .SelectMany(toDos => toDos)
             .ToList();
 
-        public override void Initialize() { }
-
-        public class RefreshToDosAction : IAction
+        public async Task RefreshAsync()
         {
-            public LocalStore LocalStore { get; }
+            var toDos = await _localStore.GetAllAsync<List<ToDoModel>>("todo");
 
-            public RefreshToDosAction(LocalStore localStore) => (LocalStore) = (localStore);
-        }
-
-        public class RefreshToDosHandler : ActionHandler<RefreshToDosAction>
-        {
-            private ToDoDataState ToDoState => Store.GetState<ToDoDataState>();
-
-            public RefreshToDosHandler(IStore store) : base(store) { }
-
-            public override async Task<Unit> Handle(RefreshToDosAction refreshToDosAction, CancellationToken cancellationToken)
-            {
-                var toDos = await refreshToDosAction.LocalStore.GetAllAsync<List<ToDoModel>>("todo");
-
-                var categoryToToDos = toDos
-                    .GroupBy(toDo => toDo.Category)
-                    .ToDictionary(toDo => toDo.Key, toDo => toDo.ToList());
-                ToDoState.CategoryToToDos = categoryToToDos;
-                ToDoState.IdToToDo = toDos.ToDictionary(toDo => toDo.Id);
-
-                return Unit.Value;
-            }
+            var categoryToToDos = toDos
+                .GroupBy(toDo => toDo.Category)
+                .ToDictionary(toDo => toDo.Key, toDo => toDo.ToList());
+            CategoryToToDos = categoryToToDos;
+            IdToToDo = toDos.ToDictionary(toDo => toDo.Id);
         }
     }
 }

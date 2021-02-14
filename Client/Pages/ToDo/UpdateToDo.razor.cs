@@ -6,8 +6,6 @@ using Microsoft.AspNetCore.Components;
 using System;
 using System.Net.Http.Json;
 using System.Threading.Tasks;
-using static Couple.Client.States.ToDo.SelectedCategoryState;
-using static Couple.Client.States.ToDo.ToDoDataState;
 
 namespace Couple.Client.Pages.ToDo
 {
@@ -22,7 +20,7 @@ namespace Couple.Client.Pages.ToDo
 
         protected override void OnInitialized()
         {
-            if (!ToDoDataState.TryGetToDo(ToDoId, out var toDo))
+            if (!ToDoStateContainer.TryGetToDo(ToDoId, out var toDo))
             {
                 NavigationManager.NavigateTo("todo");
                 return;
@@ -40,7 +38,7 @@ namespace Couple.Client.Pages.ToDo
         protected async Task Delete()
         {
             await LocalStore.DeleteAsync("todo", ToUpdate.Id);
-            await Mediator.Send(new RefreshToDosAction(LocalStore));
+            await ToDoStateContainer.RefreshAsync();
 
             NavigationManager.NavigateTo("/todo");
 
@@ -58,8 +56,8 @@ namespace Couple.Client.Pages.ToDo
             };
             await LocalStore.PutAsync("todo", toPersist);
 
-            await Mediator.Send(new RefreshToDosAction(LocalStore));
-            await Mediator.Send(new ModifySelectedCategoryAction(ToUpdate.Category));
+            await ToDoStateContainer.RefreshAsync();
+            SelectedCategoryStateContainer.SelectedCategory = ToUpdate.Category;
             NavigationManager.NavigateTo("/todo");
 
             var toUpdate = new UpdateToDoDto

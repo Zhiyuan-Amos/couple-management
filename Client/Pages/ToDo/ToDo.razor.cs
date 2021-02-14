@@ -6,7 +6,6 @@ using Microsoft.JSInterop;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using static Couple.Client.States.ToDo.SelectedCategoryState;
 
 namespace Couple.Client.Pages.ToDo
 {
@@ -18,17 +17,21 @@ namespace Couple.Client.Pages.ToDo
         [Inject]
         private IJSRuntime Js { get; set; }
 
-        private AnimatedCategoryListView CategoryListView { get; set; }
+        [Inject]
+        private ToDoStateContainer ToDoStateContainer { get; set; }
 
-        private ToDoDataState ToDoDataState => GetState<ToDoDataState>();
+        [Inject]
+        private SelectedCategoryStateContainer SelectedCategoryStateContainer { get; set; }
+
+        private AnimatedCategoryListView CategoryListView { get; set; }
 
         protected bool IsDropdown { get; set; }
         protected string SelectedCategory { get; set; }
         protected List<ToDoViewModel> ToDos { get; set; }
 
-        protected override async Task OnInitializedAsync()
+        protected override void OnInitialized()
         {
-            await RefreshDataAsync();
+            RefreshData();
         }
 
         protected void AddToDo() => NavigationManager.NavigateTo($"/todo/create");
@@ -42,9 +45,9 @@ namespace Couple.Client.Pages.ToDo
 
         protected async Task Select(string category)
         {
-            await Mediator.Send(new ModifySelectedCategoryAction(category));
+            SelectedCategoryStateContainer.SelectedCategory = category;
             SelectedCategory = category;
-            ToDos = ToDoDataState.TryGetToDos(category, out var toDos)
+            ToDos = ToDoStateContainer.TryGetToDos(category, out var toDos)
                 ? toDos
                     .Select(toDo => new ToDoViewModel(toDo.Id, toDo.Text, toDo.Category, toDo.CreatedOn))
                     .ToList()
@@ -55,23 +58,23 @@ namespace Couple.Client.Pages.ToDo
             await ((IJSInProcessRuntime)Js).InvokeVoidAsync("setScroll", true);
         }
 
-        protected async Task RefreshDataAsync()
+        protected void RefreshData()
         {
-            SelectedCategory = await GetCategory();
-            ToDos = ToDoDataState.TryGetToDos(SelectedCategory, out var toDos)
+            SelectedCategory = GetCategory();
+            ToDos = ToDoStateContainer.TryGetToDos(SelectedCategory, out var toDos)
                 ? toDos
                     .Select(toDo => new ToDoViewModel(toDo.Id, toDo.Text, toDo.Category, toDo.CreatedOn))
                     .ToList()
                 : new();
 
-            async Task<string> GetCategory()
+            string GetCategory()
             {
-                var existingCategory = GetState<SelectedCategoryState>().SelectedCategory;
-                var hasToDos = ToDoDataState.TryGetToDos(existingCategory, out _);
+                var existingCategory = SelectedCategoryStateContainer.SelectedCategory;
+                var hasToDos = ToDoStateContainer.TryGetToDos(existingCategory, out _);
                 if (!hasToDos)
                 {
-                    var newCategory = ToDoDataState.Categories.Any() ? ToDoDataState.Categories[0] : "";
-                    await Mediator.Send(new ModifySelectedCategoryAction(newCategory));
+                    var newCategory = ToDoStateContainer.Categories.Any() ? ToDoStateContainer.Categories[0] : "";
+                    SelectedCategoryStateContainer.SelectedCategory = newCategory;
                     return newCategory;
                 }
                 return existingCategory;

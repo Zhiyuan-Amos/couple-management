@@ -1,17 +1,16 @@
 @page "/calendar/{eventId:guid}"
 
-@inherits BlazorStateComponent
 @using Couple.Client.Components.Calendar
 
 <CreateUpdateTopBar Title="Update Event"
                     IsEnabled="@IsEnabled"
                     OnClickCallback="@Save" />
-<CreateUpdateForm @bind-Title="@ToUpdate.Title" 
-                  @bind-Start="@ToUpdate.Start" 
+<CreateUpdateForm @bind-Title="@ToUpdate.Title"
+                  @bind-Start="@ToUpdate.Start"
                   @bind-End="@ToUpdate.End"
-                  Added="@Added" 
+                  Added="@Added"
                   AddedChanged="@AddedChanged"
-                  Removed="@Removed" 
+                  Removed="@Removed"
                   RemovedChanged="@RemovedChanged"
                   Total="@ToUpdate.ToDos" />
 <button type="button"

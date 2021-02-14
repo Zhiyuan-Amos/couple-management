@@ -3,6 +3,8 @@ using Couple.Client.Data.Calendar;
 using Couple.Client.Data.ToDo;
 using Couple.Client.Infrastructure;
 using Couple.Client.Model.Event;
+using Couple.Client.States.Calendar;
+using Couple.Client.States.ToDo;
 using Couple.Client.ViewModel.ToDo;
 using Couple.Shared.Model.Calendar;
 using Microsoft.AspNetCore.Components;
@@ -12,8 +14,6 @@ using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Json;
 using System.Threading.Tasks;
-using static Couple.Client.States.Calendar.EventDataState;
-using static Couple.Client.States.ToDo.ToDoDataState;
 
 namespace Couple.Client.Pages.Calendar
 {
@@ -27,6 +27,12 @@ namespace Couple.Client.Pages.Calendar
 
         [Inject]
         protected NavigationManager NavigationManager { get; set; }
+
+        [Inject]
+        private ToDoStateContainer ToDoStateContainer { get; set; }
+
+        [Inject]
+        private EventStateContainer EventStateContainer { get; set; }
 
         protected CreateEventModel ToCreate { get; set; }
 
@@ -67,8 +73,8 @@ namespace Couple.Client.Pages.Calendar
             };
             await LocalStore.PutEventAsync(toPersist, added, new List<ToDoModel>());
 
-            await Mediator.Send(new RefreshEventsAction(LocalStore));
-            await Mediator.Send(new RefreshToDosAction(LocalStore));
+            await ToDoStateContainer.RefreshAsync();
+            await EventStateContainer.RefreshAsync();
 
             NavigationManager.NavigateTo($"/calendar/{ToCreate.Start.ToCalendarUrl()}");
 

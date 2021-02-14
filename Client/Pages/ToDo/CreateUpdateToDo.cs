@@ -1,4 +1,3 @@
-using BlazorState;
 using Couple.Client.Data;
 using Couple.Client.States.ToDo;
 using Microsoft.AspNetCore.Components;
@@ -7,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Couple.Client.Pages.ToDo
 {
-    public abstract class CreateUpdateToDoBase : BlazorStateComponent
+    public abstract class CreateUpdateToDoBase : ComponentBase
     {
         [Inject]
         protected HttpClient HttpClient { get; set; }
@@ -18,7 +17,11 @@ namespace Couple.Client.Pages.ToDo
         [Inject]
         protected NavigationManager NavigationManager { get; set; }
 
-        protected ToDoDataState ToDoDataState => GetState<ToDoDataState>();
+        [Inject]
+        protected ToDoStateContainer ToDoStateContainer { get; set; }
+
+        [Inject]
+        protected SelectedCategoryStateContainer SelectedCategoryStateContainer { get; set; }
 
         protected abstract Task Save();
 

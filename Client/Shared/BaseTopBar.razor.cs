@@ -1,8 +1,9 @@
-using BlazorState;
 using Couple.Client.Data;
 using Couple.Client.Data.Calendar;
 using Couple.Client.Data.ToDo;
 using Couple.Client.Infrastructure;
+using Couple.Client.States.Calendar;
+using Couple.Client.States.ToDo;
 using Couple.Shared.Model;
 using Couple.Shared.Model.Calendar;
 using Microsoft.AspNetCore.Components;
@@ -13,18 +14,22 @@ using System.Net.Http;
 using System.Net.Http.Json;
 using System.Text.Json;
 using System.Threading.Tasks;
-using static Couple.Client.States.Calendar.EventDataState;
-using static Couple.Client.States.ToDo.ToDoDataState;
 
 namespace Couple.Client.Shared
 {
-    public class BaseTopBarBase : BlazorStateComponent
+    public partial class BaseTopBar
     {
         [Inject]
         protected HttpClient HttpClient { get; set; }
 
         [Inject]
         protected LocalStore LocalStore { get; set; }
+
+        [Inject]
+        private ToDoStateContainer ToDoStateContainer { get; set; }
+
+        [Inject]
+        private EventStateContainer EventStateContainer { get; set; }
 
         [Parameter]
         public RenderFragment Content { get; set; }
@@ -127,8 +132,8 @@ namespace Couple.Client.Shared
             };
 
             await HttpClient.DeleteAsJsonAsync($"api/Changes", idsToDelete);
-            await Mediator.Send(new RefreshEventsAction(LocalStore));
-            await Mediator.Send(new RefreshToDosAction(LocalStore));
+            await ToDoStateContainer.RefreshAsync();
+            await EventStateContainer.RefreshAsync();
 
             await OnSynchronisationCallback.InvokeAsync();
         }

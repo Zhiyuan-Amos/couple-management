@@ -9,6 +9,9 @@ namespace Couple.Client.Components.Calendar
 {
     public partial class CategoryTreeViewContent
     {
+        [Inject]
+        private ToDoStateContainer ToDoStateContainer { get; set; }
+
         [Parameter]
         public List<ToDoViewModel> Added { get; set; }
 
@@ -21,13 +24,11 @@ namespace Couple.Client.Components.Calendar
         [Parameter]
         public EventCallback<List<ToDoViewModel>> SelectedChanged { get; set; }
 
-        private ToDoDataState ToDoDataState => GetState<ToDoDataState>();
-
         protected List<CategoryToDos> Data { get; set; }
 
         protected override void OnInitialized()
         {
-            var categoryToToDos = ToDoDataState
+            var categoryToToDos = ToDoStateContainer
                 .GetToDos()
                 .Where(toDo => Added.All(add => add.Id != toDo.Id))
                 .Select(toDo => new ToDoViewModel(toDo.Id, toDo.Text, toDo.Category, toDo.CreatedOn))

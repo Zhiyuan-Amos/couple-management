@@ -4,6 +4,7 @@ using Couple.Client.Data.ToDo;
 using Couple.Client.Infrastructure;
 using Couple.Client.Model.Event;
 using Couple.Client.States.Calendar;
+using Couple.Client.States.ToDo;
 using Couple.Client.ViewModel.ToDo;
 using Couple.Shared.Model.Calendar;
 using Microsoft.AspNetCore.Components;
@@ -13,8 +14,6 @@ using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Json;
 using System.Threading.Tasks;
-using static Couple.Client.States.Calendar.EventDataState;
-using static Couple.Client.States.ToDo.ToDoDataState;
 
 namespace Couple.Client.Pages.Calendar
 {
@@ -29,10 +28,15 @@ namespace Couple.Client.Pages.Calendar
         [Inject]
         protected NavigationManager NavigationManager { get; set; }
 
+        [Inject]
+        private ToDoStateContainer ToDoStateContainer { get; set; }
+
+        [Inject]
+        private EventStateContainer EventStateContainer { get; set; }
+
         [Parameter]
         public Guid EventId { get; set; }
 
-        private EventDataState EventDataState => GetState<EventDataState>();
         protected UpdateEventModel ToUpdate { get; set; }
 
         protected List<ToDoViewModel> Original { get; set; }
@@ -41,7 +45,7 @@ namespace Couple.Client.Pages.Calendar
 
         protected override void OnInitialized()
         {
-            if (!EventDataState.TryGetEvent(EventId, out var @event))
+            if (!EventStateContainer.TryGetEvent(EventId, out var @event))
             {
                 NavigationManager.NavigateTo("calendar");
                 return;
@@ -89,8 +93,8 @@ namespace Couple.Client.Pages.Calendar
                     CreatedOn = toDo.CreatedOn,
                 }).ToList());
 
-            await Mediator.Send(new RefreshEventsAction(LocalStore));
-            await Mediator.Send(new RefreshToDosAction(LocalStore));
+            await ToDoStateContainer.RefreshAsync();
+            await EventStateContainer.RefreshAsync();
 
             NavigationManager.NavigateTo($"/calendar/{ToUpdate.Start.ToCalendarUrl()}");
 
@@ -135,7 +139,7 @@ namespace Couple.Client.Pages.Calendar
                         Category = toDo.Category,
                         CreatedOn = toDo.CreatedOn,
                     }).ToList());
-            await Mediator.Send(new RefreshEventsAction(LocalStore));
+            await EventStateContainer.RefreshAsync();
 
             NavigationManager.NavigateTo($"/calendar/{ToUpdate.Start.ToCalendarUrl()}");
 

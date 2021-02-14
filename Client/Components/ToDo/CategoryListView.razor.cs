@@ -6,6 +6,12 @@ namespace Couple.Client.Components.ToDo
 {
     public partial class CategoryListView
     {
+        [Inject]
+        private ToDoStateContainer ToDoStateContainer { get; set; }
+
+        [Inject]
+        private SelectedCategoryStateContainer SelectedCategoryStateContainer { get; set; }
+
         [Parameter]
         public EventCallback<string> OnClickCallback { get; set; }
 
@@ -14,8 +20,8 @@ namespace Couple.Client.Components.ToDo
 
         protected override void OnInitialized()
         {
-            Categories = GetState<ToDoDataState>().Categories;
-            SelectedCategory = GetState<SelectedCategoryState>().SelectedCategory;
+            Categories = ToDoStateContainer.Categories;
+            SelectedCategory = SelectedCategoryStateContainer.SelectedCategory;
         }
     }
 }
