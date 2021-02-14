@@ -9,7 +9,7 @@ namespace Couple.Client.States.ToDo
     {
         private List<ToDoModel> _toDos;
         private Dictionary<string, List<ToDoModel>> _categoryToToDos;
-        private Dictionary<Guid, ToDoModel> IdToToDo;
+        private Dictionary<Guid, ToDoModel> _idToToDo;
         private List<string> _categories;
 
         public List<ToDoModel> ToDos
@@ -22,7 +22,7 @@ namespace Couple.Client.States.ToDo
                     .GroupBy(toDo => toDo.Category)
                     .ToDictionary(toDo => toDo.Key, toDo => toDo.ToList());
                 CategoryToToDos = categoryToToDos;
-                IdToToDo = value.ToDictionary(toDo => toDo.Id);
+                _idToToDo = value.ToDictionary(toDo => toDo.Id);
             }
         }
 
@@ -72,7 +72,7 @@ namespace Couple.Client.States.ToDo
 
         public bool TryGetToDo(Guid id, out ToDoModel toDo)
         {
-            if (!IdToToDo.TryGetValue(id, out toDo))
+            if (!_idToToDo.TryGetValue(id, out toDo))
             {
                 return false;
             }
