@@ -93,8 +93,10 @@ namespace Couple.Client.Pages.Calendar
                     CreatedOn = toDo.CreatedOn,
                 }).ToList());
 
-            await ToDoStateContainer.RefreshAsync();
-            await EventStateContainer.RefreshAsync();
+            var toDos = await LocalStore.GetAllAsync<List<ToDoModel>>("todo");
+            ToDoStateContainer.SetToDos(toDos);
+            var events = await LocalStore.GetAllAsync<List<EventModel>>("event");
+            EventStateContainer.SetEvents(events);
 
             NavigationManager.NavigateTo($"/calendar/{ToUpdate.Start.ToCalendarUrl()}");
 
@@ -139,7 +141,8 @@ namespace Couple.Client.Pages.Calendar
                         Category = toDo.Category,
                         CreatedOn = toDo.CreatedOn,
                     }).ToList());
-            await EventStateContainer.RefreshAsync();
+            var events = await LocalStore.GetAllAsync<List<EventModel>>("event");
+            EventStateContainer.SetEvents(events);
 
             NavigationManager.NavigateTo($"/calendar/{ToUpdate.Start.ToCalendarUrl()}");
 

@@ -1,21 +1,12 @@
-﻿using Couple.Client.Data;
-using Couple.Client.Data.Calendar;
+﻿using Couple.Client.Data.Calendar;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace Couple.Client.States.Calendar
 {
     public class EventStateContainer
     {
-        private readonly LocalStore _localStore;
-
-        public EventStateContainer(LocalStore localStore)
-        {
-            _localStore = localStore;
-        }
-
         private Dictionary<DateTime, List<EventModel>> DateToEvents { get; set; }
 
         public bool TryGetEvents(DateTime dateTime, out List<EventModel> events)
@@ -43,9 +34,8 @@ namespace Couple.Client.States.Calendar
             return true;
         }
 
-        public async Task RefreshAsync()
+        public void SetEvents(List<EventModel> events)
         {
-            var events = await _localStore.GetAllAsync<List<EventModel>>("event");
             DateToEvents = events
                 .GroupBy(@event => @event.Start.Date)
                 .ToDictionary(grouping => grouping.Key, grouping => grouping

@@ -1,24 +1,15 @@
-﻿using Couple.Client.Data;
-using Couple.Client.Data.ToDo;
+﻿using Couple.Client.Data.ToDo;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace Couple.Client.States.ToDo
 {
     public class ToDoStateContainer
     {
-        private readonly LocalStore _localStore;
-
         private Dictionary<string, List<ToDoModel>> _categoryToToDos;
         private Dictionary<Guid, ToDoModel> IdToToDo;
         private List<string> _categories;
-
-        public ToDoStateContainer(LocalStore localStore)
-        {
-            _localStore = localStore;
-        }
 
         public Dictionary<string, List<ToDoModel>> CategoryToToDos
         {
@@ -79,10 +70,8 @@ namespace Couple.Client.States.ToDo
             .SelectMany(toDos => toDos)
             .ToList();
 
-        public async Task RefreshAsync()
+        public void SetToDos(List<ToDoModel> toDos)
         {
-            var toDos = await _localStore.GetAllAsync<List<ToDoModel>>("todo");
-
             var categoryToToDos = toDos
                 .GroupBy(toDo => toDo.Category)
                 .ToDictionary(toDo => toDo.Key, toDo => toDo.ToList());

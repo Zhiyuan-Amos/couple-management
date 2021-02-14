@@ -73,8 +73,10 @@ namespace Couple.Client.Pages.Calendar
             };
             await LocalStore.PutEventAsync(toPersist, added, new List<ToDoModel>());
 
-            await ToDoStateContainer.RefreshAsync();
-            await EventStateContainer.RefreshAsync();
+            var toDos = await LocalStore.GetAllAsync<List<ToDoModel>>("todo");
+            ToDoStateContainer.SetToDos(toDos);
+            var events = await LocalStore.GetAllAsync<List<EventModel>>("event");
+            EventStateContainer.SetEvents(events);
 
             NavigationManager.NavigateTo($"/calendar/{ToCreate.Start.ToCalendarUrl()}");
 

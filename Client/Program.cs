@@ -1,10 +1,13 @@
 using AzureStaticWebApps.Blazor.Authentication;
 using Couple.Client.Data;
+using Couple.Client.Data.Calendar;
+using Couple.Client.Data.ToDo;
 using Couple.Client.States.Calendar;
 using Couple.Client.States.ToDo;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using System;
+using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading.Tasks;
 
@@ -34,9 +37,11 @@ namespace Couple.Client
             var selectedCategoryStateContainer = host.Services.GetRequiredService<SelectedCategoryStateContainer>();
             var eventStateContainer = host.Services.GetRequiredService<EventStateContainer>();
 
-            await toDoStateContainer.RefreshAsync();
+            var toDos = await localStore.GetAllAsync<List<ToDoModel>>("todo");
+            toDoStateContainer.SetToDos(toDos);
             selectedCategoryStateContainer.Reset();
-            await eventStateContainer.RefreshAsync();
+            var events = await localStore.GetAllAsync<List<EventModel>>("event");
+            eventStateContainer.SetEvents(events);
 
             await host.RunAsync();
         }

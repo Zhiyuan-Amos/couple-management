@@ -4,6 +4,7 @@ using Couple.Client.States.ToDo;
 using Couple.Shared.Model.ToDo;
 using Microsoft.AspNetCore.Components;
 using System;
+using System.Collections.Generic;
 using System.Net.Http.Json;
 using System.Threading.Tasks;
 
@@ -38,7 +39,8 @@ namespace Couple.Client.Pages.ToDo
         protected async Task Delete()
         {
             await LocalStore.DeleteAsync("todo", ToUpdate.Id);
-            await ToDoStateContainer.RefreshAsync();
+            var toDos = await LocalStore.GetAllAsync<List<ToDoModel>>("todo");
+            ToDoStateContainer.SetToDos(toDos);
 
             NavigationManager.NavigateTo("/todo");
 
@@ -56,7 +58,8 @@ namespace Couple.Client.Pages.ToDo
             };
             await LocalStore.PutAsync("todo", toPersist);
 
-            await ToDoStateContainer.RefreshAsync();
+            var toDos = await LocalStore.GetAllAsync<List<ToDoModel>>("todo");
+            ToDoStateContainer.SetToDos(toDos);
             SelectedCategoryStateContainer.SelectedCategory = ToUpdate.Category;
             NavigationManager.NavigateTo("/todo");
 
