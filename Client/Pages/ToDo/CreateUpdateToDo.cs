@@ -1,6 +1,6 @@
-using Couple.Client.Data;
 using Couple.Client.States.ToDo;
 using Microsoft.AspNetCore.Components;
+using Microsoft.JSInterop;
 using System.Net.Http;
 using System.Threading.Tasks;
 
@@ -12,9 +12,6 @@ namespace Couple.Client.Pages.ToDo
         protected HttpClient HttpClient { get; set; }
 
         [Inject]
-        protected LocalStore LocalStore { get; set; }
-
-        [Inject]
         protected NavigationManager NavigationManager { get; set; }
 
         [Inject]
@@ -22,6 +19,9 @@ namespace Couple.Client.Pages.ToDo
 
         [Inject]
         protected SelectedCategoryStateContainer SelectedCategoryStateContainer { get; set; }
+
+        [Inject]
+        protected IJSRuntime Js { get; set; }
 
         protected abstract Task Save();
 

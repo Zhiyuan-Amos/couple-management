@@ -1,4 +1,3 @@
-using Couple.Client.Data;
 using Couple.Client.Data.Calendar;
 using Couple.Client.Data.ToDo;
 using Couple.Client.Infrastructure;
@@ -7,6 +6,7 @@ using Couple.Client.States.ToDo;
 using Couple.Shared.Model;
 using Couple.Shared.Model.Calendar;
 using Microsoft.AspNetCore.Components;
+using Microsoft.JSInterop;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,13 +23,13 @@ namespace Couple.Client.Shared
         protected HttpClient HttpClient { get; set; }
 
         [Inject]
-        protected LocalStore LocalStore { get; set; }
-
-        [Inject]
         private ToDoStateContainer ToDoStateContainer { get; set; }
 
         [Inject]
         private EventStateContainer EventStateContainer { get; set; }
+
+        [Inject]
+        private IJSRuntime Js { get; set; }
 
         [Parameter]
         public RenderFragment Content { get; set; }
@@ -37,7 +37,16 @@ namespace Couple.Client.Shared
         [Parameter]
         public EventCallback OnSynchronisationCallback { get; set; }
 
+        private IJSObjectReference ToDoModule;
+        private IJSObjectReference EventModule;
+
         private readonly JsonSerializerOptions options = new() { PropertyNameCaseInsensitive = true };
+
+        protected override async Task OnInitializedAsync()
+        {
+            ToDoModule = await Js.InvokeAsync<IJSObjectReference>("import", "./ToDo.razor.js");
+            EventModule = await Js.InvokeAsync<IJSObjectReference>("import", "./Event.razor.js");
+        }
 
         protected async Task Synchronize()
         {
@@ -46,20 +55,20 @@ namespace Couple.Client.Shared
             {
                 if (item.DataType == DataType.ToDo && item.Function == Function.Create)
                 {
-                    await LocalStore.PutAsync("todo", JsonSerializer.Deserialize<ToDoModel>(item.Content, options));
+                    await ToDoModule.InvokeVoidAsync("add", JsonSerializer.Deserialize<ToDoModel>(item.Content, options));
                 }
                 else if (item.DataType == DataType.ToDo && item.Function == Function.Update)
                 {
-                    await LocalStore.PutAsync("todo", JsonSerializer.Deserialize<ToDoModel>(item.Content, options));
+                    await ToDoModule.InvokeVoidAsync("update", JsonSerializer.Deserialize<ToDoModel>(item.Content, options));
                 }
                 else if (item.DataType == DataType.ToDo && item.Function == Function.Delete)
                 {
-                    await LocalStore.DeleteAsync("todo", JsonSerializer.Deserialize<Guid>(item.Content, options));
+                    await ToDoModule.InvokeVoidAsync("remove", JsonSerializer.Deserialize<Guid>(item.Content, options));
                 }
                 else if (item.DataType == DataType.Calendar && item.Function == Function.Create)
                 {
                     var toCreate = JsonSerializer.Deserialize<CreateEventDto>(item.Content, options);
-                    await LocalStore.PutEventAsync(new EventModel
+                    await EventModule.InvokeVoidAsync("add", new EventModel
                     {
                         Id = toCreate.Event.Id,
                         Title = toCreate.Event.Title,
@@ -86,7 +95,7 @@ namespace Couple.Client.Shared
                 else if (item.DataType == DataType.Calendar && item.Function == Function.Update)
                 {
                     var toUpdate = JsonSerializer.Deserialize<UpdateEventDto>(item.Content, options);
-                    await LocalStore.PutEventAsync(new EventModel
+                    await EventModule.InvokeVoidAsync("update", new EventModel
                     {
                         Id = toUpdate.Event.Id,
                         Title = toUpdate.Event.Title,
@@ -113,7 +122,8 @@ namespace Couple.Client.Shared
                 else if (item.DataType == DataType.Calendar && item.Function == Function.Delete)
                 {
                     var toDelete = JsonSerializer.Deserialize<DeleteEventDto>(item.Content, options);
-                    await LocalStore.DeleteEventAsync(toDelete.Id,
+                    await EventModule.InvokeVoidAsync("remove",
+                        toDelete.Id,
                         toDelete.Removed.Select(toDo => new ToDoModel
                         {
                             Id = toDo.Id,
@@ -132,9 +142,9 @@ namespace Couple.Client.Shared
             };
 
             await HttpClient.DeleteAsJsonAsync($"api/Changes", idsToDelete);
-            var toDos = await LocalStore.GetAllAsync<List<ToDoModel>>("todo");
+            var toDos = await ToDoModule.InvokeAsync<List<ToDoModel>>("getAll");
             ToDoStateContainer.ToDos = toDos;
-            var events = await LocalStore.GetAllAsync<List<EventModel>>("event");
+            var events = await EventModule.InvokeAsync<List<EventModel>>("getAll");
             EventStateContainer.SetEvents(events);
 
             await OnSynchronisationCallback.InvokeAsync();

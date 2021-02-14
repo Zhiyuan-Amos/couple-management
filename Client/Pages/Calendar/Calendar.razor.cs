@@ -1,4 +1,3 @@
-using Couple.Client.Data;
 using Couple.Client.Infrastructure;
 using Couple.Client.States.Calendar;
 using Couple.Client.ViewModel.Calendar;
@@ -14,9 +13,6 @@ namespace Couple.Client.Pages.Calendar
     {
         [Inject]
         protected NavigationManager NavigationManager { get; set; }
-
-        [Inject]
-        protected LocalStore LocalStore { get; set; }
 
         [Inject]
         private EventStateContainer EventStateContainer { get; set; }

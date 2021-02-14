@@ -3,6 +3,7 @@ using Couple.Client.Data.ToDo;
 using Couple.Client.States.ToDo;
 using Couple.Shared.Model.ToDo;
 using Microsoft.AspNetCore.Components;
+using Microsoft.JSInterop;
 using System;
 using System.Collections.Generic;
 using System.Net.Http.Json;
@@ -19,7 +20,9 @@ namespace Couple.Client.Pages.ToDo
 
         protected UpdateToDoViewModel ToUpdate { get; set; } = new();
 
-        protected override void OnInitialized()
+        private IJSObjectReference Module;
+
+        protected override async Task OnInitializedAsync()
         {
             if (!ToDoStateContainer.TryGetToDo(ToDoId, out var toDo))
             {
@@ -34,12 +37,13 @@ namespace Couple.Client.Pages.ToDo
                 Category = toDo.Category,
                 CreatedOn = toDo.CreatedOn,
             };
+            Module = await Js.InvokeAsync<IJSObjectReference>("import", "./ToDo.razor.js");
         }
 
         protected async Task Delete()
         {
-            await LocalStore.DeleteAsync("todo", ToUpdate.Id);
-            var toDos = await LocalStore.GetAllAsync<List<ToDoModel>>("todo");
+            await Module.InvokeVoidAsync("remove", ToUpdate.Id);
+            var toDos = await Module.InvokeAsync<List<ToDoModel>>("getAll");
             ToDoStateContainer.ToDos = toDos;
 
             NavigationManager.NavigateTo("/todo");
@@ -56,9 +60,9 @@ namespace Couple.Client.Pages.ToDo
                 Category = ToUpdate.Category,
                 CreatedOn = ToUpdate.CreatedOn,
             };
-            await LocalStore.PutAsync("todo", toPersist);
+            await Module.InvokeVoidAsync("update", toPersist);
 
-            var toDos = await LocalStore.GetAllAsync<List<ToDoModel>>("todo");
+            var toDos = await Module.InvokeAsync<List<ToDoModel>>("getAll");
             ToDoStateContainer.ToDos = toDos;
             SelectedCategoryStateContainer.SelectedCategory = ToUpdate.Category;
             NavigationManager.NavigateTo("/todo");

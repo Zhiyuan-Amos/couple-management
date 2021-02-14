@@ -29,7 +29,6 @@
     </div>
     <script src="_framework/blazor.webassembly.js"></script>
     <script src="https://unpkg.com/idb@6.0.0/build/iife/index-min.js"></script>
-    <script src="localStore.js"></script>
     <script>navigator.serviceWorker.register('service-worker.js');</script>
     <script>
         // see: https://www.telerik.com/forums/when-modal-window-is-shown-background-scrolling-can-still-happen#m8FdK7tWYE6N6V_X1I9ukw
@@ -42,6 +41,14 @@
             var scrollValue = shouldScroll ? "auto" : "hidden";
             document.body.style.overflowY = scrollValue;
         }
+
+        const db = idb.openDB('Couple', 1, {
+            upgrade(db) {
+                const toDoStore = db.createObjectStore('todo', { keyPath: 'id' });
+                db.createObjectStore('event', { keyPath: 'id' });
+                toDoStore.createIndex('category', 'category');
+            },
+        });
     </script>
 </body>
 
