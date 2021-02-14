@@ -29,7 +29,7 @@ namespace Couple.Client.Components.Calendar
         protected override void OnInitialized()
         {
             var categoryToToDos = ToDoStateContainer
-                .GetToDos()
+                .ToDos
                 .Where(toDo => Added.All(add => add.Id != toDo.Id))
                 .Select(toDo => new ToDoViewModel(toDo.Id, toDo.Text, toDo.Category, toDo.CreatedOn))
                 .Concat(Removed)

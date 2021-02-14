@@ -38,7 +38,7 @@ namespace Couple.Client.Pages.ToDo
             await LocalStore.PutAsync("todo", toPersist);
 
             var toDos = await LocalStore.GetAllAsync<List<ToDoModel>>("todo");
-            ToDoStateContainer.SetToDos(toDos);
+            ToDoStateContainer.ToDos = toDos;
             SelectedCategoryStateContainer.SelectedCategory = ToCreate.Category;
             NavigationManager.NavigateTo("/todo");
 

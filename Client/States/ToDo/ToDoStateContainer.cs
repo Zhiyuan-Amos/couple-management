@@ -7,9 +7,24 @@ namespace Couple.Client.States.ToDo
 {
     public class ToDoStateContainer
     {
+        private List<ToDoModel> _toDos;
         private Dictionary<string, List<ToDoModel>> _categoryToToDos;
         private Dictionary<Guid, ToDoModel> IdToToDo;
         private List<string> _categories;
+
+        public List<ToDoModel> ToDos
+        {
+            get => _toDos;
+            set
+            {
+                _toDos = value.ToList();
+                var categoryToToDos = value
+                    .GroupBy(toDo => toDo.Category)
+                    .ToDictionary(toDo => toDo.Key, toDo => toDo.ToList());
+                CategoryToToDos = categoryToToDos;
+                IdToToDo = value.ToDictionary(toDo => toDo.Id);
+            }
+        }
 
         public Dictionary<string, List<ToDoModel>> CategoryToToDos
         {
@@ -63,20 +78,6 @@ namespace Couple.Client.States.ToDo
             }
 
             return true;
-        }
-
-        public List<ToDoModel> GetToDos() => CategoryToToDos
-            .Values
-            .SelectMany(toDos => toDos)
-            .ToList();
-
-        public void SetToDos(List<ToDoModel> toDos)
-        {
-            var categoryToToDos = toDos
-                .GroupBy(toDo => toDo.Category)
-                .ToDictionary(toDo => toDo.Key, toDo => toDo.ToList());
-            CategoryToToDos = categoryToToDos;
-            IdToToDo = toDos.ToDictionary(toDo => toDo.Id);
         }
     }
 }

@@ -40,7 +40,7 @@ namespace Couple.Client.Pages.ToDo
         {
             await LocalStore.DeleteAsync("todo", ToUpdate.Id);
             var toDos = await LocalStore.GetAllAsync<List<ToDoModel>>("todo");
-            ToDoStateContainer.SetToDos(toDos);
+            ToDoStateContainer.ToDos = toDos;
 
             NavigationManager.NavigateTo("/todo");
 
@@ -59,7 +59,7 @@ namespace Couple.Client.Pages.ToDo
             await LocalStore.PutAsync("todo", toPersist);
 
             var toDos = await LocalStore.GetAllAsync<List<ToDoModel>>("todo");
-            ToDoStateContainer.SetToDos(toDos);
+            ToDoStateContainer.ToDos = toDos;
             SelectedCategoryStateContainer.SelectedCategory = ToUpdate.Category;
             NavigationManager.NavigateTo("/todo");
 

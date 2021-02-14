@@ -38,7 +38,7 @@ namespace Couple.Client
             var eventStateContainer = host.Services.GetRequiredService<EventStateContainer>();
 
             var toDos = await localStore.GetAllAsync<List<ToDoModel>>("todo");
-            toDoStateContainer.SetToDos(toDos);
+            toDoStateContainer.ToDos = toDos;
             selectedCategoryStateContainer.Reset();
             var events = await localStore.GetAllAsync<List<EventModel>>("event");
             eventStateContainer.SetEvents(events);

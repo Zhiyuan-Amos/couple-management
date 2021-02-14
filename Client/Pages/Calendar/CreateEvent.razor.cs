@@ -74,7 +74,7 @@ namespace Couple.Client.Pages.Calendar
             await LocalStore.PutEventAsync(toPersist, added, new List<ToDoModel>());
 
             var toDos = await LocalStore.GetAllAsync<List<ToDoModel>>("todo");
-            ToDoStateContainer.SetToDos(toDos);
+            ToDoStateContainer.ToDos = toDos;
             var events = await LocalStore.GetAllAsync<List<EventModel>>("event");
             EventStateContainer.SetEvents(events);
 

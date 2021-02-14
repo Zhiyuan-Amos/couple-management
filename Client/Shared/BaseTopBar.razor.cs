@@ -133,7 +133,7 @@ namespace Couple.Client.Shared
 
             await HttpClient.DeleteAsJsonAsync($"api/Changes", idsToDelete);
             var toDos = await LocalStore.GetAllAsync<List<ToDoModel>>("todo");
-            ToDoStateContainer.SetToDos(toDos);
+            ToDoStateContainer.ToDos = toDos;
             var events = await LocalStore.GetAllAsync<List<EventModel>>("event");
             EventStateContainer.SetEvents(events);
 
