@@ -22,7 +22,7 @@ namespace Couple.Client.States.ToDo
                 }
                 return toReturn;
             }
-            set
+            private set
             {
                 _categoryToToDos = value;
                 Categories = value
