@@ -3,6 +3,7 @@ using Couple.Client.Data.Calendar;
 using Couple.Client.Data.ToDo;
 using Couple.Client.States.Calendar;
 using Couple.Client.States.ToDo;
+using Couple.Client.Utility;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.JSInterop;
@@ -25,6 +26,7 @@ namespace Couple.Client
                 .AddSingleton<ToDoStateContainer>()
                 .AddSingleton<SelectedCategoryStateContainer>()
                 .AddSingleton<EventStateContainer>()
+                .AddSingleton<Synchronizer>()
                 .AddStaticWebAppsAuthentication()
                 .AddOptions()
                 .AddAuthorizationCore();
@@ -44,6 +46,10 @@ namespace Couple.Client
             selectedCategoryStateContainer.Reset();
             var events = await EventModule.InvokeAsync<List<EventModel>>("getAll");
             eventStateContainer.SetEvents(events);
+
+            var synchronizer = host.Services.GetRequiredService<Synchronizer>();
+            await synchronizer.Initialization;
+            synchronizer.SynchronizeAsync(); // No await to prevent app from being blocked. It's not a big deal if it fails to execute successfully
 
             await host.RunAsync();
         }
