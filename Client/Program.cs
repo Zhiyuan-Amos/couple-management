@@ -35,20 +35,31 @@ namespace Couple.Client
 
             var toDoStateContainer = host.Services.GetRequiredService<ToDoStateContainer>();
             var selectedCategoryStateContainer = host.Services.GetRequiredService<SelectedCategoryStateContainer>();
-            var eventStateContainer = host.Services.GetRequiredService<EventStateContainer>();
             var js = host.Services.GetRequiredService<IJSRuntime>();
 
-            var ToDoModule = await js.InvokeAsync<IJSObjectReference>("import", "./ToDo.razor.js");
-            var EventModule = await js.InvokeAsync<IJSObjectReference>("import", "./Event.razor.js");
+            var initToDosTask = js.InvokeAsync<IJSObjectReference>("import", "./ToDo.razor.js")
+                .AsTask()
+                .ContinueWith(moduleTask => moduleTask.Result.InvokeAsync<List<ToDoModel>>("getAll").AsTask())
+                .Unwrap()
+                .ContinueWith(toDosTask =>
+                {
+                    toDoStateContainer.ToDos = toDosTask.Result;
+                    selectedCategoryStateContainer.Reset();
+                });
 
-            var toDos = await ToDoModule.InvokeAsync<List<ToDoModel>>("getAll");
-            toDoStateContainer.ToDos = toDos;
-            selectedCategoryStateContainer.Reset();
-            var events = await EventModule.InvokeAsync<List<EventModel>>("getAll");
-            eventStateContainer.SetEvents(events);
+            var eventStateContainer = host.Services.GetRequiredService<EventStateContainer>();
+
+            var initEventsTask = js.InvokeAsync<IJSObjectReference>("import", "./Event.razor.js")
+                .AsTask()
+                .ContinueWith(moduleTask => moduleTask.Result.InvokeAsync<List<EventModel>>("getAll").AsTask())
+                .Unwrap()
+                .ContinueWith(eventsTask => eventStateContainer.SetEvents(eventsTask.Result));
 
             var synchronizer = host.Services.GetRequiredService<Synchronizer>();
-            await synchronizer.Initialization;
+            var initSynchronizerTask = synchronizer.Initialization;
+
+            await Task.WhenAll(initToDosTask, initEventsTask, initSynchronizerTask);
+
             synchronizer.SynchronizeAsync(); // No await to prevent app from being blocked. It's not a big deal if it fails to execute successfully
 
             await host.RunAsync();
