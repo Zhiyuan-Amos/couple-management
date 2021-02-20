@@ -40,14 +40,15 @@ namespace Couple.Api.Infrastructure
                 var json = Encoding.ASCII.GetString(decoded);
                 var principal = JsonSerializer.Deserialize<ClientPrincipal>(json, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
 
-                principal.UserRoles = principal.UserRoles
+                var roles = principal.UserRoles
                     .Where(role => role != "anonymous"
                         && role != "authenticated"
                         && !role.StartsWith("id_")
-                        && !role.StartsWith("partnerId_"))
+                        && !role.StartsWith("partnerid_"))
+                    .Select(r => new Claim(ClaimTypes.Role, r))
                     .ToList();
 
-                if (!principal.UserRoles.Any())
+                if (!roles.Any())
                 {
                     return new ClaimsPrincipal();
                 }
@@ -55,11 +56,7 @@ namespace Couple.Api.Infrastructure
                 var adminAssignedId = principal.UserRoles
                     .Single(role => role.StartsWith("id_"));
                 var partnerId = principal.UserRoles
-                    .Single(role => role.StartsWith("partnerId_"));
-                var roles = principal
-                    .UserRoles
-                    .Select(r => new Claim(ClaimTypes.Role, r))
-                    .ToList();
+                    .Single(role => role.StartsWith("partnerid_"));
 
                 var identity = new ClaimsIdentity(principal.IdentityProvider);
 
@@ -71,7 +68,7 @@ namespace Couple.Api.Infrastructure
                 // See https://github.com/Azure/static-web-apps/issues/3
                 // An alternative implementation is to return a custom Cookie / JWT, but that requires more effort
                 // with little gains, given the current state of the project.
-                identity.AddClaim(new Claim(ClaimTypes.NameIdentifier, adminAssignedId));
+                identity.AddClaim(new Claim(ClaimTypes.NameIdentifier, adminAssignedId[3..]));
                 identity.AddClaim(new Claim(ClaimTypes.Email, principal.UserDetails));
                 identity.AddClaim(new Claim(ClaimTypePartnerId, partnerId[10..]));
                 identity.AddClaims(roles);
