@@ -6,7 +6,7 @@ using System.Security.Claims;
 using System.Text;
 using System.Text.Json;
 
-namespace Api.Infrastructure
+namespace Couple.Api.Infrastructure
 {
     public class CurrentUserService : ICurrentUserService
     {

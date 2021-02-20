@@ -1,5 +1,5 @@
-﻿using Couple.Shared.Model.Calendar;
-using FluentValidation;
+﻿using FluentValidation;
+using Couple.Shared.Model.Event;
 
 namespace Couple.Api.Validators
 {

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Api.Infrastructure
+namespace Couple.Api.Infrastructure
 {
     public class DateTimeService : IDateTimeService
     {

@@ -1,13 +1,12 @@
-using Couple.Client.Data.Calendar;
-using Couple.Client.Data.ToDo;
+using Couple.Client.Model.Calendar;
+using Couple.Client.Model.ToDo;
 using Couple.Client.Infrastructure;
-using Couple.Client.Model.Event;
 using Couple.Client.States.Calendar;
 using Couple.Client.States.ToDo;
 using Couple.Client.ViewModel.ToDo;
-using Couple.Shared.Model.Calendar;
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
+using Couple.Shared.Model.Event;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -123,6 +122,14 @@ namespace Couple.Client.Pages.Calendar
         {
             ToCreate.ToDos.Remove(removed);
             Added = ToCreate.ToDos = new(ToCreate.ToDos);
+        }
+
+        public class CreateEventModel
+        {
+            public string Title { get; set; }
+            public DateTime Start { get; set; }
+            public DateTime End { get; set; }
+            public List<ToDoViewModel> ToDos { get; set; }
         }
     }
 }

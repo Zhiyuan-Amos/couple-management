@@ -1,4 +1,4 @@
-using Couple.Client.Utility;
+using Couple.Client.Services;
 using Microsoft.AspNetCore.Components;
 using System.Threading.Tasks;
 

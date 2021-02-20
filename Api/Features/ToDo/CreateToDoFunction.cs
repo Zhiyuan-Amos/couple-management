@@ -1,25 +1,25 @@
-using Api.Data;
-using Api.Infrastructure;
-using Couple.Shared.Model;
-using Couple.Shared.Model.ToDo;
+using Couple.Api.Data;
+using Couple.Api.Infrastructure;
 using FluentValidation;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.Extensions.Logging;
+using Couple.Shared.Model.Change;
+using Couple.Shared.Model.ToDo;
 using System;
 using System.Threading.Tasks;
 
-namespace Api.Features.ToDo
+namespace Couple.Api.Features.ToDo
 {
     public class CreateToDoFunction
     {
-        private readonly EventContext _context;
+        private readonly ChangeContext _context;
         private readonly IDateTimeService _dateTimeService;
         private readonly ICurrentUserService _currentUserService;
 
-        public CreateToDoFunction(EventContext context,
+        public CreateToDoFunction(ChangeContext context,
                                   IDateTimeService dateTimeService,
                                   ICurrentUserService currentUserService)
         {
@@ -46,7 +46,7 @@ namespace Api.Features.ToDo
                 return new BadRequestResult();
             }
 
-            var toCreate = new Change
+            var toCreate = new Model.Change
             {
                 Id = Guid.NewGuid(),
                 Function = Function.Create,

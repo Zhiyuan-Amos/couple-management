@@ -1,9 +1,9 @@
 using AzureStaticWebApps.Blazor.Authentication;
-using Couple.Client.Data.Calendar;
-using Couple.Client.Data.ToDo;
+using Couple.Client.Model.Calendar;
+using Couple.Client.Model.ToDo;
 using Couple.Client.States.Calendar;
 using Couple.Client.States.ToDo;
-using Couple.Client.Utility;
+using Couple.Client.Services;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.JSInterop;

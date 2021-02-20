@@ -1,24 +1,24 @@
-using Api.Data;
-using Api.Infrastructure;
-using Couple.Shared.Model;
+using Couple.Api.Data;
+using Couple.Api.Infrastructure;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.Extensions.Logging;
+using Couple.Shared.Model.Change;
 using System;
 using System.Text.Json;
 using System.Threading.Tasks;
 
-namespace Api.Features.ToDo
+namespace Couple.Api.Features.ToDo
 {
     public class DeleteToDoFunction
     {
-        private readonly EventContext _context;
+        private readonly ChangeContext _context;
         private readonly IDateTimeService _dateTimeService;
         private readonly ICurrentUserService _currentUserService;
 
-        public DeleteToDoFunction(EventContext context,
+        public DeleteToDoFunction(ChangeContext context,
                                   IDateTimeService dateTimeService,
                                   ICurrentUserService currentUserService)
         {
@@ -38,7 +38,7 @@ namespace Api.Features.ToDo
                 return new BadRequestResult();
             }
 
-            var toCreate = new Change
+            var toCreate = new Model.Change
             {
                 Id = Guid.NewGuid(),
                 Function = Function.Delete,

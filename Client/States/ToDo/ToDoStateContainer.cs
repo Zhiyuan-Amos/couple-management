@@ -1,4 +1,4 @@
-﻿using Couple.Client.Data.ToDo;
+﻿using Couple.Client.Model.ToDo;
 using System;
 using System.Collections.Generic;
 using System.Linq;

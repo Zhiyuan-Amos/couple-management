@@ -1,19 +1,19 @@
-﻿using Api.Data;
-using Api.Infrastructure;
+﻿using Couple.Api.Data;
+using Couple.Api.Infrastructure;
 using Microsoft.Azure.Functions.Extensions.DependencyInjection;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 
-[assembly: FunctionsStartup(typeof(Api.Startup))]
+[assembly: FunctionsStartup(typeof(Couple.Api.Startup))]
 
-namespace Api
+namespace Couple.Api
 {
     public class Startup : FunctionsStartup
     {
         public override void Configure(IFunctionsHostBuilder builder)
         {
-            builder.Services.AddDbContext<EventContext>(options => dbParams(options));
+            builder.Services.AddDbContext<ChangeContext>(options => dbParams(options));
 
             if (builder.GetContext().EnvironmentName == "Development")
             {

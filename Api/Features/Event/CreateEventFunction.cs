@@ -1,26 +1,26 @@
-using Api.Data;
-using Api.Infrastructure;
+using Couple.Api.Data;
+using Couple.Api.Infrastructure;
 using Couple.Api.Validators;
-using Couple.Shared.Model;
-using Couple.Shared.Model.Calendar;
 using FluentValidation;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.Extensions.Logging;
+using Couple.Shared.Model.Change;
+using Couple.Shared.Model.Event;
 using System;
 using System.Threading.Tasks;
 
-namespace Api.Features.Event
+namespace Couple.Api.Features.Event
 {
     public class CreateEventFunction
     {
-        private readonly EventContext _context;
+        private readonly ChangeContext _context;
         private readonly IDateTimeService _dateTimeService;
         private readonly ICurrentUserService _currentUserService;
 
-        public CreateEventFunction(EventContext context,
+        public CreateEventFunction(ChangeContext context,
                                    IDateTimeService dateTimeService,
                                    ICurrentUserService currentUserService)
         {
@@ -47,7 +47,7 @@ namespace Api.Features.Event
                 return new BadRequestResult();
             }
 
-            var toCreate = new Change
+            var toCreate = new Model.Change
             {
                 Id = Guid.NewGuid(),
                 Function = Function.Create,

@@ -1,4 +1,4 @@
-﻿using Couple.Client.Data.Calendar;
+﻿using Couple.Client.Model.Calendar;
 using System;
 using System.Collections.Generic;
 using System.Linq;
