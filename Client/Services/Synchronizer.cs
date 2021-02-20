@@ -141,7 +141,11 @@ namespace Couple.Client.Services
                     .ToList(),
             };
 
-            await _httpClient.DeleteAsJsonAsync($"api/Changes", idsToDelete);
+            if (idsToDelete.Guids.Any())
+            {
+                await _httpClient.DeleteAsJsonAsync($"api/Changes", idsToDelete);
+            }
+
             var toDos = await _toDoModule.InvokeAsync<List<ToDoModel>>("getAll");
             _toDoStateContainer.ToDos = toDos;
             var events = await _eventModule.InvokeAsync<List<EventModel>>("getAll");
