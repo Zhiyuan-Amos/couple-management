@@ -2,11 +2,7 @@
 @using Couple.Client.Pages.Calendar.Components
 @implements IDisposable
 
-<<<<<<< HEAD
-<CalendarTopBar />
-=======
-@*<CalendarTopBar OnSynchronisationCallback="@RefreshEvents" />
->>>>>>> 3ff24a5... Initialize fullCalendar
+@*<CalendarTopBar />
 <div class="d-flex justify-content-center border-bottom">
     <TelerikCalendar DateChanged="@DateChangedHandler"
                      Value="@Selected"
@@ -30,7 +26,7 @@
     </TelerikListView>
 </div>*@
 
-<div @ref="fullCalendar"></div>
+<div @ref="FullCalendar"></div>
 
 <AddIcon OnClickCallback="@AddEvent" />
 <BottomBar />
