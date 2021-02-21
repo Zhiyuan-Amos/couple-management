@@ -87,6 +87,11 @@
         "scss/_utilities.scss",
         "scss/_variables.scss"
       ]
+    },
+    {
+      "provider": "jsdelivr",
+      "library": "fullcalendar@5.5.1",
+      "destination": "wwwroot/lib/fullcalendar/"
     }
   ]
 }
