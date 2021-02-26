@@ -49,6 +49,17 @@ The application has State Management (using `Blazor-State`) to reduce the number
 
 1. CosmosDB, because it has a free tier available
 
+#### FAQ
+
+Why are we using a Web application rather than an App?
+
+1. A single code base can support both Android & iOS
+1. The same code base can be used to support larger screens if required
+1. End-to-end solution provided in the form of Azure Static Web App
+1. Hosting on Azure Static Web App is free
+
+The main con however, is that there's no native notifications. This can be circumvented by integrating with perhaps a chat app such as Telegram, though it's not optimal.
+
 ### Design Decisions
 
 #### Client
