@@ -26,9 +26,9 @@ namespace Couple.Api
             builder.Services.AddSingleton<IDateTimeService, DateTimeService>();
 
             static DbContextOptionsBuilder dbParams(DbContextOptionsBuilder options) => options.UseCosmos(
-                Environment.GetEnvironmentVariable("AccountEndpoint"),
-                Environment.GetEnvironmentVariable("AccountKey"),
-                Environment.GetEnvironmentVariable("DatabaseName"));
+                Environment.GetEnvironmentVariable("AccountEndpoint")!,
+                Environment.GetEnvironmentVariable("AccountKey")!,
+                Environment.GetEnvironmentVariable("DatabaseName")!);
         }
     }
 }
