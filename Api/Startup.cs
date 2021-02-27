@@ -13,7 +13,7 @@ namespace Couple.Api
     {
         public override void Configure(IFunctionsHostBuilder builder)
         {
-            builder.Services.AddDbContext<ChangeContext>(options => dbParams(options));
+            builder.Services.AddDbContext<ChangeContext>(options => DbParams(options));
 
             if (builder.GetContext().EnvironmentName == "Development")
             {
@@ -25,7 +25,7 @@ namespace Couple.Api
             }
             builder.Services.AddSingleton<IDateTimeService, DateTimeService>();
 
-            static DbContextOptionsBuilder dbParams(DbContextOptionsBuilder options) => options.UseCosmos(
+            static DbContextOptionsBuilder DbParams(DbContextOptionsBuilder options) => options.UseCosmos(
                 Environment.GetEnvironmentVariable("AccountEndpoint")!,
                 Environment.GetEnvironmentVariable("AccountKey")!,
                 Environment.GetEnvironmentVariable("DatabaseName")!);
