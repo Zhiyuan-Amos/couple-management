@@ -1,11 +1,13 @@
-﻿using Couple.Api.Data;
+﻿using Couple.Api;
+using Couple.Api.Data;
 using Couple.Api.Infrastructure;
+using Couple.Api.Profiles;
 using Microsoft.Azure.Functions.Extensions.DependencyInjection;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 
-[assembly: FunctionsStartup(typeof(Couple.Api.Startup))]
+[assembly: FunctionsStartup(typeof(Startup))]
 
 namespace Couple.Api
 {
@@ -14,6 +16,7 @@ namespace Couple.Api
         public override void Configure(IFunctionsHostBuilder builder)
         {
             builder.Services.AddDbContext<ChangeContext>(options => DbParams(options));
+            builder.Services.AddAutoMapper(typeof(ChangeProfile));
 
             if (builder.GetContext().EnvironmentName == "Development")
             {
