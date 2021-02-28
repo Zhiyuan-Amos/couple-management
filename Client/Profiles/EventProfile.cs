@@ -1,7 +1,6 @@
 ﻿using AutoMapper;
 using Couple.Client.Model.Calendar;
 using Couple.Client.Model.ToDo;
-using Couple.Client.Pages.Calendar;
 using Couple.Client.ViewModel.Calendar;
 using Couple.Client.ViewModel.ToDo;
 using Couple.Shared.Model.Event;
@@ -15,10 +14,10 @@ namespace Couple.Client.Profiles
             CreateMap<EventModel, EventDto>();
             CreateMap<ToDoModel, ToDoDto>();
             CreateMap<ToDoViewModel, ToDoDto>();
-            CreateMap<EventModel, UpdateEvent.UpdateEventModel>()
+            CreateMap<EventModel, UpdateEventModel>()
                 .ReverseMap();
-            CreateMap<UpdateEvent.UpdateEventModel, EventDto>();
-            CreateMap<UpdateEvent.UpdateEventModel, DeleteEventDto>();
+            CreateMap<UpdateEventModel, EventDto>();
+            CreateMap<UpdateEventModel, DeleteEventDto>();
         }
     }
 }
