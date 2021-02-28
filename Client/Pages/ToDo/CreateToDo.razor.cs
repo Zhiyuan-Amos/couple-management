@@ -1,9 +1,7 @@
 using Couple.Client.Model.ToDo;
 using Couple.Client.Pages.ToDo.Components;
-using Couple.Client.States.ToDo;
-using Microsoft.AspNetCore.Components;
-using Microsoft.JSInterop;
 using Couple.Shared.Model.ToDo;
+using Microsoft.JSInterop;
 using System;
 using System.Collections.Generic;
 using System.Net.Http.Json;
@@ -46,13 +44,7 @@ namespace Couple.Client.Pages.ToDo
             SelectedCategoryStateContainer.SelectedCategory = ToCreate.Category;
             NavigationManager.NavigateTo("/todo");
 
-            var toCreate = new CreateToDoDto
-            {
-                Id = id,
-                Text = ToCreate.Text,
-                Category = ToCreate.Category,
-                CreatedOn = DateTime.Now,
-            };
+            var toCreate = Mapper.Map<CreateToDoDto>(toPersist);
             await HttpClient.PostAsJsonAsync($"api/ToDos", toCreate);
         }
 

@@ -1,12 +1,13 @@
+using AutoMapper;
+using Couple.Client.Infrastructure;
 using Couple.Client.Model.Calendar;
 using Couple.Client.Model.ToDo;
-using Couple.Client.Infrastructure;
 using Couple.Client.States.Calendar;
 using Couple.Client.States.ToDo;
 using Couple.Client.ViewModel.ToDo;
+using Couple.Shared.Model.Event;
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
-using Couple.Shared.Model.Event;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -29,6 +30,9 @@ namespace Couple.Client.Pages.Calendar
 
         [Inject]
         private EventStateContainer EventStateContainer { get; set; }
+
+        [Inject]
+        private IMapper Mapper { get; set; }
 
         [Inject]
         private IJSRuntime Js { get; set; }
@@ -67,14 +71,7 @@ namespace Couple.Client.Pages.Calendar
                 Title = ToCreate.Title,
                 Start = ToCreate.Start,
                 End = ToCreate.End,
-                ToDos = ToCreate.ToDos
-                    .Select(toDo => new ToDoModel
-                    {
-                        Id = toDo.Id,
-                        Text = toDo.Text,
-                        Category = toDo.Category,
-                        CreatedOn = toDo.CreatedOn
-                    }).ToList(),
+                ToDos = Mapper.Map<List<ToDoModel>>(ToCreate.ToDos),
             };
             await EventModule.InvokeVoidAsync("add", toPersist, added, new List<ToDoModel>());
 
@@ -87,20 +84,7 @@ namespace Couple.Client.Pages.Calendar
 
             var toCreate = new CreateEventDto
             {
-                Event = new EventDto
-                {
-                    Id = id,
-                    Title = ToCreate.Title,
-                    Start = ToCreate.Start,
-                    End = ToCreate.End,
-                    ToDos = ToCreate.ToDos.Select(toDo => new ToDoDto
-                    {
-                        Id = toDo.Id,
-                        Text = toDo.Text,
-                        Category = toDo.Category,
-                        CreatedOn = toDo.CreatedOn,
-                    }).ToList(),
-                },
+                Event = Mapper.Map<EventDto>(toPersist),
                 Added = added,
                 Removed = new(),
             };

@@ -1,3 +1,5 @@
+using AutoMapper;
+using AutoMapper.QueryableExtensions;
 using Couple.Client.Pages.ToDo.Components;
 using Couple.Client.States.ToDo;
 using Couple.Client.ViewModel.ToDo;
@@ -22,6 +24,9 @@ namespace Couple.Client.Pages.ToDo
 
         [Inject]
         private SelectedCategoryStateContainer SelectedCategoryStateContainer { get; set; }
+
+        [Inject]
+        private IMapper Mapper { get; set; }
 
         private AnimatedCategoryListView CategoryListView { get; set; }
 
@@ -49,7 +54,8 @@ namespace Couple.Client.Pages.ToDo
             SelectedCategory = category;
             ToDos = ToDoStateContainer.TryGetToDos(category, out var toDos)
                 ? toDos
-                    .Select(toDo => new ToDoViewModel(toDo.Id, toDo.Text, toDo.Category, toDo.CreatedOn))
+                    .AsQueryable()
+                    .ProjectTo<ToDoViewModel>(Mapper.ConfigurationProvider)
                     .ToList()
                 : new();
 
@@ -63,7 +69,8 @@ namespace Couple.Client.Pages.ToDo
             SelectedCategory = GetCategory();
             ToDos = ToDoStateContainer.TryGetToDos(SelectedCategory, out var toDos)
                 ? toDos
-                    .Select(toDo => new ToDoViewModel(toDo.Id, toDo.Text, toDo.Category, toDo.CreatedOn))
+                    .AsQueryable()
+                    .ProjectTo<ToDoViewModel>(Mapper.ConfigurationProvider)
                     .ToList()
                 : new();
 

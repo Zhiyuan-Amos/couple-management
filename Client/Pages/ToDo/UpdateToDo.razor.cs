@@ -1,9 +1,8 @@
 using Couple.Client.Model.ToDo;
 using Couple.Client.Pages.ToDo.Components;
-using Couple.Client.States.ToDo;
+using Couple.Shared.Model.ToDo;
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
-using Couple.Shared.Model.ToDo;
 using System;
 using System.Collections.Generic;
 using System.Net.Http.Json;
@@ -67,13 +66,7 @@ namespace Couple.Client.Pages.ToDo
             SelectedCategoryStateContainer.SelectedCategory = ToUpdate.Category;
             NavigationManager.NavigateTo("/todo");
 
-            var toUpdate = new UpdateToDoDto
-            {
-                Id = ToUpdate.Id,
-                Text = ToUpdate.Text,
-                Category = ToUpdate.Category,
-                CreatedOn = ToUpdate.CreatedOn,
-            };
+            var toUpdate = Mapper.Map<UpdateToDoDto>(toPersist);
             await HttpClient.PutAsJsonAsync($"api/ToDos", toUpdate);
         }
 

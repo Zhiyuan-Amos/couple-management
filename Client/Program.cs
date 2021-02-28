@@ -1,9 +1,10 @@
 using AzureStaticWebApps.Blazor.Authentication;
 using Couple.Client.Model.Calendar;
 using Couple.Client.Model.ToDo;
+using Couple.Client.Profiles;
+using Couple.Client.Services;
 using Couple.Client.States.Calendar;
 using Couple.Client.States.ToDo;
-using Couple.Client.Services;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.JSInterop;
@@ -28,6 +29,7 @@ namespace Couple.Client
                 .AddSingleton<EventStateContainer>()
                 .AddSingleton<Synchronizer>()
                 .AddStaticWebAppsAuthentication()
+                .AddAutoMapper(typeof(ToDoProfile), typeof(EventProfile))
                 .AddOptions()
                 .AddAuthorizationCore();
 

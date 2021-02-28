@@ -1,11 +1,10 @@
+using AutoMapper;
 using Couple.Client.Infrastructure;
 using Couple.Client.States.Calendar;
 using Couple.Client.ViewModel.Calendar;
-using Couple.Client.ViewModel.ToDo;
 using Microsoft.AspNetCore.Components;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace Couple.Client.Pages.Calendar
 {
@@ -16,6 +15,9 @@ namespace Couple.Client.Pages.Calendar
 
         [Inject]
         private EventStateContainer EventStateContainer { get; set; }
+
+        [Inject]
+        private IMapper Mapper { get; set; }
 
         [Parameter]
         public DateTime Selected { get; set; }
@@ -51,16 +53,7 @@ namespace Couple.Client.Pages.Calendar
         private List<EventViewModel> GetEvents(DateTime dateTime)
         {
             return EventStateContainer.TryGetEvents(dateTime, out var events)
-                ? events
-                    .Select(@event => new EventViewModel(
-                        @event.Id,
-                        @event.Title,
-                        @event.Start,
-                        @event.End,
-                        @event.ToDos
-                            .Select(toDo => new ToDoViewModel(toDo.Id, toDo.Text, toDo.Category, toDo.CreatedOn))
-                            .ToList()))
-                    .ToList()
+                ? Mapper.Map<List<EventViewModel>>(events)
                 : new();
         }
 
