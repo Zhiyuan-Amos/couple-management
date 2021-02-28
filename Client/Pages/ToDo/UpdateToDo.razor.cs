@@ -1,5 +1,6 @@
 using Couple.Client.Model.ToDo;
 using Couple.Client.Pages.ToDo.Components;
+using Couple.Client.ViewModel.ToDo;
 using Couple.Shared.Model.ToDo;
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
@@ -87,13 +88,5 @@ namespace Couple.Client.Pages.ToDo
         }
 
         protected override bool IsEnabled => !string.IsNullOrWhiteSpace(ToUpdate?.Text) && !string.IsNullOrWhiteSpace(ToUpdate?.Category);
-
-        protected class UpdateToDoViewModel
-        {
-            public Guid Id { get; set; }
-            public string Text { get; set; }
-            public string Category { get; set; }
-            public DateTime CreatedOn { get; set; }
-        }
     }
 }

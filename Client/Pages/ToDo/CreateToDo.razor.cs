@@ -1,5 +1,6 @@
 using Couple.Client.Model.ToDo;
 using Couple.Client.Pages.ToDo.Components;
+using Couple.Client.ViewModel.ToDo;
 using Couple.Shared.Model.ToDo;
 using Microsoft.JSInterop;
 using System;
@@ -65,11 +66,5 @@ namespace Couple.Client.Pages.ToDo
         }
 
         protected override bool IsEnabled => !string.IsNullOrWhiteSpace(ToCreate?.Text) && !string.IsNullOrWhiteSpace(ToCreate?.Category);
-
-        protected class CreateToDoViewModel
-        {
-            public string Text { get; set; }
-            public string Category { get; set; }
-        }
     }
 }
