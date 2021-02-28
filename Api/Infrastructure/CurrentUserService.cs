@@ -23,7 +23,7 @@ namespace Couple.Api.Infrastructure
         public string PartnerId => _claimsPrincipal.FindFirstValue(ClaimTypePartnerId);
 
         // from https://docs.microsoft.com/en-us/azure/static-web-apps/user-information?tabs=csharp#api-functions
-        public static class StaticWebAppsAuth
+        private static class StaticWebAppsAuth
         {
             private class ClientPrincipal
             {

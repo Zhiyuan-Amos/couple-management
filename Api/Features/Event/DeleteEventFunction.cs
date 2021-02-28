@@ -1,14 +1,14 @@
 using Couple.Api.Data;
 using Couple.Api.Infrastructure;
 using Couple.Api.Validators;
+using Couple.Shared.Model.Change;
+using Couple.Shared.Model.Event;
 using FluentValidation;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.Extensions.Logging;
-using Couple.Shared.Model.Change;
-using Couple.Shared.Model.Event;
 using System;
 using System.Text.Json;
 using System.Threading.Tasks;
@@ -39,7 +39,7 @@ namespace Couple.Api.Features.Event
 
             if (!form.IsValid)
             {
-                log.LogWarning(form.ErrorMessage());
+                log.LogWarning("{ErrorMessage}", form.ErrorMessage());
                 return form.ToBadRequest();
             }
 
@@ -68,7 +68,7 @@ namespace Couple.Api.Features.Event
             return new OkResult();
         }
 
-        public class Validator : AbstractValidator<DeleteEventDto>
+        private class Validator : AbstractValidator<DeleteEventDto>
         {
             public Validator()
             {

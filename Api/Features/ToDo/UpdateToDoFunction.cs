@@ -1,13 +1,13 @@
 using Couple.Api.Data;
 using Couple.Api.Infrastructure;
+using Couple.Shared.Model.Change;
+using Couple.Shared.Model.ToDo;
 using FluentValidation;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.Extensions.Logging;
-using Couple.Shared.Model.Change;
-using Couple.Shared.Model.ToDo;
 using System;
 using System.Threading.Tasks;
 
@@ -37,7 +37,7 @@ namespace Couple.Api.Features.ToDo
 
             if (!form.IsValid)
             {
-                log.LogWarning(form.ErrorMessage());
+                log.LogWarning("{ErrorMessage}", form.ErrorMessage());
                 return form.ToBadRequest();
             }
 
@@ -64,7 +64,7 @@ namespace Couple.Api.Features.ToDo
             return new OkResult();
         }
 
-        public class Validator : AbstractValidator<UpdateToDoDto>
+        private class Validator : AbstractValidator<UpdateToDoDto>
         {
             public Validator()
             {

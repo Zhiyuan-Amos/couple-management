@@ -1,11 +1,11 @@
 using Couple.Api.Data;
 using Couple.Api.Infrastructure;
+using Couple.Shared.Model.Change;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.Extensions.Logging;
-using Couple.Shared.Model.Change;
 using System;
 using System.Text.Json;
 using System.Threading.Tasks;

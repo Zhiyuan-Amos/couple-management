@@ -1,5 +1,6 @@
 using Couple.Api.Data;
 using Couple.Api.Infrastructure;
+using Couple.Shared.Model.Change;
 using FluentValidation;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -7,7 +8,6 @@ using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
-using Couple.Shared.Model.Change;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -34,7 +34,7 @@ namespace Couple.Api.Features.Change
 
             if (!form.IsValid)
             {
-                log.LogWarning(form.ErrorMessage());
+                log.LogWarning("{ErrorMessage}", form.ErrorMessage());
                 return form.ToBadRequest();
             }
 

@@ -13,7 +13,7 @@ namespace Couple.Api.Infrastructure
     // https://www.tomfaltesek.com/azure-functions-input-validation/
     public static class HttpRequestExtensions
     {
-        private static readonly JsonSerializerOptions options = new JsonSerializerOptions
+        private static readonly JsonSerializerOptions Options = new JsonSerializerOptions
         {
             PropertyNameCaseInsensitive = true,
         };
@@ -22,17 +22,17 @@ namespace Couple.Api.Infrastructure
         /// Returns the deserialized request body with validation information.
         /// </summary>
         /// <typeparam name="T">Type used for deserialization of the request body.</typeparam>
-        /// <typeparam name="V">
+        /// <typeparam name="TV">
         /// Validator used to validate the deserialized request body.
         /// </typeparam>
         /// <param name="request"></param>
         /// <returns></returns>
-        public static async Task<ValidatableRequest<T>> GetJsonBody<T, V>(this HttpRequest request)
-            where V : AbstractValidator<T>, new()
+        public static async Task<ValidatableRequest<T>> GetJsonBody<T, TV>(this HttpRequest request)
+            where TV : AbstractValidator<T>, new()
         {
             var requestBody = await request.ReadAsStringAsync();
-            var requestObject = JsonSerializer.Deserialize<T>(requestBody, options);
-            var validator = new V();
+            var requestObject = JsonSerializer.Deserialize<T>(requestBody, Options);
+            var validator = new TV();
             var validationResult = validator.Validate(requestObject);
 
             if (!validationResult.IsValid)
