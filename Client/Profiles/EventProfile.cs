@@ -14,10 +14,10 @@ namespace Couple.Client.Profiles
             CreateMap<EventModel, EventDto>();
             CreateMap<ToDoModel, ToDoDto>();
             CreateMap<ToDoViewModel, ToDoDto>();
-            CreateMap<EventModel, UpdateEventModel>()
+            CreateMap<EventModel, UpdateEventViewModel>()
                 .ReverseMap();
-            CreateMap<UpdateEventModel, EventDto>();
-            CreateMap<UpdateEventModel, DeleteEventDto>();
+            CreateMap<UpdateEventViewModel, EventDto>();
+            CreateMap<UpdateEventViewModel, DeleteEventDto>();
         }
     }
 }

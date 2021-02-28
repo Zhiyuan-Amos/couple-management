@@ -41,7 +41,7 @@ namespace Couple.Client.Pages.Calendar
         [Parameter]
         public Guid EventId { get; set; }
 
-        protected UpdateEventModel ToUpdate { get; set; }
+        protected UpdateEventViewModel ToUpdate { get; set; }
 
         protected List<ToDoViewModel> Original { get; set; }
         protected List<ToDoViewModel> Added { get; set; }
@@ -62,7 +62,7 @@ namespace Couple.Client.Pages.Calendar
             Added = new();
             Removed = new();
 
-            ToUpdate = Mapper.Map<UpdateEventModel>(@event);
+            ToUpdate = Mapper.Map<UpdateEventViewModel>(@event);
 
             ToDoModule = await Js.InvokeAsync<IJSObjectReference>("import", "./ToDo.razor.js");
             EventModule = await Js.InvokeAsync<IJSObjectReference>("import", "./Event.razor.js");

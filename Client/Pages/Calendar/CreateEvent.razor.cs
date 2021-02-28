@@ -38,7 +38,7 @@ namespace Couple.Client.Pages.Calendar
         [Inject]
         private IJSRuntime Js { get; set; }
 
-        protected CreateEventModel ToCreate { get; set; }
+        protected CreateEventViewModel ToCreate { get; set; }
 
         protected List<ToDoViewModel> Added { get; set; }
 
