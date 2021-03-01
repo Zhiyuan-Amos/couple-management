@@ -95,9 +95,7 @@ namespace Couple.Client.Pages.Calendar
 
         protected async Task Delete()
         {
-            await _eventModule.InvokeVoidAsync("remove",
-                ToUpdate.Id,
-                Mapper.Map<List<ToDoModel>>(ToUpdate.ToDos));
+            await _eventModule.InvokeVoidAsync("remove", ToUpdate.Id);
             var events = await _eventModule.InvokeAsync<List<EventModel>>("getAll");
             EventStateContainer.SetEvents(events);
 

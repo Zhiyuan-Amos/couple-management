@@ -1,6 +1,5 @@
 using Couple.Api.Data;
 using Couple.Api.Infrastructure;
-using Couple.Api.Validators;
 using Couple.Shared.Model.Change;
 using Couple.Shared.Model.Event;
 using FluentValidation;
@@ -73,8 +72,6 @@ namespace Couple.Api.Features.Event
             public Validator()
             {
                 RuleFor(dto => dto.Id).NotEmpty();
-                RuleFor(dto => dto.Removed).NotNull();
-                RuleForEach(dto => dto.Removed).SetValidator(new ToDoDtoValidator());
             }
         }
     }

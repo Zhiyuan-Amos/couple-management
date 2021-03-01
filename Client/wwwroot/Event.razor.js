@@ -32,15 +32,7 @@ export async function update(event, added, removed) {
     ]);
 }
 
-export async function remove(id, removed) {
-    const tx = (await db).transaction(['event', 'todo'], 'readwrite');
-    const eventStore = tx.objectStore('event');
-    const toDoStore = tx.objectStore('todo');
-
-    await Promise.all([
-        eventStore.delete(id),
-        removed.map(toDo => toDoStore.put(toDo)),
-        tx.done,
-    ]);
+export async function remove(id) {
+    (await db).transaction("event", 'readwrite').store.delete(id);
 }
 
