@@ -18,7 +18,7 @@ namespace Couple.Client.Pages.ToDo
 
         protected AnimatedCategoryListViewWithAdd AnimatedCategorySelectionListView { get; set; }
 
-        protected UpdateToDoViewModel ToUpdate { get; set; } = new();
+        protected UpdateToDoViewModel ToUpdate { get; set; }
 
         private IJSObjectReference _module;
 
