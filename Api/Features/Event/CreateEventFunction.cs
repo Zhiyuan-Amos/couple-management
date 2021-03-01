@@ -73,8 +73,6 @@ namespace Couple.Api.Features.Event
                 RuleFor(dto => dto.Event).SetValidator(new EventDtoValidator());
                 RuleFor(dto => dto.Added).NotNull();
                 RuleForEach(dto => dto.Added).NotEmpty();
-                RuleFor(dto => dto.Removed).NotNull();
-                RuleForEach(dto => dto.Removed).SetValidator(new ToDoDtoValidator());
             }
         }
     }

@@ -67,7 +67,8 @@ namespace Couple.Client.Services
                     case DataType.Calendar when item.Function == Function.Create:
                     {
                         var toCreate = JsonSerializer.Deserialize<CreateEventDto>(item.Content, _options);
-                        await _eventModule.InvokeVoidAsync("add", new EventModel
+                        await _eventModule.InvokeVoidAsync("add",
+                            new EventModel
                             {
                                 Id = toCreate.Event.Id,
                                 Title = toCreate.Event.Title,
@@ -82,14 +83,7 @@ namespace Couple.Client.Services
                                         CreatedOn = toDo.CreatedOn
                                     }).ToList(),
                             },
-                            toCreate.Added,
-                            toCreate.Removed.Select(toDo => new ToDoModel
-                            {
-                                Id = toDo.Id,
-                                Text = toDo.Text,
-                                Category = toDo.Category,
-                                CreatedOn = toDo.CreatedOn,
-                            }));
+                            toCreate.Added);
                         break;
                     }
                     case DataType.Calendar when item.Function == Function.Update:

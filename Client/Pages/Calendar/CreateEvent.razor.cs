@@ -74,7 +74,7 @@ namespace Couple.Client.Pages.Calendar
                 End = ToCreate.End,
                 ToDos = Mapper.Map<List<ToDoModel>>(ToCreate.ToDos),
             };
-            await _eventModule.InvokeVoidAsync("add", toPersist, added, new List<ToDoModel>());
+            await _eventModule.InvokeVoidAsync("add", toPersist, added);
 
             var toDos = await _toDoModule.InvokeAsync<List<ToDoModel>>("getAll");
             ToDoStateContainer.ToDos = toDos;
@@ -87,7 +87,6 @@ namespace Couple.Client.Pages.Calendar
             {
                 Event = Mapper.Map<EventDto>(toPersist),
                 Added = added,
-                Removed = new(),
             };
             await HttpClient.PostAsJsonAsync($"api/Events", toCreate);
         }

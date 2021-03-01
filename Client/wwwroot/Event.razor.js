@@ -7,7 +7,7 @@
 // Pro: Impossible for callers of the method to pass the wrong set of model.
 // Con: Additional code to generate set difference and additional database call.
 // I've used this implementation for code simplicity.
-export async function add(event, added, removed) {
+export async function add(event, added) {
     const tx = (await db).transaction(['event', 'todo'], 'readwrite');
     const eventStore = tx.objectStore('event');
     const toDoStore = tx.objectStore('todo');
@@ -15,7 +15,6 @@ export async function add(event, added, removed) {
     await Promise.all([
         eventStore.add(event),
         added.map(id => toDoStore.delete(id)),
-        removed.map(toDo => toDoStore.add(toDo)),
         tx.done,
     ]);
 }
