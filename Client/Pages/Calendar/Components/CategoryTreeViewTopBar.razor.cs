@@ -5,9 +5,9 @@ namespace Couple.Client.Pages.Calendar.Components
     public partial class CategoryTreeViewTopBar
     {
         [Parameter]
-        public EventCallback OnCrossCallback { get; set; }
+        public EventCallback OnCrossCallback { get; init; }
 
         [Parameter]
-        public EventCallback OnSaveCallback { get; set; }
+        public EventCallback OnSaveCallback { get; init; }
     }
 }

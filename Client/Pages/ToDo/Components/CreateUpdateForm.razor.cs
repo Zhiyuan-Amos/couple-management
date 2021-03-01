@@ -8,12 +8,12 @@ namespace Couple.Client.Pages.ToDo.Components
         public string Text { get; set; }
 
         [Parameter]
-        public EventCallback<string> TextChanged { get; set; }
+        public EventCallback<string> TextChanged { get; init; }
 
         [Parameter]
         public string Category { get; set; }
 
         [Parameter]
-        public EventCallback OnClickCallback { get; set; }
+        public EventCallback OnClickCallback { get; init; }
     }
 }

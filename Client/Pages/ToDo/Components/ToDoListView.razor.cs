@@ -7,7 +7,7 @@ namespace Couple.Client.Pages.ToDo.Components
     public partial class ToDoListView
     {
         [Inject]
-        protected NavigationManager NavigationManager { get; set; }
+        protected NavigationManager NavigationManager { get; init; }
 
         [Parameter]
         public List<ToDoViewModel> ToDos { get; set; }

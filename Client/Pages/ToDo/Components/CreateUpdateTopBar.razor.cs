@@ -5,10 +5,10 @@ namespace Couple.Client.Pages.ToDo.Components
     public partial class CreateUpdateTopBar
     {
         [Inject]
-        protected NavigationManager NavigationManager { get; set; }
+        protected NavigationManager NavigationManager { get; init; }
 
         [Parameter]
-        public EventCallback OnClickCallback { get; set; }
+        public EventCallback OnClickCallback { get; init; }
 
         [Parameter]
         public string Title { get; set; }

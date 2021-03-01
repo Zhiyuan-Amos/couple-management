@@ -14,19 +14,19 @@ namespace Couple.Client.Pages.ToDo
     public partial class ToDo
     {
         [Inject]
-        protected NavigationManager NavigationManager { get; set; }
+        private NavigationManager NavigationManager { get; init; }
 
         [Inject]
-        private IJSRuntime Js { get; set; }
+        private IJSRuntime Js { get; init; }
 
         [Inject]
-        private ToDoStateContainer ToDoStateContainer { get; set; }
+        private ToDoStateContainer ToDoStateContainer { get; init; }
 
         [Inject]
-        private SelectedCategoryStateContainer SelectedCategoryStateContainer { get; set; }
+        private SelectedCategoryStateContainer SelectedCategoryStateContainer { get; init; }
 
         [Inject]
-        private IMapper Mapper { get; set; }
+        private IMapper Mapper { get; init; }
 
         private AnimatedCategoryListView CategoryListView { get; set; }
 
@@ -78,13 +78,15 @@ namespace Couple.Client.Pages.ToDo
             {
                 var existingCategory = SelectedCategoryStateContainer.SelectedCategory;
                 var hasToDos = ToDoStateContainer.TryGetToDos(existingCategory, out _);
-                if (!hasToDos)
+
+                if (hasToDos)
                 {
-                    var newCategory = ToDoStateContainer.Categories.Any() ? ToDoStateContainer.Categories[0] : "";
-                    SelectedCategoryStateContainer.SelectedCategory = newCategory;
-                    return newCategory;
+                    return existingCategory;
                 }
-                return existingCategory;
+
+                var newCategory = ToDoStateContainer.Categories.Any() ? ToDoStateContainer.Categories[0] : "";
+                SelectedCategoryStateContainer.SelectedCategory = newCategory;
+                return newCategory;
             }
         }
     }

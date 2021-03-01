@@ -2,7 +2,7 @@
 <textarea style="outline: 0;"
           class="form-control-lg w-100 rounded-0 border-top-0 border-end-0 border-start-0 border-bottom"
           placeholder="To Do"
-          @oninput="@((e) => TextChanged.InvokeAsync(e.Value.ToString()))">
+          @oninput="@((e) => TextChanged.InvokeAsync(e.Value!.ToString()))">
     @Text
 </textarea>
 <div class="d-flex align-items-center px-3 py-1 border-bottom">

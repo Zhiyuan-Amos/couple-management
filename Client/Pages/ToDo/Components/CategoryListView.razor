@@ -1,5 +1,5 @@
 <div class="h-100">
-    <TelerikListView Data=@Categories>
+    <TelerikListView Data="@Categories">
         <Template>
             <div class="px-3 py-1 border-bottom d-flex align-items-center justify-content-between"
                  @onclick="@(_ => OnClickCallback.InvokeAsync(context))">

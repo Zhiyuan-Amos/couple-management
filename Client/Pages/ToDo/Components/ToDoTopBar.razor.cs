@@ -8,12 +8,12 @@ namespace Couple.Client.Pages.ToDo.Components
         public string SelectedCategory { get; set; }
 
         [Parameter]
-        public EventCallback OnClickCallback { get; set; }
+        public EventCallback OnClickCallback { get; init; }
 
         [Parameter]
         public bool IsDropDown { get; set; }
 
         [Parameter]
-        public EventCallback OnSynchronisationCallback { get; set; }
+        public EventCallback OnSynchronisationCallback { get; init; }
     }
 }

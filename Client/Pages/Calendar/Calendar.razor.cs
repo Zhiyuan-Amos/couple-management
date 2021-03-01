@@ -11,13 +11,13 @@ namespace Couple.Client.Pages.Calendar
     public partial class Calendar
     {
         [Inject]
-        protected NavigationManager NavigationManager { get; set; }
+        private NavigationManager NavigationManager { get; init; }
 
         [Inject]
-        private EventStateContainer EventStateContainer { get; set; }
+        private EventStateContainer EventStateContainer { get; init; }
 
         [Inject]
-        private IMapper Mapper { get; set; }
+        private IMapper Mapper { get; init; }
 
         [Parameter]
         public DateTime Selected { get; set; }

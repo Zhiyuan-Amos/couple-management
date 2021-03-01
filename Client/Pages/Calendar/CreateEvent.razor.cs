@@ -21,29 +21,29 @@ namespace Couple.Client.Pages.Calendar
     public partial class CreateEvent
     {
         [Inject]
-        protected HttpClient HttpClient { get; set; }
+        private HttpClient HttpClient { get; init; }
 
         [Inject]
-        protected NavigationManager NavigationManager { get; set; }
+        private NavigationManager NavigationManager { get; init; }
 
         [Inject]
-        private ToDoStateContainer ToDoStateContainer { get; set; }
+        private ToDoStateContainer ToDoStateContainer { get; init; }
 
         [Inject]
-        private EventStateContainer EventStateContainer { get; set; }
+        private EventStateContainer EventStateContainer { get; init; }
 
         [Inject]
-        private IMapper Mapper { get; set; }
+        private IMapper Mapper { get; init; }
 
         [Inject]
-        private IJSRuntime Js { get; set; }
+        private IJSRuntime Js { get; init; }
 
         protected CreateEventViewModel ToCreate { get; set; }
 
         protected List<ToDoViewModel> Added { get; set; }
 
-        private IJSObjectReference ToDoModule;
-        private IJSObjectReference EventModule;
+        private IJSObjectReference _toDoModule;
+        private IJSObjectReference _eventModule;
 
         protected override async Task OnInitializedAsync()
         {
@@ -56,8 +56,8 @@ namespace Couple.Client.Pages.Calendar
                 ToDos = new(),
             };
 
-            ToDoModule = await Js.InvokeAsync<IJSObjectReference>("import", "./ToDo.razor.js");
-            EventModule = await Js.InvokeAsync<IJSObjectReference>("import", "./Event.razor.js");
+            _toDoModule = await Js.InvokeAsync<IJSObjectReference>("import", "./ToDo.razor.js");
+            _eventModule = await Js.InvokeAsync<IJSObjectReference>("import", "./Event.razor.js");
         }
 
         protected async Task Save()
@@ -74,11 +74,11 @@ namespace Couple.Client.Pages.Calendar
                 End = ToCreate.End,
                 ToDos = Mapper.Map<List<ToDoModel>>(ToCreate.ToDos),
             };
-            await EventModule.InvokeVoidAsync("add", toPersist, added, new List<ToDoModel>());
+            await _eventModule.InvokeVoidAsync("add", toPersist, added, new List<ToDoModel>());
 
-            var toDos = await ToDoModule.InvokeAsync<List<ToDoModel>>("getAll");
+            var toDos = await _toDoModule.InvokeAsync<List<ToDoModel>>("getAll");
             ToDoStateContainer.ToDos = toDos;
-            var events = await EventModule.InvokeAsync<List<EventModel>>("getAll");
+            var events = await _eventModule.InvokeAsync<List<EventModel>>("getAll");
             EventStateContainer.SetEvents(events);
 
             NavigationManager.NavigateTo($"/calendar/{ToCreate.Start.ToCalendarUrl()}");

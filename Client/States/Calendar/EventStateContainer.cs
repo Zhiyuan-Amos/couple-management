@@ -10,31 +10,19 @@ namespace Couple.Client.States.Calendar
         private Dictionary<DateTime, List<EventModel>> DateToEvents { get; set; }
 
         public bool TryGetEvents(DateTime dateTime, out List<EventModel> events)
-        {
-            if (!DateToEvents.TryGetValue(dateTime, out events))
-            {
-                return false;
-            }
-
-            return true;
-        }
+            => DateToEvents.TryGetValue(dateTime, out events);
 
         public bool TryGetEvent(Guid id, out EventModel @event)
         {
             @event = DateToEvents.Values
                 .SelectMany(events => events)
                 .ToList()
-                .FirstOrDefault(@event => @event.Id == id);
+                .FirstOrDefault(innerEvent => innerEvent.Id == id);
 
-            if (@event == null)
-            {
-                return false;
-            }
-
-            return true;
+            return @event != null;
         }
 
-        public void SetEvents(List<EventModel> events)
+        public void SetEvents(IEnumerable<EventModel> events)
         {
             DateToEvents = events
                 .GroupBy(@event => @event.Start.Date)

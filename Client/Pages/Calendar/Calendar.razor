@@ -10,7 +10,7 @@
                      SelectionMode="@CalendarSelectionMode.Single" />
 </div>
 <div>
-    <TelerikListView Data=@Events>
+    <TelerikListView Data="@Events">
         <Template>
             <div class="px-3 py-2 border-bottom"
                  @onclick="@(_ => EditEvent(context))">

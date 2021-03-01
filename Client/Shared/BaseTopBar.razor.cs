@@ -7,13 +7,13 @@ namespace Couple.Client.Shared
     public partial class BaseTopBar
     {
         [Parameter]
-        public RenderFragment Content { get; set; }
+        public RenderFragment Content { get; init; }
 
         [Parameter]
-        public EventCallback OnSynchronisationCallback { get; set; }
+        public EventCallback OnSynchronisationCallback { get; init; }
 
         [Inject]
-        public Synchronizer Synchronizer { get; set; }
+        private Synchronizer Synchronizer { get; init; }
 
         protected async Task Synchronize()
         {

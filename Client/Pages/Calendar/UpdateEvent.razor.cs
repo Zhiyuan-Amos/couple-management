@@ -21,22 +21,22 @@ namespace Couple.Client.Pages.Calendar
     public partial class UpdateEvent
     {
         [Inject]
-        protected HttpClient HttpClient { get; set; }
+        private HttpClient HttpClient { get; init; }
 
         [Inject]
-        protected NavigationManager NavigationManager { get; set; }
+        private NavigationManager NavigationManager { get; init; }
 
         [Inject]
-        private ToDoStateContainer ToDoStateContainer { get; set; }
+        private ToDoStateContainer ToDoStateContainer { get; init; }
 
         [Inject]
-        private EventStateContainer EventStateContainer { get; set; }
+        private EventStateContainer EventStateContainer { get; init; }
 
         [Inject]
-        private IMapper Mapper { get; set; }
+        private IMapper Mapper { get; init; }
 
         [Inject]
-        private IJSRuntime Js { get; set; }
+        private IJSRuntime Js { get; init; }
 
         [Parameter]
         public Guid EventId { get; set; }
@@ -47,8 +47,8 @@ namespace Couple.Client.Pages.Calendar
         protected List<ToDoViewModel> Added { get; set; }
         protected List<ToDoViewModel> Removed { get; set; }
 
-        private IJSObjectReference ToDoModule;
-        private IJSObjectReference EventModule;
+        private IJSObjectReference _toDoModule;
+        private IJSObjectReference _eventModule;
 
         protected override async Task OnInitializedAsync()
         {
@@ -64,22 +64,22 @@ namespace Couple.Client.Pages.Calendar
 
             ToUpdate = Mapper.Map<UpdateEventViewModel>(@event);
 
-            ToDoModule = await Js.InvokeAsync<IJSObjectReference>("import", "./ToDo.razor.js");
-            EventModule = await Js.InvokeAsync<IJSObjectReference>("import", "./Event.razor.js");
+            _toDoModule = await Js.InvokeAsync<IJSObjectReference>("import", "./ToDo.razor.js");
+            _eventModule = await Js.InvokeAsync<IJSObjectReference>("import", "./Event.razor.js");
         }
 
         protected async Task Save()
         {
             var added = Added.Select(toDo => toDo.Id).ToList();
             var toPersist = Mapper.Map<EventModel>(ToUpdate);
-            await EventModule.InvokeVoidAsync("update",
+            await _eventModule.InvokeVoidAsync("update",
                 toPersist,
                 added,
                 Mapper.Map<List<ToDoModel>>(Removed));
 
-            var toDos = await ToDoModule.InvokeAsync<List<ToDoModel>>("getAll");
+            var toDos = await _toDoModule.InvokeAsync<List<ToDoModel>>("getAll");
             ToDoStateContainer.ToDos = toDos;
-            var events = await EventModule.InvokeAsync<List<EventModel>>("getAll");
+            var events = await _eventModule.InvokeAsync<List<EventModel>>("getAll");
             EventStateContainer.SetEvents(events);
 
             NavigationManager.NavigateTo($"/calendar/{ToUpdate.Start.ToCalendarUrl()}");
@@ -95,10 +95,10 @@ namespace Couple.Client.Pages.Calendar
 
         protected async Task Delete()
         {
-            await EventModule.InvokeVoidAsync("remove",
+            await _eventModule.InvokeVoidAsync("remove",
                 ToUpdate.Id,
                 Mapper.Map<List<ToDoModel>>(ToUpdate.ToDos));
-            var events = await EventModule.InvokeAsync<List<EventModel>>("getAll");
+            var events = await _eventModule.InvokeAsync<List<EventModel>>("getAll");
             EventStateContainer.SetEvents(events);
 
             NavigationManager.NavigateTo($"/calendar/{ToUpdate.Start.ToCalendarUrl()}");

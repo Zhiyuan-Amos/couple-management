@@ -10,7 +10,7 @@ namespace Couple.Client.ViewModel.Calendar
         public string Title { get; }
         public DateTime Start { get; }
         public DateTime End { get; }
-        public List<ToDoViewModel> ToDos { get; set; }
+        public List<ToDoViewModel> ToDos { get; }
 
         public EventViewModel(Guid id, string title, DateTime start, DateTime end, List<ToDoViewModel> toDos)
             => (Id, Title, Start, End, ToDos) = (id, title, start, end, toDos);

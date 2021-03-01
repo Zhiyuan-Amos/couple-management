@@ -2,7 +2,7 @@
 <input class="form-control form-control-lg rounded-0 border-top-0 border-end-0 border-start-0"
        placeholder="Title"
        value="@Title"
-       @oninput="@((e) => TitleChanged.InvokeAsync(e.Value.ToString()))">
+       @oninput="@(e => TitleChanged.InvokeAsync(e.Value!.ToString()))">
 <div class="d-flex align-items-center justify-content-between px-3 py-1 border-bottom">
     <label class="col-form-label user-select-none">
         Start Date

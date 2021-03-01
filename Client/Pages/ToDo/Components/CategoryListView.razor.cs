@@ -7,21 +7,19 @@ namespace Couple.Client.Pages.ToDo.Components
     public partial class CategoryListView
     {
         [Inject]
-        private ToDoStateContainer ToDoStateContainer { get; set; }
+        private ToDoStateContainer ToDoStateContainer { get; init; }
 
         [Inject]
-        private SelectedCategoryStateContainer SelectedCategoryStateContainer { get; set; }
+        private SelectedCategoryStateContainer SelectedCategoryStateContainer { get; init; }
 
         [Parameter]
-        public EventCallback<string> OnClickCallback { get; set; }
+        public EventCallback<string> OnClickCallback { get; init; }
 
         protected List<string> Categories { get; set; }
-        protected string SelectedCategory { get; set; }
 
         protected override void OnInitialized()
         {
             Categories = ToDoStateContainer.Categories;
-            SelectedCategory = SelectedCategoryStateContainer.SelectedCategory;
         }
     }
 }

@@ -26,7 +26,7 @@ namespace Couple.Client.States.ToDo
             }
         }
 
-        public Dictionary<string, List<ToDoModel>> CategoryToToDos
+        private Dictionary<string, List<ToDoModel>> CategoryToToDos
         {
             get
             {
@@ -37,7 +37,7 @@ namespace Couple.Client.States.ToDo
                 }
                 return toReturn;
             }
-            private set
+            set
             {
                 _categoryToToDos = value;
                 Categories = value

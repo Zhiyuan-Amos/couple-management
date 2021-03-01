@@ -23,7 +23,7 @@ namespace Couple.Client
             builder.RootComponents.Add<App>("#app");
 
             builder.Services.AddTelerikBlazor()
-                .AddTransient(sp => new HttpClient { BaseAddress = new Uri(builder.Configuration["API_Prefix"] ?? builder.HostEnvironment.BaseAddress) })
+                .AddTransient(_ => new HttpClient { BaseAddress = new Uri(builder.Configuration["API_Prefix"] ?? builder.HostEnvironment.BaseAddress) })
                 .AddSingleton<ToDoStateContainer>()
                 .AddSingleton<SelectedCategoryStateContainer>()
                 .AddSingleton<EventStateContainer>()

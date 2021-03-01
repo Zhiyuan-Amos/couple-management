@@ -26,7 +26,7 @@ namespace Couple.Client.Services
         private IJSObjectReference _toDoModule;
         private IJSObjectReference _eventModule;
 
-        private readonly JsonSerializerOptions options = new() { PropertyNameCaseInsensitive = true };
+        private readonly JsonSerializerOptions _options = new() { PropertyNameCaseInsensitive = true };
 
         // See https://blog.stephencleary.com/2013/01/async-oop-2-constructors.html
         public Synchronizer(IJSRuntime js,
@@ -40,7 +40,7 @@ namespace Couple.Client.Services
             Initialization = InitializeAsync(js);
         }
 
-        public Task Initialization { get; private set; }
+        public Task Initialization { get; }
 
         private async Task InitializeAsync(IJSRuntime js)
         {
@@ -53,84 +53,89 @@ namespace Couple.Client.Services
             var toSynchronize = await _httpClient.GetFromJsonAsync<List<ChangeDto>>("api/Synchronize");
             foreach (var item in toSynchronize)
             {
-                if (item.DataType == DataType.ToDo && item.Function == Function.Create)
+                switch (item.DataType)
                 {
-                    await _toDoModule.InvokeVoidAsync("add", JsonSerializer.Deserialize<ToDoModel>(item.Content, options));
-                }
-                else if (item.DataType == DataType.ToDo && item.Function == Function.Update)
-                {
-                    await _toDoModule.InvokeVoidAsync("update", JsonSerializer.Deserialize<ToDoModel>(item.Content, options));
-                }
-                else if (item.DataType == DataType.ToDo && item.Function == Function.Delete)
-                {
-                    await _toDoModule.InvokeVoidAsync("remove", JsonSerializer.Deserialize<Guid>(item.Content, options));
-                }
-                else if (item.DataType == DataType.Calendar && item.Function == Function.Create)
-                {
-                    var toCreate = JsonSerializer.Deserialize<CreateEventDto>(item.Content, options);
-                    await _eventModule.InvokeVoidAsync("add", new EventModel
+                    case DataType.ToDo when item.Function == Function.Create:
+                        await _toDoModule.InvokeVoidAsync("add", JsonSerializer.Deserialize<ToDoModel>(item.Content, _options));
+                        break;
+                    case DataType.ToDo when item.Function == Function.Update:
+                        await _toDoModule.InvokeVoidAsync("update", JsonSerializer.Deserialize<ToDoModel>(item.Content, _options));
+                        break;
+                    case DataType.ToDo when item.Function == Function.Delete:
+                        await _toDoModule.InvokeVoidAsync("remove", JsonSerializer.Deserialize<Guid>(item.Content, _options));
+                        break;
+                    case DataType.Calendar when item.Function == Function.Create:
                     {
-                        Id = toCreate.Event.Id,
-                        Title = toCreate.Event.Title,
-                        Start = toCreate.Event.Start,
-                        End = toCreate.Event.End,
-                        ToDos = toCreate.Event.ToDos
-                        .Select(toDo => new ToDoModel
-                        {
-                            Id = toDo.Id,
-                            Text = toDo.Text,
-                            Category = toDo.Category,
-                            CreatedOn = toDo.CreatedOn
-                        }).ToList(),
-                    },
-                    toCreate.Added,
-                    toCreate.Removed.Select(toDo => new ToDoModel
+                        var toCreate = JsonSerializer.Deserialize<CreateEventDto>(item.Content, _options);
+                        await _eventModule.InvokeVoidAsync("add", new EventModel
+                            {
+                                Id = toCreate.Event.Id,
+                                Title = toCreate.Event.Title,
+                                Start = toCreate.Event.Start,
+                                End = toCreate.Event.End,
+                                ToDos = toCreate.Event.ToDos
+                                    .Select(toDo => new ToDoModel
+                                    {
+                                        Id = toDo.Id,
+                                        Text = toDo.Text,
+                                        Category = toDo.Category,
+                                        CreatedOn = toDo.CreatedOn
+                                    }).ToList(),
+                            },
+                            toCreate.Added,
+                            toCreate.Removed.Select(toDo => new ToDoModel
+                            {
+                                Id = toDo.Id,
+                                Text = toDo.Text,
+                                Category = toDo.Category,
+                                CreatedOn = toDo.CreatedOn,
+                            }));
+                        break;
+                    }
+                    case DataType.Calendar when item.Function == Function.Update:
                     {
-                        Id = toDo.Id,
-                        Text = toDo.Text,
-                        Category = toDo.Category,
-                        CreatedOn = toDo.CreatedOn,
-                    }));
-                }
-                else if (item.DataType == DataType.Calendar && item.Function == Function.Update)
-                {
-                    var toUpdate = JsonSerializer.Deserialize<UpdateEventDto>(item.Content, options);
-                    await _eventModule.InvokeVoidAsync("update", new EventModel
+                        var toUpdate = JsonSerializer.Deserialize<UpdateEventDto>(item.Content, _options);
+                        await _eventModule.InvokeVoidAsync("update", new EventModel
+                            {
+                                Id = toUpdate.Event.Id,
+                                Title = toUpdate.Event.Title,
+                                Start = toUpdate.Event.Start,
+                                End = toUpdate.Event.End,
+                                ToDos = toUpdate.Event.ToDos
+                                    .Select(toDo => new ToDoModel
+                                    {
+                                        Id = toDo.Id,
+                                        Text = toDo.Text,
+                                        Category = toDo.Category,
+                                        CreatedOn = toDo.CreatedOn
+                                    }).ToList(),
+                            },
+                            toUpdate.Added,
+                            toUpdate.Removed.Select(toDo => new ToDoModel
+                            {
+                                Id = toDo.Id,
+                                Text = toDo.Text,
+                                Category = toDo.Category,
+                                CreatedOn = toDo.CreatedOn,
+                            }));
+                        break;
+                    }
+                    case DataType.Calendar when item.Function == Function.Delete:
                     {
-                        Id = toUpdate.Event.Id,
-                        Title = toUpdate.Event.Title,
-                        Start = toUpdate.Event.Start,
-                        End = toUpdate.Event.End,
-                        ToDos = toUpdate.Event.ToDos
-                        .Select(toDo => new ToDoModel
-                        {
-                            Id = toDo.Id,
-                            Text = toDo.Text,
-                            Category = toDo.Category,
-                            CreatedOn = toDo.CreatedOn
-                        }).ToList(),
-                    },
-                    toUpdate.Added,
-                    toUpdate.Removed.Select(toDo => new ToDoModel
-                    {
-                        Id = toDo.Id,
-                        Text = toDo.Text,
-                        Category = toDo.Category,
-                        CreatedOn = toDo.CreatedOn,
-                    }));
-                }
-                else if (item.DataType == DataType.Calendar && item.Function == Function.Delete)
-                {
-                    var toDelete = JsonSerializer.Deserialize<DeleteEventDto>(item.Content, options);
-                    await _eventModule.InvokeVoidAsync("remove",
-                        toDelete.Id,
-                        toDelete.Removed.Select(toDo => new ToDoModel
-                        {
-                            Id = toDo.Id,
-                            Text = toDo.Text,
-                            Category = toDo.Category,
-                            CreatedOn = toDo.CreatedOn,
-                        }));
+                        var toDelete = JsonSerializer.Deserialize<DeleteEventDto>(item.Content, _options);
+                        await _eventModule.InvokeVoidAsync("remove",
+                            toDelete.Id,
+                            toDelete.Removed.Select(toDo => new ToDoModel
+                            {
+                                Id = toDo.Id,
+                                Text = toDo.Text,
+                                Category = toDo.Category,
+                                CreatedOn = toDo.CreatedOn,
+                            }));
+                        break;
+                    }
+                    default:
+                        throw new ArgumentOutOfRangeException();
                 }
             }
 

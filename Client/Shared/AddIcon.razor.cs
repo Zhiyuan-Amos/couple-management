@@ -5,6 +5,6 @@ namespace Couple.Client.Shared
     public partial class AddIcon
     {
         [Parameter]
-        public EventCallback OnClickCallback { get; set; }
+        public EventCallback OnClickCallback { get; init; }
     }
 }

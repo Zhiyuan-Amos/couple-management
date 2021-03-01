@@ -5,7 +5,7 @@ namespace Couple.Client.Pages.Calendar.Components
     public partial class CreateUpdateTopBar
     {
         [Inject]
-        protected NavigationManager NavigationManager { get; set; }
+        protected NavigationManager NavigationManager { get; init; }
 
         [Parameter]
         public EventCallback OnClickCallback { get; set; }

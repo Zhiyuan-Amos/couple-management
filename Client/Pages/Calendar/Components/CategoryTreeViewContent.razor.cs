@@ -10,7 +10,7 @@ namespace Couple.Client.Pages.Calendar.Components
     public partial class CategoryTreeViewContent
     {
         [Inject]
-        private ToDoStateContainer ToDoStateContainer { get; set; }
+        private ToDoStateContainer ToDoStateContainer { get; init; }
 
         [Parameter]
         public List<ToDoViewModel> Added { get; set; }
@@ -22,9 +22,9 @@ namespace Couple.Client.Pages.Calendar.Components
         public List<ToDoViewModel> Selected { get; set; }
 
         [Parameter]
-        public EventCallback<List<ToDoViewModel>> SelectedChanged { get; set; }
+        public EventCallback<List<ToDoViewModel>> SelectedChanged { get; init; }
 
-        protected List<CategoryToDos> Data { get; set; }
+        protected List<CategoryToDos> Data { get; private set; }
 
         protected override void OnInitialized()
         {
@@ -41,7 +41,7 @@ namespace Couple.Client.Pages.Calendar.Components
                 .ToList();
         }
 
-        public async Task SelectedObjectsChanged(IEnumerable<object> objs) =>
+        protected async Task SelectedObjectsChanged(IEnumerable<object> objs) =>
             await SelectedChanged.InvokeAsync(objs.Select(obj => obj as ToDoViewModel).ToList());
 
         protected class CategoryToDos

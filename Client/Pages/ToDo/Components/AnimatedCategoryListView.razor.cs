@@ -7,7 +7,7 @@ namespace Couple.Client.Pages.ToDo.Components
     public partial class AnimatedCategoryListView
     {
         [Parameter]
-        public EventCallback<string> OnClickCallback { get; set; }
+        public EventCallback<string> OnClickCallback { get; init; }
 
         private TelerikAnimationContainer CategoryAnimationContainer { get; set; }
 

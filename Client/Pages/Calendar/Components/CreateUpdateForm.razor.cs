@@ -10,52 +10,52 @@ namespace Couple.Client.Pages.Calendar.Components
     public partial class CreateUpdateForm
     {
         [Inject]
-        private IJSRuntime Js { get; set; }
+        private IJSRuntime Js { get; init; }
 
         [Parameter]
         public string Title { get; set; }
 
         [Parameter]
-        public EventCallback<string> TitleChanged { get; set; }
+        public EventCallback<string> TitleChanged { get; init; }
 
         [Parameter]
         public DateTime Start { get; set; }
 
         [Parameter]
-        public EventCallback<DateTime> StartChanged { get; set; }
+        public EventCallback<DateTime> StartChanged { get; init; }
 
         [Parameter]
         public DateTime End { get; set; }
 
         [Parameter]
-        public EventCallback<DateTime> EndChanged { get; set; }
+        public EventCallback<DateTime> EndChanged { get; init; }
 
         [Parameter]
         public List<ToDoViewModel> Added { get; set; }
 
         [Parameter]
-        public EventCallback<List<ToDoViewModel>> AddedChanged { get; set; }
+        public EventCallback<List<ToDoViewModel>> AddedChanged { get; init; }
 
         [Parameter]
         public List<ToDoViewModel> Removed { get; set; }
 
         [Parameter]
-        public EventCallback<ToDoViewModel> RemovedChanged { get; set; }
+        public EventCallback<ToDoViewModel> RemovedChanged { get; init; }
 
         [Parameter]
         public List<ToDoViewModel> Total { get; set; }
 
         private AnimatedCategoryTreeView CategoryListView { get; set; }
 
-        private IJSObjectReference Module;
+        private IJSObjectReference _module;
 
         protected override async Task OnAfterRenderAsync(bool firstRender)
         {
             if (firstRender)
             {
-                Module = await Js.InvokeAsync<IJSObjectReference>("import", "./CreateUpdateForm.razor.js");
-                await Module.InvokeVoidAsync("disableInput", StartWrapperRef);
-                await Module.InvokeVoidAsync("disableInput", EndWrapperRef);
+                _module = await Js.InvokeAsync<IJSObjectReference>("import", "./CreateUpdateForm.razor.js");
+                await _module.InvokeVoidAsync("disableInput", StartWrapperRef);
+                await _module.InvokeVoidAsync("disableInput", EndWrapperRef);
             }
         }
 
@@ -68,7 +68,7 @@ namespace Couple.Client.Pages.Calendar.Components
             StartDoubleClick = !StartDoubleClick;
             if (!StartDoubleClick)
             {
-                await Module.InvokeVoidAsync("togglePicker", StartWrapperRef);
+                await _module.InvokeVoidAsync("togglePicker", StartWrapperRef);
             }
         }
 
@@ -79,7 +79,7 @@ namespace Couple.Client.Pages.Calendar.Components
             EndDoubleClick = !EndDoubleClick;
             if (!EndDoubleClick)
             {
-                await Module.InvokeVoidAsync("togglePicker", EndWrapperRef);
+                await _module.InvokeVoidAsync("togglePicker", EndWrapperRef);
             }
         }
 
