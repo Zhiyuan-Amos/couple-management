@@ -42,8 +42,6 @@ namespace Couple.Api.Features.Event
                 return form.ToBadRequest();
             }
 
-            var model = form.Value;
-
             if (_currentUserService.PartnerId == null)
             {
                 return new BadRequestResult();
@@ -56,7 +54,7 @@ namespace Couple.Api.Features.Event
                 DataType = DataType.Calendar,
                 UserId = _currentUserService.PartnerId,
                 Timestamp = _dateTimeService.Now,
-                Content = JsonSerializer.Serialize(model),
+                Content = form.Json,
             };
 
             _context
