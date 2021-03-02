@@ -29,7 +29,7 @@ namespace Couple.Api.Features.ToDo
 
         [FunctionName("DeleteToDoFunction")]
         public async Task<ActionResult> DeleteToDo(
-            [HttpTrigger(AuthorizationLevel.Anonymous, "delete", Route = "ToDos/{id}")] HttpRequest req,
+            [HttpTrigger(AuthorizationLevel.Anonymous, "delete", Route = "ToDos/{id:guid}")] HttpRequest req,
             Guid id,
             ILogger log)
         {
