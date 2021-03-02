@@ -1,4 +1,5 @@
-﻿using Couple.Client.Infrastructure;
+﻿using AutoMapper;
+using Couple.Client.Infrastructure;
 using Couple.Client.Model.Calendar;
 using Couple.Client.Model.ToDo;
 using Couple.Client.States.Calendar;
@@ -23,6 +24,8 @@ namespace Couple.Client.Services
         private readonly ToDoStateContainer _toDoStateContainer;
         private readonly EventStateContainer _eventStateContainer;
 
+        private readonly IMapper _mapper;
+
         private IJSObjectReference _toDoModule;
         private IJSObjectReference _eventModule;
 
@@ -32,11 +35,13 @@ namespace Couple.Client.Services
         public Synchronizer(IJSRuntime js,
                             HttpClient httpClient,
                             ToDoStateContainer toDoStateContainer,
-                            EventStateContainer eventStateContainer)
+                            EventStateContainer eventStateContainer,
+                            IMapper mapper)
         {
             _httpClient = httpClient;
             _toDoStateContainer = toDoStateContainer;
             _eventStateContainer = eventStateContainer;
+            _mapper = mapper;
             Initialization = InitializeAsync(js);
         }
 
@@ -68,50 +73,17 @@ namespace Couple.Client.Services
                     {
                         var toCreate = JsonSerializer.Deserialize<CreateEventDto>(item.Content, _options);
                         await _eventModule.InvokeVoidAsync("add",
-                            new EventModel
-                            {
-                                Id = toCreate.Event.Id,
-                                Title = toCreate.Event.Title,
-                                Start = toCreate.Event.Start,
-                                End = toCreate.Event.End,
-                                ToDos = toCreate.Event.ToDos
-                                    .Select(toDo => new ToDoModel
-                                    {
-                                        Id = toDo.Id,
-                                        Text = toDo.Text,
-                                        Category = toDo.Category,
-                                        CreatedOn = toDo.CreatedOn
-                                    }).ToList(),
-                            },
+                            _mapper.Map<EventModel>(toCreate.Event),
                             toCreate.Added);
                         break;
                     }
                     case DataType.Calendar when item.Function == Function.Update:
                     {
                         var toUpdate = JsonSerializer.Deserialize<UpdateEventDto>(item.Content, _options);
-                        await _eventModule.InvokeVoidAsync("update", new EventModel
-                            {
-                                Id = toUpdate.Event.Id,
-                                Title = toUpdate.Event.Title,
-                                Start = toUpdate.Event.Start,
-                                End = toUpdate.Event.End,
-                                ToDos = toUpdate.Event.ToDos
-                                    .Select(toDo => new ToDoModel
-                                    {
-                                        Id = toDo.Id,
-                                        Text = toDo.Text,
-                                        Category = toDo.Category,
-                                        CreatedOn = toDo.CreatedOn
-                                    }).ToList(),
-                            },
+                        await _eventModule.InvokeVoidAsync("update",
+                            _mapper.Map<EventModel>(toUpdate.Event),
                             toUpdate.Added,
-                            toUpdate.Removed.Select(toDo => new ToDoModel
-                            {
-                                Id = toDo.Id,
-                                Text = toDo.Text,
-                                Category = toDo.Category,
-                                CreatedOn = toDo.CreatedOn,
-                            }));
+                            _mapper.Map<List<ToDoModel>>(toUpdate.Removed));
                         break;
                     }
                     case DataType.Calendar when item.Function == Function.Delete:
