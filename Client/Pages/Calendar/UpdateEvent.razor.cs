@@ -101,9 +101,7 @@ namespace Couple.Client.Pages.Calendar
 
             NavigationManager.NavigateTo($"/calendar/{ToUpdate.Start.ToCalendarUrl()}");
 
-            var toDelete = Mapper.Map<DeleteEventDto>(ToUpdate);
-
-            await HttpClient.DeleteAsJsonAsync($"api/Events", toDelete);
+            await HttpClient.DeleteAsync($"api/Events/{ToUpdate.Id}");
         }
 
         protected bool IsEnabled => !string.IsNullOrWhiteSpace(ToUpdate?.Title)

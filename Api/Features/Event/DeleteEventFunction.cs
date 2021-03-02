@@ -1,8 +1,6 @@
 using Couple.Api.Data;
 using Couple.Api.Infrastructure;
 using Couple.Shared.Model.Change;
-using Couple.Shared.Model.Event;
-using FluentValidation;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.WebJobs;
@@ -31,17 +29,10 @@ namespace Couple.Api.Features.Event
 
         [FunctionName("DeleteEventFunction")]
         public async Task<ActionResult> DeleteEvent(
-            [HttpTrigger(AuthorizationLevel.Anonymous, "delete", Route = "Events")] HttpRequest req,
+            [HttpTrigger(AuthorizationLevel.Anonymous, "delete", Route = "Events/{id:guid}")] HttpRequest req,
+            Guid id,
             ILogger log)
         {
-            var form = await req.GetJsonBody<DeleteEventDto, Validator>();
-
-            if (!form.IsValid)
-            {
-                log.LogWarning("{ErrorMessage}", form.ErrorMessage());
-                return form.ToBadRequest();
-            }
-
             if (_currentUserService.PartnerId == null)
             {
                 return new BadRequestResult();
@@ -54,7 +45,7 @@ namespace Couple.Api.Features.Event
                 DataType = DataType.Calendar,
                 UserId = _currentUserService.PartnerId,
                 Timestamp = _dateTimeService.Now,
-                Content = form.Json,
+                Content = JsonSerializer.Serialize(id),
             };
 
             _context
@@ -63,14 +54,6 @@ namespace Couple.Api.Features.Event
             await _context.SaveChangesAsync();
 
             return new OkResult();
-        }
-
-        private class Validator : AbstractValidator<DeleteEventDto>
-        {
-            public Validator()
-            {
-                RuleFor(dto => dto.Id).NotEmpty();
-            }
         }
     }
 }

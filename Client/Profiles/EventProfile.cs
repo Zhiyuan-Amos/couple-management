@@ -17,7 +17,6 @@ namespace Couple.Client.Profiles
             CreateMap<EventModel, UpdateEventViewModel>()
                 .ReverseMap();
             CreateMap<UpdateEventViewModel, EventDto>();
-            CreateMap<UpdateEventViewModel, DeleteEventDto>();
         }
     }
 }

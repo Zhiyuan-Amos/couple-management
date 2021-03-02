@@ -116,8 +116,7 @@ namespace Couple.Client.Services
                     }
                     case DataType.Calendar when item.Function == Function.Delete:
                     {
-                        var toDelete = JsonSerializer.Deserialize<DeleteEventDto>(item.Content, _options);
-                        await _eventModule.InvokeVoidAsync("remove", toDelete.Id);
+                        await _eventModule.InvokeVoidAsync("remove", JsonSerializer.Deserialize<Guid>(item.Content, _options));
                         break;
                     }
                     default:
