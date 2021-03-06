@@ -1,5 +1,6 @@
 @page "/calendar/{selected:datetime?}"
 @using Couple.Client.Pages.Calendar.Components
+@implements IDisposable
 
 <CalendarTopBar OnSynchronisationCallback="@RefreshEvents" />
 <div class="d-flex justify-content-center border-bottom">

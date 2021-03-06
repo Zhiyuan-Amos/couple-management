@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace Couple.Client.States.Calendar
 {
-    public class EventStateContainer
+    public class EventStateContainer : Notifier
     {
         private Dictionary<DateTime, List<EventModel>> DateToEvents { get; set; }
 
@@ -29,6 +29,8 @@ namespace Couple.Client.States.Calendar
                 .ToDictionary(grouping => grouping.Key, grouping => grouping
                     .OrderBy(@event => @event.Start)
                     .ToList());
+
+            NotifyStateChanged();
         }
     }
 }

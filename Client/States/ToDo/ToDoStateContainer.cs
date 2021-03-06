@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace Couple.Client.States.ToDo
 {
-    public class ToDoStateContainer
+    public class ToDoStateContainer : Notifier
     {
         private List<ToDoModel> _toDos;
         private Dictionary<string, List<ToDoModel>> _categoryToToDos;
@@ -23,6 +23,7 @@ namespace Couple.Client.States.ToDo
                     .ToDictionary(toDo => toDo.Key, toDo => toDo.ToList());
                 CategoryToToDos = categoryToToDos;
                 _idToToDo = value.ToDictionary(toDo => toDo.Id);
+                NotifyStateChanged();
             }
         }
 

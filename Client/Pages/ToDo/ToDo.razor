@@ -1,6 +1,7 @@
 @page "/todo"
 
 @using Couple.Client.Pages.ToDo.Components
+@implements IDisposable
 
 <ToDoTopBar IsDropDown="@IsDropdown"
             SelectedCategory="@SelectedCategory"

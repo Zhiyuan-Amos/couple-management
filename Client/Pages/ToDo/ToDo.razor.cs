@@ -37,7 +37,10 @@ namespace Couple.Client.Pages.ToDo
         protected override void OnInitialized()
         {
             RefreshData();
+            ToDoStateContainer.OnChange += RefreshDataAndUpdateUI;
         }
+
+        public void Dispose() => ToDoStateContainer.OnChange -= RefreshDataAndUpdateUI;
 
         protected void AddToDo() => NavigationManager.NavigateTo($"/todo/create");
 
@@ -88,6 +91,12 @@ namespace Couple.Client.Pages.ToDo
                 SelectedCategoryStateContainer.SelectedCategory = newCategory;
                 return newCategory;
             }
+        }
+
+        private void RefreshDataAndUpdateUI()
+        {
+            RefreshData();
+            StateHasChanged();
         }
     }
 }

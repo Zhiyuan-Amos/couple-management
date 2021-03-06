@@ -33,7 +33,10 @@ namespace Couple.Client.Pages.Calendar
             }
 
             Events = GetEvents(Selected);
+            EventStateContainer.OnChange += RefreshEvents;
         }
+
+        public void Dispose() => EventStateContainer.OnChange -= RefreshEvents;
 
         protected void DateChangedHandler(DateTime newDateValue)
         {
@@ -57,6 +60,10 @@ namespace Couple.Client.Pages.Calendar
                 : new();
         }
 
-        protected void RefreshEvents() => Events = GetEvents(Selected);
+        private void RefreshEvents()
+        {
+            Events = GetEvents(Selected);
+            StateHasChanged();
+        }
     }
 }
