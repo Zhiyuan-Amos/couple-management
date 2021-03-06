@@ -2,7 +2,7 @@
 @using Couple.Client.Pages.Calendar.Components
 @implements IDisposable
 
-<CalendarTopBar OnSynchronisationCallback="@RefreshEvents" />
+<CalendarTopBar OnSynchronisationCallback="@StateHasChanged" />
 <div class="d-flex justify-content-center border-bottom">
     <TelerikCalendar DateChanged="@DateChangedHandler"
                      Value="@Selected"

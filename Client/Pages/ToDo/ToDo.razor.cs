@@ -31,8 +31,15 @@ namespace Couple.Client.Pages.ToDo
         private AnimatedCategoryListView CategoryListView { get; set; }
 
         protected bool IsDropdown { get; set; }
-        protected string SelectedCategory { get; set; }
-        protected List<ToDoViewModel> ToDos { get; set; }
+        protected string SelectedCategory => SelectedCategoryStateContainer.SelectedCategory;
+
+        protected List<ToDoViewModel> ToDos =>
+            ToDoStateContainer.TryGetToDos(SelectedCategory, out var toDos)
+                ? toDos
+                    .AsQueryable()
+                    .ProjectTo<ToDoViewModel>(Mapper.ConfigurationProvider)
+                    .ToList()
+                : new();
 
         protected override void OnInitialized()
         {
@@ -54,13 +61,6 @@ namespace Couple.Client.Pages.ToDo
         protected async Task Select(string category)
         {
             SelectedCategoryStateContainer.SelectedCategory = category;
-            SelectedCategory = category;
-            ToDos = ToDoStateContainer.TryGetToDos(category, out var toDos)
-                ? toDos
-                    .AsQueryable()
-                    .ProjectTo<ToDoViewModel>(Mapper.ConfigurationProvider)
-                    .ToList()
-                : new();
 
             IsDropdown = false;
             await CategoryListView.HideAsync();
@@ -69,28 +69,16 @@ namespace Couple.Client.Pages.ToDo
 
         protected void RefreshData()
         {
-            SelectedCategory = GetCategory();
-            ToDos = ToDoStateContainer.TryGetToDos(SelectedCategory, out var toDos)
-                ? toDos
-                    .AsQueryable()
-                    .ProjectTo<ToDoViewModel>(Mapper.ConfigurationProvider)
-                    .ToList()
-                : new();
+            var existingCategory = SelectedCategoryStateContainer.SelectedCategory;
+            var hasToDos = ToDoStateContainer.TryGetToDos(existingCategory, out _);
 
-            string GetCategory()
+            if (hasToDos)
             {
-                var existingCategory = SelectedCategoryStateContainer.SelectedCategory;
-                var hasToDos = ToDoStateContainer.TryGetToDos(existingCategory, out _);
-
-                if (hasToDos)
-                {
-                    return existingCategory;
-                }
-
-                var newCategory = ToDoStateContainer.Categories.Any() ? ToDoStateContainer.Categories[0] : "";
-                SelectedCategoryStateContainer.SelectedCategory = newCategory;
-                return newCategory;
+                return;
             }
+
+            var newCategory = ToDoStateContainer.Categories.Any() ? ToDoStateContainer.Categories[0] : "";
+            SelectedCategoryStateContainer.SelectedCategory = newCategory;
         }
 
         private void RefreshDataAndUpdateUI()
