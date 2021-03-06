@@ -43,11 +43,10 @@ namespace Couple.Client.Pages.ToDo
 
         protected override void OnInitialized()
         {
-            RefreshData();
-            ToDoStateContainer.OnChange += RefreshDataAndUpdateUI;
+            ToDoStateContainer.OnChange += StateHasChanged;
         }
 
-        public void Dispose() => ToDoStateContainer.OnChange -= RefreshDataAndUpdateUI;
+        public void Dispose() => ToDoStateContainer.OnChange -= StateHasChanged;
 
         protected void AddToDo() => NavigationManager.NavigateTo($"/todo/create");
 
@@ -65,26 +64,6 @@ namespace Couple.Client.Pages.ToDo
             IsDropdown = false;
             await CategoryListView.HideAsync();
             await ((IJSInProcessRuntime)Js).InvokeVoidAsync("setScroll", true);
-        }
-
-        protected void RefreshData()
-        {
-            var existingCategory = SelectedCategoryStateContainer.SelectedCategory;
-            var hasToDos = ToDoStateContainer.TryGetToDos(existingCategory, out _);
-
-            if (hasToDos)
-            {
-                return;
-            }
-
-            var newCategory = ToDoStateContainer.Categories.Any() ? ToDoStateContainer.Categories[0] : "";
-            SelectedCategoryStateContainer.SelectedCategory = newCategory;
-        }
-
-        private void RefreshDataAndUpdateUI()
-        {
-            RefreshData();
-            StateHasChanged();
         }
     }
 }
