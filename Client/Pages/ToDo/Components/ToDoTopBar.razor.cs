@@ -12,8 +12,5 @@ namespace Couple.Client.Pages.ToDo.Components
 
         [Parameter]
         public bool IsDropDown { get; set; }
-
-        [Parameter]
-        public EventCallback OnSynchronisationCallback { get; init; }
     }
 }

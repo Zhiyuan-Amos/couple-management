@@ -5,8 +5,7 @@
 
 <ToDoTopBar IsDropDown="@IsDropdown"
             SelectedCategory="@SelectedCategory"
-            OnClickCallback="@ToggleVisibility"
-            OnSynchronisationCallback="@StateHasChanged" />
+            OnClickCallback="@ToggleVisibility" />
 <ToDoListView ToDos="@ToDos" />
 <BottomBar />
 <AddIcon OnClickCallback="@AddToDo" />
