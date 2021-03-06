@@ -1,11 +1,11 @@
 @page "/todo"
 
 @using Couple.Client.Pages.ToDo.Components
+@implements IDisposable
 
 <ToDoTopBar IsDropDown="@IsDropdown"
             SelectedCategory="@SelectedCategory"
-            OnClickCallback="@ToggleVisibility"
-            OnSynchronisationCallback="@RefreshData" />
+            OnClickCallback="@ToggleVisibility" />
 <ToDoListView ToDos="@ToDos" />
 <BottomBar />
 <AddIcon OnClickCallback="@AddToDo" />

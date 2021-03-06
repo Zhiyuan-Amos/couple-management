@@ -15,10 +15,6 @@ namespace Couple.Client.Shared
         [Inject]
         private Synchronizer Synchronizer { get; init; }
 
-        protected async Task Synchronize()
-        {
-            await Synchronizer.SynchronizeAsync();
-            await OnSynchronisationCallback.InvokeAsync();
-        }
+        protected Task Synchronize() => Synchronizer.SynchronizeAsync();
     }
 }

@@ -22,7 +22,9 @@ namespace Couple.Client.Pages.Calendar
         [Parameter]
         public DateTime Selected { get; set; }
 
-        protected List<EventViewModel> Events { get; set; }
+        protected IEnumerable<EventViewModel> Events => EventStateContainer.TryGetEvents(Selected, out var events)
+            ? Mapper.Map<List<EventViewModel>>(events)
+            : new();
 
         protected override void OnInitialized()
         {
@@ -32,31 +34,16 @@ namespace Couple.Client.Pages.Calendar
                 NavigationManager.NavigateTo($"/calendar/{Selected.ToCalendarUrl()}");
             }
 
-            Events = GetEvents(Selected);
+            EventStateContainer.OnChange += StateHasChanged;
         }
 
-        protected void DateChangedHandler(DateTime newDateValue)
-        {
-            NavigationManager.NavigateTo($"/calendar/{newDateValue.ToCalendarUrl()}");
-            Events = GetEvents(newDateValue);
-        }
+        public void Dispose() => EventStateContainer.OnChange -= StateHasChanged;
 
-        protected void ValueChangedHandler(DateTime newDateValue)
-        {
-            NavigationManager.NavigateTo($"/calendar/{newDateValue.ToCalendarUrl()}");
-            Events = GetEvents(newDateValue);
-        }
+        protected void DateChangedHandler(DateTime newDateValue) => NavigationManager.NavigateTo($"/calendar/{newDateValue.ToCalendarUrl()}");
+
+        protected void ValueChangedHandler(DateTime newDateValue) => NavigationManager.NavigateTo($"/calendar/{newDateValue.ToCalendarUrl()}");
 
         protected void AddEvent() => NavigationManager.NavigateTo($"/calendar/create");
         protected void EditEvent(EventViewModel selectedEvent) => NavigationManager.NavigateTo($"/calendar/{selectedEvent.Id}");
-
-        private List<EventViewModel> GetEvents(DateTime dateTime)
-        {
-            return EventStateContainer.TryGetEvents(dateTime, out var events)
-                ? Mapper.Map<List<EventViewModel>>(events)
-                : new();
-        }
-
-        protected void RefreshEvents() => Events = GetEvents(Selected);
     }
 }

@@ -1,7 +1,8 @@
 @page "/calendar/{selected:datetime?}"
 @using Couple.Client.Pages.Calendar.Components
+@implements IDisposable
 
-<CalendarTopBar OnSynchronisationCallback="@RefreshEvents" />
+<CalendarTopBar />
 <div class="d-flex justify-content-center border-bottom">
     <TelerikCalendar DateChanged="@DateChangedHandler"
                      Value="@Selected"
