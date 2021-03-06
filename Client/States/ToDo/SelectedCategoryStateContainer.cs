@@ -13,9 +13,10 @@ namespace Couple.Client.States.ToDo
         {
             _toDoStateContainer = toDoStateContainer;
             _toDoStateContainer.OnChange += Refresh;
+            Reset();
         }
 
-        public void Reset() => SelectedCategory = _toDoStateContainer.Categories.Any() ? _toDoStateContainer.Categories[0] : "";
+        private void Reset() => SelectedCategory = _toDoStateContainer.Categories.Any() ? _toDoStateContainer.Categories[0] : "";
 
         private void Refresh()
         {

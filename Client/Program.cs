@@ -36,18 +36,13 @@ namespace Couple.Client
             var host = builder.Build();
 
             var toDoStateContainer = host.Services.GetRequiredService<ToDoStateContainer>();
-            var selectedCategoryStateContainer = host.Services.GetRequiredService<SelectedCategoryStateContainer>();
             var js = host.Services.GetRequiredService<IJSRuntime>();
 
             var initToDosTask = js.InvokeAsync<IJSObjectReference>("import", "./ToDo.razor.js")
                 .AsTask()
                 .ContinueWith(moduleTask => moduleTask.Result.InvokeAsync<List<ToDoModel>>("getAll").AsTask())
                 .Unwrap()
-                .ContinueWith(toDosTask =>
-                {
-                    toDoStateContainer.ToDos = toDosTask.Result;
-                    selectedCategoryStateContainer.Reset();
-                });
+                .ContinueWith(toDosTask => toDoStateContainer.ToDos = toDosTask.Result);
 
             var eventStateContainer = host.Services.GetRequiredService<EventStateContainer>();
 
