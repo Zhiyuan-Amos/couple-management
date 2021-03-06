@@ -9,9 +9,6 @@ namespace Couple.Client.Pages.ToDo.Components
         [Inject]
         private ToDoStateContainer ToDoStateContainer { get; init; }
 
-        [Inject]
-        private SelectedCategoryStateContainer SelectedCategoryStateContainer { get; init; }
-
         [Parameter]
         public EventCallback<string> OnClickCallback { get; init; }
 
