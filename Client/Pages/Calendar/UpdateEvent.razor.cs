@@ -64,8 +64,11 @@ namespace Couple.Client.Pages.Calendar
 
             ToUpdate = Mapper.Map<UpdateEventViewModel>(@event);
 
-            _toDoModule = await Js.InvokeAsync<IJSObjectReference>("import", "./ToDo.razor.js");
-            _eventModule = await Js.InvokeAsync<IJSObjectReference>("import", "./Event.razor.js");
+            var toDoModuleTask = Js.InvokeAsync<IJSObjectReference>("import", "./ToDo.razor.js").AsTask();
+            var eventModuleTask = Js.InvokeAsync<IJSObjectReference>("import", "./Event.razor.js").AsTask();
+            await Task.WhenAll(toDoModuleTask, eventModuleTask);
+            _toDoModule = toDoModuleTask.Result;
+            _eventModule = eventModuleTask.Result;
         }
 
         protected async Task Save()

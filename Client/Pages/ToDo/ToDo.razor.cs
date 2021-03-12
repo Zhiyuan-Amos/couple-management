@@ -1,5 +1,6 @@
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
+using Couple.Client.Model.ToDo;
 using Couple.Client.Pages.ToDo.Components;
 using Couple.Client.States.ToDo;
 using Couple.Client.ViewModel.ToDo;
@@ -41,9 +42,15 @@ namespace Couple.Client.Pages.ToDo
                     .ToList()
                 : new();
 
-        protected override void OnInitialized()
+        protected override async Task OnInitializedAsync()
         {
             ToDoStateContainer.OnChange += StateHasChanged;
+
+            await Js.InvokeAsync<IJSObjectReference>("import", "./ToDo.razor.js")
+                .AsTask()
+                .ContinueWith(moduleTask => moduleTask.Result.InvokeAsync<List<ToDoModel>>("getAll").AsTask())
+                .Unwrap()
+                .ContinueWith(toDosTask => ToDoStateContainer.ToDos = toDosTask.Result);
         }
 
         public void Dispose() => ToDoStateContainer.OnChange -= StateHasChanged;

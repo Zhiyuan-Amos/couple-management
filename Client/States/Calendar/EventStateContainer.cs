@@ -7,7 +7,7 @@ namespace Couple.Client.States.Calendar
 {
     public class EventStateContainer : Notifier
     {
-        private Dictionary<DateTime, List<EventModel>> DateToEvents { get; set; }
+        private Dictionary<DateTime, List<EventModel>> DateToEvents { get; set; } = new();
 
         public bool TryGetEvents(DateTime dateTime, out List<EventModel> events)
             => DateToEvents.TryGetValue(dateTime, out events);
