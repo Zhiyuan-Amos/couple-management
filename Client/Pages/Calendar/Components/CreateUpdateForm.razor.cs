@@ -53,9 +53,14 @@ namespace Couple.Client.Pages.Calendar.Components
         {
             if (firstRender)
             {
-                _module = await Js.InvokeAsync<IJSObjectReference>("import", "./CreateUpdateForm.razor.js");
-                await _module.InvokeVoidAsync("disableInput", StartWrapperRef);
-                await _module.InvokeVoidAsync("disableInput", EndWrapperRef);
+                await Js.InvokeAsync<IJSObjectReference>("import", "./CreateUpdateForm.razor.js").AsTask()
+                    .ContinueWith(moduleTask =>
+                    {
+                         _module = moduleTask.Result;
+                         var disableStartInput = _module.InvokeVoidAsync("disableInput", StartWrapperRef).AsTask();
+                         var disableEndInput = _module.InvokeVoidAsync("disableInput", EndWrapperRef).AsTask();
+                         return Task.WhenAll(disableStartInput, disableEndInput);
+                    });
             }
         }
 
@@ -106,13 +111,13 @@ namespace Couple.Client.Pages.Calendar.Components
         protected async Task ShowToDoSelection()
         {
             await CategoryListView.ShowAsync();
-            await ((IJSInProcessRuntime)Js).InvokeVoidAsync("setScroll", false);
+            ((IJSInProcessRuntime)Js).InvokeVoid("setScroll", false);
         }
 
         protected async Task CloseToDoSelection()
         {
             await CategoryListView.HideAsync();
-            await ((IJSInProcessRuntime)Js).InvokeVoidAsync("setScroll", true);
+            ((IJSInProcessRuntime)Js).InvokeVoid("setScroll", true);
         }
 
         protected Task Remove(ToDoViewModel toRemove) => RemovedChanged.InvokeAsync(toRemove);

@@ -32,10 +32,11 @@ namespace Couple.Client.Pages.Calendar.Components
         public Task ShowAsync() => CategoryAnimationContainer.ShowAsync();
         public Task HideAsync() => CategoryAnimationContainer.HideAsync();
 
-        protected async Task Save()
+        protected Task Save()
         {
-            await AddedChanged.InvokeAsync(Selected);
-            await OnCloseCallback.InvokeAsync();
+            var addCallbackTask = AddedChanged.InvokeAsync(Selected);
+            var closeCallbackTask = OnCloseCallback.InvokeAsync();
+            return Task.WhenAll(addCallbackTask, closeCallbackTask);
         }
     }
 }

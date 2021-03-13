@@ -79,10 +79,11 @@ namespace Couple.Client.Pages.Calendar
             };
             await _eventModule.InvokeVoidAsync("add", toPersist, added);
 
-            var toDos = await _toDoModule.InvokeAsync<List<ToDoModel>>("getAll");
-            ToDoStateContainer.ToDos = toDos;
-            var events = await _eventModule.InvokeAsync<List<EventModel>>("getAll");
-            EventStateContainer.SetEvents(events);
+            var toDosTask = _toDoModule.InvokeAsync<List<ToDoModel>>("getAll").AsTask();
+            var eventsTask = _eventModule.InvokeAsync<List<EventModel>>("getAll").AsTask();
+            await Task.WhenAll(toDosTask, eventsTask);
+            ToDoStateContainer.ToDos = toDosTask.Result;
+            EventStateContainer.SetEvents(eventsTask.Result);
 
             NavigationManager.NavigateTo($"/calendar/{ToCreate.Start.ToCalendarUrl()}");
 

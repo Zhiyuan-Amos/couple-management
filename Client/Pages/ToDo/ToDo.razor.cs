@@ -61,7 +61,7 @@ namespace Couple.Client.Pages.ToDo
         {
             IsDropdown = !IsDropdown;
             await CategoryListView.ToggleAsync();
-            await ((IJSInProcessRuntime)Js).InvokeVoidAsync("toggleScroll");
+            ((IJSInProcessRuntime)Js).InvokeVoid("toggleScroll");
         }
 
         protected async Task Select(string category)
@@ -70,7 +70,7 @@ namespace Couple.Client.Pages.ToDo
 
             IsDropdown = false;
             await CategoryListView.HideAsync();
-            await ((IJSInProcessRuntime)Js).InvokeVoidAsync("setScroll", true);
+            ((IJSInProcessRuntime)Js).InvokeVoid("setScroll", true);
         }
     }
 }
