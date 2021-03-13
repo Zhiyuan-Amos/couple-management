@@ -20,9 +20,7 @@ namespace Couple.Client.Pages.ToDo
 
         protected UpdateToDoViewModel ToUpdate { get; set; }
 
-        private IJSObjectReference _module;
-
-        protected override async Task OnInitializedAsync()
+        protected override void OnInitialized()
         {
             if (!ToDoStateContainer.TryGetToDo(ToDoId, out var toDo))
             {
@@ -37,14 +35,12 @@ namespace Couple.Client.Pages.ToDo
                 Category = toDo.Category,
                 CreatedOn = toDo.CreatedOn,
             };
-            _module = await Js.InvokeAsync<IJSObjectReference>("import", "./ToDo.razor.js");
         }
 
         protected async Task Delete()
         {
-            await _module.InvokeVoidAsync("remove", ToUpdate.Id);
-            var toDos = await _module.InvokeAsync<List<ToDoModel>>("getAll");
-            ToDoStateContainer.ToDos = toDos;
+            await Js.InvokeVoidAsync("removeToDo", ToUpdate.Id);
+            ToDoStateContainer.ToDos = await Js.InvokeAsync<List<ToDoModel>>("getAllToDos");
 
             NavigationManager.NavigateTo("/todo");
 
@@ -60,10 +56,9 @@ namespace Couple.Client.Pages.ToDo
                 Category = ToUpdate.Category,
                 CreatedOn = ToUpdate.CreatedOn,
             };
-            await _module.InvokeVoidAsync("update", toPersist);
+            await Js.InvokeVoidAsync("updateToDo", toPersist);
 
-            var toDos = await _module.InvokeAsync<List<ToDoModel>>("getAll");
-            ToDoStateContainer.ToDos = toDos;
+            ToDoStateContainer.ToDos = await Js.InvokeAsync<List<ToDoModel>>("getAllToDos");
             SelectedCategoryStateContainer.SelectedCategory = ToUpdate.Category;
             NavigationManager.NavigateTo("/todo");
 

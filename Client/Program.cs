@@ -33,8 +33,7 @@ namespace Couple.Client
 
             // var synchronizer = host.Services.GetRequiredService<Synchronizer>();
             // No await to prevent app from being blocked. It's not a big deal if it fails to execute successfully
-            // synchronizer.Initialization
-            //     .ContinueWith(_ => synchronizer.SynchronizeAsync());
+            // synchronizer.SynchronizeAsync();
 
             await host.RunAsync();
         }

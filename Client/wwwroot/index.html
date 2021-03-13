@@ -49,6 +49,71 @@
                 toDoStore.createIndex('category', 'category');
             },
         });
+
+        async function getAllToDos() {
+            return (await db).transaction("todo").store.getAll();
+        }
+
+        async function addToDo(todo) {
+            (await db).transaction("todo", 'readwrite').store.add(todo);
+        }
+
+        async function updateToDo(todo) {
+            (await db).transaction("todo", 'readwrite').store.put(todo);
+        }
+
+        async function removeToDo(id) {
+            (await db).transaction("todo", 'readwrite').store.delete(id);
+        }
+
+        async function getAllEvents() {
+            return (await db).transaction("event").store.getAll();
+        }
+
+        // Another possible implementation is to pass only the Event (w/ ToDos),
+        // then retrieve the existing Event from database & generate set difference.
+        // Pro: Impossible for callers of the method to pass the wrong set of model.
+        // Con: Additional code to generate set difference and additional database call.
+        // I've used this implementation for code simplicity.
+        async function addEvent(event, added) {
+            const tx = (await db).transaction(['event', 'todo'], 'readwrite');
+            const eventStore = tx.objectStore('event');
+            const toDoStore = tx.objectStore('todo');
+
+            await Promise.all([
+                eventStore.add(event),
+                added.map(id => toDoStore.delete(id)),
+                tx.done,
+            ]);
+        }
+
+        async function updateEvent(event, added, removed) {
+            const tx = (await db).transaction(['event', 'todo'], 'readwrite');
+            const eventStore = tx.objectStore('event');
+            const toDoStore = tx.objectStore('todo');
+
+            await Promise.all([
+                eventStore.put(event),
+                added.map(id => toDoStore.delete(id)),
+                removed.map(toDo => toDoStore.add(toDo)),
+                tx.done,
+            ]);
+        }
+
+        async function removeEvent(id) {
+            (await db).transaction("event", 'readwrite').store.delete(id);
+        }
+
+        function togglePicker(wrapperElement) {
+            const popupBtn = wrapperElement.querySelector(".k-select");
+            popupBtn.click();
+        }
+
+        function disableInput(wrapperElement) {
+            const input = wrapperElement.querySelector("input");
+            input.setAttribute("disabled", "true");
+        }
+
     </script>
 </body>
 

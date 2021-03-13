@@ -42,10 +42,7 @@ namespace Couple.Client.Pages.Calendar
 
         protected List<ToDoViewModel> Added { get; set; }
 
-        private IJSObjectReference _toDoModule;
-        private IJSObjectReference _eventModule;
-
-        protected override async Task OnInitializedAsync()
+        protected override void OnInitialized()
         {
             Added = new();
             ToCreate = new()
@@ -55,12 +52,6 @@ namespace Couple.Client.Pages.Calendar
                 End = DateTime.Now,
                 ToDos = new(),
             };
-
-            var toDoModuleTask = Js.InvokeAsync<IJSObjectReference>("import", "./ToDo.razor.js").AsTask();
-            var eventModuleTask = Js.InvokeAsync<IJSObjectReference>("import", "./Event.razor.js").AsTask();
-            await Task.WhenAll(toDoModuleTask, eventModuleTask);
-            _toDoModule = toDoModuleTask.Result;
-            _eventModule = eventModuleTask.Result;
         }
 
         protected async Task Save()
@@ -77,10 +68,10 @@ namespace Couple.Client.Pages.Calendar
                 End = ToCreate.End,
                 ToDos = Mapper.Map<List<ToDoModel>>(ToCreate.ToDos),
             };
-            await _eventModule.InvokeVoidAsync("add", toPersist, added);
+            await Js.InvokeVoidAsync("addEvent", toPersist, added);
 
-            var toDosTask = _toDoModule.InvokeAsync<List<ToDoModel>>("getAll").AsTask();
-            var eventsTask = _eventModule.InvokeAsync<List<EventModel>>("getAll").AsTask();
+            var toDosTask = Js.InvokeAsync<List<ToDoModel>>("getAllToDos").AsTask();
+            var eventsTask = Js.InvokeAsync<List<EventModel>>("getAllEvents").AsTask();
             await Task.WhenAll(toDosTask, eventsTask);
             ToDoStateContainer.ToDos = toDosTask.Result;
             EventStateContainer.SetEvents(eventsTask.Result);

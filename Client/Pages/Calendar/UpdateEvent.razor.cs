@@ -47,10 +47,7 @@ namespace Couple.Client.Pages.Calendar
         protected List<ToDoViewModel> Added { get; set; }
         protected List<ToDoViewModel> Removed { get; set; }
 
-        private IJSObjectReference _toDoModule;
-        private IJSObjectReference _eventModule;
-
-        protected override async Task OnInitializedAsync()
+        protected override void OnInitialized()
         {
             if (!EventStateContainer.TryGetEvent(EventId, out var @event))
             {
@@ -63,25 +60,19 @@ namespace Couple.Client.Pages.Calendar
             Removed = new();
 
             ToUpdate = Mapper.Map<UpdateEventViewModel>(@event);
-
-            var toDoModuleTask = Js.InvokeAsync<IJSObjectReference>("import", "./ToDo.razor.js").AsTask();
-            var eventModuleTask = Js.InvokeAsync<IJSObjectReference>("import", "./Event.razor.js").AsTask();
-            await Task.WhenAll(toDoModuleTask, eventModuleTask);
-            _toDoModule = toDoModuleTask.Result;
-            _eventModule = eventModuleTask.Result;
         }
 
         protected async Task Save()
         {
             var added = Added.Select(toDo => toDo.Id).ToList();
             var toPersist = Mapper.Map<EventModel>(ToUpdate);
-            await _eventModule.InvokeVoidAsync("update",
+            await Js.InvokeVoidAsync("updateEvent",
                 toPersist,
                 added,
                 Mapper.Map<List<ToDoModel>>(Removed));
 
-            var toDosTask = _toDoModule.InvokeAsync<List<ToDoModel>>("getAll").AsTask();
-            var eventsTask = _eventModule.InvokeAsync<List<EventModel>>("getAll").AsTask();
+            var toDosTask = Js.InvokeAsync<List<ToDoModel>>("getAllToDos").AsTask();
+            var eventsTask = Js.InvokeAsync<List<EventModel>>("getAllEvents").AsTask();
             await Task.WhenAll(toDosTask, eventsTask);
             ToDoStateContainer.ToDos = toDosTask.Result;
             EventStateContainer.SetEvents(eventsTask.Result);
@@ -99,8 +90,8 @@ namespace Couple.Client.Pages.Calendar
 
         protected async Task Delete()
         {
-            await _eventModule.InvokeVoidAsync("remove", ToUpdate.Id);
-            var events = await _eventModule.InvokeAsync<List<EventModel>>("getAll");
+            await Js.InvokeVoidAsync("removeEvent", ToUpdate.Id);
+            var events = await Js.InvokeAsync<List<EventModel>>("getAllEvents");
             EventStateContainer.SetEvents(events);
 
             NavigationManager.NavigateTo($"/calendar/{ToUpdate.Start.ToCalendarUrl()}");

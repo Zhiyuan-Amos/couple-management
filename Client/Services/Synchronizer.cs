@@ -19,15 +19,14 @@ namespace Couple.Client.Services
 {
     public class Synchronizer
     {
+        private readonly IJSRuntime _js;
+
         private readonly HttpClient _httpClient;
 
         private readonly ToDoStateContainer _toDoStateContainer;
         private readonly EventStateContainer _eventStateContainer;
 
         private readonly IMapper _mapper;
-
-        private IJSObjectReference _toDoModule;
-        private IJSObjectReference _eventModule;
 
         private readonly JsonSerializerOptions _options = new() { PropertyNameCaseInsensitive = true };
 
@@ -38,22 +37,11 @@ namespace Couple.Client.Services
                             EventStateContainer eventStateContainer,
                             IMapper mapper)
         {
+            _js = js;
             _httpClient = httpClient;
             _toDoStateContainer = toDoStateContainer;
             _eventStateContainer = eventStateContainer;
             _mapper = mapper;
-            Initialization = InitializeAsync(js);
-        }
-
-        public Task Initialization { get; }
-
-        private async Task InitializeAsync(IJSRuntime js)
-        {
-            var toDoModuleTask = js.InvokeAsync<IJSObjectReference>("import", "./ToDo.razor.js").AsTask();
-            var eventModuleTask = js.InvokeAsync<IJSObjectReference>("import", "./Event.razor.js").AsTask();
-            await Task.WhenAll(toDoModuleTask, eventModuleTask);
-            _toDoModule = toDoModuleTask.Result;
-            _eventModule = eventModuleTask.Result;
         }
 
         public async Task SynchronizeAsync()
@@ -64,18 +52,18 @@ namespace Couple.Client.Services
                 switch (item.DataType)
                 {
                     case DataType.ToDo when item.Function == Function.Create:
-                        await _toDoModule.InvokeVoidAsync("add", JsonSerializer.Deserialize<ToDoModel>(item.Content, _options));
+                        await _js.InvokeVoidAsync("addToDo", JsonSerializer.Deserialize<ToDoModel>(item.Content, _options));
                         break;
                     case DataType.ToDo when item.Function == Function.Update:
-                        await _toDoModule.InvokeVoidAsync("update", JsonSerializer.Deserialize<ToDoModel>(item.Content, _options));
+                        await _js.InvokeVoidAsync("updateToDo", JsonSerializer.Deserialize<ToDoModel>(item.Content, _options));
                         break;
                     case DataType.ToDo when item.Function == Function.Delete:
-                        await _toDoModule.InvokeVoidAsync("remove", JsonSerializer.Deserialize<Guid>(item.Content, _options));
+                        await _js.InvokeVoidAsync("removeToDo", JsonSerializer.Deserialize<Guid>(item.Content, _options));
                         break;
                     case DataType.Calendar when item.Function == Function.Create:
                     {
                         var toCreate = JsonSerializer.Deserialize<CreateEventDto>(item.Content, _options);
-                        await _eventModule.InvokeVoidAsync("add",
+                        await _js.InvokeVoidAsync("addEvent",
                             _mapper.Map<EventModel>(toCreate.Event),
                             toCreate.Added);
                         break;
@@ -83,7 +71,7 @@ namespace Couple.Client.Services
                     case DataType.Calendar when item.Function == Function.Update:
                     {
                         var toUpdate = JsonSerializer.Deserialize<UpdateEventDto>(item.Content, _options);
-                        await _eventModule.InvokeVoidAsync("update",
+                        await _js.InvokeVoidAsync("updateEvent",
                             _mapper.Map<EventModel>(toUpdate.Event),
                             toUpdate.Added,
                             _mapper.Map<List<ToDoModel>>(toUpdate.Removed));
@@ -91,7 +79,7 @@ namespace Couple.Client.Services
                     }
                     case DataType.Calendar when item.Function == Function.Delete:
                     {
-                        await _eventModule.InvokeVoidAsync("remove", JsonSerializer.Deserialize<Guid>(item.Content, _options));
+                        await _js.InvokeVoidAsync("removeEvent", JsonSerializer.Deserialize<Guid>(item.Content, _options));
                         break;
                     }
                     default:
@@ -111,11 +99,11 @@ namespace Couple.Client.Services
                 await _httpClient.DeleteAsJsonAsync($"api/Changes", idsToDelete);
             }
 
-            var toDosTask = _toDoModule.InvokeAsync<List<ToDoModel>>("getAll").AsTask();
-            var eventsTask = _eventModule.InvokeAsync<List<EventModel>>("getAll").AsTask();
+            var toDosTask = _js.InvokeAsync<List<ToDoModel>>("getAllToDos").AsTask();
+            var eventsTask = _js.InvokeAsync<List<EventModel>>("getAllEvents").AsTask();
             await Task.WhenAll(toDosTask, eventsTask);
-            ToDoStateContainer.ToDos = toDosTask.Result;
-            EventStateContainer.SetEvents(eventsTask.Result);
+            _toDoStateContainer.ToDos = toDosTask.Result;
+            _eventStateContainer.SetEvents(eventsTask.Result);
         }
     }
 }

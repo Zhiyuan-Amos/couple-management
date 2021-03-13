@@ -42,11 +42,8 @@ namespace Couple.Client.Pages.Calendar
 
             EventStateContainer.OnChange += StateHasChanged;
 
-            await Js.InvokeAsync<IJSObjectReference>("import", "./Event.razor.js")
-                .AsTask()
-                .ContinueWith(moduleTask => moduleTask.Result.InvokeAsync<List<EventModel>>("getAll").AsTask())
-                .Unwrap()
-                .ContinueWith(eventsTask => EventStateContainer.SetEvents(eventsTask.Result));
+            var events = await Js.InvokeAsync<List<EventModel>>("getAllEvents").AsTask();
+            EventStateContainer.SetEvents(events);
         }
 
         public void Dispose() => EventStateContainer.OnChange -= StateHasChanged;

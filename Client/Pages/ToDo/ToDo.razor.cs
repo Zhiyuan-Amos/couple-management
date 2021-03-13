@@ -46,11 +46,8 @@ namespace Couple.Client.Pages.ToDo
         {
             ToDoStateContainer.OnChange += StateHasChanged;
 
-            await Js.InvokeAsync<IJSObjectReference>("import", "./ToDo.razor.js")
-                .AsTask()
-                .ContinueWith(moduleTask => moduleTask.Result.InvokeAsync<List<ToDoModel>>("getAll").AsTask())
-                .Unwrap()
-                .ContinueWith(toDosTask => ToDoStateContainer.ToDos = toDosTask.Result);
+            var toDos = await Js.InvokeAsync<List<ToDoModel>>("getAllToDos").AsTask();
+            ToDoStateContainer.ToDos = toDos;
         }
 
         public void Dispose() => ToDoStateContainer.OnChange -= StateHasChanged;

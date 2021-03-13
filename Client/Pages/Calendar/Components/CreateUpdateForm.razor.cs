@@ -47,20 +47,13 @@ namespace Couple.Client.Pages.Calendar.Components
 
         private AnimatedCategoryTreeView CategoryListView { get; set; }
 
-        private IJSObjectReference _module;
-
         protected override async Task OnAfterRenderAsync(bool firstRender)
         {
             if (firstRender)
             {
-                await Js.InvokeAsync<IJSObjectReference>("import", "./CreateUpdateForm.razor.js").AsTask()
-                    .ContinueWith(moduleTask =>
-                    {
-                         _module = moduleTask.Result;
-                         var disableStartInput = _module.InvokeVoidAsync("disableInput", StartWrapperRef).AsTask();
-                         var disableEndInput = _module.InvokeVoidAsync("disableInput", EndWrapperRef).AsTask();
-                         return Task.WhenAll(disableStartInput, disableEndInput);
-                    });
+                var disableStartInput = Js.InvokeVoidAsync("disableInput", StartWrapperRef).AsTask();
+                var disableEndInput = Js.InvokeVoidAsync("disableInput", EndWrapperRef).AsTask();
+                await Task.WhenAll(disableStartInput, disableEndInput);
             }
         }
 
@@ -73,7 +66,7 @@ namespace Couple.Client.Pages.Calendar.Components
             StartDoubleClick = !StartDoubleClick;
             if (!StartDoubleClick)
             {
-                await _module.InvokeVoidAsync("togglePicker", StartWrapperRef);
+                await Js.InvokeVoidAsync("togglePicker", StartWrapperRef);
             }
         }
 
@@ -84,7 +77,7 @@ namespace Couple.Client.Pages.Calendar.Components
             EndDoubleClick = !EndDoubleClick;
             if (!EndDoubleClick)
             {
-                await _module.InvokeVoidAsync("togglePicker", EndWrapperRef);
+                await Js.InvokeVoidAsync("togglePicker", EndWrapperRef);
             }
         }
 
