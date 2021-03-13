@@ -28,9 +28,7 @@ namespace Couple.Client
 
             var host = builder.Build();
 
-            // var synchronizer = host.Services.GetRequiredService<Synchronizer>();
-            // No await to prevent app from being blocked. It's not a big deal if it fails to execute successfully
-            // synchronizer.SynchronizeAsync();
+            _ = host.Services.GetRequiredService<Synchronizer>();
 
             await host.RunAsync();
         }
