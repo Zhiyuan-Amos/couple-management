@@ -16,16 +16,13 @@ namespace Couple.Client.Pages.ToDo
 
         protected CreateToDoViewModel ToCreate { get; set; }
 
-        private IJSObjectReference _module;
-
-        protected override async Task OnInitializedAsync()
+        protected override void OnInitialized()
         {
             ToCreate = new()
             {
                 Text = "",
                 Category = SelectedCategoryStateContainer.SelectedCategory,
             };
-            _module = await Js.InvokeAsync<IJSObjectReference>("import", "./ToDo.razor.js");
         }
 
         protected override async Task Save()
@@ -38,10 +35,9 @@ namespace Couple.Client.Pages.ToDo
                 Category = ToCreate.Category,
                 CreatedOn = DateTime.Now,
             };
-            await _module.InvokeVoidAsync("add", toPersist);
+            await Js.InvokeVoidAsync("addToDo", toPersist);
 
-            var toDos = await _module.InvokeAsync<List<ToDoModel>>("getAll");
-            ToDoStateContainer.ToDos = toDos;
+            ToDoStateContainer.ToDos = await Js.InvokeAsync<List<ToDoModel>>("getAllToDos");
             SelectedCategoryStateContainer.SelectedCategory = ToCreate.Category;
             NavigationManager.NavigateTo("/todo");
 

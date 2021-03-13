@@ -32,10 +32,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="AnthonyChu.AzureStaticWebApps.Blazor.Authentication" Version="0.0.2-preview" />
     <PackageReference Include="AutoMapper" Version="10.1.1" />
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="8.1.1" />
-    <PackageReference Include="Microsoft.AspNetCore.Components.Authorization" Version="5.0.2" />
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="5.0.2" />
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="5.0.2" PrivateAssets="all" />
     <PackageReference Include="System.Net.Http.Json" Version="5.0.0" />
@@ -48,5 +46,29 @@
 
   <ItemGroup>
     <ServiceWorker Include="wwwroot\service-worker.js" PublishedContent="wwwroot\service-worker.published.js" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <_ContentIncludedByDefault Remove="Pages\ToDo\Components\AnimatedCategoryListView.razor" />
+    <_ContentIncludedByDefault Remove="Pages\ToDo\Components\AnimatedCategoryListViewWithAdd.razor" />
+    <_ContentIncludedByDefault Remove="Pages\ToDo\Components\CategoryAddBar.razor" />
+    <_ContentIncludedByDefault Remove="Pages\ToDo\Components\CategoryListView.razor" />
+    <_ContentIncludedByDefault Remove="Pages\ToDo\Components\CategoryTopBar.razor" />
+    <_ContentIncludedByDefault Remove="Pages\ToDo\Components\CreateUpdateForm.razor" />
+    <_ContentIncludedByDefault Remove="Pages\ToDo\Components\CreateUpdateTopBar.razor" />
+    <_ContentIncludedByDefault Remove="Pages\ToDo\Components\ToDoListView.razor" />
+    <_ContentIncludedByDefault Remove="Pages\ToDo\Components\ToDoTopBar.razor" />
+    <_ContentIncludedByDefault Remove="Pages\ToDo\CreateToDo.razor" />
+    <_ContentIncludedByDefault Remove="Pages\ToDo\ToDo.razor" />
+    <_ContentIncludedByDefault Remove="Pages\ToDo\UpdateToDo.razor" />
+    <_ContentIncludedByDefault Remove="Pages\Calendar\Calendar.razor" />
+    <_ContentIncludedByDefault Remove="Pages\Calendar\Components\AnimatedCategoryTreeView.razor" />
+    <_ContentIncludedByDefault Remove="Pages\Calendar\Components\CalendarTopBar.razor" />
+    <_ContentIncludedByDefault Remove="Pages\Calendar\Components\CategoryTreeViewContent.razor" />
+    <_ContentIncludedByDefault Remove="Pages\Calendar\Components\CategoryTreeViewTopBar.razor" />
+    <_ContentIncludedByDefault Remove="Pages\Calendar\Components\CreateUpdateForm.razor" />
+    <_ContentIncludedByDefault Remove="Pages\Calendar\Components\CreateUpdateTopBar.razor" />
+    <_ContentIncludedByDefault Remove="Pages\Calendar\CreateEvent.razor" />
+    <_ContentIncludedByDefault Remove="Pages\Calendar\UpdateEvent.razor" />
   </ItemGroup>
 </Project>

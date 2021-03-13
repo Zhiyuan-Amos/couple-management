@@ -1,10 +1,13 @@
 using AutoMapper;
 using Couple.Client.Infrastructure;
+using Couple.Client.Model.Calendar;
 using Couple.Client.States.Calendar;
 using Couple.Client.ViewModel.Calendar;
 using Microsoft.AspNetCore.Components;
+using Microsoft.JSInterop;
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Couple.Client.Pages.Calendar
 {
@@ -19,6 +22,9 @@ namespace Couple.Client.Pages.Calendar
         [Inject]
         private IMapper Mapper { get; init; }
 
+        [Inject]
+        private IJSRuntime Js { get; init; }
+
         [Parameter]
         public DateTime Selected { get; set; }
 
@@ -26,7 +32,7 @@ namespace Couple.Client.Pages.Calendar
             ? Mapper.Map<List<EventViewModel>>(events)
             : new();
 
-        protected override void OnInitialized()
+        protected override async Task OnInitializedAsync()
         {
             if (Selected == new DateTime())
             {
@@ -35,6 +41,9 @@ namespace Couple.Client.Pages.Calendar
             }
 
             EventStateContainer.OnChange += StateHasChanged;
+
+            var events = await Js.InvokeAsync<List<EventModel>>("getAllEvents").AsTask();
+            EventStateContainer.SetEvents(events);
         }
 
         public void Dispose() => EventStateContainer.OnChange -= StateHasChanged;

@@ -47,15 +47,13 @@ namespace Couple.Client.Pages.Calendar.Components
 
         private AnimatedCategoryTreeView CategoryListView { get; set; }
 
-        private IJSObjectReference _module;
-
         protected override async Task OnAfterRenderAsync(bool firstRender)
         {
             if (firstRender)
             {
-                _module = await Js.InvokeAsync<IJSObjectReference>("import", "./CreateUpdateForm.razor.js");
-                await _module.InvokeVoidAsync("disableInput", StartWrapperRef);
-                await _module.InvokeVoidAsync("disableInput", EndWrapperRef);
+                var disableStartInput = Js.InvokeVoidAsync("disableInput", StartWrapperRef).AsTask();
+                var disableEndInput = Js.InvokeVoidAsync("disableInput", EndWrapperRef).AsTask();
+                await Task.WhenAll(disableStartInput, disableEndInput);
             }
         }
 
@@ -68,7 +66,7 @@ namespace Couple.Client.Pages.Calendar.Components
             StartDoubleClick = !StartDoubleClick;
             if (!StartDoubleClick)
             {
-                await _module.InvokeVoidAsync("togglePicker", StartWrapperRef);
+                await Js.InvokeVoidAsync("togglePicker", StartWrapperRef);
             }
         }
 
@@ -79,7 +77,7 @@ namespace Couple.Client.Pages.Calendar.Components
             EndDoubleClick = !EndDoubleClick;
             if (!EndDoubleClick)
             {
-                await _module.InvokeVoidAsync("togglePicker", EndWrapperRef);
+                await Js.InvokeVoidAsync("togglePicker", EndWrapperRef);
             }
         }
 
@@ -106,13 +104,13 @@ namespace Couple.Client.Pages.Calendar.Components
         protected async Task ShowToDoSelection()
         {
             await CategoryListView.ShowAsync();
-            await ((IJSInProcessRuntime)Js).InvokeVoidAsync("setScroll", false);
+            ((IJSInProcessRuntime)Js).InvokeVoid("setScroll", false);
         }
 
         protected async Task CloseToDoSelection()
         {
             await CategoryListView.HideAsync();
-            await ((IJSInProcessRuntime)Js).InvokeVoidAsync("setScroll", true);
+            ((IJSInProcessRuntime)Js).InvokeVoid("setScroll", true);
         }
 
         protected Task Remove(ToDoViewModel toRemove) => RemovedChanged.InvokeAsync(toRemove);

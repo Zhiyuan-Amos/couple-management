@@ -1,5 +1,6 @@
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
+using Couple.Client.Model.ToDo;
 using Couple.Client.Pages.ToDo.Components;
 using Couple.Client.States.ToDo;
 using Couple.Client.ViewModel.ToDo;
@@ -41,9 +42,12 @@ namespace Couple.Client.Pages.ToDo
                     .ToList()
                 : new();
 
-        protected override void OnInitialized()
+        protected override async Task OnInitializedAsync()
         {
             ToDoStateContainer.OnChange += StateHasChanged;
+
+            var toDos = await Js.InvokeAsync<List<ToDoModel>>("getAllToDos").AsTask();
+            ToDoStateContainer.ToDos = toDos;
         }
 
         public void Dispose() => ToDoStateContainer.OnChange -= StateHasChanged;
@@ -54,7 +58,7 @@ namespace Couple.Client.Pages.ToDo
         {
             IsDropdown = !IsDropdown;
             await CategoryListView.ToggleAsync();
-            await ((IJSInProcessRuntime)Js).InvokeVoidAsync("toggleScroll");
+            ((IJSInProcessRuntime)Js).InvokeVoid("toggleScroll");
         }
 
         protected async Task Select(string category)
@@ -63,7 +67,7 @@ namespace Couple.Client.Pages.ToDo
 
             IsDropdown = false;
             await CategoryListView.HideAsync();
-            await ((IJSInProcessRuntime)Js).InvokeVoidAsync("setScroll", true);
+            ((IJSInProcessRuntime)Js).InvokeVoid("setScroll", true);
         }
     }
 }

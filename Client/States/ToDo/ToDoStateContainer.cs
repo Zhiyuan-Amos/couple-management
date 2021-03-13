@@ -7,10 +7,10 @@ namespace Couple.Client.States.ToDo
 {
     public class ToDoStateContainer : Notifier
     {
-        private List<ToDoModel> _toDos;
-        private Dictionary<string, List<ToDoModel>> _categoryToToDos;
-        private Dictionary<Guid, ToDoModel> _idToToDo;
-        private List<string> _categories;
+        private List<ToDoModel> _toDos = new();
+        private Dictionary<string, List<ToDoModel>> _categoryToToDos = new();
+        private Dictionary<Guid, ToDoModel> _idToToDo = new();
+        private List<string> _categories = new();
 
         public List<ToDoModel> ToDos
         {
