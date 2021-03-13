@@ -24,8 +24,7 @@ namespace Couple.Client
                 .AddSingleton<SelectedCategoryStateContainer>()
                 .AddSingleton<EventStateContainer>()
                 .AddSingleton<Synchronizer>()
-                .AddAutoMapper(typeof(ToDoProfile), typeof(EventProfile))
-                .AddOptions();
+                .AddAutoMapper(typeof(ToDoProfile), typeof(EventProfile));
 
             var host = builder.Build();
 
