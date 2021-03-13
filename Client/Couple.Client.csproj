@@ -6,7 +6,6 @@
     <RestoreSources>$(RestoreSources);.nuget\packages;https://api.nuget.org/v3/index.json</RestoreSources>
     <BlazorEnableTimeZoneSupport>true</BlazorEnableTimeZoneSupport>
     <InvariantGlobalization>false</InvariantGlobalization>
-    <BlazorCacheBootResources>false</BlazorCacheBootResources>
   </PropertyGroup>
 
   <ItemGroup>
