@@ -45,9 +45,7 @@ namespace Couple.Client.Pages.ToDo
         protected override async Task OnInitializedAsync()
         {
             ToDoStateContainer.OnChange += StateHasChanged;
-
-            var toDos = await Js.InvokeAsync<List<ToDoModel>>("getAllToDos").AsTask();
-            ToDoStateContainer.ToDos = toDos;
+            ToDoStateContainer.ToDos = await Js.InvokeAsync<List<ToDoModel>>("getAllToDos").AsTask();
         }
 
         public void Dispose() => ToDoStateContainer.OnChange -= StateHasChanged;
