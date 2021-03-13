@@ -1,4 +1,3 @@
-using AzureStaticWebApps.Blazor.Authentication;
 using Couple.Client.Profiles;
 using Couple.Client.Services;
 using Couple.Client.States.Calendar;
@@ -19,15 +18,14 @@ namespace Couple.Client
             builder.RootComponents.Add<App>("#app");
 
             builder.Services.AddTelerikBlazor()
-                .AddTransient(_ => new HttpClient { BaseAddress = new Uri(builder.Configuration["API_Prefix"] ?? builder.HostEnvironment.BaseAddress) })
+                .AddTransient(_ => new HttpClient
+                    {BaseAddress = new Uri(builder.Configuration["API_Prefix"] ?? builder.HostEnvironment.BaseAddress)})
                 .AddSingleton<ToDoStateContainer>()
                 .AddSingleton<SelectedCategoryStateContainer>()
                 .AddSingleton<EventStateContainer>()
                 .AddSingleton<Synchronizer>()
-                .AddStaticWebAppsAuthentication()
                 .AddAutoMapper(typeof(ToDoProfile), typeof(EventProfile))
-                .AddOptions()
-                .AddAuthorizationCore();
+                .AddOptions();
 
             var host = builder.Build();
 
