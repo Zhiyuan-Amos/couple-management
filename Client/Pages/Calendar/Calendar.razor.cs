@@ -42,7 +42,7 @@ namespace Couple.Client.Pages.Calendar
 
             EventStateContainer.OnChange += StateHasChanged;
 
-            var events = await Js.InvokeAsync<List<EventModel>>("getAllEvents").AsTask();
+            var events = await Js.InvokeAsync<List<EventModel>>("getAllEvents");
             EventStateContainer.SetEvents(events);
         }
 
