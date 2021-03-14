@@ -23,7 +23,7 @@
       "statusCode": "404"
     },
     {
-      "route": "/.auth/complete",
+      "route": "/manifest.json",
       "allowedRoles": [
         "anonymous"
       ]
