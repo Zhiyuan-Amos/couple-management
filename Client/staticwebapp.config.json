@@ -23,6 +23,12 @@
       "statusCode": "404"
     },
     {
+      "route": "/.auth/complete",
+      "allowedRoles": [
+        "anonymous"
+      ]
+    },
+    {
       "route": "/login",
       "rewrite": "/.auth/login/facebook"
     },
