@@ -32,7 +32,7 @@ namespace Couple.Client.Pages.Calendar
             ? Mapper.Map<List<EventViewModel>>(events)
             : new();
 
-        protected override async Task OnInitializedAsync()
+        protected override void OnInitialized()
         {
             if (Selected == new DateTime())
             {
@@ -41,9 +41,15 @@ namespace Couple.Client.Pages.Calendar
             }
 
             EventStateContainer.OnChange += StateHasChanged;
+        }
 
-            var events = await Js.InvokeAsync<List<EventModel>>("getAllEvents");
-            EventStateContainer.SetEvents(events);
+        protected override async Task OnAfterRenderAsync(bool firstRender)
+        {
+            if (firstRender)
+            {
+                var events = await Js.InvokeAsync<List<EventModel>>("getAllEvents");
+                EventStateContainer.SetEvents(events);
+            }
         }
 
         public void Dispose() => EventStateContainer.OnChange -= StateHasChanged;

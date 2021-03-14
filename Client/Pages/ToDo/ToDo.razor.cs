@@ -42,10 +42,17 @@ namespace Couple.Client.Pages.ToDo
                     .ToList()
                 : new();
 
-        protected override async Task OnInitializedAsync()
+        protected override void OnInitialized()
         {
             ToDoStateContainer.OnChange += StateHasChanged;
-            ToDoStateContainer.ToDos = await Js.InvokeAsync<List<ToDoModel>>("getAllToDos");
+        }
+
+        protected override async Task OnAfterRenderAsync(bool firstRender)
+        {
+            if (firstRender)
+            {
+                ToDoStateContainer.ToDos = await Js.InvokeAsync<List<ToDoModel>>("getAllToDos");
+            }
         }
 
         public void Dispose() => ToDoStateContainer.OnChange -= StateHasChanged;
