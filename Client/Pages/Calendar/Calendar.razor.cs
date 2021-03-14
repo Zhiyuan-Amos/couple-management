@@ -43,15 +43,6 @@ namespace Couple.Client.Pages.Calendar
             EventStateContainer.OnChange += StateHasChanged;
         }
 
-        protected override async Task OnAfterRenderAsync(bool firstRender)
-        {
-            if (firstRender)
-            {
-                var events = await Js.InvokeAsync<List<EventModel>>("getAllEvents");
-                EventStateContainer.SetEvents(events);
-            }
-        }
-
         public void Dispose() => EventStateContainer.OnChange -= StateHasChanged;
 
         protected void DateChangedHandler(DateTime newDateValue) => NavigationManager.NavigateTo($"/calendar/{newDateValue.ToCalendarUrl()}");
