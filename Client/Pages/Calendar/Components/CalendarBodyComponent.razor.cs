@@ -3,11 +3,10 @@ using Couple.Client.ViewModel.Calendar;
 using Microsoft.AspNetCore.Components;
 using System;
 using System.Collections.Generic;
-using System.Threading.Tasks;
 
 namespace Couple.Client.Pages.Calendar.Components
 {
-    public partial class CalendarTableBodyComponent
+    public partial class CalendarBodyComponent
     {
         [Inject] private SelectedDateStateContainer SelectedDateStateContainer { get; init; }
 
