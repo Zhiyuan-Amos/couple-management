@@ -17,6 +17,8 @@ namespace Couple.Client.Pages.Calendar.Components
         [Inject] private SelectedDateStateContainer SelectedDateStateContainer { get; init; }
         [Inject] private IJSRuntime Js { get; init; }
 
+        private const int WeeksOnCalendar = 6;
+
         private HorizontalSwipeHandler _horizontalSwipeHandler;
 
         protected override void OnInitialized()
@@ -30,12 +32,9 @@ namespace Couple.Client.Pages.Calendar.Components
             if (firstRender)
             {
                 ((IJSInProcessRuntime) Js).InvokeVoid("initializeCarousel");
-                var calendarHeaderHeight = ((IJSInProcessRuntime) Js).Invoke<double>("getCalendarHeaderHeight");
                 var calendarBodyHeight = ((IJSInProcessRuntime) Js).Invoke<double>("getCalendarBodyHeight");
 
-                var collapsedHeight = calendarHeaderHeight + calendarBodyHeight / 6;
-                var expandedHeight = calendarHeaderHeight + calendarBodyHeight;
-                AfterRenderCallback.Invoke(collapsedHeight, expandedHeight);
+                AfterRenderCallback.Invoke(calendarBodyHeight / WeeksOnCalendar, calendarBodyHeight);
             }
         }
 
