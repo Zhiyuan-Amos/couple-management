@@ -1,30 +1,13 @@
 @page "/calendar/{selected:datetime?}"
 @using Couple.Client.Pages.Calendar.Components
-@implements IDisposable
 
-<CalendarTopBar />
-<div class="d-flex justify-content-center border-bottom">
-    <TelerikCalendar DateChanged="@DateChangedHandler"
-                     Value="@Selected"
-                     ValueChanged="@ValueChangedHandler"
-                     View="CalendarView.Month"
-                     SelectionMode="@CalendarSelectionMode.Single" />
+<CalendarTopBar/>
+<div class="h-100">
+    <CalendarCarouselComponent Style="@GetCalendarStyle()"
+                               AfterRenderCallback="@SetCalendarHeight"/>
+    <CalendarEventListComponent Style="@GetListStyle()"
+                                OnSwipeUpCallback="@SwipeUp"
+                                OnSwipeDownCallback="@SwipeDown"/>
 </div>
-<div>
-    <TelerikListView Data="@Events">
-        <Template>
-            <div class="px-3 py-2 border-bottom"
-                 @onclick="@(_ => EditEvent(context))">
-                <h6 class="mb-1">
-                    @context.Title
-                </h6>
-                <div class="text-black-50">
-                    @context.Start.ToString("HH:mm") - @context.End.ToString("HH:mm")
-                </div>
-            </div>
-        </Template>
-    </TelerikListView>
-</div>
-<AddIcon OnClickCallback="@AddEvent" />
-<BottomBar />
-
+<AddIcon OnClickCallback="@AddEvent"/>
+<BottomBar/>

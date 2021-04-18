@@ -1,0 +1,31 @@
+<table class="table table-borderless mb-0">
+    <thead id="calendar-head">
+    <tr>
+        <td>S</td>
+        <td>M</td>
+        <td>T</td>
+        <td>W</td>
+        <td>T</td>
+        <td>F</td>
+        <td>S</td>
+    </tr>
+    </thead>
+</table>
+<div id="calendar-carousel" class="carousel slide">
+    <div class="carousel-inner">
+        <div class="carousel-item">
+            1
+        </div>
+        <div class="carousel-item active">
+            <div style="@Style">
+                <div id="calendar-body"
+                     class="container text-center">
+                    <CalendarTableBodyComponent Cells="@GetCells(DateTime.Today.Year, DateTime.Today.Month)"/>
+                </div>
+            </div>
+        </div>
+        <div class="carousel-item">
+            3
+        </div>
+   </div>
+</div>

@@ -23,6 +23,7 @@ namespace Couple.Client
                 .AddSingleton<ToDoStateContainer>()
                 .AddSingleton<SelectedCategoryStateContainer>()
                 .AddSingleton<EventStateContainer>()
+                .AddSingleton<SelectedDateStateContainer>()
                 .AddSingleton<Synchronizer>()
                 .AddAutoMapper(typeof(ToDoProfile), typeof(EventProfile));
 
