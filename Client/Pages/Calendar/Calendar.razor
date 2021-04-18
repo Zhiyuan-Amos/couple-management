@@ -5,7 +5,7 @@
 <div class="h-100">
     <CalendarHeaderComponent/>
     <CalendarCarouselComponent Style="@GetCalendarStyle()"
-                               AfterRenderCallback="@SetCalendarHeight"/>
+                               AfterRenderCallback="@SetCalendarBodyHeight"/>
     <CalendarEventListComponent Style="@GetListStyle()"
                                 OnSwipeUpCallback="@SwipeUp"
                                 OnSwipeDownCallback="@SwipeDown"/>

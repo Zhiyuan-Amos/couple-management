@@ -13,22 +13,21 @@ namespace Couple.Client.Pages.Calendar
         [Parameter] public DateTime Selected { get; set; }
 
         private bool IsListViewExpanded { get; set; }
-        private bool IsInitialStyle { get; set; } = true;
 
-        private string CollapsedTableStyle => $"max-height: {CollapsedTableHeight}px; " +
+        private bool HasExpanded { get; set; }
+        private double CollapsedBodyHeight { get; set; }
+        private double ExpandedBodyHeight { get; set; }
+
+        // Does not have `transition` property so that the calendar appears without transition on page load
+        private string InitialBodyStyle => $"max-height: {ExpandedBodyHeight}px;";
+        private string CollapsedBodyStyle => $"max-height: {CollapsedBodyHeight}px; " +
                                               "overflow-y: hidden; " +
                                               "transition: 0.2s; " +
                                               "transition-timing-function: linear;";
-
-        private string ExpandedTableStyle => $"max-height: {ExpandedTableHeight}px; " +
+        private string ExpandedBodyStyle => $"max-height: {ExpandedBodyHeight}px; " +
                                              "overflow-y: hidden; " +
                                              "transition: 0.2s; " +
                                              "transition-timing-function: linear;";
-
-        private double CollapsedTableHeight { get; set; }
-        private double ExpandedTableHeight { get; set; }
-
-        private string InitialStyle => $"max-height: {ExpandedTableHeight}px;";
 
         protected override void OnInitialized()
         {
@@ -39,31 +38,31 @@ namespace Couple.Client.Pages.Calendar
             }
         }
 
-        private void SetCalendarHeight(double collapsedHeight, double expandedHeight)
+        private void SetCalendarBodyHeight(double collapsedBodyHeight, double expandedBodyHeight)
         {
-            CollapsedTableHeight = collapsedHeight;
-            ExpandedTableHeight = expandedHeight;
+            CollapsedBodyHeight = collapsedBodyHeight;
+            ExpandedBodyHeight = expandedBodyHeight;
             StateHasChanged();
         }
 
         private string GetCalendarStyle()
         {
-            if (IsInitialStyle)
+            if (!HasExpanded)
             {
-                return InitialStyle;
+                return InitialBodyStyle;
             }
 
-            return IsListViewExpanded ? CollapsedTableStyle : ExpandedTableStyle;
+            return IsListViewExpanded ? CollapsedBodyStyle : ExpandedBodyStyle;
         }
 
         private string GetListStyle() => IsListViewExpanded
-            ? $"min-height: calc(100% - {CollapsedTableHeight}px); max-height: calc(100% - {CollapsedTableHeight}px); overflow-y: scroll; transition: 0.2s; transition-timing-function: linear;"
-            : $"min-height: calc(100% - {ExpandedTableHeight}px); max-height: calc(100% - {ExpandedTableHeight}px); overflow-y: hidden; transition: 0.2s; transition-timing-function: linear;";
+            ? $"min-height: calc(100% - {CollapsedBodyHeight}px); max-height: calc(100% - {CollapsedBodyHeight}px); overflow-y: scroll; transition: 0.2s; transition-timing-function: linear;"
+            : $"min-height: calc(100% - {ExpandedBodyHeight}px); max-height: calc(100% - {ExpandedBodyHeight}px); overflow-y: hidden; transition: 0.2s; transition-timing-function: linear;";
 
 
         private void SwipeUp()
         {
-            IsInitialStyle = false;
+            HasExpanded = true;
 
             if (!IsListViewExpanded)
             {
@@ -75,8 +74,6 @@ namespace Couple.Client.Pages.Calendar
 
         private void SwipeDown()
         {
-            IsInitialStyle = false;
-
             if (IsListViewExpanded && ((IJSInProcessRuntime) Js).Invoke<bool>("isListViewTop"))
             {
                 IsListViewExpanded = false;
