@@ -30,11 +30,11 @@ namespace Couple.Client.Pages.Calendar.Components
             if (firstRender)
             {
                 ((IJSInProcessRuntime) Js).InvokeVoid("initializeCarousel");
+                var calendarHeaderHeight = ((IJSInProcessRuntime) Js).Invoke<double>("getCalendarHeaderHeight");
+                var calendarBodyHeight = ((IJSInProcessRuntime) Js).Invoke<double>("getCalendarBodyHeight");
 
-                var collapsedHeight = ((IJSInProcessRuntime) Js).Invoke<double>("getTableBodyHeight") / 6
-                                      + ((IJSInProcessRuntime) Js).Invoke<double>("getTableHeadHeight");
-                var expandedHeight = ((IJSInProcessRuntime) Js).Invoke<double>("getTableBodyHeight")
-                                     + ((IJSInProcessRuntime) Js).Invoke<double>("getTableHeadHeight");
+                var collapsedHeight = calendarHeaderHeight + calendarBodyHeight / 6;
+                var expandedHeight = calendarHeaderHeight + calendarBodyHeight;
                 AfterRenderCallback.Invoke(collapsedHeight, expandedHeight);
             }
         }
