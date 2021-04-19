@@ -20,8 +20,8 @@ namespace Couple.Client.Pages.Calendar.Components
         [Inject] private IJSRuntime Js { get; init; }
 
         [Parameter] public string Style { get; set; }
-        [Parameter] public Action OnSwipeUpCallback { get; set; }
-        [Parameter] public Action OnSwipeDownCallback { get; set; }
+        [Parameter] public Action OnSwipeUpCallback { get; init; }
+        [Parameter] public Action OnSwipeDownCallback { get; init; }
 
         private VerticalSwipeHandler _verticalSwipeHandler;
 

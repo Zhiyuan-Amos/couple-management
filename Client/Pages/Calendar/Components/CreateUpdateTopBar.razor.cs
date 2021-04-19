@@ -6,7 +6,7 @@ namespace Couple.Client.Pages.Calendar.Components
     {
         [Inject] private NavigationManager NavigationManager { get; init; }
 
-        [Parameter] public EventCallback OnClickCallback { get; set; }
+        [Parameter] public EventCallback OnClickCallback { get; init; }
 
         [Parameter] public string Title { get; set; }
 

@@ -12,7 +12,7 @@ namespace Couple.Client.Pages.Calendar.Components
     public partial class CalendarCarouselComponent
     {
         [Parameter] public string Style { get; set; }
-        [Parameter] public Action<double, double> AfterRenderCallback { get; set; }
+        [Parameter] public Action<double, double> AfterRenderCallback { get; init; }
 
         [Inject] private SelectedDateStateContainer SelectedDateStateContainer { get; init; }
         [Inject] private IJSRuntime Js { get; init; }
