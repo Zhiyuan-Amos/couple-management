@@ -1,4 +1,5 @@
 ﻿/*TODO: can be replaced with sass for bootstrap*/
-::deep .k-listview {
-    border: 0; /* border-0 */
+td {
+    text-align: center;
 }
+

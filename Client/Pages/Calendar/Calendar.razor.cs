@@ -1,58 +1,87 @@
-using AutoMapper;
 using Couple.Client.Infrastructure;
-using Couple.Client.Model.Calendar;
-using Couple.Client.States.Calendar;
-using Couple.Client.ViewModel.Calendar;
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
 using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 
 namespace Couple.Client.Pages.Calendar
 {
     public partial class Calendar
     {
-        [Inject]
-        private NavigationManager NavigationManager { get; init; }
+        [Inject] private NavigationManager NavigationManager { get; init; }
+        [Inject] private IJSRuntime Js { get; init; }
 
-        [Inject]
-        private EventStateContainer EventStateContainer { get; init; }
+        [Parameter] public DateTime Selected { get; set; }
 
-        [Inject]
-        private IMapper Mapper { get; init; }
+        private bool IsListViewExpanded { get; set; }
 
-        [Inject]
-        private IJSRuntime Js { get; init; }
+        private bool HasExpanded { get; set; }
+        private double CollapsedBodyHeight { get; set; }
+        private double ExpandedBodyHeight { get; set; }
 
-        [Parameter]
-        public DateTime Selected { get; set; }
+        // Does not have `transition` property so that the calendar appears without transition on page load
+        private string InitialBodyStyle => $"max-height: {ExpandedBodyHeight}px;";
+        private string CollapsedBodyStyle => $"max-height: {CollapsedBodyHeight}px; " +
+                                              "overflow-y: hidden; " +
+                                              "transition: 0.2s; " +
+                                              "transition-timing-function: linear;";
+        private string ExpandedBodyStyle => $"max-height: {ExpandedBodyHeight}px; " +
+                                             "overflow-y: hidden; " +
+                                             "transition: 0.2s; " +
+                                             "transition-timing-function: linear;";
 
-        protected IEnumerable<EventViewModel> Events => EventStateContainer.TryGetEvents(Selected, out var events)
-            ? Mapper.Map<List<EventViewModel>>(events)
-            : new();
-
-        protected override async Task OnInitializedAsync()
+        protected override void OnInitialized()
         {
             if (Selected == new DateTime())
             {
                 Selected = DateTime.Now.Date;
                 NavigationManager.NavigateTo($"/calendar/{Selected.ToCalendarUrl()}");
             }
-
-            EventStateContainer.OnChange += StateHasChanged;
-
-            var events = await Js.InvokeAsync<List<EventModel>>("getAllEvents");
-            EventStateContainer.SetEvents(events);
         }
 
-        public void Dispose() => EventStateContainer.OnChange -= StateHasChanged;
+        private void SetCalendarBodyHeight(double collapsedBodyHeight, double expandedBodyHeight)
+        {
+            CollapsedBodyHeight = collapsedBodyHeight;
+            ExpandedBodyHeight = expandedBodyHeight;
+            StateHasChanged();
+        }
 
-        protected void DateChangedHandler(DateTime newDateValue) => NavigationManager.NavigateTo($"/calendar/{newDateValue.ToCalendarUrl()}");
+        private string GetCalendarStyle()
+        {
+            if (!HasExpanded)
+            {
+                return InitialBodyStyle;
+            }
 
-        protected void ValueChangedHandler(DateTime newDateValue) => NavigationManager.NavigateTo($"/calendar/{newDateValue.ToCalendarUrl()}");
+            return IsListViewExpanded ? CollapsedBodyStyle : ExpandedBodyStyle;
+        }
 
-        protected void AddEvent() => NavigationManager.NavigateTo($"/calendar/create");
-        protected void EditEvent(EventViewModel selectedEvent) => NavigationManager.NavigateTo($"/calendar/{selectedEvent.Id}");
+        private string GetListStyle() => IsListViewExpanded
+            ? $"min-height: calc(100% - {CollapsedBodyHeight}px); max-height: calc(100% - {CollapsedBodyHeight}px); overflow-y: scroll; transition: 0.2s; transition-timing-function: linear;"
+            : $"min-height: calc(100% - {ExpandedBodyHeight}px); max-height: calc(100% - {ExpandedBodyHeight}px); overflow-y: hidden; transition: 0.2s; transition-timing-function: linear;";
+
+
+        private void SwipeUp()
+        {
+            HasExpanded = true;
+
+            if (!IsListViewExpanded)
+            {
+                IsListViewExpanded = true;
+            }
+
+            StateHasChanged();
+        }
+
+        private void SwipeDown()
+        {
+            if (IsListViewExpanded && ((IJSInProcessRuntime) Js).Invoke<bool>("isListViewTop"))
+            {
+                IsListViewExpanded = false;
+            }
+
+            StateHasChanged();
+        }
+
+        private void AddEvent() => NavigationManager.NavigateTo($"/calendar/create");
     }
 }
