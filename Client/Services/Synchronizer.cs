@@ -28,16 +28,16 @@ namespace Couple.Client.Services
 
         private readonly IMapper _mapper;
 
-        private readonly JsonSerializerOptions _options = new() { PropertyNameCaseInsensitive = true };
+        private readonly JsonSerializerOptions _options = new() {PropertyNameCaseInsensitive = true};
 
         private readonly Task _initialSynchronization;
 
         // See https://blog.stephencleary.com/2013/01/async-oop-2-constructors.html
         public Synchronizer(IJSRuntime js,
-                            HttpClient httpClient,
-                            ToDoStateContainer toDoStateContainer,
-                            EventStateContainer eventStateContainer,
-                            IMapper mapper)
+            HttpClient httpClient,
+            ToDoStateContainer toDoStateContainer,
+            EventStateContainer eventStateContainer,
+            IMapper mapper)
         {
             _js = js;
             _httpClient = httpClient;
@@ -55,13 +55,16 @@ namespace Couple.Client.Services
                 switch (item.DataType)
                 {
                     case DataType.ToDo when item.Function == Function.Create:
-                        await _js.InvokeVoidAsync("addToDo", JsonSerializer.Deserialize<ToDoModel>(item.Content, _options));
+                        await _js.InvokeVoidAsync("addToDo",
+                            JsonSerializer.Deserialize<ToDoModel>(item.Content, _options));
                         break;
                     case DataType.ToDo when item.Function == Function.Update:
-                        await _js.InvokeVoidAsync("updateToDo", JsonSerializer.Deserialize<ToDoModel>(item.Content, _options));
+                        await _js.InvokeVoidAsync("updateToDo",
+                            JsonSerializer.Deserialize<ToDoModel>(item.Content, _options));
                         break;
                     case DataType.ToDo when item.Function == Function.Delete:
-                        await _js.InvokeVoidAsync("removeToDo", JsonSerializer.Deserialize<Guid>(item.Content, _options));
+                        await _js.InvokeVoidAsync("removeToDo",
+                            JsonSerializer.Deserialize<Guid>(item.Content, _options));
                         break;
                     case DataType.Calendar when item.Function == Function.Create:
                     {
@@ -82,7 +85,8 @@ namespace Couple.Client.Services
                     }
                     case DataType.Calendar when item.Function == Function.Delete:
                     {
-                        await _js.InvokeVoidAsync("removeEvent", JsonSerializer.Deserialize<Guid>(item.Content, _options));
+                        await _js.InvokeVoidAsync("removeEvent",
+                            JsonSerializer.Deserialize<Guid>(item.Content, _options));
                         break;
                     }
                     default:

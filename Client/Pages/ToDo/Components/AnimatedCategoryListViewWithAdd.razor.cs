@@ -6,11 +6,9 @@ namespace Couple.Client.Pages.ToDo.Components
 {
     public partial class AnimatedCategoryListViewWithAdd
     {
-        [Parameter]
-        public EventCallback<string> OnConfirmCallback { get; init; }
+        [Parameter] public EventCallback<string> OnConfirmCallback { get; init; }
 
-        [Parameter]
-        public EventCallback OnCancelCallback { get; init; }
+        [Parameter] public EventCallback OnCancelCallback { get; init; }
 
         private TelerikAnimationContainer CategoryAnimationContainer { get; set; }
 

@@ -4,7 +4,7 @@
 
 <CreateUpdateTopBar Title="Create Event"
                     IsEnabled="@IsEnabled"
-                    OnClickCallback="@Save" />
+                    OnClickCallback="@Save"/>
 <CreateUpdateForm @bind-Title="@ToCreate.Title"
                   @bind-Start="@ToCreate.Start"
                   @bind-End="@ToCreate.End"
@@ -12,5 +12,4 @@
                   AddedChanged="@AddedChanged"
                   Removed="@new()"
                   RemovedChanged="@RemovedChanged"
-                  Total="@ToCreate.ToDos" />
-
+                  Total="@ToCreate.ToDos"/>

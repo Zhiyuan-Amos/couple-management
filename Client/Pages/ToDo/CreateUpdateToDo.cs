@@ -9,23 +9,17 @@ namespace Couple.Client.Pages.ToDo
 {
     public abstract class CreateUpdateToDoBase : ComponentBase
     {
-        [Inject]
-        protected HttpClient HttpClient { get; init; }
+        [Inject] protected HttpClient HttpClient { get; init; }
 
-        [Inject]
-        protected NavigationManager NavigationManager { get; init; }
+        [Inject] protected NavigationManager NavigationManager { get; init; }
 
-        [Inject]
-        protected ToDoStateContainer ToDoStateContainer { get; init; }
+        [Inject] protected ToDoStateContainer ToDoStateContainer { get; init; }
 
-        [Inject]
-        protected SelectedCategoryStateContainer SelectedCategoryStateContainer { get; init; }
+        [Inject] protected SelectedCategoryStateContainer SelectedCategoryStateContainer { get; init; }
 
-        [Inject]
-        protected IMapper Mapper { get; init; }
+        [Inject] protected IMapper Mapper { get; init; }
 
-        [Inject]
-        protected IJSRuntime Js { get; init; }
+        [Inject] protected IJSRuntime Js { get; init; }
 
         protected abstract Task Save();
 

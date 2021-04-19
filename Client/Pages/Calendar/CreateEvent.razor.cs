@@ -20,23 +20,17 @@ namespace Couple.Client.Pages.Calendar
 {
     public partial class CreateEvent
     {
-        [Inject]
-        private HttpClient HttpClient { get; init; }
+        [Inject] private HttpClient HttpClient { get; init; }
 
-        [Inject]
-        private NavigationManager NavigationManager { get; init; }
+        [Inject] private NavigationManager NavigationManager { get; init; }
 
-        [Inject]
-        private ToDoStateContainer ToDoStateContainer { get; init; }
+        [Inject] private ToDoStateContainer ToDoStateContainer { get; init; }
 
-        [Inject]
-        private EventStateContainer EventStateContainer { get; init; }
+        [Inject] private EventStateContainer EventStateContainer { get; init; }
 
-        [Inject]
-        private IMapper Mapper { get; init; }
+        [Inject] private IMapper Mapper { get; init; }
 
-        [Inject]
-        private IJSRuntime Js { get; init; }
+        [Inject] private IJSRuntime Js { get; init; }
 
         protected CreateEventViewModel ToCreate { get; set; }
 
@@ -87,9 +81,9 @@ namespace Couple.Client.Pages.Calendar
         }
 
         protected bool IsEnabled => !string.IsNullOrWhiteSpace(ToCreate?.Title)
-            && ToCreate.End >= ToCreate.Start
-            && ToCreate.Start != DateTime.UnixEpoch
-            && ToCreate.End != DateTime.UnixEpoch;
+                                    && ToCreate.End >= ToCreate.Start
+                                    && ToCreate.Start != DateTime.UnixEpoch
+                                    && ToCreate.End != DateTime.UnixEpoch;
 
         protected void AddedChanged(List<ToDoViewModel> added)
         {

@@ -14,20 +14,15 @@ namespace Couple.Client.Pages.ToDo
 {
     public partial class ToDo
     {
-        [Inject]
-        private NavigationManager NavigationManager { get; init; }
+        [Inject] private NavigationManager NavigationManager { get; init; }
 
-        [Inject]
-        private IJSRuntime Js { get; init; }
+        [Inject] private IJSRuntime Js { get; init; }
 
-        [Inject]
-        private ToDoStateContainer ToDoStateContainer { get; init; }
+        [Inject] private ToDoStateContainer ToDoStateContainer { get; init; }
 
-        [Inject]
-        private SelectedCategoryStateContainer SelectedCategoryStateContainer { get; init; }
+        [Inject] private SelectedCategoryStateContainer SelectedCategoryStateContainer { get; init; }
 
-        [Inject]
-        private IMapper Mapper { get; init; }
+        [Inject] private IMapper Mapper { get; init; }
 
         private AnimatedCategoryListView CategoryListView { get; set; }
 
@@ -56,7 +51,7 @@ namespace Couple.Client.Pages.ToDo
         {
             IsDropdown = !IsDropdown;
             await CategoryListView.ToggleAsync();
-            ((IJSInProcessRuntime)Js).InvokeVoid("toggleScroll");
+            ((IJSInProcessRuntime) Js).InvokeVoid("toggleScroll");
         }
 
         protected async Task Select(string category)
@@ -65,7 +60,7 @@ namespace Couple.Client.Pages.ToDo
 
             IsDropdown = false;
             await CategoryListView.HideAsync();
-            ((IJSInProcessRuntime)Js).InvokeVoid("setScroll", true);
+            ((IJSInProcessRuntime) Js).InvokeVoid("setScroll", true);
         }
     }
 }

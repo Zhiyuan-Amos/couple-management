@@ -61,6 +61,7 @@ namespace Couple.Client.Pages.ToDo
             await AnimatedCategorySelectionListView.HideAsync();
         }
 
-        protected override bool IsEnabled => !string.IsNullOrWhiteSpace(ToCreate?.Text) && !string.IsNullOrWhiteSpace(ToCreate?.Category);
+        protected override bool IsEnabled => !string.IsNullOrWhiteSpace(ToCreate?.Text) &&
+                                             !string.IsNullOrWhiteSpace(ToCreate?.Category);
     }
 }

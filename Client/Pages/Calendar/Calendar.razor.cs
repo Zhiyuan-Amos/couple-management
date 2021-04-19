@@ -20,14 +20,16 @@ namespace Couple.Client.Pages.Calendar
 
         // Does not have `transition` property so that the calendar appears without transition on page load
         private string InitialBodyStyle => $"max-height: {ExpandedBodyHeight}px;";
+
         private string CollapsedBodyStyle => $"max-height: {CollapsedBodyHeight}px; " +
-                                              "overflow-y: hidden; " +
-                                              "transition: 0.2s; " +
-                                              "transition-timing-function: linear;";
-        private string ExpandedBodyStyle => $"max-height: {ExpandedBodyHeight}px; " +
                                              "overflow-y: hidden; " +
                                              "transition: 0.2s; " +
                                              "transition-timing-function: linear;";
+
+        private string ExpandedBodyStyle => $"max-height: {ExpandedBodyHeight}px; " +
+                                            "overflow-y: hidden; " +
+                                            "transition: 0.2s; " +
+                                            "transition-timing-function: linear;";
 
         protected override void OnInitialized()
         {

@@ -35,9 +35,10 @@ namespace Couple.Client.Pages.Calendar.Components
             EventStateContainer.SetEvents(events);
         }
 
-        private IEnumerable<EventViewModel> Events => EventStateContainer.TryGetEvents(SelectedDateStateContainer.SelectedDate, out var events)
-            ? Mapper.Map<List<EventViewModel>>(events)
-            : new();
+        private IEnumerable<EventViewModel> Events =>
+            EventStateContainer.TryGetEvents(SelectedDateStateContainer.SelectedDate, out var events)
+                ? Mapper.Map<List<EventViewModel>>(events)
+                : new();
 
         private void EditEvent(EventViewModel selectedEvent) =>
             NavigationManager.NavigateTo($"/calendar/{selectedEvent.Id}");

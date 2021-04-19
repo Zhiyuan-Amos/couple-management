@@ -9,20 +9,15 @@ namespace Couple.Client.Pages.Calendar.Components
 {
     public partial class CategoryTreeViewContent
     {
-        [Inject]
-        private ToDoStateContainer ToDoStateContainer { get; init; }
+        [Inject] private ToDoStateContainer ToDoStateContainer { get; init; }
 
-        [Parameter]
-        public List<ToDoViewModel> Added { get; set; }
+        [Parameter] public List<ToDoViewModel> Added { get; set; }
 
-        [Parameter]
-        public List<ToDoViewModel> Removed { get; set; }
+        [Parameter] public List<ToDoViewModel> Removed { get; set; }
 
-        [Parameter]
-        public List<ToDoViewModel> Selected { get; set; }
+        [Parameter] public List<ToDoViewModel> Selected { get; set; }
 
-        [Parameter]
-        public EventCallback<List<ToDoViewModel>> SelectedChanged { get; init; }
+        [Parameter] public EventCallback<List<ToDoViewModel>> SelectedChanged { get; init; }
 
         protected List<CategoryToDos> Data { get; private set; }
 

@@ -5,10 +5,9 @@
 
 <ToDoTopBar IsDropDown="@IsDropdown"
             SelectedCategory="@SelectedCategory"
-            OnClickCallback="@ToggleVisibility" />
-<ToDoListView ToDos="@ToDos" />
-<BottomBar />
-<AddIcon OnClickCallback="@AddToDo" />
+            OnClickCallback="@ToggleVisibility"/>
+<ToDoListView ToDos="@ToDos"/>
+<BottomBar/>
+<AddIcon OnClickCallback="@AddToDo"/>
 <AnimatedCategoryListView @ref="CategoryListView"
-                          OnClickCallback="@Select" />
-
+                          OnClickCallback="@Select"/>

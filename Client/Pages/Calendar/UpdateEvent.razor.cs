@@ -20,26 +20,19 @@ namespace Couple.Client.Pages.Calendar
 {
     public partial class UpdateEvent
     {
-        [Inject]
-        private HttpClient HttpClient { get; init; }
+        [Inject] private HttpClient HttpClient { get; init; }
 
-        [Inject]
-        private NavigationManager NavigationManager { get; init; }
+        [Inject] private NavigationManager NavigationManager { get; init; }
 
-        [Inject]
-        private ToDoStateContainer ToDoStateContainer { get; init; }
+        [Inject] private ToDoStateContainer ToDoStateContainer { get; init; }
 
-        [Inject]
-        private EventStateContainer EventStateContainer { get; init; }
+        [Inject] private EventStateContainer EventStateContainer { get; init; }
 
-        [Inject]
-        private IMapper Mapper { get; init; }
+        [Inject] private IMapper Mapper { get; init; }
 
-        [Inject]
-        private IJSRuntime Js { get; init; }
+        [Inject] private IJSRuntime Js { get; init; }
 
-        [Parameter]
-        public Guid EventId { get; set; }
+        [Parameter] public Guid EventId { get; set; }
 
         protected UpdateEventViewModel ToUpdate { get; set; }
 
@@ -100,9 +93,9 @@ namespace Couple.Client.Pages.Calendar
         }
 
         protected bool IsEnabled => !string.IsNullOrWhiteSpace(ToUpdate?.Title)
-            && ToUpdate.End >= ToUpdate.Start
-            && ToUpdate.Start != DateTime.UnixEpoch
-            && ToUpdate.End != DateTime.UnixEpoch;
+                                    && ToUpdate.End >= ToUpdate.Start
+                                    && ToUpdate.Start != DateTime.UnixEpoch
+                                    && ToUpdate.End != DateTime.UnixEpoch;
 
         protected void AddedChanged(List<ToDoViewModel> added)
         {
@@ -117,6 +110,7 @@ namespace Couple.Client.Pages.Calendar
                     Added.Add(add);
                 }
             }
+
             ToUpdate.ToDos.AddRange(added);
             ToUpdate.ToDos = new(ToUpdate.ToDos); // https://docs.telerik.com/blazor-ui/common-features/observable-data
         }
@@ -131,6 +125,7 @@ namespace Couple.Client.Pages.Calendar
             {
                 Added.Remove(removed);
             }
+
             ToUpdate.ToDos.Remove(removed);
             ToUpdate.ToDos = new(ToUpdate.ToDos);
         }

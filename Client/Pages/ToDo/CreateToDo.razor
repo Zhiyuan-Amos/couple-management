@@ -5,11 +5,10 @@
 
 <CreateUpdateTopBar Title="Create To Do"
                     IsEnabled="@IsEnabled"
-                    OnClickCallback="@Save" />
+                    OnClickCallback="@Save"/>
 <CreateUpdateForm @bind-Text="@ToCreate.Text"
                   Category="@ToCreate.Category"
-                  OnClickCallback="@ShowSelectionWindow" />
+                  OnClickCallback="@ShowSelectionWindow"/>
 <AnimatedCategoryListViewWithAdd @ref="AnimatedCategorySelectionListView"
                                  OnConfirmCallback="@Select"
-                                 OnCancelCallback="@CancelSelection" />
-
+                                 OnCancelCallback="@CancelSelection"/>

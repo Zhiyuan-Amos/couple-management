@@ -9,7 +9,8 @@ namespace Couple.Client.Profiles
 {
     public class EventProfile : Profile
     {
-        public EventProfile() {
+        public EventProfile()
+        {
             CreateMap<EventModel, EventViewModel>();
             CreateMap<EventModel, EventDto>().ReverseMap();
             CreateMap<ToDoModel, ToDoDto>().ReverseMap();

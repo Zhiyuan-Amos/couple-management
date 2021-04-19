@@ -8,17 +8,13 @@ namespace Couple.Client.Pages.Calendar.Components
 {
     public partial class AnimatedCategoryTreeView
     {
-        [Parameter]
-        public List<ToDoViewModel> Added { get; set; }
+        [Parameter] public List<ToDoViewModel> Added { get; set; }
 
-        [Parameter]
-        public EventCallback<List<ToDoViewModel>> AddedChanged { get; init; }
+        [Parameter] public EventCallback<List<ToDoViewModel>> AddedChanged { get; init; }
 
-        [Parameter]
-        public List<ToDoViewModel> Removed { get; set; }
+        [Parameter] public List<ToDoViewModel> Removed { get; set; }
 
-        [Parameter]
-        public EventCallback OnCloseCallback { get; init; }
+        [Parameter] public EventCallback OnCloseCallback { get; init; }
 
         private TelerikAnimationContainer CategoryAnimationContainer { get; set; }
 

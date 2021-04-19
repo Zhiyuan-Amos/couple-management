@@ -6,11 +6,9 @@ namespace Couple.Client.Pages.ToDo.Components
 {
     public partial class CategoryListView
     {
-        [Inject]
-        private ToDoStateContainer ToDoStateContainer { get; init; }
+        [Inject] private ToDoStateContainer ToDoStateContainer { get; init; }
 
-        [Parameter]
-        public EventCallback<string> OnClickCallback { get; init; }
+        [Parameter] public EventCallback<string> OnClickCallback { get; init; }
 
         protected List<string> Categories { get; set; }
 

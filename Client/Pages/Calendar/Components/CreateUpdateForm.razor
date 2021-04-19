@@ -12,7 +12,7 @@
         <TelerikDateTimePicker Value="@Start"
                                T="DateTime"
                                ValueChanged="@StartDateChanged"
-                               Format="dd MMM HH:mm" />
+                               Format="dd MMM HH:mm"/>
     </div>
 </div>
 <div class="d-flex align-items-center justify-content-between px-3 py-1 border-bottom">
@@ -24,7 +24,7 @@
         <TelerikDateTimePicker Value="@End"
                                T="DateTime"
                                ValueChanged="@EndDateChanged"
-                               Format="dd MMM HH:mm" />
+                               Format="dd MMM HH:mm"/>
     </div>
 </div>
 <div class="d-flex align-items-center justify-content-between px-3 py-1 border-bottom">
@@ -32,7 +32,7 @@
         To Do
     </label>
     <i class="bi bi-plus h1 mb-0"
-       @onclick="@ShowToDoSelection" />
+       @onclick="@ShowToDoSelection"/>
 </div>
 <div>
     <TelerikListView Data=@Total>
@@ -42,7 +42,7 @@
                     @context.Text
                 </h3>
                 <i class="bi bi-x h1 mb-0"
-                   @onclick="@(() => Remove(context))" />
+                   @onclick="@(() => Remove(context))"/>
             </div>
         </Template>
     </TelerikListView>
@@ -52,5 +52,4 @@
                           Added="@Added"
                           AddedChanged="@AddedChanged"
                           Removed="@Removed"
-                          OnCloseCallback="@CloseToDoSelection" />
-
+                          OnCloseCallback="@CloseToDoSelection"/>

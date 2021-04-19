@@ -7,7 +7,8 @@ namespace Couple.Client.Profiles
 {
     public class ToDoProfile : Profile
     {
-        public ToDoProfile() {
+        public ToDoProfile()
+        {
             CreateMap<ToDoModel, ToDoViewModel>().ReverseMap();
             CreateMap<ToDoModel, CreateToDoDto>();
             CreateMap<ToDoModel, UpdateToDoDto>();

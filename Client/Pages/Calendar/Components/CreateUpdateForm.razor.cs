@@ -9,41 +9,29 @@ namespace Couple.Client.Pages.Calendar.Components
 {
     public partial class CreateUpdateForm
     {
-        [Inject]
-        private IJSRuntime Js { get; init; }
+        [Inject] private IJSRuntime Js { get; init; }
 
-        [Parameter]
-        public string Title { get; set; }
+        [Parameter] public string Title { get; set; }
 
-        [Parameter]
-        public EventCallback<string> TitleChanged { get; init; }
+        [Parameter] public EventCallback<string> TitleChanged { get; init; }
 
-        [Parameter]
-        public DateTime Start { get; set; }
+        [Parameter] public DateTime Start { get; set; }
 
-        [Parameter]
-        public EventCallback<DateTime> StartChanged { get; init; }
+        [Parameter] public EventCallback<DateTime> StartChanged { get; init; }
 
-        [Parameter]
-        public DateTime End { get; set; }
+        [Parameter] public DateTime End { get; set; }
 
-        [Parameter]
-        public EventCallback<DateTime> EndChanged { get; init; }
+        [Parameter] public EventCallback<DateTime> EndChanged { get; init; }
 
-        [Parameter]
-        public List<ToDoViewModel> Added { get; set; }
+        [Parameter] public List<ToDoViewModel> Added { get; set; }
 
-        [Parameter]
-        public EventCallback<List<ToDoViewModel>> AddedChanged { get; init; }
+        [Parameter] public EventCallback<List<ToDoViewModel>> AddedChanged { get; init; }
 
-        [Parameter]
-        public List<ToDoViewModel> Removed { get; set; }
+        [Parameter] public List<ToDoViewModel> Removed { get; set; }
 
-        [Parameter]
-        public EventCallback<ToDoViewModel> RemovedChanged { get; init; }
+        [Parameter] public EventCallback<ToDoViewModel> RemovedChanged { get; init; }
 
-        [Parameter]
-        public List<ToDoViewModel> Total { get; set; }
+        [Parameter] public List<ToDoViewModel> Total { get; set; }
 
         private AnimatedCategoryTreeView CategoryListView { get; set; }
 
@@ -61,6 +49,7 @@ namespace Couple.Client.Pages.Calendar.Components
         // Modified from the above link
         protected ElementReference StartWrapperRef { get; set; }
         private bool StartDoubleClick { get; set; } = true;
+
         protected async Task ToggleStartPicker()
         {
             StartDoubleClick = !StartDoubleClick;
@@ -72,6 +61,7 @@ namespace Couple.Client.Pages.Calendar.Components
 
         protected ElementReference EndWrapperRef { get; set; }
         private bool EndDoubleClick { get; set; } = true;
+
         protected async Task ToggleEndPicker() // can't extract w/ ToggleStartPicker() as bool is value type
         {
             EndDoubleClick = !EndDoubleClick;
@@ -104,13 +94,13 @@ namespace Couple.Client.Pages.Calendar.Components
         protected async Task ShowToDoSelection()
         {
             await CategoryListView.ShowAsync();
-            ((IJSInProcessRuntime)Js).InvokeVoid("setScroll", false);
+            ((IJSInProcessRuntime) Js).InvokeVoid("setScroll", false);
         }
 
         protected async Task CloseToDoSelection()
         {
             await CategoryListView.HideAsync();
-            ((IJSInProcessRuntime)Js).InvokeVoid("setScroll", true);
+            ((IJSInProcessRuntime) Js).InvokeVoid("setScroll", true);
         }
 
         protected Task Remove(ToDoViewModel toRemove) => RemovedChanged.InvokeAsync(toRemove);

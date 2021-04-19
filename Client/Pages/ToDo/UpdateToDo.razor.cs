@@ -13,8 +13,7 @@ namespace Couple.Client.Pages.ToDo
 {
     public class UpdateToDoBase : CreateUpdateToDoBase
     {
-        [Parameter]
-        public Guid ToDoId { get; set; }
+        [Parameter] public Guid ToDoId { get; set; }
 
         protected AnimatedCategoryListViewWithAdd AnimatedCategorySelectionListView { get; set; }
 
@@ -82,6 +81,7 @@ namespace Couple.Client.Pages.ToDo
             await AnimatedCategorySelectionListView.HideAsync();
         }
 
-        protected override bool IsEnabled => !string.IsNullOrWhiteSpace(ToUpdate?.Text) && !string.IsNullOrWhiteSpace(ToUpdate?.Category);
+        protected override bool IsEnabled => !string.IsNullOrWhiteSpace(ToUpdate?.Text) &&
+                                             !string.IsNullOrWhiteSpace(ToUpdate?.Category);
     }
 }

@@ -36,6 +36,7 @@ namespace Couple.Client.States.ToDo
                 {
                     toReturn[key] = toReturn[key].ToList();
                 }
+
                 return toReturn;
             }
             set
@@ -47,6 +48,7 @@ namespace Couple.Client.States.ToDo
                     .ToList();
             }
         }
+
         public List<string> Categories
         {
             get => _categories.ToList();
