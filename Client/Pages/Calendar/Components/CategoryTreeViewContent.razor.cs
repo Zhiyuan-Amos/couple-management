@@ -19,7 +19,7 @@ namespace Couple.Client.Pages.Calendar.Components
 
         [Parameter] public EventCallback<List<ToDoViewModel>> SelectedChanged { get; init; }
 
-        protected List<CategoryToDos> Data { get; private set; }
+        private List<CategoryToDos> Data { get; set; }
 
         protected override void OnInitialized()
         {
@@ -36,10 +36,10 @@ namespace Couple.Client.Pages.Calendar.Components
                 .ToList();
         }
 
-        protected async Task SelectedObjectsChanged(IEnumerable<object> objs) =>
+        private async Task SelectedObjectsChanged(IEnumerable<object> objs) =>
             await SelectedChanged.InvokeAsync(objs.Select(obj => obj as ToDoViewModel).ToList());
 
-        protected class CategoryToDos
+        private class CategoryToDos
         {
             public string Category { get; }
             public List<ToDoViewModel> ToDos { get; }

@@ -26,10 +26,10 @@ namespace Couple.Client.Pages.ToDo
 
         private AnimatedCategoryListView CategoryListView { get; set; }
 
-        protected bool IsDropdown { get; set; }
-        protected string SelectedCategory => SelectedCategoryStateContainer.SelectedCategory;
+        private bool IsDropdown { get; set; }
+        private string SelectedCategory => SelectedCategoryStateContainer.SelectedCategory;
 
-        protected List<ToDoViewModel> ToDos =>
+        private List<ToDoViewModel> ToDos =>
             ToDoStateContainer.TryGetToDos(SelectedCategory, out var toDos)
                 ? toDos
                     .AsQueryable()
@@ -45,16 +45,16 @@ namespace Couple.Client.Pages.ToDo
 
         public void Dispose() => ToDoStateContainer.OnChange -= StateHasChanged;
 
-        protected void AddToDo() => NavigationManager.NavigateTo($"/todo/create");
+        private void AddToDo() => NavigationManager.NavigateTo($"/todo/create");
 
-        protected async Task ToggleVisibility()
+        private async Task ToggleVisibility()
         {
             IsDropdown = !IsDropdown;
             await CategoryListView.ToggleAsync();
             ((IJSInProcessRuntime) Js).InvokeVoid("toggleScroll");
         }
 
-        protected async Task Select(string category)
+        private async Task Select(string category)
         {
             SelectedCategoryStateContainer.SelectedCategory = category;
 

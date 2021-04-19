@@ -12,8 +12,8 @@ namespace Couple.Client.Pages.ToDo.Components
 
         private TelerikAnimationContainer CategoryAnimationContainer { get; set; }
 
-        protected async Task Confirm(string category) => await OnConfirmCallback.InvokeAsync(category);
-        protected async Task Cancel() => await OnCancelCallback.InvokeAsync();
+        private async Task Confirm(string category) => await OnConfirmCallback.InvokeAsync(category);
+        private async Task Cancel() => await OnCancelCallback.InvokeAsync();
 
         public Task ShowAsync() => CategoryAnimationContainer.ShowAsync();
         public Task HideAsync() => CategoryAnimationContainer.HideAsync();

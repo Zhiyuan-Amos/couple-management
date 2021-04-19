@@ -6,6 +6,6 @@ namespace Couple.Client.Pages.ToDo.Components
     {
         [Parameter] public EventCallback<string> OnAddCallback { get; init; }
 
-        protected string Category { get; set; }
+        private string Category { get; set; }
     }
 }

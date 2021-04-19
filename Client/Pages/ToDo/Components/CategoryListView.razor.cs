@@ -10,7 +10,7 @@ namespace Couple.Client.Pages.ToDo.Components
 
         [Parameter] public EventCallback<string> OnClickCallback { get; init; }
 
-        protected List<string> Categories { get; set; }
+        private List<string> Categories { get; set; }
 
         protected override void OnInitialized()
         {

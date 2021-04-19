@@ -32,9 +32,9 @@ namespace Couple.Client.Pages.Calendar
 
         [Inject] private IJSRuntime Js { get; init; }
 
-        protected CreateEventViewModel ToCreate { get; set; }
+        private CreateEventViewModel ToCreate { get; set; }
 
-        protected List<ToDoViewModel> Added { get; set; }
+        private List<ToDoViewModel> Added { get; set; }
 
         protected override void OnInitialized()
         {
@@ -48,7 +48,7 @@ namespace Couple.Client.Pages.Calendar
             };
         }
 
-        protected async Task Save()
+        private async Task Save()
         {
             var id = Guid.NewGuid();
             var added = Added
@@ -80,18 +80,18 @@ namespace Couple.Client.Pages.Calendar
             await HttpClient.PostAsJsonAsync($"api/Events", toCreate);
         }
 
-        protected bool IsEnabled => !string.IsNullOrWhiteSpace(ToCreate?.Title)
+        private bool IsEnabled => !string.IsNullOrWhiteSpace(ToCreate?.Title)
                                     && ToCreate.End >= ToCreate.Start
                                     && ToCreate.Start != DateTime.UnixEpoch
                                     && ToCreate.End != DateTime.UnixEpoch;
 
-        protected void AddedChanged(List<ToDoViewModel> added)
+        private void AddedChanged(List<ToDoViewModel> added)
         {
             ToCreate.ToDos.AddRange(added);
             Added = ToCreate.ToDos = new(ToCreate.ToDos); // https://docs.telerik.com/blazor-ui/common-features/observable-data
         }
 
-        protected void RemovedChanged(ToDoViewModel removed)
+        private void RemovedChanged(ToDoViewModel removed)
         {
             ToCreate.ToDos.Remove(removed);
             Added = ToCreate.ToDos = new(ToCreate.ToDos);

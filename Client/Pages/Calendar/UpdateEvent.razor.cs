@@ -34,11 +34,11 @@ namespace Couple.Client.Pages.Calendar
 
         [Parameter] public Guid EventId { get; set; }
 
-        protected UpdateEventViewModel ToUpdate { get; set; }
+        private UpdateEventViewModel ToUpdate { get; set; }
 
-        protected List<ToDoViewModel> Original { get; set; }
-        protected List<ToDoViewModel> Added { get; set; }
-        protected List<ToDoViewModel> Removed { get; set; }
+        private List<ToDoViewModel> Original { get; set; }
+        private List<ToDoViewModel> Added { get; set; }
+        private List<ToDoViewModel> Removed { get; set; }
 
         protected override void OnInitialized()
         {
@@ -55,7 +55,7 @@ namespace Couple.Client.Pages.Calendar
             ToUpdate = Mapper.Map<UpdateEventViewModel>(@event);
         }
 
-        protected async Task Save()
+        private async Task Save()
         {
             var added = Added.Select(toDo => toDo.Id).ToList();
             var toPersist = Mapper.Map<EventModel>(ToUpdate);
@@ -81,7 +81,7 @@ namespace Couple.Client.Pages.Calendar
             await HttpClient.PutAsJsonAsync($"api/Events", toUpdate);
         }
 
-        protected async Task Delete()
+        private async Task Delete()
         {
             await Js.InvokeVoidAsync("removeEvent", ToUpdate.Id);
             var events = await Js.InvokeAsync<List<EventModel>>("getAllEvents");
@@ -92,12 +92,12 @@ namespace Couple.Client.Pages.Calendar
             await HttpClient.DeleteAsync($"api/Events/{ToUpdate.Id}");
         }
 
-        protected bool IsEnabled => !string.IsNullOrWhiteSpace(ToUpdate?.Title)
+        private bool IsEnabled => !string.IsNullOrWhiteSpace(ToUpdate?.Title)
                                     && ToUpdate.End >= ToUpdate.Start
                                     && ToUpdate.Start != DateTime.UnixEpoch
                                     && ToUpdate.End != DateTime.UnixEpoch;
 
-        protected void AddedChanged(List<ToDoViewModel> added)
+        private void AddedChanged(List<ToDoViewModel> added)
         {
             foreach (var add in added)
             {
@@ -115,7 +115,7 @@ namespace Couple.Client.Pages.Calendar
             ToUpdate.ToDos = new(ToUpdate.ToDos); // https://docs.telerik.com/blazor-ui/common-features/observable-data
         }
 
-        protected void RemovedChanged(ToDoViewModel removed)
+        private void RemovedChanged(ToDoViewModel removed)
         {
             if (Original.Any(toDo => toDo.Id == removed.Id))
             {

@@ -18,7 +18,7 @@ namespace Couple.Client.Pages.Calendar.Components
 
         private TelerikAnimationContainer CategoryAnimationContainer { get; set; }
 
-        protected List<ToDoViewModel> Selected { get; set; }
+        private List<ToDoViewModel> Selected { get; set; }
 
         protected override void OnInitialized()
         {
@@ -28,7 +28,7 @@ namespace Couple.Client.Pages.Calendar.Components
         public Task ShowAsync() => CategoryAnimationContainer.ShowAsync();
         public Task HideAsync() => CategoryAnimationContainer.HideAsync();
 
-        protected Task Save()
+        private Task Save()
         {
             var addCallbackTask = AddedChanged.InvokeAsync(Selected);
             var closeCallbackTask = OnCloseCallback.InvokeAsync();

@@ -47,10 +47,10 @@ namespace Couple.Client.Pages.Calendar.Components
 
         // https://feedback.telerik.com/blazor/1475760-dropdowns-and-date-time-pickers-open-the-dropdown-on-component-focus
         // Modified from the above link
-        protected ElementReference StartWrapperRef { get; set; }
+        private ElementReference StartWrapperRef { get; set; }
         private bool StartDoubleClick { get; set; } = true;
 
-        protected async Task ToggleStartPicker()
+        private async Task ToggleStartPicker()
         {
             StartDoubleClick = !StartDoubleClick;
             if (!StartDoubleClick)
@@ -59,10 +59,10 @@ namespace Couple.Client.Pages.Calendar.Components
             }
         }
 
-        protected ElementReference EndWrapperRef { get; set; }
+        private ElementReference EndWrapperRef { get; set; }
         private bool EndDoubleClick { get; set; } = true;
 
-        protected async Task ToggleEndPicker() // can't extract w/ ToggleStartPicker() as bool is value type
+        private async Task ToggleEndPicker() // can't extract w/ ToggleStartPicker() as bool is value type
         {
             EndDoubleClick = !EndDoubleClick;
             if (!EndDoubleClick)
@@ -71,7 +71,7 @@ namespace Couple.Client.Pages.Calendar.Components
             }
         }
 
-        protected async Task StartDateChanged(DateTime newStartDate)
+        private async Task StartDateChanged(DateTime newStartDate)
         {
             if (End < newStartDate)
             {
@@ -81,7 +81,7 @@ namespace Couple.Client.Pages.Calendar.Components
             await StartChanged.InvokeAsync(newStartDate);
         }
 
-        protected async Task EndDateChanged(DateTime newEndDate)
+        private async Task EndDateChanged(DateTime newEndDate)
         {
             if (newEndDate < Start)
             {
@@ -91,18 +91,18 @@ namespace Couple.Client.Pages.Calendar.Components
             await EndChanged.InvokeAsync(newEndDate);
         }
 
-        protected async Task ShowToDoSelection()
+        private async Task ShowToDoSelection()
         {
             await CategoryListView.ShowAsync();
             ((IJSInProcessRuntime) Js).InvokeVoid("setScroll", false);
         }
 
-        protected async Task CloseToDoSelection()
+        private async Task CloseToDoSelection()
         {
             await CategoryListView.HideAsync();
             ((IJSInProcessRuntime) Js).InvokeVoid("setScroll", true);
         }
 
-        protected Task Remove(ToDoViewModel toRemove) => RemovedChanged.InvokeAsync(toRemove);
+        private Task Remove(ToDoViewModel toRemove) => RemovedChanged.InvokeAsync(toRemove);
     }
 }
