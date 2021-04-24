@@ -1,5 +1,4 @@
 using AutoMapper;
-using Couple.Client.Infrastructure;
 using Couple.Client.Model.Calendar;
 using Couple.Client.Model.ToDo;
 using Couple.Client.States.Calendar;
@@ -70,7 +69,7 @@ namespace Couple.Client.Pages.Calendar
             ToDoStateContainer.ToDos = toDosTask.Result;
             EventStateContainer.SetEvents(eventsTask.Result);
 
-            NavigationManager.NavigateTo($"/calendar/{ToCreate.Start.ToCalendarUrl()}");
+            NavigationManager.NavigateTo("/calendar");
 
             var toCreate = new CreateEventDto
             {

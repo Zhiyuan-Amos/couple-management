@@ -1,7 +1,5 @@
-using Couple.Client.Infrastructure;
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
-using System;
 
 namespace Couple.Client.Pages.Calendar
 {
@@ -9,8 +7,6 @@ namespace Couple.Client.Pages.Calendar
     {
         [Inject] private NavigationManager NavigationManager { get; init; }
         [Inject] private IJSRuntime Js { get; init; }
-
-        [Parameter] public DateTime Selected { get; set; }
 
         private bool IsListViewExpanded { get; set; }
 
@@ -30,15 +26,6 @@ namespace Couple.Client.Pages.Calendar
                                             "overflow-y: hidden; " +
                                             "transition: 0.2s; " +
                                             "transition-timing-function: linear;";
-
-        protected override void OnInitialized()
-        {
-            if (Selected == new DateTime())
-            {
-                Selected = DateTime.Now.Date;
-                NavigationManager.NavigateTo($"/calendar/{Selected.ToCalendarUrl()}");
-            }
-        }
 
         private void SetCalendarBodyHeight(double collapsedBodyHeight, double expandedBodyHeight)
         {

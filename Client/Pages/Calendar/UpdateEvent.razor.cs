@@ -1,5 +1,4 @@
 using AutoMapper;
-using Couple.Client.Infrastructure;
 using Couple.Client.Model.Calendar;
 using Couple.Client.Model.ToDo;
 using Couple.Client.States.Calendar;
@@ -70,7 +69,7 @@ namespace Couple.Client.Pages.Calendar
             ToDoStateContainer.ToDos = toDosTask.Result;
             EventStateContainer.SetEvents(eventsTask.Result);
 
-            NavigationManager.NavigateTo($"/calendar/{ToUpdate.Start.ToCalendarUrl()}");
+            NavigationManager.NavigateTo("/calendar");
 
             var toUpdate = new UpdateEventDto
             {
@@ -87,7 +86,7 @@ namespace Couple.Client.Pages.Calendar
             var events = await Js.InvokeAsync<List<EventModel>>("getAllEvents");
             EventStateContainer.SetEvents(events);
 
-            NavigationManager.NavigateTo($"/calendar/{ToUpdate.Start.ToCalendarUrl()}");
+            NavigationManager.NavigateTo("/calendar");
 
             await HttpClient.DeleteAsync($"api/Events/{ToUpdate.Id}");
         }
