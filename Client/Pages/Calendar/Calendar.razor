@@ -3,7 +3,7 @@
 
 <CalendarTopBar/>
 <div class="h-100">
-    <CalendarHeaderComponent/>
+    <CalendarHeaderComponent AfterRenderCallback="@SetCalendarHeaderHeight"/>
     <CalendarCarouselComponent Style="@GetCalendarStyle()"
                                AfterRenderCallback="@SetCalendarBodyHeight"/>
     <CalendarEventListComponent Style="@GetListStyle()"

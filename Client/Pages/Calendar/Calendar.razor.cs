@@ -11,6 +11,7 @@ namespace Couple.Client.Pages.Calendar
         private bool IsListViewExpanded { get; set; }
 
         private bool HasExpanded { get; set; }
+        private double HeaderHeight { get; set; }
         private double CollapsedBodyHeight { get; set; }
         private double ExpandedBodyHeight { get; set; }
 
@@ -26,6 +27,12 @@ namespace Couple.Client.Pages.Calendar
                                             "overflow-y: hidden; " +
                                             "transition: 0.2s; " +
                                             "transition-timing-function: linear;";
+
+        private void SetCalendarHeaderHeight(double headerHeight)
+        {
+            HeaderHeight = headerHeight;
+            StateHasChanged();
+        }
 
         private void SetCalendarBodyHeight(double collapsedBodyHeight, double expandedBodyHeight)
         {
@@ -44,9 +51,21 @@ namespace Couple.Client.Pages.Calendar
             return IsListViewExpanded ? CollapsedBodyStyle : ExpandedBodyStyle;
         }
 
-        private string GetListStyle() => IsListViewExpanded
-            ? $"min-height: calc(100% - {CollapsedBodyHeight}px); max-height: calc(100% - {CollapsedBodyHeight}px); overflow-y: scroll; transition: 0.2s; transition-timing-function: linear;"
-            : $"min-height: calc(100% - {ExpandedBodyHeight}px); max-height: calc(100% - {ExpandedBodyHeight}px); overflow-y: hidden; transition: 0.2s; transition-timing-function: linear;";
+        private string GetListStyle()
+        {
+            if (IsListViewExpanded)
+            {
+                var calendarHeight = HeaderHeight + CollapsedBodyHeight;
+                return $"min-height: calc(100% - {calendarHeight}px); max-height: calc(100% - {calendarHeight}px); " +
+                       "overflow-y: scroll; transition: 0.2s; transition-timing-function: linear;";
+            }
+            else
+            {
+                var calendarHeight = HeaderHeight + ExpandedBodyHeight;
+                return $"min-height: calc(100% - {calendarHeight}px); max-height: calc(100% - {calendarHeight}px); " +
+                       "overflow-y: hidden; transition: 0.2s; transition-timing-function: linear;";
+            }
+        }
 
 
         private void SwipeUp()
