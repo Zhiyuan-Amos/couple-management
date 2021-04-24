@@ -43,7 +43,7 @@ namespace Couple.Client.Pages.Calendar
         {
             if (!EventStateContainer.TryGetEvent(EventId, out var @event))
             {
-                NavigationManager.NavigateTo("calendar");
+                NavigationManager.NavigateTo("/calendar");
                 return;
             }
 

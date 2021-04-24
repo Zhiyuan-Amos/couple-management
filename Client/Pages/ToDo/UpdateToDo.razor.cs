@@ -23,7 +23,7 @@ namespace Couple.Client.Pages.ToDo
         {
             if (!ToDoStateContainer.TryGetToDo(ToDoId, out var toDo))
             {
-                NavigationManager.NavigateTo("todo");
+                NavigationManager.NavigateTo("/todo");
                 return;
             }
 
