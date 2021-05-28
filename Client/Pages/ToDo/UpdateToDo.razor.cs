@@ -1,6 +1,4 @@
 using Couple.Client.Model.ToDo;
-using Couple.Client.Pages.ToDo.Components;
-using Couple.Client.ViewModel.ToDo;
 using Couple.Shared.Model.ToDo;
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
@@ -15,10 +13,6 @@ namespace Couple.Client.Pages.ToDo
     {
         [Parameter] public Guid ToDoId { get; set; }
 
-        protected AnimatedCategoryListViewWithAdd AnimatedCategorySelectionListView { get; set; }
-
-        protected UpdateToDoViewModel ToUpdate { get; set; }
-
         protected override void OnInitialized()
         {
             if (!ToDoStateContainer.TryGetToDo(ToDoId, out var toDo))
@@ -27,61 +21,45 @@ namespace Couple.Client.Pages.ToDo
                 return;
             }
 
-            ToUpdate = new()
-            {
-                Id = toDo.Id,
-                Text = toDo.Text,
-                Category = toDo.Category,
-                CreatedOn = toDo.CreatedOn,
-            };
+            CreateUpdateToDoStateContainer.Initialize(toDo.Id,
+                toDo.Name,
+                toDo.For,
+                toDo.ToDos,
+                toDo.CreatedOn);
         }
 
         protected async Task Delete()
         {
-            await Js.InvokeVoidAsync("removeToDo", ToUpdate.Id);
+            await Js.InvokeVoidAsync("removeToDo", CreateUpdateToDoStateContainer.Id);
             ToDoStateContainer.ToDos = await Js.InvokeAsync<List<ToDoModel>>("getAllToDos");
 
             NavigationManager.NavigateTo("/todo");
 
-            await HttpClient.DeleteAsync($"api/ToDos/{ToUpdate.Id}");
+            await HttpClient.DeleteAsync($"api/ToDos/{CreateUpdateToDoStateContainer.Id}");
         }
 
         protected override async Task Save()
         {
             var toPersist = new ToDoModel
             {
-                Id = ToUpdate.Id,
-                Text = ToUpdate.Text,
-                Category = ToUpdate.Category,
-                CreatedOn = ToUpdate.CreatedOn,
+                Id = ToDoId,
+                Name = CreateUpdateToDoStateContainer.Name,
+                For = CreateUpdateToDoStateContainer.For,
+                ToDos = Mapper.Map<List<ToDoInnerModel>>(CreateUpdateToDoStateContainer.ToDos),
+                CreatedOn = CreateUpdateToDoStateContainer.CreatedOn,
             };
             await Js.InvokeVoidAsync("updateToDo", toPersist);
 
             ToDoStateContainer.ToDos = await Js.InvokeAsync<List<ToDoModel>>("getAllToDos");
-            SelectedCategoryStateContainer.SelectedCategory = ToUpdate.Category;
             NavigationManager.NavigateTo("/todo");
 
             var toUpdate = Mapper.Map<UpdateToDoDto>(toPersist);
-            await HttpClient.PutAsJsonAsync($"api/ToDos", toUpdate);
+            await HttpClient.PutAsJsonAsync("api/ToDos", toUpdate);
         }
 
-        protected override async Task Select(string category)
+        public override void Dispose()
         {
-            await AnimatedCategorySelectionListView.HideAsync();
-            ToUpdate.Category = category;
+            CreateUpdateToDoStateContainer.Reset();
         }
-
-        protected override async Task ShowSelectionWindow()
-        {
-            await AnimatedCategorySelectionListView.ShowAsync();
-        }
-
-        protected override async Task CancelSelection()
-        {
-            await AnimatedCategorySelectionListView.HideAsync();
-        }
-
-        protected override bool IsEnabled => !string.IsNullOrWhiteSpace(ToUpdate?.Text) &&
-                                             !string.IsNullOrWhiteSpace(ToUpdate?.Category);
     }
 }

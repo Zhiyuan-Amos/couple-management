@@ -12,6 +12,9 @@ namespace Couple.Client.Profiles
             CreateMap<ToDoModel, ToDoViewModel>().ReverseMap();
             CreateMap<ToDoModel, CreateToDoDto>();
             CreateMap<ToDoModel, UpdateToDoDto>();
+            CreateMap<ToDoInnerModel, ToDoInnerViewModel>().ReverseMap();
+            CreateMap<ToDoInnerModel, CreateUpdateInnerViewModel>().ReverseMap();
+            CreateMap<ToDoInnerModel, ToDoInnerDto>().ReverseMap();
         }
     }
 }

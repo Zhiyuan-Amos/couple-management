@@ -1,6 +1,5 @@
 using Couple.Client.Model.ToDo;
-using Couple.Client.Pages.ToDo.Components;
-using Couple.Client.ViewModel.ToDo;
+using Couple.Shared.Model;
 using Couple.Shared.Model.ToDo;
 using Microsoft.JSInterop;
 using System;
@@ -12,17 +11,9 @@ namespace Couple.Client.Pages.ToDo
 {
     public class CreateToDoBase : CreateUpdateToDoBase
     {
-        protected AnimatedCategoryListViewWithAdd AnimatedCategorySelectionListView { get; set; }
-
-        protected CreateToDoViewModel ToCreate { get; set; }
-
         protected override void OnInitialized()
         {
-            ToCreate = new()
-            {
-                Text = "",
-                Category = SelectedCategoryStateContainer.SelectedCategory,
-            };
+            CreateUpdateToDoStateContainer.Initialize("", For.Him, new() {new() {Content = "", IsCompleted = false,}});
         }
 
         protected override async Task Save()
@@ -31,37 +22,23 @@ namespace Couple.Client.Pages.ToDo
             var toPersist = new ToDoModel
             {
                 Id = id,
-                Text = ToCreate.Text,
-                Category = ToCreate.Category,
+                Name = CreateUpdateToDoStateContainer.Name,
+                For = CreateUpdateToDoStateContainer.For,
+                ToDos = Mapper.Map<List<ToDoInnerModel>>(CreateUpdateToDoStateContainer.ToDos),
                 CreatedOn = DateTime.Now,
             };
             await Js.InvokeVoidAsync("addToDo", toPersist);
 
             ToDoStateContainer.ToDos = await Js.InvokeAsync<List<ToDoModel>>("getAllToDos");
-            SelectedCategoryStateContainer.SelectedCategory = ToCreate.Category;
             NavigationManager.NavigateTo("/todo");
 
             var toCreate = Mapper.Map<CreateToDoDto>(toPersist);
             await HttpClient.PostAsJsonAsync($"api/ToDos", toCreate);
         }
 
-        protected override async Task Select(string category)
+        public override void Dispose()
         {
-            await AnimatedCategorySelectionListView.HideAsync();
-            ToCreate.Category = category;
+            CreateUpdateToDoStateContainer.Reset();
         }
-
-        protected override async Task ShowSelectionWindow()
-        {
-            await AnimatedCategorySelectionListView.ShowAsync();
-        }
-
-        protected override async Task CancelSelection()
-        {
-            await AnimatedCategorySelectionListView.HideAsync();
-        }
-
-        protected override bool IsEnabled => !string.IsNullOrWhiteSpace(ToCreate?.Text) &&
-                                             !string.IsNullOrWhiteSpace(ToCreate?.Category);
     }
 }

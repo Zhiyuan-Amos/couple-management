@@ -103,7 +103,7 @@ namespace Couple.Client.Services
 
             if (idsToDelete.Guids.Any())
             {
-                await _httpClient.DeleteAsJsonAsync($"api/Changes", idsToDelete);
+                await _httpClient.DeleteAsJsonAsync("api/Changes", idsToDelete);
             }
 
             var toDosTask = _js.InvokeAsync<List<ToDoModel>>("getAllToDos").AsTask();

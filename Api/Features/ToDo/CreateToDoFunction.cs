@@ -20,8 +20,8 @@ namespace Couple.Api.Features.ToDo
         private readonly ICurrentUserService _currentUserService;
 
         public CreateToDoFunction(ChangeContext context,
-                                  IDateTimeService dateTimeService,
-                                  ICurrentUserService currentUserService)
+            IDateTimeService dateTimeService,
+            ICurrentUserService currentUserService)
         {
             _context = context;
             _dateTimeService = dateTimeService;
@@ -30,7 +30,8 @@ namespace Couple.Api.Features.ToDo
 
         [FunctionName("CreateToDoFunction")]
         public async Task<ActionResult> CreateToDo(
-            [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "ToDos")] HttpRequest req,
+            [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "ToDos")]
+            HttpRequest req,
             ILogger log)
         {
             var form = await req.GetJsonBody<CreateToDoDto, Validator>();
@@ -69,8 +70,12 @@ namespace Couple.Api.Features.ToDo
             public Validator()
             {
                 RuleFor(dto => dto.Id).NotEmpty();
-                RuleFor(dto => dto.Text).NotEmpty();
-                RuleFor(dto => dto.Category).NotEmpty();
+                RuleFor(dto => dto.Name).NotEmpty();
+                RuleFor(dto => dto.For).NotNull();
+                RuleFor(dto => dto.ToDos).NotNull();
+                RuleForEach(dto => dto.ToDos)
+                    .ChildRules(toDos =>
+                        toDos.RuleFor(toDo => toDo.Content).NotEmpty());
                 RuleFor(dto => dto.CreatedOn).NotEmpty();
             }
         }
