@@ -7,10 +7,10 @@
   <ItemGroup>
     <PackageReference Include="AutoMapper" Version="10.1.1" />
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="8.1.1" />
-    <PackageReference Include="FluentValidation.AspNetCore" Version="9.4.0" />
+    <PackageReference Include="FluentValidation.AspNetCore" Version="10.1.0" />
     <PackageReference Include="Microsoft.Azure.Functions.Extensions" Version="1.1.0" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Cosmos" Version="3.1.11" />
-    <PackageReference Include="Microsoft.NET.Sdk.Functions" Version="3.0.11" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Cosmos" Version="3.1.15" />
+    <PackageReference Include="Microsoft.NET.Sdk.Functions" Version="3.0.12" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Shared\Couple.Shared.csproj" />

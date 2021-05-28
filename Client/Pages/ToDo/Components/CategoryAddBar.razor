@@ -1,9 +1,0 @@
-<div style="padding-top: 56px;"
-     class="d-flex align-items-center px-3 border-bottom bg-white">
-    <input class="form-control ps-0 border-0"
-           placeholder="Enter new category"
-           @bind-Value="@Category"
-           @bind-Value:event="oninput"/>
-    <i class="bi bi-plus h3 mb-0 @(string.IsNullOrWhiteSpace(Category) ? "text-muted pe-none" : "")"
-       @onclick="@(_ => OnAddCallback.InvokeAsync(Category))"/>
-</div>

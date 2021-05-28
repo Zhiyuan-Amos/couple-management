@@ -1,15 +1,42 @@
+using AutoMapper;
+using Couple.Client.Model.ToDo;
+using Couple.Client.States.ToDo;
+using Couple.Client.ViewModel.ToDo;
+using Couple.Shared.Model;
 using Microsoft.AspNetCore.Components;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace Couple.Client.Pages.ToDo.Components
 {
     public partial class CreateUpdateForm
     {
-        [Parameter] public string Text { get; set; }
+        [Parameter] public Func<Task> OnSaveCallback { get; set; }
 
-        [Parameter] public EventCallback<string> TextChanged { get; init; }
+        [Inject] protected CreateUpdateToDoStateContainer CreateUpdateToDoStateContainer { get; init; }
 
-        [Parameter] public string Category { get; set; }
+        private IReadOnlyList<IReadOnlyInnerViewModel> ToDos { get; set; }
 
-        [Parameter] public EventCallback OnClickCallback { get; init; }
+        protected override void OnInitialized()
+        {
+            ToDos = CreateUpdateToDoStateContainer.ToDos;
+        }
+
+        private void OnForChange(For @for) => CreateUpdateToDoStateContainer.For = @for;
+
+        private bool IsAddNewToDoEnabled => ToDos.All(toDo => toDo.Content.Any());
+
+        private void AddNewToDo() => CreateUpdateToDoStateContainer.AddToDo("", false);
+        private void SetContent(int index, string content) => CreateUpdateToDoStateContainer.SetContent(index, content);
+
+        private void Save()
+        {
+            CreateUpdateToDoStateContainer.TrimToDos();
+            OnSaveCallback();
+        }
+
+        private bool IsSaveEnabled => ToDos.Any(toDo => toDo.Content.Any());
     }
 }

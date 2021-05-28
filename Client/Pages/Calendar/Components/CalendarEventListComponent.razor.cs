@@ -35,7 +35,7 @@ namespace Couple.Client.Pages.Calendar.Components
             EventStateContainer.SetEvents(events);
         }
 
-        private IEnumerable<EventViewModel> Events =>
+        private ICollection<EventViewModel> Events =>
             EventStateContainer.TryGetEvents(SelectedDateStateContainer.SelectedDate, out var events)
                 ? Mapper.Map<List<EventViewModel>>(events)
                 : new();

@@ -1,11 +1,9 @@
 <nav class="navbar navbar-height fixed-top navbar-light bg-light px-3">
-    <i class="bi bi-x h1 mb-0"
+    <i class="bi bi-chevron-left h1 mb-0"
        @onclick="@Cancel"/>
     <h3 class="position-absolute start-0 end-0 w-fit-content mx-auto mb-0 user-select-none">
-        @Title
+        Update To Do
     </h3>
-    <h5 class="mb-0 user-select-none @(IsEnabled ? "" : "text-muted pe-none")"
-        @onclick="@OnClickCallback">
-        Save
-    </h5>
+    <i class="bi bi-trash h1 mb-0"
+       @onclick="@OnDeleteCallback"/>
 </nav>

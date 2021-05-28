@@ -1,19 +1,76 @@
-@* nested binding, so use ValueChanged instead of bind-Value *@
-<textarea style="outline: 0;"
-          class="form-control-lg w-100 rounded-0 border-top-0 border-end-0 border-start-0 border-bottom"
-          placeholder="To Do"
-          @oninput="@((e) => TextChanged.InvokeAsync(e.Value!.ToString()))">
-    @Text
-</textarea>
-<div class="d-flex align-items-center px-3 py-1 border-bottom">
-    <label class="col-form-label pe-3 user-select-none">
-        Category
+@using Couple.Shared.Model
+<div class="m-3">
+    <label class="mb-0 form-label">
+        Name
     </label>
-    <div class="d-flex align-items-center flex-grow-1 min-w-0"
-         @onclick="@OnClickCallback">
-        <span class="form-control-sm p-0 min-h-0 flex-grow-1 text-muted user-select-none text-end text-truncate">
-            @(string.IsNullOrEmpty(Category) ? "-No Category-" : Category)
-        </span>
-        <i class="bi bi-chevron-right h6 mb-0 text-muted"/>
-    </div>
+    <input @bind="CreateUpdateToDoStateContainer.Name"
+           @bind:event="oninput"
+           class="form-control">
+</div>
+<div class="px-3">
+    <label>
+        For
+    </label>
+</div>
+<div class="btn-group px-3 pb-3 w-100">
+    <input type="radio"
+           class="btn-check"
+           checked="@(For.Him.Equals(CreateUpdateToDoStateContainer.For))"
+           name="btnradio"
+           autocomplete="off">
+    <label class="btn btn-outline-primary"
+           @onclick="@(() => OnForChange(For.Him))">
+        Him
+    </label>
+    <input type="radio"
+           class="btn-check"
+           checked="@(For.Her.Equals(CreateUpdateToDoStateContainer.For))"
+           name="btnradio"
+           autocomplete="off">
+    <label class="btn btn-outline-primary"
+           @onclick="@(() => OnForChange(For.Her))">
+        Her
+    </label>
+    <input type="radio"
+           class="btn-check"
+           checked="@(For.Us.Equals(CreateUpdateToDoStateContainer.For))"
+           name="btnradio"
+           autocomplete="off">
+    <label class="btn btn-outline-primary"
+           @onclick="@(() => OnForChange(For.Us))">
+        Us
+    </label>
+</div>
+<div class="mx-3 mb-3">
+    <label class="mb-0 form-label">
+        To Dos
+    </label>
+    @foreach (var (toDo, index) in ToDos.Select((item, index) => (item, index)))
+    {
+        <input value="@toDo.Content"
+               @oninput="@(e => SetContent(index, e.Value!.ToString()))"
+               class="form-control">
+    }
+    @* <div> *@
+    @*     <div class="p-2"> *@
+    @*         @toDo *@
+    @*     </div> *@
+    @* </div> *@
+</div>
+<div class="d-grid px-3">
+    <button @onclick="@AddNewToDo"
+            class="btn btn-light"
+            disabled="@(!IsAddNewToDoEnabled)"
+            type="button">
+        Add New
+    </button>
+</div>
+<div style="bottom: 60px"
+     class="d-grid px-3 position-fixed w-100">
+    <button class="btn btn-secondary"
+            type="button"
+            disabled="@(!IsSaveEnabled)"
+            @onclick="@Save">
+        Save
+    </button>
 </div>

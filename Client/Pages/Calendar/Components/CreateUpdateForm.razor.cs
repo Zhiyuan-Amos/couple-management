@@ -33,8 +33,6 @@ namespace Couple.Client.Pages.Calendar.Components
 
         [Parameter] public List<ToDoViewModel> Total { get; set; }
 
-        private AnimatedCategoryTreeView CategoryListView { get; set; }
-
         protected override async Task OnAfterRenderAsync(bool firstRender)
         {
             if (firstRender)
@@ -89,18 +87,6 @@ namespace Couple.Client.Pages.Calendar.Components
             }
 
             await EndChanged.InvokeAsync(newEndDate);
-        }
-
-        private async Task ShowToDoSelection()
-        {
-            await CategoryListView.ShowAsync();
-            ((IJSInProcessRuntime) Js).InvokeVoid("setScroll", false);
-        }
-
-        private async Task CloseToDoSelection()
-        {
-            await CategoryListView.HideAsync();
-            ((IJSInProcessRuntime) Js).InvokeVoid("setScroll", true);
         }
 
         private Task Remove(ToDoViewModel toRemove) => RemovedChanged.InvokeAsync(toRemove);
