@@ -9,10 +9,10 @@
     </label>
     <div @onclick="@ToggleStartPicker"
          @ref="@StartWrapperRef">
-        <TelerikDateTimePicker Value="@Start"
-                               T="DateTime"
-                               ValueChanged="@StartDateChanged"
-                               Format="dd MMM HH:mm"/>
+        @* <TelerikDateTimePicker Value="@Start" *@
+        @*                        T="DateTime" *@
+        @*                        ValueChanged="@StartDateChanged" *@
+        @*                        Format="dd MMM HH:mm"/> *@
     </div>
 </div>
 <div class="d-flex align-items-center justify-content-between px-3 py-1 border-bottom">
@@ -21,10 +21,10 @@
     </label>
     <div @onclick="@ToggleEndPicker"
          @ref="@EndWrapperRef">
-        <TelerikDateTimePicker Value="@End"
-                               T="DateTime"
-                               ValueChanged="@EndDateChanged"
-                               Format="dd MMM HH:mm"/>
+        @* <TelerikDateTimePicker Value="@End" *@
+        @*                        T="DateTime" *@
+        @*                        ValueChanged="@EndDateChanged" *@
+        @*                        Format="dd MMM HH:mm"/> *@
     </div>
 </div>
 <div class="d-flex align-items-center justify-content-between px-3 py-1 border-bottom">
@@ -33,15 +33,13 @@
     </label>
 </div>
 <div>
-    <TelerikListView Data="@Total">
-        <Template>
-            <div class="px-3 py-1 border-bottom d-flex align-items-center justify-content-between">
-                <h3 class="text-break mb-0 user-select-none">
-                    @context.Name
-                </h3>
-                <i class="bi bi-x h1 mb-0"
-                   @onclick="@(() => Remove(context))"/>
-            </div>
-        </Template>
-    </TelerikListView>
+    <Virtualize Items="@Total" Context="toDo">
+        <div class="px-3 py-1 border-bottom d-flex align-items-center justify-content-between">
+            <h3 class="text-break mb-0 user-select-none">
+                @toDo.Name
+            </h3>
+            <i class="bi bi-x h1 mb-0"
+               @onclick="@(() => Remove(toDo))"/>
+        </div>
+    </Virtualize>
 </div>

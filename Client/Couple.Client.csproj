@@ -3,7 +3,6 @@
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
     <ServiceWorkerAssetsManifest>service-worker-assets.js</ServiceWorkerAssetsManifest>
-    <RestoreSources>$(RestoreSources);.nuget\packages;https://api.nuget.org/v3/index.json</RestoreSources>
     <BlazorEnableTimeZoneSupport>true</BlazorEnableTimeZoneSupport>
     <InvariantGlobalization>false</InvariantGlobalization>
   </PropertyGroup>
@@ -13,21 +12,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Include=".nuget\packages\Telerik.DataSource.2.0.8.nupkg" />
-    <None Include=".nuget\packages\Telerik.Documents.CMapUtils.2021.1.118.nupkg" />
-    <None Include=".nuget\packages\Telerik.Documents.Core.2021.1.118.nupkg" />
-    <None Include=".nuget\packages\Telerik.Documents.Fixed.2021.1.118.nupkg" />
-    <None Include=".nuget\packages\Telerik.Documents.Flow.2021.1.118.nupkg" />
-    <None Include=".nuget\packages\Telerik.Documents.Flow.FormatProviders.Pdf.2021.1.118.nupkg" />
-    <None Include=".nuget\packages\Telerik.Documents.ImageUtils.2021.1.118.nupkg" />
-    <None Include=".nuget\packages\Telerik.Documents.Spreadsheet.2021.1.118.nupkg" />
-    <None Include=".nuget\packages\Telerik.Documents.Spreadsheet.FormatProviders.OpenXml.2021.1.118.nupkg" />
-    <None Include=".nuget\packages\Telerik.Documents.Spreadsheet.FormatProviders.Pdf.2021.1.118.nupkg" />
-    <None Include=".nuget\packages\Telerik.Documents.Spreadsheet.FormatProviders.Xls.2021.1.118.nupkg" />
-    <None Include=".nuget\packages\Telerik.Documents.SpreadsheetStreaming.2021.1.118.nupkg" />
-    <None Include=".nuget\packages\Telerik.Recurrence.0.1.0.nupkg" />
-    <None Include=".nuget\packages\Telerik.UI.for.Blazor.2.21.0.nupkg" />
-    <None Include=".nuget\packages\Telerik.Zip.2021.1.118.nupkg" />
     <None Include="compilerconfig.json" />
   </ItemGroup>
 
@@ -37,7 +21,6 @@
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="6.0.0-preview.4.21253.5" />
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="6.0.0-preview.4.21253.5" PrivateAssets="all" />
     <PackageReference Include="System.Net.Http.Json" Version="6.0.0-preview.4.21253.7" />
-    <PackageReference Include="Telerik.UI.for.Blazor" Version="2.21.0" />
   </ItemGroup>
 
   <ItemGroup>

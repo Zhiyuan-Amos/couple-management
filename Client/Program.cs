@@ -16,7 +16,7 @@ namespace Couple.Client
             var builder = WebAssemblyHostBuilder.CreateDefault(args);
             builder.RootComponents.Add<App>("#app");
 
-            builder.Services.AddTelerikBlazor()
+            builder.Services
                 .AddTransient(_ => new HttpClient
                     {BaseAddress = new(builder.Configuration["API_Prefix"] ?? builder.HostEnvironment.BaseAddress)})
                 .AddSingleton<ToDoStateContainer>()
