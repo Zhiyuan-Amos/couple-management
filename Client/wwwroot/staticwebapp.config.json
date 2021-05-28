@@ -31,6 +31,12 @@
       "rewrite": "/.auth/logout"
     },
     {
+      "route": "/manifest.json",
+      "allowedRoles": [
+        "anonymous"
+      ]
+    },
+    {
       "route": "/*",
       "allowedRoles": [
         "user"
