@@ -30,12 +30,9 @@ Application is hosted on Azure Static Web App.
 
 #### Client
 
-1. Blazor WASM on .NET 5
-1. Telerik
+1. Blazor WASM on .NET 6
 1. Bootstrap
 1. IndexedDb (see [Privacy](#Privacy))
-
-The application has State Management (using `Blazor-State`) to reduce the number of times the Client needs to go to the Database for data.
 
 #### Api
 
@@ -64,19 +61,14 @@ The main con however, is that there's no native notifications. This can be circu
 
 #### Client
 
-##### Telerik Controls
-
-1. Use `Visible` parameter rather than `@if (IsVisible)`.
-1. Customise Telerik controls directly, rather than customising the wrapper divs around the Telerik controls because they still do not allow for complete customisation.
-1. Customise Telerik controls by modifying the css classes, rather than using `Class` parameter because it still does not allow for complete customisation as it might not target the inner components. Only do so when having [multiple controls of the same type in the same component](https://www.telerik.com/forums/reliability-of-overriding-kendo-css-classes).
-1. Calendar control is chosen over Scheduler due to crucial missing elements:
-    1. On cell click doesn't go to day view so there's no way to view all the events on that particular day, and there's no onclick event to trigger the loading of a separate ListView.
-    1. Header overflows because there's no abbreviation (i.e. Monday -> Mon).
-
 ##### General
 
 1. Data binding vs getters: As parent components sometimes require re-render on data changed e.g. to determine form validity, let's standardise with data binding as it automatically re-renders client.
 1. State Management: Within the same page, use `Parameters` or `Cascading Parameters`. Across Pages, use `States` or `Query String Parameters`.
+
+##### Performance
+
+Telerik & AutoMapper are no longer used as these dependencies increase initial load time. On MacBook 2015, load time increases by about 1s per dependency added, while load time increases by about 5s on a low to middle end mobile device.
 
 #### Privacy
 
@@ -84,4 +76,4 @@ There's no way to protect the data from myself if it's stored inside the databas
 
 ## Known Limitations
 
-1. Requires online.
+1. Requires Internet connection.
