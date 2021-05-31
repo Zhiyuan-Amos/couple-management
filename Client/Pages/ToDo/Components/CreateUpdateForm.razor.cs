@@ -1,4 +1,3 @@
-using AutoMapper;
 using Couple.Client.Model.ToDo;
 using Couple.Client.States.ToDo;
 using Couple.Client.ViewModel.ToDo;

@@ -1,5 +1,5 @@
+using Couple.Client.Adapters;
 using Couple.Client.Model.ToDo;
-using Couple.Shared.Model.ToDo;
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
 using System;
@@ -45,7 +45,7 @@ namespace Couple.Client.Pages.ToDo
                 Id = ToDoId,
                 Name = CreateUpdateToDoStateContainer.Name,
                 For = CreateUpdateToDoStateContainer.For,
-                ToDos = Mapper.Map<List<ToDoInnerModel>>(CreateUpdateToDoStateContainer.ToDos),
+                ToDos = ToDoAdapter.ToInnerModel(CreateUpdateToDoStateContainer.ToDos),
                 CreatedOn = CreateUpdateToDoStateContainer.CreatedOn,
             };
             await Js.InvokeVoidAsync("updateToDo", toPersist);
@@ -53,7 +53,7 @@ namespace Couple.Client.Pages.ToDo
             ToDoStateContainer.ToDos = await Js.InvokeAsync<List<ToDoModel>>("getAllToDos");
             NavigationManager.NavigateTo("/todo");
 
-            var toUpdate = Mapper.Map<UpdateToDoDto>(toPersist);
+            var toUpdate = ToDoAdapter.ToUpdateDto(toPersist);
             await HttpClient.PutAsJsonAsync("api/ToDos", toUpdate);
         }
 

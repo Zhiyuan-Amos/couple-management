@@ -1,4 +1,4 @@
-using AutoMapper;
+using Couple.Client.Adapters;
 using Couple.Client.Model.Calendar;
 using Couple.Client.Model.ToDo;
 using Couple.Client.States.Calendar;
@@ -26,8 +26,6 @@ namespace Couple.Client.Pages.Calendar
         [Inject] private ToDoStateContainer ToDoStateContainer { get; init; }
 
         [Inject] private EventStateContainer EventStateContainer { get; init; }
-
-        [Inject] private IMapper Mapper { get; init; }
 
         [Inject] private IJSRuntime Js { get; init; }
 
@@ -59,7 +57,7 @@ namespace Couple.Client.Pages.Calendar
                 Title = ToCreate.Title,
                 Start = ToCreate.Start,
                 End = ToCreate.End,
-                ToDos = Mapper.Map<List<ToDoModel>>(ToCreate.ToDos),
+                ToDos = ToDoAdapter.ToModel(ToCreate.ToDos),
             };
             await Js.InvokeVoidAsync("addEvent", toPersist, added);
 
@@ -73,7 +71,7 @@ namespace Couple.Client.Pages.Calendar
 
             var toCreate = new CreateEventDto
             {
-                Event = Mapper.Map<EventDto>(toPersist),
+                Event = EventAdapter.ToDto(toPersist),
                 Added = added,
             };
             await HttpClient.PostAsJsonAsync($"api/Events", toCreate);

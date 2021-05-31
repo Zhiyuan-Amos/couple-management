@@ -1,4 +1,3 @@
-using Couple.Client.Profiles;
 using Couple.Client.Services;
 using Couple.Client.States.Calendar;
 using Couple.Client.States.ToDo;
@@ -23,8 +22,7 @@ namespace Couple.Client
                 .AddSingleton<CreateUpdateToDoStateContainer>()
                 .AddSingleton<EventStateContainer>()
                 .AddSingleton<SelectedDateStateContainer>()
-                .AddSingleton<Synchronizer>()
-                .AddAutoMapper(typeof(ToDoProfile), typeof(EventProfile));
+                .AddSingleton<Synchronizer>();
 
             var host = builder.Build();
 

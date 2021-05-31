@@ -1,4 +1,4 @@
-using AutoMapper;
+using Couple.Client.Adapters;
 using Couple.Client.Model.Calendar;
 using Couple.Client.Model.ToDo;
 using Couple.Client.States.Calendar;
@@ -27,8 +27,6 @@ namespace Couple.Client.Pages.Calendar
 
         [Inject] private EventStateContainer EventStateContainer { get; init; }
 
-        [Inject] private IMapper Mapper { get; init; }
-
         [Inject] private IJSRuntime Js { get; init; }
 
         [Parameter] public Guid EventId { get; set; }
@@ -47,21 +45,23 @@ namespace Couple.Client.Pages.Calendar
                 return;
             }
 
-            Original = Mapper.Map<List<ToDoViewModel>>(@event.ToDos);
+            Original = ToDoAdapter.ToViewModel(@event.ToDos);
             Added = new();
             Removed = new();
 
-            ToUpdate = Mapper.Map<UpdateEventViewModel>(@event);
+            ToUpdate = EventAdapter.ToUpdateViewModel(@event);
         }
 
         private async Task Save()
         {
             var added = Added.Select(toDo => toDo.Id).ToList();
-            var toPersist = Mapper.Map<EventModel>(ToUpdate);
-            await Js.InvokeVoidAsync("updateEvent",
+            var toPersist = EventAdapter.ToModel(ToUpdate);
+            await Js.InvokeVoidAsync("updateEvent", new object[]
+            {
                 toPersist,
                 added,
-                Mapper.Map<List<ToDoModel>>(Removed));
+                ToDoAdapter.ToModel(Removed)
+            });
 
             var toDosTask = Js.InvokeAsync<List<ToDoModel>>("getAllToDos").AsTask();
             var eventsTask = Js.InvokeAsync<List<EventModel>>("getAllEvents").AsTask();
@@ -73,9 +73,9 @@ namespace Couple.Client.Pages.Calendar
 
             var toUpdate = new UpdateEventDto
             {
-                Event = Mapper.Map<EventDto>(ToUpdate),
+                Event = EventAdapter.ToDto(ToUpdate),
                 Added = added,
-                Removed = Mapper.Map<List<ToDoDto>>(Removed),
+                Removed = ToDoAdapter.ToDto(Removed),
             };
             await HttpClient.PutAsJsonAsync($"api/Events", toUpdate);
         }

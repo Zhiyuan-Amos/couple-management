@@ -1,4 +1,4 @@
-﻿using AutoMapper;
+﻿using Couple.Client.Adapters;
 using Couple.Client.Model.Calendar;
 using Couple.Client.States.Calendar;
 using Couple.Client.Utility;
@@ -16,7 +16,6 @@ namespace Couple.Client.Pages.Calendar.Components
         [Inject] private EventStateContainer EventStateContainer { get; init; }
         [Inject] private SelectedDateStateContainer SelectedDateStateContainer { get; init; }
         [Inject] private NavigationManager NavigationManager { get; init; }
-        [Inject] private IMapper Mapper { get; init; }
         [Inject] private IJSRuntime Js { get; init; }
 
         [Parameter] public string Style { get; set; }
@@ -37,7 +36,7 @@ namespace Couple.Client.Pages.Calendar.Components
 
         private ICollection<EventViewModel> Events =>
             EventStateContainer.TryGetEvents(SelectedDateStateContainer.SelectedDate, out var events)
-                ? Mapper.Map<List<EventViewModel>>(events)
+                ? EventAdapter.ToViewModel(events)
                 : new();
 
         private void EditEvent(EventViewModel selectedEvent) =>
