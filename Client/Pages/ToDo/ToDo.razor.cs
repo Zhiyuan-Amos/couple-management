@@ -19,10 +19,13 @@ namespace Couple.Client.Pages.ToDo
 
         private List<ToDoViewModel> ToDos => ToDoAdapter.ToViewModel(ToDoStateContainer.ToDos);
 
-        protected override async Task OnInitializedAsync()
+        protected override async Task OnAfterRenderAsync(bool firstRender)
         {
-            ToDoStateContainer.OnChange += StateHasChanged;
-            ToDoStateContainer.ToDos = await Js.InvokeAsync<List<ToDoModel>>("getAllToDos");
+            if (firstRender)
+            {
+                ToDoStateContainer.OnChange += StateHasChanged;
+                ToDoStateContainer.ToDos = await Js.InvokeAsync<List<ToDoModel>>("getAllToDos");
+            }
         }
 
         public void Dispose() => ToDoStateContainer.OnChange -= StateHasChanged;
