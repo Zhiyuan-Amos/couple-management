@@ -33,9 +33,8 @@
     <script>
         const db = idb.openDB('Couple', 1, {
             upgrade(db) {
-                const toDoStore = db.createObjectStore('todo', { keyPath: 'id' });
+                db.createObjectStore('todo', { keyPath: 'id' });
                 db.createObjectStore('event', { keyPath: 'id' });
-                toDoStore.createIndex('category', 'category');
             },
         });
 
