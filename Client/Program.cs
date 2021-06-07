@@ -24,11 +24,9 @@ namespace Couple.Client
                 .AddSingleton<SelectedDateStateContainer>()
                 .AddSingleton<Synchronizer>();
 
-            var host = builder.Build();
-
-            _ = host.Services.GetRequiredService<Synchronizer>();
-
-            await host.RunAsync();
+            await builder
+                .Build()
+                .RunAsync();
         }
     }
 }
