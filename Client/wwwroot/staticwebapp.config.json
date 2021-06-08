@@ -3,7 +3,7 @@
     {
       "route": "/api/*",
       "allowedRoles": [
-        "user"
+        "authenticated"
       ]
     },
     {
@@ -39,7 +39,7 @@
     {
       "route": "/*",
       "allowedRoles": [
-        "user"
+        "authenticated"
       ]
     }
   ],
