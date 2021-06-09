@@ -28,7 +28,7 @@
     },
     {
       "route": "/logout",
-      "rewrite": "/.auth/logout"
+      "rewrite": "/.auth/logout?post_logout_redirect_uri=https://orange-island-0901fe000.azurestaticapps.net/login"
     },
     {
       "route": "/manifest.json",
