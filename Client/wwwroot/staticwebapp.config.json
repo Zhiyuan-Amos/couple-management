@@ -1,13 +1,19 @@
 {
   "routes": [
     {
+      "route": "/todo",
+      "allowedRoles": [
+        "user"
+      ]
+    },
+    {
       "route": "/api/Synchronize",
       "allowedRoles": [
         "user"
       ]
     },
     {
-      "route": "/api/ToDos/",
+      "route": "/api/ToDos",
       "allowedRoles": [
         "user"
       ]
@@ -40,12 +46,6 @@
       "route": "/manifest.json",
       "allowedRoles": [
         "anonymous"
-      ]
-    },
-    {
-      "route": "/todo",
-      "allowedRoles": [
-        "user"
       ]
     }
   ],
