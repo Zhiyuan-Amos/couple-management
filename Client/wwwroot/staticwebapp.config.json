@@ -1,19 +1,13 @@
 {
   "routes": [
     {
-      "route": "/todo",
+      "route": "/*",
       "allowedRoles": [
         "user"
       ]
     },
     {
-      "route": "/api/Synchronize",
-      "allowedRoles": [
-        "user"
-      ]
-    },
-    {
-      "route": "/api/ToDos",
+      "route": "/api/*",
       "allowedRoles": [
         "user"
       ]
