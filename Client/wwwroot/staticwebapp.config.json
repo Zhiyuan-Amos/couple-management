@@ -1,7 +1,13 @@
 {
   "routes": [
     {
-      "route": "/api/*",
+      "route": "/api/Synchronize",
+      "allowedRoles": [
+        "user"
+      ]
+    },
+    {
+      "route": "/api/ToDos/",
       "allowedRoles": [
         "user"
       ]
