@@ -37,7 +37,7 @@
       ]
     },
     {
-      "route": "/*",
+      "route": "/todo",
       "allowedRoles": [
         "user"
       ]
