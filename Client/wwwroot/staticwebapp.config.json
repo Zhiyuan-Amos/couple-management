@@ -7,7 +7,7 @@
       ]
     },
     {
-      "route": "/.auth/login/aad",
+      "route": "/.auth/login/facebook",
       "statusCode": "404"
     },
     {
@@ -24,7 +24,7 @@
     },
     {
       "route": "/login",
-      "rewrite": "/.auth/login/facebook"
+      "rewrite": "/.auth/login/aad"
     },
     {
       "route": "/logout",
