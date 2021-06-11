@@ -28,9 +28,6 @@ namespace Couple.Client.Services
 
         private readonly JsonSerializerOptions _options = new() {PropertyNameCaseInsensitive = true};
 
-        private readonly Task _initialSynchronization;
-
-        // See https://blog.stephencleary.com/2013/01/async-oop-2-constructors.html
         public Synchronizer(IJSRuntime js,
             HttpClient httpClient,
             ToDoStateContainer toDoStateContainer,
@@ -40,7 +37,6 @@ namespace Couple.Client.Services
             _httpClient = httpClient;
             _toDoStateContainer = toDoStateContainer;
             _eventStateContainer = eventStateContainer;
-            _initialSynchronization = Task.Delay(10000).ContinueWith(_ => SynchronizeAsync());
         }
 
         public async Task SynchronizeAsync()

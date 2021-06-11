@@ -1,19 +1,18 @@
 using Couple.Client.Services;
 using Microsoft.AspNetCore.Components;
-using Microsoft.Extensions.DependencyInjection;
-using System;
+using System.Threading.Tasks;
 
 namespace Couple.Client.Pages
 {
     public partial class Index
     {
-        [Inject] private IServiceProvider ServiceProvider { get; init; }
+        [Inject] private Synchronizer Synchronizer { get; init; }
 
-        protected override void OnAfterRender(bool firstRender)
+        protected override async Task OnAfterRenderAsync(bool firstRender)
         {
             if (firstRender)
             {
-                ServiceProvider.GetRequiredService<Synchronizer>();
+                await Synchronizer.SynchronizeAsync();
             }
         }
     }
