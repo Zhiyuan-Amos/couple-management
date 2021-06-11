@@ -37,6 +37,12 @@
       ]
     },
     {
+      "route": "/icons/*",
+      "headers": {
+        "Cache-Control": "public, max-age=604800, immutable"
+      }
+    },
+    {
       "route": "/*",
       "allowedRoles": [
         "user"
