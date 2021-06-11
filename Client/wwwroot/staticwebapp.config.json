@@ -1,18 +1,6 @@
 {
   "routes": [
     {
-      "route": "/",
-      "allowedRoles": [
-        "user"
-      ]
-    },
-    {
-      "route": "/todo",
-      "allowedRoles": [
-        "user"
-      ]
-    },
-    {
       "route": "/api/*",
       "allowedRoles": [
         "user"
@@ -46,6 +34,12 @@
       "route": "/manifest.json",
       "allowedRoles": [
         "anonymous"
+      ]
+    },
+    {
+      "route": "/*",
+      "allowedRoles": [
+        "user"
       ]
     }
   ],
