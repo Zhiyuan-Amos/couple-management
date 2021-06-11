@@ -7,10 +7,6 @@
       ]
     },
     {
-      "route": "/.auth/login/facebook",
-      "statusCode": "404"
-    },
-    {
       "route": "/.auth/login/github",
       "statusCode": "404"
     },
