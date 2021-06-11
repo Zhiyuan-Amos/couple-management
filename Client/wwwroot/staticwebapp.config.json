@@ -1,7 +1,13 @@
 {
   "routes": [
     {
-      "route": "/*",
+      "route": "/",
+      "allowedRoles": [
+        "user"
+      ]
+    },
+    {
+      "route": "/todo",
       "allowedRoles": [
         "user"
       ]
