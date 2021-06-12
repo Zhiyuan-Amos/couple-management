@@ -30,12 +30,17 @@ namespace Couple.Client.Pages.ToDo
 
         protected async Task Delete()
         {
-            await Js.InvokeVoidAsync("removeToDo", CreateUpdateToDoStateContainer.Id);
+            var id = CreateUpdateToDoStateContainer.Id;
+
+            await Js.InvokeVoidAsync("removeToDo", id);
             ToDoStateContainer.ToDos = await Js.InvokeAsync<List<ToDoModel>>("getAllToDos");
 
             NavigationManager.NavigateTo("/todo");
 
-            await HttpClient.DeleteAsync($"api/ToDos/{CreateUpdateToDoStateContainer.Id}");
+            // Navigating away from this page calls Dispose() which resets CreateUpdateToDoStateContainer,
+            // so CreateUpdateToDoStateContainer.Id returns null. Therefore, the value has to be assigned
+            // to a separate variable first.
+            await HttpClient.DeleteAsync($"api/ToDos/{id}");
         }
 
         protected override async Task Save()
