@@ -71,7 +71,7 @@ namespace Couple.Api.Features.ToDo
             public Validator()
             {
                 RuleFor(dto => dto.Id).NotEmpty();
-                RuleFor(dto => dto.Name).NotEmpty();
+                RuleFor(dto => dto.Name).NotNull();
                 RuleFor(dto => dto.For).NotNull();
                 RuleFor(dto => dto.ToDos).NotNull();
                 RuleForEach(dto => dto.ToDos)
