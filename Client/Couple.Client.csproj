@@ -8,11 +8,14 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Content Remove="compilerconfig.json" />
-  </ItemGroup>
+    <Content Update="wwwroot\scss\*" CopyToPublishDirectory="Never" />
+    <Content Update="wwwroot\me.json" CopyToPublishDirectory="Never" />
+    <Content Update="wwwroot\appsettings.Development.json" CopyToPublishDirectory="Never" />
 
-  <ItemGroup>
+    <Content Remove="compilerconfig.json" />
     <None Include="compilerconfig.json" />
+    <Content Remove="libman.json" />
+    <None Include="libman.json" />
   </ItemGroup>
 
   <ItemGroup>
@@ -28,8 +31,5 @@
   <ItemGroup>
     <ServiceWorker Include="wwwroot\service-worker.js" PublishedContent="wwwroot\service-worker.published.js" />
   </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="wwwroot\icons" />
-  </ItemGroup>
+    
 </Project>
