@@ -4,7 +4,7 @@
     <TargetFramework>net6.0</TargetFramework>
     <ServiceWorkerAssetsManifest>service-worker-assets.js</ServiceWorkerAssetsManifest>
     <BlazorEnableTimeZoneSupport>false</BlazorEnableTimeZoneSupport>
-    <InvariantGlobalization>false</InvariantGlobalization>
+    <InvariantGlobalization>true</InvariantGlobalization>
   </PropertyGroup>
 
   <ItemGroup>
