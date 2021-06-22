@@ -28,15 +28,18 @@ namespace Couple.Client
             var host = builder.Build();
             var httpClient = host.Services.GetRequiredService<HttpClient>();
 
-            try
+            if (builder.HostEnvironment.IsStaging() || builder.HostEnvironment.IsProduction())
             {
-                await httpClient.GetAsync("api/Ping");
-            }
-            catch (HttpRequestException hre)
-            {
-                var navigationManager = host.Services.GetRequiredService<NavigationManager>();
-                navigationManager.NavigateTo("/login", true);
-                return;
+                try
+                {
+                    await httpClient.GetAsync("api/Ping");
+                }
+                catch (HttpRequestException hre)
+                {
+                    var navigationManager = host.Services.GetRequiredService<NavigationManager>();
+                    navigationManager.NavigateTo("/login", true);
+                    return;
+                }
             }
 
             await host.RunAsync();
