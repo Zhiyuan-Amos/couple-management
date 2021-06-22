@@ -1,6 +1,6 @@
+using Couple.Client.Adapters;
 using Couple.Client.Model.ToDo;
 using Couple.Shared.Model;
-using Couple.Shared.Model.ToDo;
 using Microsoft.JSInterop;
 using System;
 using System.Collections.Generic;
@@ -33,7 +33,7 @@ namespace Couple.Client.Pages.ToDo
                 Id = id,
                 Name = CreateUpdateToDoStateContainer.Name,
                 For = CreateUpdateToDoStateContainer.For,
-                ToDos = Mapper.Map<List<ToDoInnerModel>>(CreateUpdateToDoStateContainer.ToDos),
+                ToDos = ToDoAdapter.ToInnerModel(CreateUpdateToDoStateContainer.ToDos),
                 CreatedOn = DateTime.Now,
             };
             await Js.InvokeVoidAsync("addToDo", toPersist);
@@ -41,7 +41,7 @@ namespace Couple.Client.Pages.ToDo
             ToDoStateContainer.ToDos = await Js.InvokeAsync<List<ToDoModel>>("getAllToDos");
             NavigationManager.NavigateTo("/todo");
 
-            var toCreate = Mapper.Map<CreateToDoDto>(toPersist);
+            var toCreate = ToDoAdapter.ToCreateDto(toPersist);
             await HttpClient.PostAsJsonAsync($"api/ToDos", toCreate);
         }
 

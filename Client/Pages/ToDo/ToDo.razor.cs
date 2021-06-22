@@ -1,4 +1,4 @@
-using AutoMapper;
+using Couple.Client.Adapters;
 using Couple.Client.Model.ToDo;
 using Couple.Client.States.ToDo;
 using Couple.Client.ViewModel.ToDo;
@@ -17,9 +17,7 @@ namespace Couple.Client.Pages.ToDo
 
         [Inject] private ToDoStateContainer ToDoStateContainer { get; init; }
 
-        [Inject] private IMapper Mapper { get; init; }
-
-        private List<ToDoViewModel> ToDos => Mapper.Map<List<ToDoViewModel>>(ToDoStateContainer.ToDos);
+        private List<ToDoViewModel> ToDos => ToDoAdapter.ToViewModel(ToDoStateContainer.ToDos);
 
         protected override async Task OnInitializedAsync()
         {

@@ -1,4 +1,3 @@
-using AutoMapper;
 using Couple.Client.States.ToDo;
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
@@ -16,8 +15,6 @@ namespace Couple.Client.Pages.ToDo
 
         [Inject] protected ToDoStateContainer ToDoStateContainer { get; init; }
         [Inject] protected CreateUpdateToDoStateContainer CreateUpdateToDoStateContainer { get; init; }
-
-        [Inject] protected IMapper Mapper { get; init; }
 
         [Inject] protected IJSRuntime Js { get; init; }
 
