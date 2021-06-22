@@ -9,7 +9,6 @@
 
   <ItemGroup>
     <Content Update="wwwroot\scss\*" CopyToPublishDirectory="Never" />
-    <Content Update="wwwroot\me.json" CopyToPublishDirectory="Never" />
     <Content Update="wwwroot\appsettings.Development.json" CopyToPublishDirectory="Never" />
 
     <Content Remove="compilerconfig.json" />
