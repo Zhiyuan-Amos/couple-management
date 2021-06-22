@@ -1,4 +1,4 @@
-﻿using Couple.Client.Adapters;
+﻿using AutoMapper;
 using Couple.Client.Model.ToDo;
 using Couple.Client.ViewModel.ToDo;
 using Couple.Shared.Model;
@@ -15,6 +15,12 @@ namespace Couple.Client.States.ToDo
         private For _for;
         private List<CreateUpdateInnerViewModel> _toDos;
         public DateTime CreatedOn { get; private set; }
+
+        private readonly IMapper _mapper;
+        public CreateUpdateToDoStateContainer(IMapper mapper)
+        {
+            _mapper = mapper;
+        }
 
         public string Name
         {
@@ -62,7 +68,7 @@ namespace Couple.Client.States.ToDo
         {
             _name = name;
             _for = @for;
-            _toDos = ToDoAdapter.ToCreateUpdateInnerViewModel(toDos);
+            _toDos = _mapper.Map<List<CreateUpdateInnerViewModel>>(toDos);
         }
 
         public void Initialize(Guid id, string name, For @for, IEnumerable<ToDoInnerModel> toDos, DateTime createdOn)
@@ -70,7 +76,7 @@ namespace Couple.Client.States.ToDo
             Id = id;
             _name = name;
             _for = @for;
-            _toDos = ToDoAdapter.ToCreateUpdateInnerViewModel(toDos);
+            _toDos = _mapper.Map<List<CreateUpdateInnerViewModel>>(toDos);
             CreatedOn = createdOn;
         }
 
