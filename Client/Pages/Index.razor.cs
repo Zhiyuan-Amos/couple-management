@@ -12,7 +12,6 @@ namespace Couple.Client.Pages
         {
             if (firstRender)
             {
-                await Synchronizer.SynchronizeAsync();
             }
         }
     }
