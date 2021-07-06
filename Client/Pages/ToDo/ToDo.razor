@@ -1,0 +1,8 @@
+@page "/todo"
+
+@using Couple.Client.Pages.ToDo.Components
+@implements IDisposable
+
+<ToDoListView ToDos="@ToDos"/>
+<BottomBar/>
+<AddIcon OnClickCallback="@AddToDo"/>

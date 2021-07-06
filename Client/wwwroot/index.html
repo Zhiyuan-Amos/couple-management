@@ -1,0 +1,136 @@
+﻿<!DOCTYPE html>
+<html style="height: 100%;">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <title>Couple</title>
+    <base href="/" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <link href="css/app.css" rel="stylesheet" />
+    <link href="Couple.Client.styles.css" rel="stylesheet" />
+    <link href="manifest.json" rel="manifest" />
+    <link href="icon-512.png" rel="apple-touch-icon" sizes="512x512" />
+</head>
+
+<body style="height: 100%;">
+    <div id="app"
+         style="height: 100%;">
+        <div class="position-absolute top-50 start-50 translate-middle">
+            <div class="spinner-border"></div>
+        </div>
+    </div>
+
+    <script src="_framework/blazor.webassembly.js"></script>
+    <script src="https://unpkg.com/idb@6.1.2/build/iife/index-min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4" crossorigin="anonymous"></script>
+    <script>navigator.serviceWorker.register('service-worker.js');</script>
+    <script>
+        const db = idb.openDB('Couple', 1, {
+            upgrade(db) {
+                db.createObjectStore('todo', { keyPath: 'id' });
+                db.createObjectStore('event', { keyPath: 'id' });
+            },
+        });
+
+        var carousel;
+
+        async function getAllToDos() {
+            return (await db).transaction("todo").store.getAll();
+        }
+
+        async function addToDo(todo) {
+            (await db).transaction("todo", 'readwrite').store.add(todo);
+        }
+
+        async function updateToDo(todo) {
+            (await db).transaction("todo", 'readwrite').store.put(todo);
+        }
+
+        async function removeToDo(id) {
+            (await db).transaction("todo", 'readwrite').store.delete(id);
+        }
+
+        async function getAllEvents() {
+            return (await db).transaction("event").store.getAll();
+        }
+
+        // Another possible implementation is to pass only the Event (w/ ToDos),
+        // then retrieve the existing Event from database & generate set difference.
+        // Pro: Impossible for callers of the method to pass the wrong set of model.
+        // Con: Additional code to generate set difference and additional database call.
+        // I've used this implementation for code simplicity.
+        async function addEvent(event, added) {
+            const tx = (await db).transaction(['event', 'todo'], 'readwrite');
+            const eventStore = tx.objectStore('event');
+            const toDoStore = tx.objectStore('todo');
+
+            await Promise.all([
+                eventStore.add(event),
+                added.map(id => toDoStore.delete(id)),
+                tx.done,
+            ]);
+        }
+
+        async function updateEvent(event, added, removed) {
+            const tx = (await db).transaction(['event', 'todo'], 'readwrite');
+            const eventStore = tx.objectStore('event');
+            const toDoStore = tx.objectStore('todo');
+
+            await Promise.all([
+                eventStore.put(event),
+                added.map(id => toDoStore.delete(id)),
+                removed.map(toDo => toDoStore.add(toDo)),
+                tx.done,
+            ]);
+        }
+
+        async function removeEvent(id) {
+            (await db).transaction("event", 'readwrite').store.delete(id);
+        }
+
+        function togglePicker(wrapperElement) {
+            const popupBtn = wrapperElement.querySelector(".k-select");
+            popupBtn.click();
+        }
+
+        function disableInput(wrapperElement) {
+            const input = wrapperElement.querySelector("input");
+            input.setAttribute("disabled", "true");
+        }
+
+        function getCalendarHeaderHeight() {
+            return document.getElementById('calendar-header').getBoundingClientRect().height;
+        }
+
+        function getCalendarBodyHeight() {
+            return document.getElementById('calendar-body').getBoundingClientRect().height;
+        }
+
+        function isListViewTop() {
+            return document.getElementById('events-list').scrollTop <= 0;
+        }
+
+        function initializeCarousel() {
+            const carouselElement = document.getElementById('calendar-carousel');
+            carousel = new bootstrap.Carousel(carouselElement, {
+                interval: false,
+                keyboard: false,
+                pause: false,
+                wrap: false,
+                touch: false,
+            });
+        }
+
+        function prev() {
+            carousel.prev();
+        }
+
+        function next() {
+            carousel.next();
+        }
+    </script>
+</body>
+
+</html>

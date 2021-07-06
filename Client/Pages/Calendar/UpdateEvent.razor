@@ -1,0 +1,20 @@
+@page "/calendar/{eventId:guid}"
+
+@using Couple.Client.Pages.Calendar.Components
+
+<CreateUpdateTopBar Title="Update Event"
+                    IsEnabled="@IsEnabled"
+                    OnClickCallback="@Save"/>
+<CreateUpdateForm @bind-Title="@ToUpdate.Title"
+                  @bind-Start="@ToUpdate.Start"
+                  @bind-End="@ToUpdate.End"
+                  Added="@Added"
+                  AddedChanged="@AddedChanged"
+                  Removed="@Removed"
+                  RemovedChanged="@RemovedChanged"
+                  Total="@ToUpdate.ToDos"/>
+<button type="button"
+        @onclick="@Delete"
+        class="btn btn-danger rounded-0 position-absolute bottom-0 w-100">
+    Delete
+</button>

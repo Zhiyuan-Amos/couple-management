@@ -1,0 +1,14 @@
+@page "/calendar"
+@using Couple.Client.Pages.Calendar.Components
+
+<CalendarTopBar/>
+<div class="h-100">
+    <CalendarHeaderComponent AfterRenderCallback="@SetCalendarHeaderHeight"/>
+    <CalendarCarouselComponent Style="@GetCalendarStyle()"
+                               AfterRenderCallback="@SetCalendarBodyHeight"/>
+    <CalendarEventListComponent Style="@GetListStyle()"
+                                OnSwipeUpCallback="@SwipeUp"
+                                OnSwipeDownCallback="@SwipeDown"/>
+</div>
+<AddIcon OnClickCallback="@AddEvent"/>
+<BottomBar/>

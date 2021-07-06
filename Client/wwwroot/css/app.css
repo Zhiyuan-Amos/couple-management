@@ -1,0 +1,18 @@
+﻿html, body {
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+}
+
+body {
+    padding-top: 56px;
+    padding-bottom: 56px;
+    overscroll-behavior: contain;
+}
+
+.navbar-height {
+    height: 56px;
+}
+
+.w-fit-content {
+    width: fit-content;
+}
+

@@ -1,0 +1,7 @@
+@page "/todo/create"
+
+@inherits CreateToDoBase
+@using Couple.Client.Pages.ToDo.Components
+
+<CreateTopBar/>
+<CreateUpdateForm OnSaveCallback="@Save"/>

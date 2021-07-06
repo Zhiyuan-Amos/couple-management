@@ -1,0 +1,76 @@
+@using Couple.Shared.Model
+<div class="m-3">
+    <label class="mb-0 form-label">
+        Name
+    </label>
+    <input @bind="CreateUpdateToDoStateContainer.Name"
+           @bind:event="oninput"
+           class="form-control">
+</div>
+<div class="px-3">
+    <label>
+        For
+    </label>
+</div>
+<div class="btn-group px-3 pb-3 w-100">
+    <input type="radio"
+           class="btn-check"
+           checked="@(For.Him.Equals(CreateUpdateToDoStateContainer.For))"
+           name="btnradio"
+           autocomplete="off">
+    <label class="btn btn-outline-primary"
+           @onclick="@(() => OnForChange(For.Him))">
+        Him
+    </label>
+    <input type="radio"
+           class="btn-check"
+           checked="@(For.Her.Equals(CreateUpdateToDoStateContainer.For))"
+           name="btnradio"
+           autocomplete="off">
+    <label class="btn btn-outline-primary"
+           @onclick="@(() => OnForChange(For.Her))">
+        Her
+    </label>
+    <input type="radio"
+           class="btn-check"
+           checked="@(For.Us.Equals(CreateUpdateToDoStateContainer.For))"
+           name="btnradio"
+           autocomplete="off">
+    <label class="btn btn-outline-primary"
+           @onclick="@(() => OnForChange(For.Us))">
+        Us
+    </label>
+</div>
+<div class="mx-3 mb-3">
+    <label class="mb-0 form-label">
+        To Dos
+    </label>
+    @foreach (var (toDo, index) in ToDos.Select((item, index) => (item, index)))
+    {
+        <input value="@toDo.Content"
+               @oninput="@(e => SetContent(index, e.Value!.ToString()))"
+               class="form-control">
+    }
+    @* <div> *@
+    @*     <div class="p-2"> *@
+    @*         @toDo *@
+    @*     </div> *@
+    @* </div> *@
+</div>
+<div class="d-grid px-3">
+    <button @onclick="@AddNewToDo"
+            class="btn btn-light"
+            disabled="@(!IsAddNewToDoEnabled)"
+            type="button">
+        Add New
+    </button>
+</div>
+<div style="bottom: 60px"
+     class="d-grid px-3 position-fixed w-100">
+    <button class="btn btn-secondary"
+            type="button"
+            disabled="@(!IsSaveEnabled)"
+            @onclick="@Save">
+        Save
+    </button>
+</div>

@@ -1,0 +1,21 @@
+<div id="calendar-carousel" class="carousel slide">
+    <div class="carousel-inner">
+        <div class="carousel-item">
+            1
+        </div>
+        <div class="carousel-item active">
+            <div style="@Style">
+                <div id="calendar-body"
+                     class="container text-center"
+                     @ontouchstart="@_horizontalSwipeHandler.HandleTouchStart"
+                     @ontouchend="@_horizontalSwipeHandler.HandleTouchEnd"
+                     @onkeypress:preventDefault="true">
+                    <CalendarBodyComponent Cells="@GetCells(DateTime.Today.Year, DateTime.Today.Month)"/>
+                </div>
+            </div>
+        </div>
+        <div class="carousel-item">
+            3
+        </div>
+    </div>
+</div>

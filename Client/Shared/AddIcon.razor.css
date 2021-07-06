@@ -1,0 +1,16 @@
+﻿i {
+    border-radius: 50px;
+    box-shadow: 2px 2px 3px #999;
+    bottom: 70px;
+    height: 60px;
+    position: fixed;
+    right: 30px;
+    width: 60px;
+    font-size: 30px;
+}
+
+i::before {
+    position: absolute;
+    left: 25%;
+    top: 25%;
+}

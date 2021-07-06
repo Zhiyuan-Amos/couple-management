@@ -1,0 +1,7 @@
+@page "/todo/{toDoId:guid}"
+
+@inherits UpdateToDoBase
+@using Couple.Client.Pages.ToDo.Components
+
+<UpdateTopBar OnDeleteCallback="@Delete"/>
+<CreateUpdateForm OnSaveCallback="@Save"/>
