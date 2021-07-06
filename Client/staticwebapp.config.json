@@ -41,22 +41,10 @@
       "headers": {
         "Cache-Control": "public, max-age=604800, immutable"
       }
-    },
-    {
-      "route": "/*",
-      "allowedRoles": [
-        "user"
-      ]
     }
   ],
   "navigationFallback": {
     "rewrite": "index.html"
-  },
-  "responseOverrides": {
-    "401": {
-      "redirect": "/login",
-      "statusCode": 302
-    }
   }
 }
 
