@@ -3,10 +3,12 @@
         <div class="card bg-light mx-3 my-2"
              @onclick="@(() => EditToDo(toDo))">
             <div class="card-body">
-                <i style="@GetIcon(toDo.For)"></i>
-                <h5 class="card-title">
-                    @toDo.Name
-                </h5>
+                <div class="d-flex card-title">
+                    <i style="@GetIcon(toDo.For)"></i>
+                    <h5 class="mb-0 ps-2">
+                        @toDo.Name
+                    </h5>
+                </div>
                 @foreach (var (innerToDo, index) in toDo.ToDos.Select((item, index) => (item, index)))
                 {
                     <div style="min-height: 2rem; margin-bottom: .25rem;"
