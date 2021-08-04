@@ -5,6 +5,7 @@ using Couple.Client.ViewModel.ToDo;
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Couple.Client.Pages.ToDo
@@ -17,7 +18,16 @@ namespace Couple.Client.Pages.ToDo
 
         [Inject] private ToDoStateContainer ToDoStateContainer { get; init; }
 
-        private List<ToDoViewModel> ToDos => ToDoAdapter.ToViewModel(ToDoStateContainer.ToDos);
+        private List<ToDoViewModel> ToDos
+        {
+            get
+            {
+                var orderedToDos = ToDoStateContainer.ToDos
+                    .OrderByDescending(toDo => toDo.CreatedOn)
+                    .ToList();
+                return ToDoAdapter.ToViewModel(orderedToDos);
+            }
+        }
 
         protected override async Task OnInitializedAsync()
         {
