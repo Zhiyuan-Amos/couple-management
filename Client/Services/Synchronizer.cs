@@ -58,6 +58,10 @@ namespace Couple.Client.Services
                         await _js.InvokeVoidAsync("removeToDo",
                             JsonSerializer.Deserialize<Guid>(item.Content, _options));
                         break;
+                    case DataType.CompletedToDo when item.Function == Function.Create:
+                        await _js.InvokeVoidAsync("completeToDo",
+                            JsonSerializer.Deserialize<CompletedToDoModel>(item.Content, _options));
+                        break;
                     case DataType.Calendar when item.Function == Function.Create:
                     {
                         var toCreate = JsonSerializer.Deserialize<CreateEventDto>(item.Content, _options);
