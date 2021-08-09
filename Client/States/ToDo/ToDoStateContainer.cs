@@ -9,6 +9,7 @@ namespace Couple.Client.States.ToDo
     {
         private List<ToDoModel> _toDos = new();
         private Dictionary<Guid, ToDoModel> _idToToDo = new();
+        private List<CompletedToDoModel> _completedToDos = new();
 
         public List<ToDoModel> ToDos
         {
@@ -29,6 +30,16 @@ namespace Couple.Client.States.ToDo
             }
 
             return true;
+        }
+
+        public List<CompletedToDoModel> CompletedToDos
+        {
+            get => _completedToDos;
+            set
+            {
+                _completedToDos = value.ToList();
+                NotifyStateChanged();
+            }
         }
     }
 }

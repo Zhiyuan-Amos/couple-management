@@ -4,8 +4,10 @@ using Couple.Client.Model.Calendar;
 using Couple.Client.Model.ToDo;
 using Couple.Client.States.Calendar;
 using Couple.Client.States.ToDo;
+using Couple.Shared.Model;
 using Couple.Shared.Model.Change;
 using Couple.Shared.Model.Event;
+using Couple.Shared.Model.ToDo;
 using Microsoft.JSInterop;
 using System;
 using System.Collections.Generic;
@@ -44,21 +46,25 @@ namespace Couple.Client.Services
             var toSynchronize = await _httpClient.GetFromJsonAsync<List<ChangeDto>>("api/Synchronize");
             foreach (var item in toSynchronize)
             {
-                switch (item.DataType)
+                switch (item.Command)
                 {
-                    case DataType.ToDo when item.Function == Function.Create:
-                        await _js.InvokeVoidAsync("addToDo",
-                            JsonSerializer.Deserialize<ToDoModel>(item.Content, _options));
+                    case Command.CreateToDo:
+                        var createToDoDto = JsonSerializer.Deserialize<CreateToDoDto>(item.Content, _options);
+                        await _js.InvokeVoidAsync("addToDo", ToDoAdapter.ToModel(createToDoDto));
                         break;
-                    case DataType.ToDo when item.Function == Function.Update:
-                        await _js.InvokeVoidAsync("updateToDo",
-                            JsonSerializer.Deserialize<ToDoModel>(item.Content, _options));
+                    case Command.UpdateToDo:
+                        var updateToDoDto = JsonSerializer.Deserialize<UpdateToDoDto>(item.Content, _options);
+                        await _js.InvokeVoidAsync("updateToDo", ToDoAdapter.ToModel(updateToDoDto));
                         break;
-                    case DataType.ToDo when item.Function == Function.Delete:
+                    case Command.DeleteToDo:
                         await _js.InvokeVoidAsync("removeToDo",
                             JsonSerializer.Deserialize<Guid>(item.Content, _options));
                         break;
-                    case DataType.Calendar when item.Function == Function.Create:
+                    case Command.CompleteToDo:
+                        var completeToDoDto = JsonSerializer.Deserialize<CompleteToDoDto>(item.Content, _options);
+                        await _js.InvokeVoidAsync("completeToDo", ToDoAdapter.ToCompletedModel(completeToDoDto));
+                        break;
+                    case Command.CreateEvent:
                     {
                         var toCreate = JsonSerializer.Deserialize<CreateEventDto>(item.Content, _options);
                         await _js.InvokeVoidAsync("addEvent",
@@ -66,7 +72,7 @@ namespace Couple.Client.Services
                             toCreate.Added);
                         break;
                     }
-                    case DataType.Calendar when item.Function == Function.Update:
+                    case Command.UpdateEvent:
                     {
                         var toUpdate = JsonSerializer.Deserialize<UpdateEventDto>(item.Content, _options);
                         await _js.InvokeVoidAsync("updateEvent",
@@ -75,7 +81,7 @@ namespace Couple.Client.Services
                             ToDoAdapter.ToModel(toUpdate.Removed));
                         break;
                     }
-                    case DataType.Calendar when item.Function == Function.Delete:
+                    case Command.DeleteEvent:
                     {
                         await _js.InvokeVoidAsync("removeEvent",
                             JsonSerializer.Deserialize<Guid>(item.Content, _options));
@@ -98,7 +104,7 @@ namespace Couple.Client.Services
                 await _httpClient.DeleteAsJsonAsync("api/Changes", idsToDelete);
             }
 
-            var toDosTask = _js.InvokeAsync<List<ToDoModel>>("getAllToDos").AsTask();
+            var toDosTask = _js.InvokeAsync<List<ToDoModel>>("getToDos").AsTask();
             var eventsTask = _js.InvokeAsync<List<EventModel>>("getAllEvents").AsTask();
             await Task.WhenAll(toDosTask, eventsTask);
             _toDoStateContainer.ToDos = toDosTask.Result;

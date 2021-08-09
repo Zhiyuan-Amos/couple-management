@@ -38,7 +38,7 @@ namespace Couple.Client.Pages.ToDo
             };
             await Js.InvokeVoidAsync("addToDo", toPersist);
 
-            ToDoStateContainer.ToDos = await Js.InvokeAsync<List<ToDoModel>>("getAllToDos");
+            ToDoStateContainer.ToDos = await Js.InvokeAsync<List<ToDoModel>>("getToDos");
             NavigationManager.NavigateTo("/todo");
 
             var toCreate = ToDoAdapter.ToCreateDto(toPersist);

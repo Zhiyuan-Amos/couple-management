@@ -9,35 +9,31 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Couple.Client.Pages.ToDo
+namespace Couple.Client.Pages.Done.Components
 {
-    public partial class ToDo : IDisposable
+    public partial class ReadOnlyListView : IDisposable
     {
-        [Inject] private NavigationManager NavigationManager { get; init; }
+        [Inject] private ToDoStateContainer ToDoStateContainer { get; init; }
 
         [Inject] private IJSRuntime Js { get; init; }
 
-        [Inject] private ToDoStateContainer ToDoStateContainer { get; init; }
-
-        private List<ToDoViewModel> ToDos
+        private List<CompletedToDoViewModel> ToDos
         {
             get
             {
-                var orderedToDos = ToDoStateContainer.ToDos
-                    .OrderByDescending(toDo => toDo.CreatedOn)
+                var orderedToDos = ToDoStateContainer.CompletedToDos
+                    .OrderBy(toDo => toDo.CompletedOn)
                     .ToList();
-                return ToDoAdapter.ToViewModel(orderedToDos);
+                return ToDoAdapter.ToCompletedViewModel(orderedToDos);
             }
         }
 
         protected override async Task OnInitializedAsync()
         {
             ToDoStateContainer.OnChange += StateHasChanged;
-            ToDoStateContainer.ToDos = await Js.InvokeAsync<List<ToDoModel>>("getToDos");
+            ToDoStateContainer.CompletedToDos = await Js.InvokeAsync<List<CompletedToDoModel>>("getCompletedToDos");
         }
 
         public void Dispose() => ToDoStateContainer.OnChange -= StateHasChanged;
-
-        private void AddToDo() => NavigationManager.NavigateTo($"/todo/create");
     }
 }

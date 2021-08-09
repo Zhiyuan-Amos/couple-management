@@ -1,6 +1,6 @@
 using Couple.Api.Data;
 using Couple.Api.Infrastructure;
-using Couple.Shared.Model.Change;
+using Couple.Shared.Model;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.WebJobs;
@@ -41,8 +41,7 @@ namespace Couple.Api.Features.ToDo
             var toCreate = new Model.Change
             {
                 Id = Guid.NewGuid(),
-                Function = Function.Delete,
-                DataType = DataType.ToDo,
+                Command = Command.DeleteToDo,
                 UserId = _currentUserService.PartnerId,
                 Timestamp = _dateTimeService.Now,
                 Content = JsonSerializer.Serialize(id),

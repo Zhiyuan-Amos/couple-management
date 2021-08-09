@@ -1,8 +1,7 @@
 using Couple.Api.Data;
 using Couple.Api.Infrastructure;
-using Couple.Api.Validators;
 using Couple.Shared.Model;
-using Couple.Shared.Model.Event;
+using Couple.Shared.Model.ToDo;
 using FluentValidation;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -12,29 +11,30 @@ using Microsoft.Extensions.Logging;
 using System;
 using System.Threading.Tasks;
 
-namespace Couple.Api.Features.Event
+namespace Couple.Api.Features.ToDo
 {
-    public class CreateEventFunction
+    public class CompleteToDoFunction
     {
         private readonly ChangeContext _context;
         private readonly IDateTimeService _dateTimeService;
         private readonly ICurrentUserService _currentUserService;
 
-        public CreateEventFunction(ChangeContext context,
-                                   IDateTimeService dateTimeService,
-                                   ICurrentUserService currentUserService)
+        public CompleteToDoFunction(ChangeContext context,
+            IDateTimeService dateTimeService,
+            ICurrentUserService currentUserService)
         {
             _context = context;
             _dateTimeService = dateTimeService;
             _currentUserService = currentUserService;
         }
 
-        [FunctionName("CreateEventFunction")]
-        public async Task<ActionResult> CreateEvent(
-            [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "Events")] HttpRequest req,
+        [FunctionName("CompleteToDoFunction")]
+        public async Task<ActionResult> CompleteToDo(
+            [HttpTrigger(AuthorizationLevel.Anonymous, "put", Route = "ToDos/Complete")]
+            HttpRequest req,
             ILogger log)
         {
-            var form = await req.GetJsonBody<CreateEventDto, Validator>();
+            var form = await req.GetJsonBody<CompleteToDoDto, Validator>();
 
             if (!form.IsValid)
             {
@@ -50,7 +50,7 @@ namespace Couple.Api.Features.Event
             var toCreate = new Model.Change
             {
                 Id = Guid.NewGuid(),
-                Command = Command.CreateEvent,
+                Command = Command.CompleteToDo,
                 UserId = _currentUserService.PartnerId,
                 Timestamp = _dateTimeService.Now,
                 Content = form.Json,
@@ -64,14 +64,19 @@ namespace Couple.Api.Features.Event
             return new OkResult();
         }
 
-        private class Validator : AbstractValidator<CreateEventDto>
+        private class Validator : AbstractValidator<CompleteToDoDto>
         {
             public Validator()
             {
-                RuleFor(dto => dto.Event).NotNull();
-                RuleFor(dto => dto.Event).SetValidator(new EventDtoValidator());
-                RuleFor(dto => dto.Added).NotNull();
-                RuleForEach(dto => dto.Added).NotEmpty();
+                RuleFor(dto => dto.Id).NotEmpty();
+                RuleFor(dto => dto.Name).NotNull();
+                RuleFor(dto => dto.For).NotNull();
+                RuleFor(dto => dto.ToDos).NotNull();
+                RuleForEach(dto => dto.ToDos)
+                    .ChildRules(toDos =>
+                        toDos.RuleFor(toDo => toDo.Content).NotEmpty());
+                RuleFor(dto => dto.CreatedOn).NotEmpty();
+                RuleFor(dto => dto.CompletedOn).NotEmpty();
             }
         }
     }

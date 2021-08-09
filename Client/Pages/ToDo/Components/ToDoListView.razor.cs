@@ -25,24 +25,30 @@ namespace Couple.Client.Pages.ToDo.Components
 
         private void EditToDo(ToDoViewModel selectedToDo) => NavigationManager.NavigateTo($"/todo/{selectedToDo.Id}");
 
-        private string GetIcon(For @for) => @for switch
-        {
-            For.Him => @"content: url(""icons/male.svg"")",
-            For.Her => @"content: url(""icons/female.svg"")",
-            For.Us => @"content: url(""icons/us.svg"")",
-            _ => throw new ArgumentOutOfRangeException(nameof(@for), @for, null)
-        };
-
         private async Task OnCheckboxToggle(Guid id, ToDoInnerViewModel toDo)
         {
             toDo.IsCompleted = !toDo.IsCompleted;
-            var toPersist = ToDoAdapter.ToModel(ToDos.Single(x => x.Id == id));
+            var viewModel = ToDos.Single(x => x.Id == id);
 
-            await Js.InvokeVoidAsync("updateToDo", toPersist);
-            ToDoStateContainer.ToDos = await Js.InvokeAsync<List<ToDoModel>>("getAllToDos");
+            var isCompleted = viewModel.ToDos.All(innerToDo => innerToDo.IsCompleted);
+            if (isCompleted)
+            {
+                var toPersist = ToDoAdapter.ToCompletedModel(viewModel, DateTime.Now);
+                await Js.InvokeVoidAsync("completeToDo", toPersist);
+                ToDoStateContainer.ToDos = await Js.InvokeAsync<List<ToDoModel>>("getToDos");
 
-            var toUpdate = ToDoAdapter.ToUpdateDto(toPersist);
-            await HttpClient.PutAsJsonAsync("api/ToDos", toUpdate);
+                var toUpdate = ToDoAdapter.ToCompleteDto(toPersist);
+                await HttpClient.PutAsJsonAsync("api/ToDos/Complete", toUpdate);
+            }
+            else
+            {
+                var toPersist = ToDoAdapter.ToModel(viewModel);
+                await Js.InvokeVoidAsync("updateToDo", toPersist);
+                ToDoStateContainer.ToDos = await Js.InvokeAsync<List<ToDoModel>>("getToDos");
+
+                var toUpdate = ToDoAdapter.ToUpdateDto(toPersist);
+                await HttpClient.PutAsJsonAsync("api/ToDos", toUpdate);
+            }
         }
     }
 }
