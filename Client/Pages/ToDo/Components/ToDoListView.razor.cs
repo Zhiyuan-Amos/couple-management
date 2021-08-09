@@ -25,14 +25,6 @@ namespace Couple.Client.Pages.ToDo.Components
 
         private void EditToDo(ToDoViewModel selectedToDo) => NavigationManager.NavigateTo($"/todo/{selectedToDo.Id}");
 
-        private string GetIcon(For @for) => @for switch
-        {
-            For.Him => @"content: url(""icons/male.svg"")",
-            For.Her => @"content: url(""icons/female.svg"")",
-            For.Us => @"content: url(""icons/us.svg"")",
-            _ => throw new ArgumentOutOfRangeException(nameof(@for), @for, null)
-        };
-
         private async Task OnCheckboxToggle(Guid id, ToDoInnerViewModel toDo)
         {
             toDo.IsCompleted = !toDo.IsCompleted;
