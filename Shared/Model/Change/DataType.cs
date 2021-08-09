@@ -4,5 +4,6 @@
     {
         Calendar,
         ToDo,
+        CompletedToDo,
     }
 }
