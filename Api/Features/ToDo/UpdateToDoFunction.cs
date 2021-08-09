@@ -1,6 +1,6 @@
 using Couple.Api.Data;
 using Couple.Api.Infrastructure;
-using Couple.Shared.Model.Change;
+using Couple.Shared.Model;
 using Couple.Shared.Model.ToDo;
 using FluentValidation;
 using Microsoft.AspNetCore.Http;
@@ -51,8 +51,7 @@ namespace Couple.Api.Features.ToDo
             var toCreate = new Model.Change
             {
                 Id = Guid.NewGuid(),
-                Function = Function.Update,
-                DataType = DataType.ToDo,
+                Command = Command.UpdateToDo,
                 UserId = _currentUserService.PartnerId,
                 Timestamp = _dateTimeService.Now,
                 Content = form.Json,

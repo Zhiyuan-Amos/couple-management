@@ -1,7 +1,7 @@
 using Couple.Api.Data;
 using Couple.Api.Infrastructure;
 using Couple.Api.Validators;
-using Couple.Shared.Model.Change;
+using Couple.Shared.Model;
 using Couple.Shared.Model.Event;
 using FluentValidation;
 using Microsoft.AspNetCore.Http;
@@ -50,8 +50,7 @@ namespace Couple.Api.Features.Event
             var toCreate = new Model.Change
             {
                 Id = Guid.NewGuid(),
-                Function = Function.Update,
-                DataType = DataType.Calendar,
+                Command = Command.UpdateEvent,
                 UserId = _currentUserService.PartnerId,
                 Timestamp = _dateTimeService.Now,
                 Content = form.Json,
