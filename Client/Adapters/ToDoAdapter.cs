@@ -107,6 +107,12 @@ namespace Couple.Client.Adapters
             CompletedOn = completedOn,
         };
 
+        public static List<CompletedToDoViewModel> ToCompletedViewModel(IEnumerable<CompletedToDoModel> models) =>
+            models.Select(ToCompletedViewModel).ToList();
+
+        public static CompletedToDoViewModel ToCompletedViewModel(CompletedToDoModel model) => new(model.Name,
+            model.For, model.ToDos.Select(innerModel => innerModel.Content).ToList(), model.CompletedOn);
+
         public static CreateToDoDto ToCreateDto(ToDoModel model) => new()
         {
             Id = model.Id,

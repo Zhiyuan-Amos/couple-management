@@ -66,6 +66,10 @@
             return (await db).transaction("todo").store.getAll();
         }
 
+        async function getCompletedToDos() {
+            return (await db).transaction("completedToDo").store.getAll();
+        }
+
         async function addToDo(todo) {
             (await db).transaction("todo", 'readwrite').store.add(todo);
         }
