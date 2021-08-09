@@ -2,6 +2,7 @@
 using Couple.Client.ViewModel.ToDo;
 using Couple.Shared.Model.Event;
 using Couple.Shared.Model.ToDo;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -96,6 +97,16 @@ namespace Couple.Client.Adapters
             CreatedOn = model.CreatedOn,
         };
 
+        public static CompletedToDoModel ToCompletedModel(ToDoViewModel model, DateTime completedOn) => new()
+        {
+            Id = model.Id,
+            Name = model.Name,
+            For = model.For,
+            ToDos = model.ToDos.Select(ToInnerModel).ToList(),
+            CreatedOn = model.CreatedOn,
+            CompletedOn = completedOn,
+        };
+
         public static CreateToDoDto ToCreateDto(ToDoModel model) => new()
         {
             Id = model.Id,
@@ -112,6 +123,16 @@ namespace Couple.Client.Adapters
             For = model.For,
             ToDos = model.ToDos.Select(ToInnerDto).ToList(),
             CreatedOn = model.CreatedOn,
+        };
+
+        public static CompleteToDoDto ToCompleteDto(CompletedToDoModel model) => new()
+        {
+            Id = model.Id,
+            Name = model.Name,
+            For = model.For,
+            ToDos = model.ToDos.Select(ToInnerDto).ToList(),
+            CreatedOn = model.CreatedOn,
+            CompletedOn = model.CompletedOn,
         };
 
         public static List<ToDoDto> ToDto(IEnumerable<ToDoViewModel> models) => models.Select(ToDto).ToList();

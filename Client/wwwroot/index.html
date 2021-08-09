@@ -78,6 +78,18 @@
             (await db).transaction("todo", 'readwrite').store.delete(id);
         }
 
+        async function completeToDo(todo) {
+            const tx = (await db).transaction(['completedToDo', 'todo'], 'readwrite');
+            const completedToDoStore = tx.objectStore('completedToDo');
+            const toDoStore = tx.objectStore('todo');
+
+            await Promise.all([
+                toDoStore.delete(todo.id),
+                completedToDoStore.add(todo),
+                tx.done,
+            ]);
+        }
+
         async function getAllEvents() {
             return (await db).transaction("event").store.getAll();
         }
