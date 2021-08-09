@@ -86,6 +86,24 @@ namespace Couple.Client.Adapters
             CreatedOn = model.CreatedOn,
         };
 
+        public static ToDoModel ToModel(CreateToDoDto model) => new()
+        {
+            Id = model.Id,
+            Name = model.Name,
+            For = model.For,
+            ToDos = ToInnerModel(model.ToDos),
+            CreatedOn = model.CreatedOn,
+        };
+
+        public static ToDoModel ToModel(UpdateToDoDto model) => new()
+        {
+            Id = model.Id,
+            Name = model.Name,
+            For = model.For,
+            ToDos = ToInnerModel(model.ToDos),
+            CreatedOn = model.CreatedOn,
+        };
+
         public static List<ToDoModel> ToModel(IEnumerable<ToDoViewModel> models) => models.Select(ToModel).ToList();
 
         public static ToDoModel ToModel(ToDoViewModel model) => new()
@@ -105,6 +123,16 @@ namespace Couple.Client.Adapters
             ToDos = model.ToDos.Select(ToInnerModel).ToList(),
             CreatedOn = model.CreatedOn,
             CompletedOn = completedOn,
+        };
+
+        public static CompletedToDoModel ToCompletedModel(CompleteToDoDto model) => new()
+        {
+            Id = model.Id,
+            Name = model.Name,
+            For = model.For,
+            ToDos = model.ToDos.Select(ToInnerModel).ToList(),
+            CreatedOn = model.CreatedOn,
+            CompletedOn = model.CompletedOn,
         };
 
         public static List<CompletedToDoViewModel> ToCompletedViewModel(IEnumerable<CompletedToDoModel> models) =>

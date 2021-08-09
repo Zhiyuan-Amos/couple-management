@@ -6,6 +6,7 @@ using Couple.Client.States.Calendar;
 using Couple.Client.States.ToDo;
 using Couple.Shared.Model.Change;
 using Couple.Shared.Model.Event;
+using Couple.Shared.Model.ToDo;
 using Microsoft.JSInterop;
 using System;
 using System.Collections.Generic;
@@ -47,20 +48,20 @@ namespace Couple.Client.Services
                 switch (item.DataType)
                 {
                     case DataType.ToDo when item.Function == Function.Create:
-                        await _js.InvokeVoidAsync("addToDo",
-                            JsonSerializer.Deserialize<ToDoModel>(item.Content, _options));
+                        var createToDoDto = JsonSerializer.Deserialize<CreateToDoDto>(item.Content, _options);
+                        await _js.InvokeVoidAsync("addToDo", ToDoAdapter.ToModel(createToDoDto));
                         break;
                     case DataType.ToDo when item.Function == Function.Update:
-                        await _js.InvokeVoidAsync("updateToDo",
-                            JsonSerializer.Deserialize<ToDoModel>(item.Content, _options));
+                        var updateToDoDto = JsonSerializer.Deserialize<UpdateToDoDto>(item.Content, _options);
+                        await _js.InvokeVoidAsync("updateToDo", ToDoAdapter.ToModel(updateToDoDto));
                         break;
                     case DataType.ToDo when item.Function == Function.Delete:
                         await _js.InvokeVoidAsync("removeToDo",
                             JsonSerializer.Deserialize<Guid>(item.Content, _options));
                         break;
                     case DataType.CompletedToDo when item.Function == Function.Create:
-                        await _js.InvokeVoidAsync("completeToDo",
-                            JsonSerializer.Deserialize<CompletedToDoModel>(item.Content, _options));
+                        var completeToDoDto = JsonSerializer.Deserialize<CompleteToDoDto>(item.Content, _options);
+                        await _js.InvokeVoidAsync("completeToDo", ToDoAdapter.ToCompletedModel(completeToDoDto));
                         break;
                     case DataType.Calendar when item.Function == Function.Create:
                     {
