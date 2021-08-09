@@ -4,13 +4,14 @@ using Couple.Client.States.ToDo;
 using Couple.Client.ViewModel.ToDo;
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
 namespace Couple.Client.Pages.ToDo
 {
-    public partial class ToDo
+    public partial class ToDo : IDisposable
     {
         [Inject] private NavigationManager NavigationManager { get; init; }
 
