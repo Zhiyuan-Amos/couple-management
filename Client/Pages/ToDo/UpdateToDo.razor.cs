@@ -33,7 +33,7 @@ namespace Couple.Client.Pages.ToDo
             var id = CreateUpdateToDoStateContainer.Id;
 
             await Js.InvokeVoidAsync("removeToDo", id);
-            ToDoStateContainer.ToDos = await Js.InvokeAsync<List<ToDoModel>>("getAllToDos");
+            ToDoStateContainer.ToDos = await Js.InvokeAsync<List<ToDoModel>>("getToDos");
 
             NavigationManager.NavigateTo("/todo");
 
@@ -55,7 +55,7 @@ namespace Couple.Client.Pages.ToDo
             };
             await Js.InvokeVoidAsync("updateToDo", toPersist);
 
-            ToDoStateContainer.ToDos = await Js.InvokeAsync<List<ToDoModel>>("getAllToDos");
+            ToDoStateContainer.ToDos = await Js.InvokeAsync<List<ToDoModel>>("getToDos");
             NavigationManager.NavigateTo("/todo");
 
             var toUpdate = ToDoAdapter.ToUpdateDto(toPersist);

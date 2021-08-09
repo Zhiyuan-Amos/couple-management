@@ -61,7 +61,7 @@ namespace Couple.Client.Pages.Calendar
             };
             await Js.InvokeVoidAsync("addEvent", toPersist, added);
 
-            var toDosTask = Js.InvokeAsync<List<ToDoModel>>("getAllToDos").AsTask();
+            var toDosTask = Js.InvokeAsync<List<ToDoModel>>("getToDos").AsTask();
             var eventsTask = Js.InvokeAsync<List<EventModel>>("getAllEvents").AsTask();
             await Task.WhenAll(toDosTask, eventsTask);
             ToDoStateContainer.ToDos = toDosTask.Result;

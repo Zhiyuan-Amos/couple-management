@@ -35,7 +35,7 @@ namespace Couple.Client.Pages.ToDo.Components
             {
                 var toPersist = ToDoAdapter.ToCompletedModel(viewModel, DateTime.Now);
                 await Js.InvokeVoidAsync("completeToDo", toPersist);
-                ToDoStateContainer.ToDos = await Js.InvokeAsync<List<ToDoModel>>("getAllToDos");
+                ToDoStateContainer.ToDos = await Js.InvokeAsync<List<ToDoModel>>("getToDos");
 
                 var toUpdate = ToDoAdapter.ToCompleteDto(toPersist);
                 await HttpClient.PutAsJsonAsync("api/ToDos/Complete", toUpdate);
@@ -44,7 +44,7 @@ namespace Couple.Client.Pages.ToDo.Components
             {
                 var toPersist = ToDoAdapter.ToModel(viewModel);
                 await Js.InvokeVoidAsync("updateToDo", toPersist);
-                ToDoStateContainer.ToDos = await Js.InvokeAsync<List<ToDoModel>>("getAllToDos");
+                ToDoStateContainer.ToDos = await Js.InvokeAsync<List<ToDoModel>>("getToDos");
 
                 var toUpdate = ToDoAdapter.ToUpdateDto(toPersist);
                 await HttpClient.PutAsJsonAsync("api/ToDos", toUpdate);

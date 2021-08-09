@@ -102,7 +102,7 @@ namespace Couple.Client.Services
                 await _httpClient.DeleteAsJsonAsync("api/Changes", idsToDelete);
             }
 
-            var toDosTask = _js.InvokeAsync<List<ToDoModel>>("getAllToDos").AsTask();
+            var toDosTask = _js.InvokeAsync<List<ToDoModel>>("getToDos").AsTask();
             var eventsTask = _js.InvokeAsync<List<EventModel>>("getAllEvents").AsTask();
             await Task.WhenAll(toDosTask, eventsTask);
             _toDoStateContainer.ToDos = toDosTask.Result;

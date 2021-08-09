@@ -62,7 +62,7 @@
 
         var carousel;
 
-        async function getAllToDos() {
+        async function getToDos() {
             return (await db).transaction("todo").store.getAll();
         }
 
