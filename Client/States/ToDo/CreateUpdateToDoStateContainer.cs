@@ -52,12 +52,6 @@ namespace Couple.Client.States.ToDo
             NotifyStateChanged();
         }
 
-        public void ToggleIsCompleted(int index)
-        {
-            _toDos[index].IsCompleted = !_toDos[index].IsCompleted;
-            NotifyStateChanged();
-        }
-
         public void Initialize(string name, For @for, IEnumerable<ToDoInnerModel> toDos)
         {
             _name = name;
