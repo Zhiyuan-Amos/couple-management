@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace Couple.Client.Pages.Done.Components
 {
-    public partial class ReadOnlyListView : IDisposable
+    public partial class ReadOnlyListView
     {
         [Inject] private ToDoStateContainer ToDoStateContainer { get; init; }
 
@@ -30,10 +30,7 @@ namespace Couple.Client.Pages.Done.Components
 
         protected override async Task OnInitializedAsync()
         {
-            ToDoStateContainer.OnChange += StateHasChanged;
             ToDoStateContainer.CompletedToDos = await Js.InvokeAsync<List<CompletedToDoModel>>("getCompletedToDos");
         }
-
-        public void Dispose() => ToDoStateContainer.OnChange -= StateHasChanged;
     }
 }
