@@ -16,15 +16,15 @@ namespace Couple.Api.Features.Event
 {
     public class UpdateEventFunction
     {
-        private readonly ChangeContext _eventContext;
+        private readonly ChangeContext _changeContext;
         private readonly IDateTimeService _dateTimeService;
         private readonly ICurrentUserService _currentUserService;
 
-        public UpdateEventFunction(ChangeContext eventContext,
+        public UpdateEventFunction(ChangeContext changeContext,
                                    IDateTimeService dateTimeService,
                                    ICurrentUserService currentUserService)
         {
-            _eventContext = eventContext;
+            _changeContext = changeContext;
             _dateTimeService = dateTimeService;
             _currentUserService = currentUserService;
         }
@@ -56,10 +56,10 @@ namespace Couple.Api.Features.Event
                 Content = form.Json,
             };
 
-            _eventContext
+            _changeContext
                 .Changes
                 .Add(toCreate);
-            await _eventContext.SaveChangesAsync();
+            await _changeContext.SaveChangesAsync();
 
             return new OkResult();
         }

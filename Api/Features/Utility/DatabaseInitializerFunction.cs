@@ -10,11 +10,11 @@ namespace Couple.Api.Features.Utility
 {
     public class DatabaseInitializerFunction
     {
-        private readonly ChangeContext _eventContext;
+        private readonly ChangeContext _changeContext;
 
-        public DatabaseInitializerFunction(ChangeContext eventContext)
+        public DatabaseInitializerFunction(ChangeContext changeContext)
         {
-            _eventContext = eventContext;
+            _changeContext = changeContext;
         }
 
         //[FunctionName("DatabaseInitializerFunction")]
@@ -22,8 +22,8 @@ namespace Couple.Api.Features.Utility
             [HttpTrigger(AuthorizationLevel.Function, "get", Route = "DatabaseInitializer")] HttpRequest req,
             ILogger log)
         {
-            await _eventContext.Database.EnsureDeletedAsync();
-            await _eventContext.Database.EnsureCreatedAsync();
+            await _changeContext.Database.EnsureDeletedAsync();
+            await _changeContext.Database.EnsureCreatedAsync();
             return new OkResult();
         }
     }
