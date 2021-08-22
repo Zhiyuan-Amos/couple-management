@@ -2,7 +2,6 @@
 using Couple.Client.Model.ToDo;
 using Couple.Client.ViewModel.ToDo;
 using Couple.Shared.Model;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -10,11 +9,9 @@ namespace Couple.Client.States.ToDo
 {
     public class CreateUpdateToDoStateContainer
     {
-        public Guid Id { get; private set; }
         public string Name { get; set; }
         public For For { get; set; }
         private List<CreateUpdateInnerViewModel> _toDos;
-        public DateTime CreatedOn { get; private set; }
 
         public IReadOnlyList<IReadOnlyInnerViewModel> ToDos => _toDos;
 
@@ -37,22 +34,11 @@ namespace Couple.Client.States.ToDo
             _toDos = ToDoAdapter.ToCreateUpdateInnerViewModel(toDos);
         }
 
-        public void Initialize(Guid id, string name, For @for, IEnumerable<ToDoInnerModel> toDos, DateTime createdOn)
-        {
-            Id = id;
-            Name = name;
-            For = @for;
-            _toDos = ToDoAdapter.ToCreateUpdateInnerViewModel(toDos);
-            CreatedOn = createdOn;
-        }
-
         public void Reset()
         {
-            Id = Guid.Empty;
             Name = null;
             For = For.Him;
             _toDos = new();
-            CreatedOn = DateTime.UnixEpoch;
         }
     }
 }

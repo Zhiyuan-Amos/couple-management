@@ -12,35 +12,29 @@ namespace Couple.Client.Pages.ToDo
     public class UpdateToDoBase : CreateUpdateToDoBase
     {
         [Parameter] public Guid ToDoId { get; set; }
+        private ToDoModel _currentToDoModel;
 
         protected override void OnInitialized()
         {
-            if (!ToDoStateContainer.TryGetToDo(ToDoId, out var toDo))
+            if (!ToDoStateContainer.TryGetToDo(ToDoId, out _currentToDoModel))
             {
                 NavigationManager.NavigateTo("/todo");
                 return;
             }
 
-            CreateUpdateToDoStateContainer.Initialize(toDo.Id,
-                toDo.Name,
-                toDo.For,
-                toDo.ToDos,
-                toDo.CreatedOn);
+            CreateUpdateToDoStateContainer.Initialize(_currentToDoModel.Name,
+                _currentToDoModel.For,
+                _currentToDoModel.ToDos);
         }
 
         protected async Task Delete()
         {
-            var id = CreateUpdateToDoStateContainer.Id;
-
-            await Js.InvokeVoidAsync("removeToDo", id);
+            await Js.InvokeVoidAsync("removeToDo", ToDoId);
             ToDoStateContainer.ToDos = await Js.InvokeAsync<List<ToDoModel>>("getToDos");
 
             NavigationManager.NavigateTo("/todo");
 
-            // Navigating away from this page calls Dispose() which resets CreateUpdateToDoStateContainer,
-            // so CreateUpdateToDoStateContainer.Id returns null. Therefore, the value has to be assigned
-            // to a separate variable first.
-            await HttpClient.DeleteAsync($"api/ToDos/{id}");
+            await HttpClient.DeleteAsync($"api/ToDos/{ToDoId}");
         }
 
         protected override async Task Save()
@@ -51,7 +45,7 @@ namespace Couple.Client.Pages.ToDo
                 Name = CreateUpdateToDoStateContainer.Name,
                 For = CreateUpdateToDoStateContainer.For,
                 ToDos = ToDoAdapter.ToInnerModel(CreateUpdateToDoStateContainer.ToDos),
-                CreatedOn = CreateUpdateToDoStateContainer.CreatedOn,
+                CreatedOn = _currentToDoModel.CreatedOn,
             };
             await Js.InvokeVoidAsync("updateToDo", toPersist);
 
