@@ -137,6 +137,87 @@
             popupBtn.click();
         }
 
+        async function exportDatabase() {
+            const idb = await db
+            const transaction = idb.transaction(
+                idb.objectStoreNames,
+                'readonly'
+            )
+
+            const toExport = {}
+            for (const storeName of idb.objectStoreNames) {
+                const allObjects = []
+                let cursor = await transaction
+                    .objectStore(storeName)
+                    .openCursor()
+
+                while (cursor) {
+                    allObjects.push(cursor.value)
+                    cursor = await cursor.continue()
+                }
+
+                toExport[storeName] = allObjects
+            }
+
+            return JSON.stringify(toExport)
+        }
+
+        async function importDatabase(json) {
+            const idb = await db
+            const tx = idb.transaction(
+                idb.objectStoreNames,
+                'readwrite'
+            )
+
+            const toAwait = []
+            const jsonObject = JSON.parse(json)
+            Object.keys(jsonObject)
+                .forEach(storeName => {
+                    const store = tx.objectStore(storeName)
+                    jsonObject[storeName]
+                        .forEach(value => {
+                            const promise = store.add(value)
+                            toAwait.push(promise);
+                        })
+                })
+
+            await Promise.all([
+                toAwait,
+                tx.done,
+            ])
+        }
+
+        async function clearDatabase() {
+            const idb = await db
+            const tx = idb.transaction(
+                idb.objectStoreNames,
+                'readwrite'
+            )
+
+            const toAwait = []
+            for (const storeName of idb.objectStoreNames) {
+                const promise = tx
+                    .objectStore(storeName)
+                    .clear()
+                toAwait.push(promise)
+            }
+
+            await Promise.all([
+                toAwait,
+                tx.done,
+            ])
+        }
+
+        // https://stackoverflow.com/a/53822526
+        function saveAsFile(filename, bytesBase64) {
+            const link = document.createElement('a')
+            link.download = filename
+            link.href = "data:application/octet-stream;base64," + bytesBase64
+            document.body.appendChild(link) // Needed for Firefox
+            link.click()
+            document.body.removeChild(link)
+        }
+
         function disableInput(wrapperElement) {
             const input = wrapperElement.querySelector("input");
             input.setAttribute("disabled", "true");

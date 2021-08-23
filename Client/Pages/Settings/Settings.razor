@@ -1,0 +1,12 @@
+@page "/settings"
+
+<div class="px-3 py-2 border-bottom file-input-zone user-select-none">
+    <InputFile OnChange="OnImportSelected"/>
+    Import
+</div>
+<div class="px-3 py-2 border-bottom user-select-none"
+     @onclick="OnExportSelected">
+    Export
+</div>
+
+<BottomBar/>
