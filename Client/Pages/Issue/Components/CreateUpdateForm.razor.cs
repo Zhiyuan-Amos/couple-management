@@ -31,7 +31,7 @@ namespace Couple.Client.Pages.Issue.Components
 
         private void Save()
         {
-            CreateUpdateIssueStateContainer.TrimTasks();
+            CreateUpdateIssueStateContainer.RemoveEmptyTasks();
             OnSaveCallback();
         }
 

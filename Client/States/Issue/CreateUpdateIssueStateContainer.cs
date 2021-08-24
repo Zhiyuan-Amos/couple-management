@@ -20,7 +20,7 @@ namespace Couple.Client.States.Issue
             _tasks.Add(new() {Content = content, IsCompleted = isCompleted,});
         }
 
-        public void TrimTasks() => _tasks.RemoveAll(task => !task.Content.Any());
+        public void RemoveEmptyTasks() => _tasks.RemoveAll(task => !task.Content.Any());
 
         public void SetContent(int index, string content)
         {
