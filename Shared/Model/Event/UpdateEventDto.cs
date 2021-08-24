@@ -7,6 +7,6 @@ namespace Couple.Shared.Model.Event
     {
         public EventDto Event { get; set; }
         public List<Guid> Added { get; set; }
-        public List<ToDoDto> Removed { get; set; }
+        public List<IssueDto> Removed { get; set; }
     }
 }

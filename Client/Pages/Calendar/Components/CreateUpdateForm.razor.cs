@@ -1,4 +1,4 @@
-using Couple.Client.ViewModel.ToDo;
+using Couple.Client.ViewModel.Issue;
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
 using System;
@@ -23,15 +23,15 @@ namespace Couple.Client.Pages.Calendar.Components
 
         [Parameter] public EventCallback<DateTime> EndChanged { get; init; }
 
-        [Parameter] public List<ToDoViewModel> Added { get; set; }
+        [Parameter] public List<IssueViewModel> Added { get; set; }
 
-        [Parameter] public EventCallback<List<ToDoViewModel>> AddedChanged { get; init; }
+        [Parameter] public EventCallback<List<IssueViewModel>> AddedChanged { get; init; }
 
-        [Parameter] public List<ToDoViewModel> Removed { get; set; }
+        [Parameter] public List<IssueViewModel> Removed { get; set; }
 
-        [Parameter] public EventCallback<ToDoViewModel> RemovedChanged { get; init; }
+        [Parameter] public EventCallback<IssueViewModel> RemovedChanged { get; init; }
 
-        [Parameter] public List<ToDoViewModel> Total { get; set; }
+        [Parameter] public List<IssueViewModel> Total { get; set; }
 
         protected override async Task OnAfterRenderAsync(bool firstRender)
         {
@@ -89,6 +89,6 @@ namespace Couple.Client.Pages.Calendar.Components
             await EndChanged.InvokeAsync(newEndDate);
         }
 
-        private Task Remove(ToDoViewModel toRemove) => RemovedChanged.InvokeAsync(toRemove);
+        private Task Remove(IssueViewModel toRemove) => RemovedChanged.InvokeAsync(toRemove);
     }
 }

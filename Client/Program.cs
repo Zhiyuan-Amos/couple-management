@@ -1,6 +1,6 @@
 using Couple.Client.Services;
 using Couple.Client.States.Calendar;
-using Couple.Client.States.ToDo;
+using Couple.Client.States.Issue;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.Extensions.DependencyInjection;
@@ -19,8 +19,8 @@ namespace Couple.Client
             builder.Services
                 .AddTransient(_ => new HttpClient
                     {BaseAddress = new(builder.Configuration["API_Prefix"] ?? builder.HostEnvironment.BaseAddress)})
-                .AddSingleton<ToDoStateContainer>()
-                .AddSingleton<CreateUpdateToDoStateContainer>()
+                .AddSingleton<IssueStateContainer>()
+                .AddSingleton<CreateUpdateIssueStateContainer>()
                 .AddSingleton<EventStateContainer>()
                 .AddSingleton<SelectedDateStateContainer>()
                 .AddSingleton<Synchronizer>();

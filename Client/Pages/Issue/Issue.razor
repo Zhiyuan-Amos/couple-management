@@ -1,0 +1,7 @@
+@page "/todo"
+
+@using Couple.Client.Pages.Issue.Components
+
+<IssueListView Issues="@Issues"/>
+<BottomBar/>
+<AddIcon OnClickCallback="@AddIssue"/>

@@ -1,8 +1,7 @@
 using Couple.Api.Data;
 using Couple.Api.Infrastructure;
-using Couple.Api.Validators;
 using Couple.Shared.Model;
-using Couple.Shared.Model.Event;
+using Couple.Shared.Model.Issue;
 using FluentValidation;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -12,29 +11,30 @@ using Microsoft.Extensions.Logging;
 using System;
 using System.Threading.Tasks;
 
-namespace Couple.Api.Features.Event
+namespace Couple.Api.Features.Issue
 {
-    public class UpdateEventFunction
+    public class CompleteIssueFunction
     {
-        private readonly ChangeContext _changeContext;
+        private readonly ChangeContext _context;
         private readonly IDateTimeService _dateTimeService;
         private readonly ICurrentUserService _currentUserService;
 
-        public UpdateEventFunction(ChangeContext changeContext,
-                                   IDateTimeService dateTimeService,
-                                   ICurrentUserService currentUserService)
+        public CompleteIssueFunction(ChangeContext context,
+            IDateTimeService dateTimeService,
+            ICurrentUserService currentUserService)
         {
-            _changeContext = changeContext;
+            _context = context;
             _dateTimeService = dateTimeService;
             _currentUserService = currentUserService;
         }
 
-        [FunctionName("UpdateEventFunction")]
-        public async Task<ActionResult> UpdateEvent(
-            [HttpTrigger(AuthorizationLevel.Anonymous, "put", Route = "Events")] HttpRequest req,
+        [FunctionName("CompleteIssueFunction")]
+        public async Task<ActionResult> CompleteIssue(
+            [HttpTrigger(AuthorizationLevel.Anonymous, "put", Route = "Issues/Complete")]
+            HttpRequest req,
             ILogger log)
         {
-            var form = await req.GetJsonBody<UpdateEventDto, Validator>();
+            var form = await req.GetJsonBody<CompleteIssueDto, Validator>();
 
             if (!form.IsValid)
             {
@@ -50,30 +50,33 @@ namespace Couple.Api.Features.Event
             var toCreate = new Model.Change
             {
                 Id = Guid.NewGuid(),
-                Command = Command.UpdateEvent,
+                Command = Command.CompleteIssue,
                 UserId = _currentUserService.PartnerId,
                 Timestamp = _dateTimeService.Now,
                 Content = form.Json,
             };
 
-            _changeContext
+            _context
                 .Changes
                 .Add(toCreate);
-            await _changeContext.SaveChangesAsync();
+            await _context.SaveChangesAsync();
 
             return new OkResult();
         }
 
-        private class Validator : AbstractValidator<UpdateEventDto>
+        private class Validator : AbstractValidator<CompleteIssueDto>
         {
             public Validator()
             {
-                RuleFor(dto => dto.Event).NotNull();
-                RuleFor(dto => dto.Event).SetValidator(new EventDtoValidator());
-                RuleFor(dto => dto.Added).NotNull();
-                RuleForEach(dto => dto.Added).NotEmpty();
-                RuleFor(dto => dto.Removed).NotNull();
-                RuleForEach(dto => dto.Removed).SetValidator(new IssueDtoValidator());
+                RuleFor(dto => dto.Id).NotEmpty();
+                RuleFor(dto => dto.Title).NotNull();
+                RuleFor(dto => dto.For).NotNull();
+                RuleFor(dto => dto.Tasks).NotNull();
+                RuleForEach(dto => dto.Tasks)
+                    .ChildRules(tasks =>
+                        tasks.RuleFor(task => task.Content).NotEmpty());
+                RuleFor(dto => dto.CreatedOn).NotEmpty();
+                RuleFor(dto => dto.CompletedOn).NotEmpty();
             }
         }
     }

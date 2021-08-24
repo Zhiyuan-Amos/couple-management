@@ -1,10 +1,10 @@
 using Couple.Client.Adapters;
 using Couple.Client.Model.Calendar;
-using Couple.Client.Model.ToDo;
+using Couple.Client.Model.Issue;
 using Couple.Client.States.Calendar;
-using Couple.Client.States.ToDo;
+using Couple.Client.States.Issue;
 using Couple.Client.ViewModel.Calendar;
-using Couple.Client.ViewModel.ToDo;
+using Couple.Client.ViewModel.Issue;
 using Couple.Shared.Model.Event;
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
@@ -23,7 +23,7 @@ namespace Couple.Client.Pages.Calendar
 
         [Inject] private NavigationManager NavigationManager { get; init; }
 
-        [Inject] private ToDoStateContainer ToDoStateContainer { get; init; }
+        [Inject] private IssueStateContainer IssueStateContainer { get; init; }
 
         [Inject] private EventStateContainer EventStateContainer { get; init; }
 
@@ -31,7 +31,7 @@ namespace Couple.Client.Pages.Calendar
 
         private CreateEventViewModel ToCreate { get; set; }
 
-        private List<ToDoViewModel> Added { get; set; }
+        private List<IssueViewModel> Added { get; set; }
 
         protected override void OnInitialized()
         {
@@ -57,14 +57,14 @@ namespace Couple.Client.Pages.Calendar
                 Title = ToCreate.Title,
                 Start = ToCreate.Start,
                 End = ToCreate.End,
-                ToDos = ToDoAdapter.ToModel(ToCreate.ToDos),
+                ToDos = IssueAdapter.ToModel(ToCreate.ToDos),
             };
             await Js.InvokeVoidAsync("addEvent", toPersist, added);
 
-            var toDosTask = Js.InvokeAsync<List<ToDoModel>>("getToDos").AsTask();
+            var toDosTask = Js.InvokeAsync<List<IssueModel>>("getToDos").AsTask();
             var eventsTask = Js.InvokeAsync<List<EventModel>>("getAllEvents").AsTask();
             await Task.WhenAll(toDosTask, eventsTask);
-            ToDoStateContainer.ToDos = toDosTask.Result;
+            IssueStateContainer.Issues = toDosTask.Result;
             EventStateContainer.SetEvents(eventsTask.Result);
 
             NavigationManager.NavigateTo("/calendar");
@@ -82,13 +82,13 @@ namespace Couple.Client.Pages.Calendar
                                     && ToCreate.Start != DateTime.UnixEpoch
                                     && ToCreate.End != DateTime.UnixEpoch;
 
-        private void AddedChanged(List<ToDoViewModel> added)
+        private void AddedChanged(List<IssueViewModel> added)
         {
             ToCreate.ToDos.AddRange(added);
             Added = ToCreate.ToDos = new(ToCreate.ToDos); // https://docs.telerik.com/blazor-ui/common-features/observable-data
         }
 
-        private void RemovedChanged(ToDoViewModel removed)
+        private void RemovedChanged(IssueViewModel removed)
         {
             ToCreate.ToDos.Remove(removed);
             Added = ToCreate.ToDos = new(ToCreate.ToDos);

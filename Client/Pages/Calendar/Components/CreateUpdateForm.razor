@@ -33,13 +33,13 @@
     </label>
 </div>
 <div>
-    <Virtualize Items="@Total" Context="toDo">
+    <Virtualize Items="@Total" Context="task">
         <div class="px-3 py-1 border-bottom d-flex align-items-center justify-content-between">
             <h3 class="text-break mb-0 user-select-none">
-                @toDo.Name
+                @task.Title
             </h3>
             <i class="bi bi-x h1 mb-0"
-               @onclick="@(() => Remove(toDo))"/>
+               @onclick="@(() => Remove(task))"/>
         </div>
     </Virtualize>
 </div>

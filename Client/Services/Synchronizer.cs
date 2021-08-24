@@ -1,13 +1,13 @@
 ﻿using Couple.Client.Adapters;
 using Couple.Client.Infrastructure;
 using Couple.Client.Model.Calendar;
-using Couple.Client.Model.ToDo;
+using Couple.Client.Model.Issue;
 using Couple.Client.States.Calendar;
-using Couple.Client.States.ToDo;
+using Couple.Client.States.Issue;
 using Couple.Shared.Model;
 using Couple.Shared.Model.Change;
 using Couple.Shared.Model.Event;
-using Couple.Shared.Model.ToDo;
+using Couple.Shared.Model.Issue;
 using Microsoft.JSInterop;
 using System;
 using System.Collections.Generic;
@@ -25,19 +25,19 @@ namespace Couple.Client.Services
 
         private readonly HttpClient _httpClient;
 
-        private readonly ToDoStateContainer _toDoStateContainer;
+        private readonly IssueStateContainer _issueStateContainer;
         private readonly EventStateContainer _eventStateContainer;
 
         private readonly JsonSerializerOptions _options = new() {PropertyNameCaseInsensitive = true};
 
         public Synchronizer(IJSRuntime js,
             HttpClient httpClient,
-            ToDoStateContainer toDoStateContainer,
+            IssueStateContainer issueStateContainer,
             EventStateContainer eventStateContainer)
         {
             _js = js;
             _httpClient = httpClient;
-            _toDoStateContainer = toDoStateContainer;
+            _issueStateContainer = issueStateContainer;
             _eventStateContainer = eventStateContainer;
         }
 
@@ -48,21 +48,21 @@ namespace Couple.Client.Services
             {
                 switch (item.Command)
                 {
-                    case Command.CreateToDo:
-                        var createToDoDto = JsonSerializer.Deserialize<CreateToDoDto>(item.Content, _options);
-                        await _js.InvokeVoidAsync("addToDo", ToDoAdapter.ToModel(createToDoDto));
+                    case Command.CreateIssue:
+                        var createIssueDto = JsonSerializer.Deserialize<CreateIssueDto>(item.Content, _options);
+                        await _js.InvokeVoidAsync("addIssue", IssueAdapter.ToModel(createIssueDto));
                         break;
-                    case Command.UpdateToDo:
-                        var updateToDoDto = JsonSerializer.Deserialize<UpdateToDoDto>(item.Content, _options);
-                        await _js.InvokeVoidAsync("updateToDo", ToDoAdapter.ToModel(updateToDoDto));
+                    case Command.UpdateIssue:
+                        var updateIssueDto = JsonSerializer.Deserialize<UpdateIssueDto>(item.Content, _options);
+                        await _js.InvokeVoidAsync("updateIssue", IssueAdapter.ToModel(updateIssueDto));
                         break;
-                    case Command.DeleteToDo:
-                        await _js.InvokeVoidAsync("removeToDo",
+                    case Command.DeleteIssue:
+                        await _js.InvokeVoidAsync("removeIssue",
                             JsonSerializer.Deserialize<Guid>(item.Content, _options));
                         break;
-                    case Command.CompleteToDo:
-                        var completeToDoDto = JsonSerializer.Deserialize<CompleteToDoDto>(item.Content, _options);
-                        await _js.InvokeVoidAsync("completeToDo", ToDoAdapter.ToCompletedModel(completeToDoDto));
+                    case Command.CompleteIssue:
+                        var completeIssueDto = JsonSerializer.Deserialize<CompleteIssueDto>(item.Content, _options);
+                        await _js.InvokeVoidAsync("completeIssue", IssueAdapter.ToCompletedModel(completeIssueDto));
                         break;
                     case Command.CreateEvent:
                     {
@@ -78,7 +78,7 @@ namespace Couple.Client.Services
                         await _js.InvokeVoidAsync("updateEvent",
                             EventAdapter.ToModel(toUpdate.Event),
                             toUpdate.Added,
-                            ToDoAdapter.ToModel(toUpdate.Removed));
+                            IssueAdapter.ToModel(toUpdate.Removed));
                         break;
                     }
                     case Command.DeleteEvent:
@@ -104,10 +104,10 @@ namespace Couple.Client.Services
                 await _httpClient.DeleteAsJsonAsync("api/Changes", idsToDelete);
             }
 
-            var toDosTask = _js.InvokeAsync<List<ToDoModel>>("getToDos").AsTask();
+            var issues = _js.InvokeAsync<List<IssueModel>>("getIssues").AsTask();
             var eventsTask = _js.InvokeAsync<List<EventModel>>("getAllEvents").AsTask();
-            await Task.WhenAll(toDosTask, eventsTask);
-            _toDoStateContainer.ToDos = toDosTask.Result;
+            await Task.WhenAll(issues, eventsTask);
+            _issueStateContainer.Issues = issues.Result;
             _eventStateContainer.SetEvents(eventsTask.Result);
         }
     }

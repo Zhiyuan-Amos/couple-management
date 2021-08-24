@@ -1,4 +1,4 @@
-﻿using Couple.Client.ViewModel.ToDo;
+﻿using Couple.Client.ViewModel.Issue;
 using System;
 using System.Collections.Generic;
 
@@ -10,9 +10,9 @@ namespace Couple.Client.ViewModel.Calendar
         public string Title { get; }
         public DateTime Start { get; }
         public DateTime End { get; }
-        public List<ToDoViewModel> ToDos { get; }
+        public List<IssueViewModel> ToDos { get; }
 
-        public EventViewModel(Guid id, string title, DateTime start, DateTime end, List<ToDoViewModel> toDos)
+        public EventViewModel(Guid id, string title, DateTime start, DateTime end, List<IssueViewModel> toDos)
             => (Id, Title, Start, End, ToDos) = (id, title, start, end, toDos);
     }
 }
