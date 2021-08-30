@@ -19,9 +19,10 @@ namespace Couple.Client.Pages.Issue
                 {
                     new()
                     {
+                        Id = Guid.NewGuid(),
                         Content = "",
                         IsCompleted = false,
-                    }
+                    },
                 });
         }
 

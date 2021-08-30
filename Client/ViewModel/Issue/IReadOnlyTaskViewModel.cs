@@ -1,7 +1,10 @@
-﻿namespace Couple.Client.ViewModel.Issue
+﻿using System;
+
+namespace Couple.Client.ViewModel.Issue
 {
     public interface IReadOnlyTaskViewModel
     {
+        Guid Id { get; }
         string Content { get; }
         bool IsCompleted { get; }
     }
