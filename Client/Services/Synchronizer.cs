@@ -57,7 +57,7 @@ namespace Couple.Client.Services
                         await _js.InvokeVoidAsync("updateIssue", IssueAdapter.ToModel(updateIssueDto));
                         break;
                     case Command.DeleteIssue:
-                        await _js.InvokeVoidAsync("removeIssue",
+                        await _js.InvokeVoidAsync("deleteIssue",
                             JsonSerializer.Deserialize<Guid>(item.Content, _options));
                         break;
                     case Command.CompleteIssue:

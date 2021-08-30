@@ -2,6 +2,7 @@
 using Couple.Client.Model.Issue;
 using Couple.Client.ViewModel.Issue;
 using Couple.Shared.Model;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -17,7 +18,12 @@ namespace Couple.Client.States.Issue
 
         public void AddTask(string content, bool isCompleted)
         {
-            _tasks.Add(new() {Content = content, IsCompleted = isCompleted,});
+            _tasks.Add(new()
+            {
+                Id = Guid.NewGuid(),
+                Content = content,
+                IsCompleted = isCompleted,
+            });
         }
 
         public void RemoveEmptyTasks() => _tasks.RemoveAll(task => !task.Content.Any());

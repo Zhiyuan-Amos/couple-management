@@ -29,7 +29,7 @@ namespace Couple.Client.Pages.Issue
 
         protected async Task Delete()
         {
-            await Js.InvokeVoidAsync("removeIssue", IssueId);
+            await Js.InvokeVoidAsync("deleteIssue", IssueId);
             IssueStateContainer.Issues = await Js.InvokeAsync<List<IssueModel>>("getIssues");
 
             NavigationManager.NavigateTo("/todo");

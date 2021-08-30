@@ -55,7 +55,7 @@
             (await db).transaction("issue", 'readwrite').store.put(issue);
         }
 
-        async function removeIssue(id) {
+        async function deleteIssue(id) {
             (await db).transaction("issue", 'readwrite').store.delete(id);
         }
 

@@ -10,8 +10,12 @@ namespace Couple.Client.Adapters
 {
     public static class IssueAdapter
     {
+        public static List<TaskViewModel> ToTaskViewModel(IEnumerable<TaskModel> models) =>
+            models.Select(ToTaskViewModel).ToList();
+
         public static TaskViewModel ToTaskViewModel(TaskModel model) => new()
         {
+            Id = model.Id,
             Content = model.Content,
             IsCompleted = model.IsCompleted,
         };
@@ -21,6 +25,7 @@ namespace Couple.Client.Adapters
 
         public static TaskModel ToTaskModel(TaskDto model) => new()
         {
+            Id = model.Id,
             Content = model.Content,
             IsCompleted = model.IsCompleted,
         };
@@ -30,12 +35,14 @@ namespace Couple.Client.Adapters
 
         public static TaskModel ToTaskModel(IReadOnlyTaskViewModel model) => new()
         {
+            Id = model.Id,
             Content = model.Content,
             IsCompleted = model.IsCompleted,
         };
 
         public static TaskModel ToTaskModel(TaskViewModel model) => new()
         {
+            Id = model.Id,
             Content = model.Content,
             IsCompleted = model.IsCompleted,
         };
@@ -47,6 +54,7 @@ namespace Couple.Client.Adapters
 
         public static CreateUpdateTaskViewModel ToCreateUpdateTaskViewModel(TaskModel model) => new()
         {
+            Id = model.Id,
             Content = model.Content,
             IsCompleted = model.IsCompleted,
         };
@@ -65,6 +73,7 @@ namespace Couple.Client.Adapters
 
         public static TaskDto ToTaskDto(TaskModel model) => new()
         {
+            Id = model.Id,
             Content = model.Content,
             IsCompleted = model.IsCompleted,
         };
