@@ -17,7 +17,6 @@ namespace Couple.Client.Adapters
         {
             Id = model.Id,
             Content = model.Content,
-            IsCompleted = model.IsCompleted,
         };
 
         public static List<TaskModel> ToTaskModel(IEnumerable<TaskDto> models) =>
@@ -27,7 +26,6 @@ namespace Couple.Client.Adapters
         {
             Id = model.Id,
             Content = model.Content,
-            IsCompleted = model.IsCompleted,
         };
 
         public static List<TaskModel> ToTaskModel(IEnumerable<IReadOnlyTaskViewModel> models) =>
@@ -37,14 +35,12 @@ namespace Couple.Client.Adapters
         {
             Id = model.Id,
             Content = model.Content,
-            IsCompleted = model.IsCompleted,
         };
 
         public static TaskModel ToTaskModel(TaskViewModel model) => new()
         {
             Id = model.Id,
             Content = model.Content,
-            IsCompleted = model.IsCompleted,
         };
 
         public static List<CreateUpdateTaskViewModel>
@@ -56,7 +52,6 @@ namespace Couple.Client.Adapters
         {
             Id = model.Id,
             Content = model.Content,
-            IsCompleted = model.IsCompleted,
         };
 
         public static List<TaskDto> ToTaskDto(IEnumerable<TaskViewModel> models) =>
@@ -65,7 +60,6 @@ namespace Couple.Client.Adapters
         public static TaskDto ToTaskDto(TaskViewModel model) => new()
         {
             Content = model.Content,
-            IsCompleted = model.IsCompleted,
         };
 
         public static List<TaskDto> ToTaskDto(IEnumerable<TaskModel> models) =>
@@ -75,7 +69,6 @@ namespace Couple.Client.Adapters
         {
             Id = model.Id,
             Content = model.Content,
-            IsCompleted = model.IsCompleted,
         };
 
         public static List<IssueViewModel> ToViewModel(IEnumerable<IssueModel> models) =>

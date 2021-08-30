@@ -26,7 +26,7 @@ namespace Couple.Client.Pages.Issue.Components
 
         private bool IsAddNewTaskEnabled => Tasks.All(task => task.Content.Any());
 
-        private void AddNewTask() => CreateUpdateIssueStateContainer.AddTask("", false);
+        private void AddNewTask() => CreateUpdateIssueStateContainer.AddTask("");
         private void SetContent(int index, string content) => CreateUpdateIssueStateContainer.SetContent(index, content);
 
         private void Save()

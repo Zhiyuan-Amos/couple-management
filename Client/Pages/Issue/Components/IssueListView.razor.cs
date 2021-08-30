@@ -26,28 +26,14 @@ namespace Couple.Client.Pages.Issue.Components
 
         private async Task OnCheckboxToggle(Guid id, TaskViewModel task)
         {
-            task.IsCompleted = !task.IsCompleted;
             var viewModel = Issues.Single(x => x.Id == id);
 
-            var isCompleted = viewModel.Tasks.All(t => t.IsCompleted);
-            if (isCompleted)
-            {
-                var toPersist = IssueAdapter.ToCompletedModel(viewModel, DateTime.Now);
-                await Js.InvokeVoidAsync("completeIssue", toPersist);
-                IssueStateContainer.Issues = await Js.InvokeAsync<List<IssueModel>>("getIssues");
+            var toPersist = IssueAdapter.ToCompletedModel(viewModel, DateTime.Now);
+            await Js.InvokeVoidAsync("completeIssue", toPersist);
+            IssueStateContainer.Issues = await Js.InvokeAsync<List<IssueModel>>("getIssues");
 
-                var toUpdate = IssueAdapter.ToCompleteDto(toPersist);
-                await HttpClient.PutAsJsonAsync("api/Issues/Complete", toUpdate);
-            }
-            else
-            {
-                var toPersist = IssueAdapter.ToModel(viewModel);
-                await Js.InvokeVoidAsync("updateIssue", toPersist);
-                IssueStateContainer.Issues = await Js.InvokeAsync<List<IssueModel>>("getIssues");
-
-                var toUpdate = IssueAdapter.ToUpdateDto(toPersist);
-                await HttpClient.PutAsJsonAsync("api/Issues", toUpdate);
-            }
+            var toUpdate = IssueAdapter.ToCompleteDto(toPersist);
+            await HttpClient.PutAsJsonAsync("api/Issues/Complete", toUpdate);
         }
     }
 }

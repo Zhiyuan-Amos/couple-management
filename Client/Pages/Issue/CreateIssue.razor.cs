@@ -21,7 +21,6 @@ namespace Couple.Client.Pages.Issue
                     {
                         Id = Guid.NewGuid(),
                         Content = "",
-                        IsCompleted = false,
                     },
                 });
         }
