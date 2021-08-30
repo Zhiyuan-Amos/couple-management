@@ -16,13 +16,12 @@ namespace Couple.Client.States.Issue
 
         public IReadOnlyList<IReadOnlyTaskViewModel> Tasks => _tasks;
 
-        public void AddTask(string content, bool isCompleted)
+        public void AddTask(string content)
         {
             _tasks.Add(new()
             {
                 Id = Guid.NewGuid(),
                 Content = content,
-                IsCompleted = isCompleted,
             });
         }
 

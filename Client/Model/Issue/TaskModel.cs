@@ -6,6 +6,5 @@ namespace Couple.Client.Model.Issue
     {
         public Guid Id { get; init; }
         public string Content { get; init; }
-        public bool IsCompleted { get; init; }
     }
 }

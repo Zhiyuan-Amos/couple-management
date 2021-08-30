@@ -17,7 +17,6 @@
                         <input style="min-height: 2em; min-width: 2em; margin-top: 0;"
                                class="form-check-input"
                                type="checkbox"
-                               checked="@task.IsCompleted"
                                @onchange="@(_ => OnCheckboxToggle(issue.Id, task))"
                                id="@index"
                                @onclick:stopPropagation=true>
