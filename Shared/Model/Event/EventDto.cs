@@ -9,6 +9,6 @@ namespace Couple.Shared.Model.Event
         public string Title { get; set; }
         public DateTime Start { get; set; }
         public DateTime End { get; set; }
-        public List<ToDoDto> ToDos { get; set; }
+        public List<IssueDto> ToDos { get; set; }
     }
 }

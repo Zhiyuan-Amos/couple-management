@@ -12,7 +12,7 @@ namespace Couple.Api.Validators
             RuleFor(dto => dto.Start).NotEmpty();
             RuleFor(dto => dto.End).NotEmpty();
             RuleFor(dto => dto.ToDos).NotNull();
-            RuleForEach(dto => dto.ToDos).SetValidator(new ToDoDtoValidator());
+            RuleForEach(dto => dto.ToDos).SetValidator(new IssueDtoValidator());
         }
     }
 }

@@ -1,19 +1,19 @@
 ﻿@using Couple.Client.Utility
 
 <div style="padding-bottom: 56px;" class="mh-100 overflow-auto">
-    <Virtualize Items="@ToDos" Context="toDo">
+    <Virtualize Items="@Issues" Context="issue">
         <div class="card bg-light mx-3 my-2">
             <div class="card-body">
                 <div class="d-flex card-title">
-                    <i style="@CssHelper.GetIcon(toDo.For)"></i>
+                    <i style="@CssHelper.GetIcon(issue.For)"></i>
                     <h5 class="mb-0 ps-2">
-                        @toDo.Name
+                        @issue.Title
                     </h5>
                 </div>
-                @foreach (var innerToDo in toDo.ToDos)
+                @foreach (var task in issue.Tasks)
                 {
                     <h6>
-                        @innerToDo
+                        @task
                     </h6>
                 }
             </div>

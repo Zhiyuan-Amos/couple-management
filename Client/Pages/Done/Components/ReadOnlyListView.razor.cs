@@ -1,7 +1,7 @@
 using Couple.Client.Adapters;
-using Couple.Client.Model.ToDo;
-using Couple.Client.States.ToDo;
-using Couple.Client.ViewModel.ToDo;
+using Couple.Client.Model.Issue;
+using Couple.Client.States.Issue;
+using Couple.Client.ViewModel.Issue;
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
 using System;
@@ -13,24 +13,24 @@ namespace Couple.Client.Pages.Done.Components
 {
     public partial class ReadOnlyListView
     {
-        [Inject] private ToDoStateContainer ToDoStateContainer { get; init; }
+        [Inject] private IssueStateContainer IssueStateContainer { get; init; }
 
         [Inject] private IJSRuntime Js { get; init; }
 
-        private List<CompletedToDoViewModel> ToDos
+        private List<CompletedIssueViewModel> Issues
         {
             get
             {
-                var orderedToDos = ToDoStateContainer.CompletedToDos
-                    .OrderBy(toDo => toDo.CompletedOn)
+                var orderedIssues = IssueStateContainer.CompletedIssues
+                    .OrderBy(issue => issue.CompletedOn)
                     .ToList();
-                return ToDoAdapter.ToCompletedViewModel(orderedToDos);
+                return IssueAdapter.ToCompletedViewModel(orderedIssues);
             }
         }
 
         protected override async Task OnInitializedAsync()
         {
-            ToDoStateContainer.CompletedToDos = await Js.InvokeAsync<List<CompletedToDoModel>>("getCompletedToDos");
+            IssueStateContainer.CompletedIssues = await Js.InvokeAsync<List<CompletedIssueModel>>("getCompletedIssues");
         }
     }
 }

@@ -1,10 +1,10 @@
 using Couple.Client.Adapters;
 using Couple.Client.Model.Calendar;
-using Couple.Client.Model.ToDo;
+using Couple.Client.Model.Issue;
 using Couple.Client.States.Calendar;
-using Couple.Client.States.ToDo;
+using Couple.Client.States.Issue;
 using Couple.Client.ViewModel.Calendar;
-using Couple.Client.ViewModel.ToDo;
+using Couple.Client.ViewModel.Issue;
 using Couple.Shared.Model.Event;
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
@@ -23,7 +23,7 @@ namespace Couple.Client.Pages.Calendar
 
         [Inject] private NavigationManager NavigationManager { get; init; }
 
-        [Inject] private ToDoStateContainer ToDoStateContainer { get; init; }
+        [Inject] private IssueStateContainer IssueStateContainer { get; init; }
 
         [Inject] private EventStateContainer EventStateContainer { get; init; }
 
@@ -33,9 +33,9 @@ namespace Couple.Client.Pages.Calendar
 
         private UpdateEventViewModel ToUpdate { get; set; }
 
-        private List<ToDoViewModel> Original { get; set; }
-        private List<ToDoViewModel> Added { get; set; }
-        private List<ToDoViewModel> Removed { get; set; }
+        private List<IssueViewModel> Original { get; set; }
+        private List<IssueViewModel> Added { get; set; }
+        private List<IssueViewModel> Removed { get; set; }
 
         protected override void OnInitialized()
         {
@@ -45,7 +45,7 @@ namespace Couple.Client.Pages.Calendar
                 return;
             }
 
-            Original = ToDoAdapter.ToViewModel(@event.ToDos);
+            Original = IssueAdapter.ToViewModel(@event.ToDos);
             Added = new();
             Removed = new();
 
@@ -60,13 +60,13 @@ namespace Couple.Client.Pages.Calendar
             {
                 toPersist,
                 added,
-                ToDoAdapter.ToModel(Removed)
+                IssueAdapter.ToModel(Removed)
             });
 
-            var toDosTask = Js.InvokeAsync<List<ToDoModel>>("getToDos").AsTask();
+            var toDosTask = Js.InvokeAsync<List<IssueModel>>("getToDos").AsTask();
             var eventsTask = Js.InvokeAsync<List<EventModel>>("getAllEvents").AsTask();
             await Task.WhenAll(toDosTask, eventsTask);
-            ToDoStateContainer.ToDos = toDosTask.Result;
+            IssueStateContainer.Issues = toDosTask.Result;
             EventStateContainer.SetEvents(eventsTask.Result);
 
             NavigationManager.NavigateTo("/calendar");
@@ -75,7 +75,7 @@ namespace Couple.Client.Pages.Calendar
             {
                 Event = EventAdapter.ToDto(ToUpdate),
                 Added = added,
-                Removed = ToDoAdapter.ToDto(Removed),
+                Removed = IssueAdapter.ToDto(Removed),
             };
             await HttpClient.PutAsJsonAsync($"api/Events", toUpdate);
         }
@@ -96,7 +96,7 @@ namespace Couple.Client.Pages.Calendar
                                     && ToUpdate.Start != DateTime.UnixEpoch
                                     && ToUpdate.End != DateTime.UnixEpoch;
 
-        private void AddedChanged(List<ToDoViewModel> added)
+        private void AddedChanged(List<IssueViewModel> added)
         {
             foreach (var add in added)
             {
@@ -114,7 +114,7 @@ namespace Couple.Client.Pages.Calendar
             ToUpdate.ToDos = new(ToUpdate.ToDos); // https://docs.telerik.com/blazor-ui/common-features/observable-data
         }
 
-        private void RemovedChanged(ToDoViewModel removed)
+        private void RemovedChanged(IssueViewModel removed)
         {
             if (Original.Any(toDo => toDo.Id == removed.Id))
             {

@@ -1,4 +1,4 @@
-﻿using Couple.Client.Model.ToDo;
+﻿using Couple.Client.Model.Issue;
 using System;
 using System.Collections.Generic;
 
@@ -10,6 +10,6 @@ namespace Couple.Client.Model.Calendar
         public string Title { get; init; }
         public DateTime Start { get; init; }
         public DateTime End { get; init; }
-        public IReadOnlyList<ToDoModel> ToDos { get; init; }
+        public IReadOnlyList<IssueModel> ToDos { get; init; }
     }
 }

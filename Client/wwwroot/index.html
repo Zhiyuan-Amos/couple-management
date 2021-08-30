@@ -27,69 +27,46 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4" crossorigin="anonymous"></script>
     <script>navigator.serviceWorker.register('service-worker.js');</script>
     <script>
-        const db = idb.openDB('Couple', 2, {
-            async upgrade(db, oldVersion, newVersion, transaction) {
+        const db = idb.openDB('Couple', 1, {
+            upgrade(db, oldVersion, newVersion, transaction) {
                 if (oldVersion < 1 && newVersion >= 1) {
-                    db.createObjectStore('todo', {keyPath: 'id'});
+                    db.createObjectStore('issue', {keyPath: 'id'});
                     db.createObjectStore('event', {keyPath: 'id'});
-                }
-
-                if (oldVersion < 2 && newVersion >= 2) {
-                    const completedToDoStore = db.createObjectStore('completedToDo', {keyPath: 'id'});
-                    const toDoStore = transaction.objectStore('todo', 'readwrite');
-
-                    const toDos = await toDoStore.getAll();
-                    const completedToDos = toDos
-                        .filter(toDo => toDo.toDos.every(innerToDo => innerToDo.isCompleted))
-                        .map(toDo => {
-                            toDo.completedDateTime = Date.now()
-                            return toDo;
-                        });
-
-                    const toDelete = completedToDos
-                        .map(toDo => toDoStore.delete(toDo.id));
-                    const toAdd = completedToDos
-                        .map(toDo => completedToDoStore.add(toDo));
-
-                    await Promise.all([
-                        toDelete,
-                        toAdd,
-                        transaction.done,
-                    ]);
+                    db.createObjectStore('completedIssue', {keyPath: 'id'});
                 }
             },
         });
 
         var carousel;
 
-        async function getToDos() {
-            return (await db).transaction("todo").store.getAll();
+        async function getIssues() {
+            return (await db).transaction("issue").store.getAll();
         }
 
-        async function getCompletedToDos() {
-            return (await db).transaction("completedToDo").store.getAll();
+        async function getCompletedIssues() {
+            return (await db).transaction("completedIssue").store.getAll();
         }
 
-        async function addToDo(todo) {
-            (await db).transaction("todo", 'readwrite').store.add(todo);
+        async function addIssue(issue) {
+            (await db).transaction("issue", 'readwrite').store.add(issue);
         }
 
-        async function updateToDo(todo) {
-            (await db).transaction("todo", 'readwrite').store.put(todo);
+        async function updateIssue(issue) {
+            (await db).transaction("issue", 'readwrite').store.put(issue);
         }
 
-        async function removeToDo(id) {
-            (await db).transaction("todo", 'readwrite').store.delete(id);
+        async function removeIssue(id) {
+            (await db).transaction("issue", 'readwrite').store.delete(id);
         }
 
-        async function completeToDo(todo) {
-            const tx = (await db).transaction(['completedToDo', 'todo'], 'readwrite');
-            const completedToDoStore = tx.objectStore('completedToDo');
-            const toDoStore = tx.objectStore('todo');
+        async function completeIssue(issue) {
+            const tx = (await db).transaction(['completedIssue', 'issue'], 'readwrite');
+            const completedIssueStore = tx.objectStore('completedIssue');
+            const issueStore = tx.objectStore('issue');
 
             await Promise.all([
-                toDoStore.delete(todo.id),
-                completedToDoStore.add(todo),
+                issueStore.delete(issue.id),
+                completedIssueStore.add(issue),
                 tx.done,
             ]);
         }
@@ -206,6 +183,10 @@
                 toAwait,
                 tx.done,
             ])
+        }
+
+        async function deleteDatabase() {
+            idb.deleteDB('Couple')
         }
 
         // https://stackoverflow.com/a/53822526

@@ -12,7 +12,7 @@ namespace Couple.Client.Adapters
             models.Select(ToViewModel).ToList();
 
         public static EventViewModel ToViewModel(EventModel model) =>
-            new(model.Id, model.Title, model.Start, model.End, ToDoAdapter.ToViewModel(model.ToDos));
+            new(model.Id, model.Title, model.Start, model.End, IssueAdapter.ToViewModel(model.ToDos));
 
         public static EventDto ToDto(EventModel model) => new()
         {
@@ -20,7 +20,7 @@ namespace Couple.Client.Adapters
             Title = model.Title,
             Start = model.Start,
             End = model.End,
-            ToDos = ToDoAdapter.ToDto(model.ToDos),
+            ToDos = IssueAdapter.ToDto(model.ToDos),
         };
 
         public static EventDto ToDto(UpdateEventViewModel model) => new()
@@ -29,7 +29,7 @@ namespace Couple.Client.Adapters
             Title = model.Title,
             Start = model.Start,
             End = model.End,
-            ToDos = ToDoAdapter.ToDto(model.ToDos),
+            ToDos = IssueAdapter.ToDto(model.ToDos),
         };
 
         public static EventModel ToModel(EventDto model) => new()
@@ -38,7 +38,7 @@ namespace Couple.Client.Adapters
             Title = model.Title,
             Start = model.Start,
             End = model.End,
-            ToDos = ToDoAdapter.ToModel(model.ToDos),
+            ToDos = IssueAdapter.ToModel(model.ToDos),
         };
 
         public static EventModel ToModel(UpdateEventViewModel model) => new()
@@ -47,7 +47,7 @@ namespace Couple.Client.Adapters
             Title = model.Title,
             Start = model.Start,
             End = model.End,
-            ToDos = ToDoAdapter.ToModel(model.ToDos),
+            ToDos = IssueAdapter.ToModel(model.ToDos),
         };
 
         public static UpdateEventViewModel ToUpdateViewModel(EventModel model) => new()
@@ -56,7 +56,7 @@ namespace Couple.Client.Adapters
             Title = model.Title,
             Start = model.Start,
             End = model.End,
-            ToDos = ToDoAdapter.ToViewModel(model.ToDos),
+            ToDos = IssueAdapter.ToViewModel(model.ToDos),
         };
     }
 }
