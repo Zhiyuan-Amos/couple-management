@@ -32,7 +32,7 @@
                 if (oldVersion < 1 && newVersion >= 1) {
                     db.createObjectStore('issue', {keyPath: 'id'});
                     db.createObjectStore('event', {keyPath: 'id'});
-                    db.createObjectStore('completedIssue', {keyPath: 'id'});
+                    db.createObjectStore('completedTask', {keyPath: 'id'});
                 }
             },
         });
@@ -43,8 +43,8 @@
             return (await db).transaction("issue").store.getAll();
         }
 
-        async function getCompletedIssues() {
-            return (await db).transaction("completedIssue").store.getAll();
+        async function getCompletedTasks() {
+            return (await db).transaction("completedTask").store.getAll();
         }
 
         async function addIssue(issue) {
@@ -59,14 +59,22 @@
             (await db).transaction("issue", 'readwrite').store.delete(id);
         }
 
-        async function completeIssue(issue) {
-            const tx = (await db).transaction(['completedIssue', 'issue'], 'readwrite');
-            const completedIssueStore = tx.objectStore('completedIssue');
+        async function completeTask(completedTask) {
+            const tx = (await db).transaction(['completedTask', 'issue'], 'readwrite');
             const issueStore = tx.objectStore('issue');
+            const completedTaskStore = tx.objectStore('completedTask');
+
+            const toUpdate = await issueStore.get(completedTask.issueId);
+            toUpdate.tasks = toUpdate.tasks
+                .filter(task => task.id !== completedTask.id);
+
+            const issuePromise = toUpdate.tasks.length === 0
+                ? issueStore.delete(completedTask.issueId)
+                : issueStore.put(toUpdate);
 
             await Promise.all([
-                issueStore.delete(issue.id),
-                completedIssueStore.add(issue),
+                issuePromise,
+                completedTaskStore.add(completedTask),
                 tx.done,
             ]);
         }
@@ -183,10 +191,6 @@
                 toAwait,
                 tx.done,
             ])
-        }
-
-        async function deleteDatabase() {
-            idb.deleteDB('Couple')
         }
 
         // https://stackoverflow.com/a/53822526

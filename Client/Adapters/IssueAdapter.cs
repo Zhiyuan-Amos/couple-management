@@ -117,31 +117,21 @@ namespace Couple.Client.Adapters
             CreatedOn = model.CreatedOn,
         };
 
-        public static CompletedIssueModel ToCompletedModel(IssueViewModel model, DateTime completedOn) => new()
+        public static CompletedTaskModel ToCompletedModel(CompleteTaskDto model) => new()
         {
             Id = model.Id,
-            Title = model.Title,
             For = model.For,
-            Tasks = model.Tasks.Select(ToTaskModel).ToList(),
+            Content = model.Content,
+            IssueId = model.IssueId,
+            IssueTitle = model.IssueTitle,
             CreatedOn = model.CreatedOn,
-            CompletedOn = completedOn,
         };
 
-        public static CompletedIssueModel ToCompletedModel(CompleteIssueDto model) => new()
-        {
-            Id = model.Id,
-            Title = model.Title,
-            For = model.For,
-            Tasks = model.Tasks.Select(ToTaskModel).ToList(),
-            CreatedOn = model.CreatedOn,
-            CompletedOn = model.CompletedOn,
-        };
-
-        public static List<CompletedIssueViewModel> ToCompletedViewModel(IEnumerable<CompletedIssueModel> models) =>
+        public static List<CompletedTaskViewModel> ToCompletedViewModel(IEnumerable<CompletedTaskModel> models) =>
             models.Select(ToCompletedViewModel).ToList();
 
-        public static CompletedIssueViewModel ToCompletedViewModel(CompletedIssueModel model) => new(model.Title,
-            model.For, model.Tasks.Select(innerModel => innerModel.Content).ToList(), model.CompletedOn);
+        public static CompletedTaskViewModel ToCompletedViewModel(CompletedTaskModel model) => new(model.Id,
+            model.For, model.Content, model.IssueId, model.IssueTitle, model.CreatedOn);
 
         public static CreateIssueDto ToCreateDto(IssueModel model) => new()
         {
@@ -161,14 +151,14 @@ namespace Couple.Client.Adapters
             CreatedOn = model.CreatedOn,
         };
 
-        public static CompleteIssueDto ToCompleteDto(CompletedIssueModel model) => new()
+        public static CompleteTaskDto ToCompleteDto(CompletedTaskModel model) => new()
         {
             Id = model.Id,
-            Title = model.Title,
             For = model.For,
-            Tasks = model.Tasks.Select(ToTaskDto).ToList(),
+            Content = model.Content,
+            IssueId = model.IssueId,
+            IssueTitle = model.IssueTitle,
             CreatedOn = model.CreatedOn,
-            CompletedOn = model.CompletedOn,
         };
 
         public static List<IssueDto> ToDto(IEnumerable<IssueViewModel> models) => models.Select(ToDto).ToList();

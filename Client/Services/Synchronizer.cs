@@ -60,9 +60,9 @@ namespace Couple.Client.Services
                         await _js.InvokeVoidAsync("deleteIssue",
                             JsonSerializer.Deserialize<Guid>(item.Content, _options));
                         break;
-                    case Command.CompleteIssue:
-                        var completeIssueDto = JsonSerializer.Deserialize<CompleteIssueDto>(item.Content, _options);
-                        await _js.InvokeVoidAsync("completeIssue", IssueAdapter.ToCompletedModel(completeIssueDto));
+                    case Command.CompleteTask:
+                        var completeTaskDto = JsonSerializer.Deserialize<CompleteTaskDto>(item.Content, _options);
+                        await _js.InvokeVoidAsync("completeTask", IssueAdapter.ToCompletedModel(completeTaskDto));
                         break;
                     case Command.CreateEvent:
                     {
