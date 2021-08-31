@@ -28,12 +28,21 @@ namespace Couple.Client.Pages.Issue.Components
         {
             var viewModel = Issues.Single(x => x.Id == id);
 
-            var toPersist = IssueAdapter.ToCompletedModel(viewModel, DateTime.Now);
-            await Js.InvokeVoidAsync("completeIssue", toPersist);
+            var toPersist = new CompletedTaskModel
+            {
+                Id = task.Id,
+                For = viewModel.For,
+                Content = task.Content,
+                IssueId = id,
+                IssueTitle = viewModel.Title,
+                CreatedOn = DateTime.Now,
+            };
+
+            await Js.InvokeVoidAsync("completeTask", toPersist);
             IssueStateContainer.Issues = await Js.InvokeAsync<List<IssueModel>>("getIssues");
 
             var toUpdate = IssueAdapter.ToCompleteDto(toPersist);
-            await HttpClient.PutAsJsonAsync("api/Issues/Complete", toUpdate);
+            await HttpClient.PutAsJsonAsync("api/Tasks/Complete", toUpdate);
         }
     }
 }

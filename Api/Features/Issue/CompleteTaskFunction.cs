@@ -13,13 +13,13 @@ using System.Threading.Tasks;
 
 namespace Couple.Api.Features.Issue
 {
-    public class CompleteIssueFunction
+    public class CompleteTaskFunction
     {
         private readonly ChangeContext _context;
         private readonly IDateTimeService _dateTimeService;
         private readonly ICurrentUserService _currentUserService;
 
-        public CompleteIssueFunction(ChangeContext context,
+        public CompleteTaskFunction(ChangeContext context,
             IDateTimeService dateTimeService,
             ICurrentUserService currentUserService)
         {
@@ -28,13 +28,13 @@ namespace Couple.Api.Features.Issue
             _currentUserService = currentUserService;
         }
 
-        [FunctionName("CompleteIssueFunction")]
-        public async Task<ActionResult> CompleteIssue(
-            [HttpTrigger(AuthorizationLevel.Anonymous, "put", Route = "Issues/Complete")]
+        [FunctionName("CompleteTaskFunction")]
+        public async Task<ActionResult> CompleteTask(
+            [HttpTrigger(AuthorizationLevel.Anonymous, "put", Route = "Tasks/Complete")]
             HttpRequest req,
             ILogger log)
         {
-            var form = await req.GetJsonBody<CompleteIssueDto, Validator>();
+            var form = await req.GetJsonBody<CompleteTaskDto, Validator>();
 
             if (!form.IsValid)
             {
@@ -50,7 +50,7 @@ namespace Couple.Api.Features.Issue
             var toCreate = new Model.Change
             {
                 Id = Guid.NewGuid(),
-                Command = Command.CompleteIssue,
+                Command = Command.CompleteTask,
                 UserId = _currentUserService.PartnerId,
                 Timestamp = _dateTimeService.Now,
                 Content = form.Json,
@@ -64,19 +64,16 @@ namespace Couple.Api.Features.Issue
             return new OkResult();
         }
 
-        private class Validator : AbstractValidator<CompleteIssueDto>
+        private class Validator : AbstractValidator<CompleteTaskDto>
         {
             public Validator()
             {
                 RuleFor(dto => dto.Id).NotEmpty();
-                RuleFor(dto => dto.Title).NotNull();
                 RuleFor(dto => dto.For).NotNull();
-                RuleFor(dto => dto.Tasks).NotNull();
-                RuleForEach(dto => dto.Tasks)
-                    .ChildRules(tasks =>
-                        tasks.RuleFor(task => task.Content).NotEmpty());
+                RuleFor(dto => dto.Content).NotEmpty();
+                RuleFor(dto => dto.IssueId).NotEmpty();
+                RuleFor(dto => dto.IssueTitle).NotNull();
                 RuleFor(dto => dto.CreatedOn).NotEmpty();
-                RuleFor(dto => dto.CompletedOn).NotEmpty();
             }
         }
     }

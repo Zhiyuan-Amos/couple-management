@@ -17,20 +17,20 @@ namespace Couple.Client.Pages.Done.Components
 
         [Inject] private IJSRuntime Js { get; init; }
 
-        private List<CompletedIssueViewModel> Issues
+        private List<CompletedTaskViewModel> Tasks
         {
             get
             {
-                var orderedIssues = IssueStateContainer.CompletedIssues
-                    .OrderBy(issue => issue.CompletedOn)
+                var orderedTasks = IssueStateContainer.CompletedTasks
+                    .OrderByDescending(issue => issue.CreatedOn)
                     .ToList();
-                return IssueAdapter.ToCompletedViewModel(orderedIssues);
+                return IssueAdapter.ToCompletedViewModel(orderedTasks);
             }
         }
 
         protected override async Task OnInitializedAsync()
         {
-            IssueStateContainer.CompletedIssues = await Js.InvokeAsync<List<CompletedIssueModel>>("getCompletedIssues");
+            IssueStateContainer.CompletedTasks = await Js.InvokeAsync<List<CompletedTaskModel>>("getCompletedTasks");
         }
     }
 }

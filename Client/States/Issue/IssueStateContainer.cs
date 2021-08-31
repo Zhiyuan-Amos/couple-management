@@ -9,7 +9,7 @@ namespace Couple.Client.States.Issue
     {
         private List<IssueModel> _issues = new();
         private Dictionary<Guid, IssueModel> _idToIssue = new();
-        private List<CompletedIssueModel> _completedIssues = new();
+        private List<CompletedTaskModel> _completedTasks = new();
 
         public List<IssueModel> Issues
         {
@@ -32,12 +32,12 @@ namespace Couple.Client.States.Issue
             return true;
         }
 
-        public List<CompletedIssueModel> CompletedIssues
+        public List<CompletedTaskModel> CompletedTasks
         {
-            get => _completedIssues;
+            get => _completedTasks;
             set
             {
-                _completedIssues = value.ToList();
+                _completedTasks = value.ToList();
                 NotifyStateChanged();
             }
         }
