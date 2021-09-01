@@ -33,5 +33,10 @@ namespace Couple.Client.Pages.Settings
                 "couple.json",
                 Convert.ToBase64String(bytes));
         }
+
+        private async Task OnDeleteDatabaseSelected()
+        {
+            await Js.InvokeVoidAsync("deleteDatabase");
+        }
     }
 }

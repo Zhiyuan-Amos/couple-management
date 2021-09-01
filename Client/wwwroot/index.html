@@ -193,6 +193,10 @@
             ])
         }
 
+        async function deleteDatabase() {
+            idb.deleteDB('Couple')
+        }
+
         // https://stackoverflow.com/a/53822526
         function saveAsFile(filename, bytesBase64) {
             const link = document.createElement('a')
