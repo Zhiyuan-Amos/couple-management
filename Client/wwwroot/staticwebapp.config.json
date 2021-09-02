@@ -11,7 +11,7 @@
       "statusCode": "404"
     },
     {
-      "route": "/.auth/login/github",
+      "route": "/.auth/login/facebook",
       "statusCode": "404"
     },
     {
@@ -24,7 +24,7 @@
     },
     {
       "route": "/login",
-      "rewrite": "/.auth/login/facebook"
+      "rewrite": "/.auth/login/github"
     },
     {
       "route": "/logout",
