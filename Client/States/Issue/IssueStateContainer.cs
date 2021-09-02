@@ -11,9 +11,9 @@ namespace Couple.Client.States.Issue
         private Dictionary<Guid, IssueModel> _idToIssue = new();
         private List<CompletedTaskModel> _completedTasks = new();
 
-        public List<IssueModel> Issues
+        public IReadOnlyList<IssueModel> Issues
         {
-            get => _issues;
+            get => _issues.AsReadOnly();
             set
             {
                 _issues = value.ToList();
@@ -32,9 +32,9 @@ namespace Couple.Client.States.Issue
             return true;
         }
 
-        public List<CompletedTaskModel> CompletedTasks
+        public IReadOnlyList<CompletedTaskModel> CompletedTasks
         {
-            get => _completedTasks;
+            get => _completedTasks.AsReadOnly();
             set
             {
                 _completedTasks = value.ToList();
