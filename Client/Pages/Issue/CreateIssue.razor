@@ -3,5 +3,7 @@
 @using Couple.Client.Pages.Issue.Components
 @inherits CreateIssueBase
 
-<CreateTopBar/>
-<CreateUpdateForm OnSaveCallback="@Save"/>
+<CascadingValue Name="CreateUpdateIssueStateContainer" Value="@CreateUpdateIssueStateContainer">
+    <CreateTopBar/>
+    <CreateUpdateForm OnSaveCallback="@Save"/>
+</CascadingValue>

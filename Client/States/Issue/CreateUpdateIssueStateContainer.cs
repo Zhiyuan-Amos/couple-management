@@ -12,7 +12,7 @@ namespace Couple.Client.States.Issue
     {
         public string Title { get; set; }
         public For For { get; set; }
-        private List<CreateUpdateTaskViewModel> _tasks;
+        private readonly List<CreateUpdateTaskViewModel> _tasks;
 
         public IReadOnlyList<IReadOnlyTaskViewModel> Tasks => _tasks;
 
@@ -32,18 +32,11 @@ namespace Couple.Client.States.Issue
             _tasks[index].Content = content;
         }
 
-        public void Initialize(string name, For @for, IEnumerable<TaskModel> tasks)
+        public CreateUpdateIssueStateContainer(string title, For @for, IEnumerable<TaskModel> tasks)
         {
-            Title = name;
+            Title = title;
             For = @for;
             _tasks = IssueAdapter.ToCreateUpdateTaskViewModel(tasks);
-        }
-
-        public void Reset()
-        {
-            Title = null;
-            For = For.Him;
-            _tasks = new();
         }
     }
 }

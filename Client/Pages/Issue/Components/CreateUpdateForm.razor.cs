@@ -13,7 +13,8 @@ namespace Couple.Client.Pages.Issue.Components
     {
         [Parameter] public Func<Task> OnSaveCallback { get; set; }
 
-        [Inject] protected CreateUpdateIssueStateContainer CreateUpdateIssueStateContainer { get; init; }
+        [CascadingParameter(Name="CreateUpdateIssueStateContainer")]
+        private CreateUpdateIssueStateContainer CreateUpdateIssueStateContainer { get; init; }
 
         private IReadOnlyList<IReadOnlyTaskViewModel> Tasks { get; set; }
 

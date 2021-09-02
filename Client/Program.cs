@@ -20,7 +20,6 @@ namespace Couple.Client
                 .AddTransient(_ => new HttpClient
                     {BaseAddress = new(builder.Configuration["API_Prefix"] ?? builder.HostEnvironment.BaseAddress)})
                 .AddSingleton<IssueStateContainer>()
-                .AddSingleton<CreateUpdateIssueStateContainer>()
                 .AddSingleton<EventStateContainer>()
                 .AddSingleton<SelectedDateStateContainer>()
                 .AddSingleton<Synchronizer>();

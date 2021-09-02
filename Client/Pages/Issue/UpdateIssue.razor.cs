@@ -22,7 +22,7 @@ namespace Couple.Client.Pages.Issue
                 return;
             }
 
-            CreateUpdateIssueStateContainer.Initialize(_currentIssueModel.Title,
+            CreateUpdateIssueStateContainer = new(_currentIssueModel.Title,
                 _currentIssueModel.For,
                 _currentIssueModel.Tasks);
         }
@@ -54,11 +54,6 @@ namespace Couple.Client.Pages.Issue
 
             var toUpdate = IssueAdapter.ToUpdateDto(toPersist);
             await HttpClient.PutAsJsonAsync("api/Issues", toUpdate);
-        }
-
-        public override void Dispose()
-        {
-            CreateUpdateIssueStateContainer.Reset();
         }
     }
 }

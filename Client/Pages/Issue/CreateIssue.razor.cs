@@ -13,7 +13,7 @@ namespace Couple.Client.Pages.Issue
     {
         protected override void OnInitialized()
         {
-            CreateUpdateIssueStateContainer.Initialize("",
+            CreateUpdateIssueStateContainer = new("",
                 For.Him,
                 new List<TaskModel>
                 {
@@ -43,11 +43,6 @@ namespace Couple.Client.Pages.Issue
 
             var toCreate = IssueAdapter.ToCreateDto(toPersist);
             await HttpClient.PostAsJsonAsync($"api/Issues", toCreate);
-        }
-
-        public override void Dispose()
-        {
-            CreateUpdateIssueStateContainer.Reset();
         }
     }
 }
