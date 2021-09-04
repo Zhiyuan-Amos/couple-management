@@ -39,7 +39,7 @@
     {
       "route": "/icons/*",
       "headers": {
-        "Cache-Control": "public, max-age=604800, immutable"
+        "Cache-Control": "public, max-age=31536000, immutable"
       }
     },
     {
@@ -49,6 +49,10 @@
       ]
     }
   ],
+  "globalHeaders": {
+    "X-XSS-Protection": "",
+    "X-Content-Type-Options": "nosniff",
+  },
   "navigationFallback": {
     "rewrite": "index.html"
   },
