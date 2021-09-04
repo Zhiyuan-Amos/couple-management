@@ -1,20 +1,21 @@
 ﻿using Couple.Shared.Model;
 using System;
+using System.Collections.Generic;
 
 namespace Couple.Client.ViewModel.Issue
 {
     public class CompletedTaskViewModel
     {
-        public Guid Id { get; }
         public For For { get; }
-        public string Content { get; }
+        public List<string> Contents { get; }
 
-        public Guid IssueId { get; }
         public string IssueTitle { get; }
         public DateTime CreatedOn { get; }
 
-        public CompletedTaskViewModel(Guid id, For @for, string content, Guid issueId, string issueTitle,
-            DateTime createdOn) => (Id, For, Content, IssueId, IssueTitle, CreatedOn) =
-            (id, @for, content, issueId, issueTitle, createdOn);
+        public CompletedTaskViewModel(For @for,
+            List<string> contents,
+            string issueTitle,
+            DateTime createdOn) =>
+            (For, Contents, IssueTitle, CreatedOn) = (@for, contents, issueTitle, createdOn);
     }
 }

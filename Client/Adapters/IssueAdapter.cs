@@ -2,7 +2,6 @@
 using Couple.Client.ViewModel.Issue;
 using Couple.Shared.Model.Event;
 using Couple.Shared.Model.Issue;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -126,12 +125,6 @@ namespace Couple.Client.Adapters
             IssueTitle = model.IssueTitle,
             CreatedOn = model.CreatedOn,
         };
-
-        public static List<CompletedTaskViewModel> ToCompletedViewModel(IEnumerable<CompletedTaskModel> models) =>
-            models.Select(ToCompletedViewModel).ToList();
-
-        public static CompletedTaskViewModel ToCompletedViewModel(CompletedTaskModel model) => new(model.Id,
-            model.For, model.Content, model.IssueId, model.IssueTitle, model.CreatedOn);
 
         public static CreateIssueDto ToCreateDto(IssueModel model) => new()
         {

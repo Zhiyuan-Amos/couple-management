@@ -13,9 +13,12 @@
                             @task.IssueTitle
                         </h5>
                     </div>
-                    <h6>
-                        @task.Content
-                    </h6>
+                    @foreach (var content in task.Contents)
+                    {
+                        <h6>
+                            @content
+                        </h6>
+                    }
                 </div>
             </div>
         </Virtualize>

@@ -21,12 +21,27 @@ namespace Couple.Client.Pages.Done.Components
         {
             get
             {
-                var dictionary = IssueAdapter.ToCompletedViewModel(IssueStateContainer.CompletedTasks)
+                var toReturn = IssueStateContainer.CompletedTasks
                     .GroupBy(task => DateOnly.FromDateTime(task.CreatedOn.Date))
-                    .ToDictionary(grouping => grouping.Key,
-                        grouping => grouping.OrderByDescending(issue => issue.CreatedOn)
-                            .ToList());
-                return new(dictionary);
+                    .ToDictionary(dateToTasks => dateToTasks.Key,
+                        dateToTasks =>
+                        {
+                            var issueToTasksForOneDate = dateToTasks
+                                .GroupBy(task => task.IssueId)
+                                .ToDictionary(issueToTasks => issueToTasks.Key,
+                                    issueToTasks => issueToTasks
+                                        .OrderByDescending(issue => issue.CreatedOn)
+                                        .ToList());
+
+                            return issueToTasksForOneDate.Values
+                                .Select(tasks => new CompletedTaskViewModel(tasks[0].For,
+                                    tasks.Select(task => task.Content).ToList(),
+                                    tasks[0].IssueTitle,
+                                    tasks[0].CreatedOn))
+                                .OrderByDescending(task => task.CreatedOn)
+                                .ToList();
+                        });
+                return new(toReturn);
             }
         }
 
