@@ -17,14 +17,16 @@ namespace Couple.Client.Pages.Done.Components
 
         [Inject] private IJSRuntime Js { get; init; }
 
-        private List<CompletedTaskViewModel> Tasks
+        private SortedDictionary<DateOnly, List<CompletedTaskViewModel>> DateToTasks
         {
             get
             {
-                var orderedTasks = IssueStateContainer.CompletedTasks
-                    .OrderByDescending(issue => issue.CreatedOn)
-                    .ToList();
-                return IssueAdapter.ToCompletedViewModel(orderedTasks);
+                var dictionary = IssueAdapter.ToCompletedViewModel(IssueStateContainer.CompletedTasks)
+                    .GroupBy(task => DateOnly.FromDateTime(task.CreatedOn.Date))
+                    .ToDictionary(grouping => grouping.Key,
+                        grouping => grouping.OrderByDescending(issue => issue.CreatedOn)
+                            .ToList());
+                return new(dictionary);
             }
         }
 
