@@ -47,7 +47,7 @@
             return (await db).transaction("completedTask").store.getAll();
         }
 
-        async function addIssue(issue) {
+        async function createIssue(issue) {
             (await db).transaction("issue", 'readwrite').store.add(issue);
         }
 

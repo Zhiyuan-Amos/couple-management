@@ -36,7 +36,7 @@ namespace Couple.Client.Pages.Issue
                 Tasks = IssueAdapter.ToTaskModel(CreateUpdateIssueStateContainer.Tasks),
                 CreatedOn = DateTime.Now,
             };
-            await Js.InvokeVoidAsync("addIssue", toPersist);
+            await Js.InvokeVoidAsync("createIssue", toPersist);
 
             IssueStateContainer.Issues = await Js.InvokeAsync<List<IssueModel>>("getIssues");
             NavigationManager.NavigateTo("/todo");

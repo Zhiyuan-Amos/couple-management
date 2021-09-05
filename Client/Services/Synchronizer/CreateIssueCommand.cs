@@ -10,6 +10,6 @@ namespace Couple.Client.Services.Synchronizer
         private readonly IssueModel _model;
         public CreateIssueCommand(IJSRuntime js, IssueModel model) => (_js, _model) = (js, model);
 
-        public Task Execute() => _js.InvokeVoidAsync("addIssue", _model).AsTask();
+        public Task Execute() => _js.InvokeVoidAsync("createIssue", _model).AsTask();
     }
 }
