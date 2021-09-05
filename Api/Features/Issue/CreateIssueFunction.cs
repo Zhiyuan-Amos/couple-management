@@ -69,7 +69,7 @@ namespace Couple.Api.Features.Issue
             public Validator()
             {
                 RuleFor(dto => dto.Id).NotEmpty();
-                RuleFor(dto => dto.Title).NotNull();
+                RuleFor(dto => dto.Title).NotEmpty();
                 RuleFor(dto => dto.For).NotNull();
                 RuleFor(dto => dto.Tasks).NotNull();
                 RuleForEach(dto => dto.Tasks)

@@ -72,7 +72,7 @@ namespace Couple.Api.Features.Issue
                 RuleFor(dto => dto.For).NotNull();
                 RuleFor(dto => dto.Content).NotEmpty();
                 RuleFor(dto => dto.IssueId).NotEmpty();
-                RuleFor(dto => dto.IssueTitle).NotNull();
+                RuleFor(dto => dto.IssueTitle).NotEmpty();
                 RuleFor(dto => dto.CreatedOn).NotEmpty();
             }
         }

@@ -36,6 +36,7 @@ namespace Couple.Client.Pages.Issue.Components
             OnSaveCallback();
         }
 
-        private bool IsSaveEnabled => Tasks.Any(task => task.Content.Any());
+        private bool IsSaveEnabled => CreateUpdateIssueStateContainer.Title.Any()
+                                      && Tasks.Any(task => task.Content.Any());
     }
 }
