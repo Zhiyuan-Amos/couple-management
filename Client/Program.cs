@@ -1,4 +1,4 @@
-using Couple.Client.Services;
+using Couple.Client.Services.Synchronizer;
 using Couple.Client.States.Calendar;
 using Couple.Client.States.Issue;
 using Microsoft.AspNetCore.Components;

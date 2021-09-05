@@ -1,0 +1,36 @@
+﻿using Couple.Client.Adapters;
+using Couple.Client.Services.Synchronizer;
+using Couple.Shared.Model;
+using Couple.Shared.Model.Change;
+using Couple.Shared.Model.Issue;
+using Microsoft.JSInterop;
+using System;
+using System.Text.Json;
+
+namespace Couple.Client.Services
+{
+    public class CommandParser
+    {
+        private readonly IJSRuntime _js;
+
+        private static readonly JsonSerializerOptions Options = new() {PropertyNameCaseInsensitive = true};
+
+        public CommandParser(IJSRuntime js) => _js = js;
+
+        public ICommand Parse(ChangeDto change)
+        {
+            return change.Command switch
+            {
+                Command.CreateIssue => new CreateIssueCommand(_js,
+                    IssueAdapter.ToModel(JsonSerializer.Deserialize<CreateIssueDto>(change.Content, Options))),
+                Command.UpdateIssue => new UpdateIssueCommand(_js,
+                    IssueAdapter.ToModel(JsonSerializer.Deserialize<UpdateIssueDto>(change.Content, Options))),
+                Command.DeleteIssue => new DeleteIssueCommand(_js,
+                    JsonSerializer.Deserialize<Guid>(change.Content, Options)),
+                Command.CompleteTask => new CompleteTaskCommand(_js,
+                    IssueAdapter.ToCompletedModel(JsonSerializer.Deserialize<CompleteTaskDto>(change.Content, Options))),
+                _ => throw new ArgumentOutOfRangeException(nameof(change), change, null)
+            };
+        }
+    }
+}

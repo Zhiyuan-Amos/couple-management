@@ -1,0 +1,15 @@
+﻿using Couple.Client.Model.Issue;
+using Microsoft.JSInterop;
+using System.Threading.Tasks;
+
+namespace Couple.Client.Services.Synchronizer
+{
+    public class CreateIssueCommand : ICommand
+    {
+        private readonly IJSRuntime _js;
+        private readonly IssueModel _model;
+        public CreateIssueCommand(IJSRuntime js, IssueModel model) => (_js, _model) = (js, model);
+
+        public Task Execute() => _js.InvokeVoidAsync("addIssue", _model).AsTask();
+    }
+}
