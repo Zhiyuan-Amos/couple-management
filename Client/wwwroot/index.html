@@ -33,7 +33,6 @@
                     db.createObjectStore('issue', {keyPath: 'id'});
                     db.createObjectStore('event', {keyPath: 'id'});
                     db.createObjectStore('completedTask', {keyPath: 'id'});
-                    db.createObjectStore('image');
                 }
             },
         });
@@ -206,31 +205,6 @@
             document.body.appendChild(link) // Needed for Firefox
             link.click()
             document.body.removeChild(link)
-        }
-
-        async function getImages(dateTime) {
-            return (await db).transaction("image").store.getAll()
-
-            // const key = getDateKey(dateTime)
-            // return (await db).transaction("image").store.get(key)
-        }
-
-        async function saveImage(image) {
-            const key = getDateKey(image.takenOn)
-            const store = (await db).transaction("image", 'readwrite').store
-            const existingValues = await store.getKey(key)
-
-            if (!existingValues) {
-                store.add([image], key)
-            } else {
-                existingValues.push(image)
-                store.put(existingValues, key)
-            }
-        }
-
-        function getDateKey(dateTime) {
-            const date = new Date(dateTime)
-            return `${date.getUTCFullYear()}${(date.getUTCMonth() + 1)}${date.getUTCDate()}`
         }
 
         function disableInput(wrapperElement) {
