@@ -16,7 +16,7 @@ namespace Couple.Api
         public override void Configure(IFunctionsHostBuilder builder)
         {
             builder.Services.AddDbContext<ChangeContext>(options => DbParams(options));
-            builder.Services.AddAutoMapper(typeof(ChangeProfile));
+            builder.Services.AddAutoMapper(typeof(ChangeProfile), typeof(ImageProfile));
 
             if (builder.GetContext().EnvironmentName == "Development")
             {

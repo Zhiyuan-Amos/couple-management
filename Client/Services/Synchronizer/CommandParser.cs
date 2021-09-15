@@ -2,6 +2,7 @@
 using Couple.Client.Services.Synchronizer;
 using Couple.Shared.Model;
 using Couple.Shared.Model.Change;
+using Couple.Shared.Model.Image;
 using Couple.Shared.Model.Issue;
 using Microsoft.JSInterop;
 using System;
@@ -29,6 +30,8 @@ namespace Couple.Client.Services
                     JsonSerializer.Deserialize<Guid>(change.Content, Options)),
                 Command.CompleteTask => new CompleteTaskCommand(_js,
                     IssueAdapter.ToCompletedModel(JsonSerializer.Deserialize<CompleteTaskDto>(change.Content, Options))),
+                Command.CreateImage => new CreateImageCommand(_js,
+                    ImageAdapter.ToModel(JsonSerializer.Deserialize<CreateImageDto>(change.Content, Options))),
                 _ => throw new ArgumentOutOfRangeException(nameof(change), change, null)
             };
         }
