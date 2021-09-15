@@ -1,5 +1,7 @@
+using Azure.Storage.Blobs;
 using Couple.Api.Data;
 using Couple.Api.Infrastructure;
+using Couple.Shared.Model;
 using Couple.Shared.Model.Change;
 using FluentValidation;
 using Microsoft.AspNetCore.Http;
@@ -8,7 +10,9 @@ using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using System;
 using System.Linq;
+using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace Couple.Api.Features.Change
@@ -63,6 +67,20 @@ namespace Couple.Api.Features.Change
                 .Changes
                 .RemoveRange(toDelete);
             await _context.SaveChangesAsync();
+
+            var imageIdsToDelete = toDelete
+                .Where(change => change.Command == Command.CreateImage)
+                .Select(change => change.Content)
+                .Select(content => JsonSerializer.Deserialize<Model.Image>(content))
+                .Select(image => image.Id.ToString())
+                .ToList();
+
+            var connectionString = Environment.GetEnvironmentVariable("ImagesConnectionString")!;
+            foreach (var id in imageIdsToDelete)
+            {
+                var client = new BlobClient(connectionString, "images", id);
+                await client.DeleteIfExistsAsync();
+            }
 
             return new OkResult();
         }

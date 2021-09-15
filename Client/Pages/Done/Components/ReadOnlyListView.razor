@@ -23,4 +23,9 @@
             </div>
         </Virtualize>
     }
+
+    @foreach (var image in Images)
+    {
+        <img class="w-100 h-auto" src="data:image/bmp;base64, @(image)"/>
+    }
 </div>

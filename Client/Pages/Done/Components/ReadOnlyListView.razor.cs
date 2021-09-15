@@ -1,4 +1,5 @@
 using Couple.Client.Adapters;
+using Couple.Client.Model.Image;
 using Couple.Client.Model.Issue;
 using Couple.Client.States.Issue;
 using Couple.Client.ViewModel.Issue;
@@ -45,9 +46,21 @@ namespace Couple.Client.Pages.Done.Components
             }
         }
 
+        private List<string> Images { get; set; } = new();
+
         protected override async Task OnInitializedAsync()
         {
             IssueStateContainer.CompletedTasks = await Js.InvokeAsync<List<CompletedTaskModel>>("getCompletedTasks");
+            Images = await GetImages();
+        }
+
+        private async Task<List<string>> GetImages()
+        {
+            var images = await Js.InvokeAsync<List<List<ImageModel>>>("getImages");
+            return images
+                .SelectMany(imgs => imgs.ToList())
+                .Select(image => Convert.ToBase64String(image.Data))
+                .ToList();
         }
     }
 }
