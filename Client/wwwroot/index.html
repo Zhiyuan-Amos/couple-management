@@ -208,15 +208,23 @@
             document.body.removeChild(link)
         }
 
-        async function getImages(dateTime) {
-            return (await db).transaction("image").store.getAll()
+        async function getImages() {
+            const kvp = {}
+            let cursor = await (await db)
+                .transaction("image")
+                .store
+                .openCursor()
 
-            // const key = getDateKey(dateTime)
-            // return (await db).transaction("image").store.get(key)
+            while (cursor) {
+                kvp[cursor.key] = cursor.value
+                cursor = await cursor.continue()
+            }
+
+            return kvp
         }
 
         async function saveImage(image) {
-            const key = getDateKey(image.takenOn)
+            const key = image.takenOnDate
             const store = (await db).transaction("image", 'readwrite').store
             const existingImages = await store.getKey(key)
 
@@ -226,11 +234,6 @@
                 existingImages.push(image)
                 store.put(existingImages, key)
             }
-        }
-
-        function getDateKey(dateTime) {
-            const date = new Date(dateTime)
-            return `${date.getUTCDate()}${(date.getUTCMonth() + 1)}${date.getUTCFullYear()}`
         }
 
         function disableInput(wrapperElement) {

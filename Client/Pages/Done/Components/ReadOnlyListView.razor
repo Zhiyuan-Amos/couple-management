@@ -24,8 +24,11 @@
         </Virtualize>
     }
 
-    @foreach (var image in Images)
+    @foreach (var (date, images) in DateToImages)
     {
-        <img class="w-100 h-auto" src="data:image/bmp;base64, @(image)"/>
+        @foreach (var image in images)
+        {
+            <img class="w-100 h-auto" src="data:image/bmp;base64, @(image)"/>
+        }
     }
 </div>

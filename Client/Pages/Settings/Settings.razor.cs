@@ -72,7 +72,7 @@ namespace Couple.Client.Pages.Settings
                 return;
             }
 
-            var toPersist = new ImageModel(Guid.NewGuid(), DateTime.Now, ms.ToArray());
+            var toPersist = new CreateImageModel(Guid.NewGuid(), DateTime.Now, ms.ToArray());
             await Js.InvokeVoidAsync("saveImage", toPersist);
 
             var toCreate = ImageAdapter.ToDto(toPersist);

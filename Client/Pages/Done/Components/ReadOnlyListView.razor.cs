@@ -46,21 +46,25 @@ namespace Couple.Client.Pages.Done.Components
             }
         }
 
-        private List<string> Images { get; set; } = new();
+        private SortedDictionary<DateOnly, List<string>> DateToImages { get; set; } = new();
 
         protected override async Task OnInitializedAsync()
         {
             IssueStateContainer.CompletedTasks = await Js.InvokeAsync<List<CompletedTaskModel>>("getCompletedTasks");
-            Images = await GetImages();
+            DateToImages = await GetDateToImages();
         }
 
-        private async Task<List<string>> GetImages()
+        private async Task<SortedDictionary<DateOnly, List<string>>> GetDateToImages()
         {
-            var images = await Js.InvokeAsync<List<List<ImageModel>>>("getImages");
-            return images
-                .SelectMany(imgs => imgs.ToList())
-                .Select(image => Convert.ToBase64String(image.Data))
-                .ToList();
+            var dateToImageModels = await Js.InvokeAsync<Dictionary<string, List<ImageModel>>>("getImages");
+            var dateToImages = dateToImageModels
+                .Select(kvp =>
+                    new KeyValuePair<DateOnly, List<ImageModel>>(DateOnly.ParseExact(kvp.Key, "dd/MM/yyyy"),
+                        kvp.Value))
+                .Select(kvp => new KeyValuePair<DateOnly, List<string>>(kvp.Key,
+                    kvp.Value.Select(image => Convert.ToBase64String(image.Data)).ToList()))
+                .ToDictionary(kvp => kvp.Key, pair => pair.Value);
+            return new(dateToImages);
         }
     }
 }
