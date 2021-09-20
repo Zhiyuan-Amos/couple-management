@@ -1,4 +1,5 @@
 ﻿using Couple.Client.Model.Issue;
+using Couple.Client.ViewModel.Issue;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,7 +10,7 @@ namespace Couple.Client.States.Issue
     {
         private List<IssueModel> _issues = new();
         private Dictionary<Guid, IssueModel> _idToIssue = new();
-        private List<CompletedTaskModel> _completedTasks = new();
+        private SortedDictionary<DateOnly, CompletedTaskViewModel> _dateToCompletedTasks = new();
 
         public IReadOnlyList<IssueModel> Issues
         {
@@ -32,14 +33,9 @@ namespace Couple.Client.States.Issue
             return true;
         }
 
-        public IReadOnlyList<CompletedTaskModel> CompletedTasks
-        {
-            get => _completedTasks.AsReadOnly();
-            set
-            {
-                _completedTasks = value.ToList();
-                NotifyStateChanged();
-            }
-        }
+        public IReadOnlyDictionary<DateOnly, CompletedTaskViewModel> DateToCompletedTasks => _dateToCompletedTasks;
+
+        public void SetDateToCompletedTasks(IDictionary<DateOnly, CompletedTaskViewModel> dateToCompletedTasks) =>
+            _dateToCompletedTasks = new(dateToCompletedTasks);
     }
 }

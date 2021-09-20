@@ -18,40 +18,23 @@ namespace Couple.Client.Pages.Done.Components
 
         [Inject] private IJSRuntime Js { get; init; }
 
-        private SortedDictionary<DateOnly, List<CompletedTaskViewModel>> DateToTasks
-        {
-            get
-            {
-                var toReturn = IssueStateContainer.CompletedTasks
-                    .GroupBy(task => DateOnly.FromDateTime(task.CreatedOn.Date))
-                    .ToDictionary(dateToTasks => dateToTasks.Key,
-                        dateToTasks =>
-                        {
-                            var issueToTasksForOneDate = dateToTasks
-                                .GroupBy(task => task.IssueId)
-                                .ToDictionary(issueToTasks => issueToTasks.Key,
-                                    issueToTasks => issueToTasks
-                                        .OrderByDescending(issue => issue.CreatedOn)
-                                        .ToList());
-
-                            return issueToTasksForOneDate.Values
-                                .Select(tasks => new CompletedTaskViewModel(tasks[0].For,
-                                    tasks.Select(task => task.Content).ToList(),
-                                    tasks[0].IssueTitle,
-                                    tasks[0].CreatedOn))
-                                .OrderByDescending(task => task.CreatedOn)
-                                .ToList();
-                        });
-                return new(toReturn);
-            }
-        }
+        private IReadOnlyDictionary<DateOnly, CompletedTaskViewModel> DateToTasks =>
+            IssueStateContainer.DateToCompletedTasks;
 
         private SortedDictionary<DateOnly, List<string>> DateToImages { get; set; } = new();
 
         protected override async Task OnInitializedAsync()
         {
-            IssueStateContainer.CompletedTasks = await Js.InvokeAsync<List<CompletedTaskModel>>("getCompletedTasks");
+            IssueStateContainer.SetDateToCompletedTasks(await GetDateToCompletedTasks());
             DateToImages = await GetDateToImages();
+        }
+
+        private async Task<SortedDictionary<DateOnly, CompletedTaskViewModel>> GetDateToCompletedTasks()
+        {
+            var dateStringToCompletedTasks = await Js.InvokeAsync<Dictionary<string, List<CompletedTaskModel>>>("getCompletedTasks");
+            var dateToCompletedTasks = dateStringToCompletedTasks
+                .ToDictionary(kvp => DateOnly.ParseExact(kvp.Key, "dd/MM/yyyy"), kvp => IssueAdapter.ToCompletedViewModel(kvp.Value));
+            return new(dateToCompletedTasks);
         }
 
         private async Task<SortedDictionary<DateOnly, List<string>>> GetDateToImages()

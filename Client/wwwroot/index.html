@@ -32,7 +32,7 @@
                 if (oldVersion < 1 && newVersion >= 1) {
                     db.createObjectStore('issue', {keyPath: 'id'});
                     db.createObjectStore('event', {keyPath: 'id'});
-                    db.createObjectStore('completedTask', {keyPath: 'id'});
+                    db.createObjectStore('completedTask');
                     db.createObjectStore('image');
                 }
             },
@@ -45,7 +45,18 @@
         }
 
         async function getCompletedTasks() {
-            return (await db).transaction("completedTask").store.getAll();
+            const kvp = {}
+            let cursor = await (await db)
+                .transaction("completedTask")
+                .store
+                .openCursor()
+
+            while (cursor) {
+                kvp[cursor.key] = cursor.value
+                cursor = await cursor.continue()
+            }
+
+            return kvp
         }
 
         async function createIssue(issue) {
@@ -73,9 +84,20 @@
                 ? issueStore.delete(completedTask.issueId)
                 : issueStore.put(toUpdate);
 
+            const key = completedTask.createdOnDate
+            const existingCompletedTasks = await completedTaskStore.get(key)
+
+            let completedTaskPromise
+            if (!existingCompletedTasks) {
+                completedTaskPromise = completedTaskStore.add([completedTask], key)
+            } else {
+                existingCompletedTasks.push(completedTask)
+                completedTaskPromise = completedTaskStore.put(existingCompletedTasks, key)
+            }
+
             await Promise.all([
                 issuePromise,
-                completedTaskStore.add(completedTask),
+                completedTaskPromise,
                 tx.done,
             ]);
         }

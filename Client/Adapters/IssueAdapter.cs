@@ -18,6 +18,12 @@ namespace Couple.Client.Adapters
             Content = model.Content,
         };
 
+        public static CompletedTaskViewModel ToCompletedViewModel(List<CompletedTaskModel> models)
+        {
+            var model = models[0];
+            return new(model.For, models.Select(m => m.Content).ToList(), model.IssueTitle, model.CreatedOn);
+        }
+
         public static List<TaskModel> ToTaskModel(IEnumerable<TaskDto> models) =>
             models.Select(ToTaskModel).ToList();
 
@@ -116,7 +122,7 @@ namespace Couple.Client.Adapters
             CreatedOn = model.CreatedOn,
         };
 
-        public static CompletedTaskModel ToCompletedModel(CompleteTaskDto model) => new()
+        public static CreateCompletedTaskModel ToCompletedModel(CompleteTaskDto model) => new()
         {
             Id = model.Id,
             For = model.For,
@@ -144,7 +150,7 @@ namespace Couple.Client.Adapters
             CreatedOn = model.CreatedOn,
         };
 
-        public static CompleteTaskDto ToCompleteDto(CompletedTaskModel model) => new()
+        public static CompleteTaskDto ToCompleteDto(CreateCompletedTaskModel model) => new()
         {
             Id = model.Id,
             For = model.For,

@@ -28,7 +28,7 @@ namespace Couple.Client.Pages.Issue.Components
         {
             var viewModel = Issues.Single(x => x.Id == id);
 
-            var toPersist = new CompletedTaskModel
+            var toPersist = new CreateCompletedTaskModel
             {
                 Id = task.Id,
                 For = viewModel.For,
