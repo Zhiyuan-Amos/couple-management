@@ -226,7 +226,7 @@
         async function saveImage(image) {
             const key = image.takenOnDate
             const store = (await db).transaction("image", 'readwrite').store
-            const existingImages = await store.getKey(key)
+            const existingImages = await store.get(key)
 
             if (!existingImages) {
                 await store.add([image], key)
