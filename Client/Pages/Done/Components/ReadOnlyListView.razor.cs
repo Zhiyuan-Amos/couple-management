@@ -58,12 +58,8 @@ namespace Couple.Client.Pages.Done.Components
         {
             var dateToImageModels = await Js.InvokeAsync<Dictionary<string, List<ImageModel>>>("getImages");
             var dateToImages = dateToImageModels
-                .Select(kvp =>
-                    new KeyValuePair<DateOnly, List<ImageModel>>(DateOnly.ParseExact(kvp.Key, "dd/MM/yyyy"),
-                        kvp.Value))
-                .Select(kvp => new KeyValuePair<DateOnly, List<string>>(kvp.Key,
-                    kvp.Value.Select(image => Convert.ToBase64String(image.Data)).ToList()))
-                .ToDictionary(kvp => kvp.Key, pair => pair.Value);
+                .ToDictionary(kvp => DateOnly.ParseExact(kvp.Key, "dd/MM/yyyy"),
+                    kvp => kvp.Value.Select(image => Convert.ToBase64String(image.Data)).ToList());
             return new(dateToImages);
         }
     }
