@@ -18,7 +18,7 @@ namespace Couple.Client.Pages.Done.Components
 
         [Inject] private IJSRuntime Js { get; init; }
 
-        private IReadOnlyDictionary<DateOnly, CompletedTaskViewModel> DateToTasks =>
+        private IReadOnlyDictionary<DateOnly, List<CompletedTaskViewModel>> DateToTasks =>
             IssueStateContainer.DateToCompletedTasks;
 
         private SortedDictionary<DateOnly, List<string>> DateToImages { get; set; } = new();
@@ -29,11 +29,11 @@ namespace Couple.Client.Pages.Done.Components
             DateToImages = await GetDateToImages();
         }
 
-        private async Task<SortedDictionary<DateOnly, CompletedTaskViewModel>> GetDateToCompletedTasks()
+        private async Task<SortedDictionary<DateOnly, List<CompletedTaskViewModel>>> GetDateToCompletedTasks()
         {
-            var dateStringToCompletedTasks = await Js.InvokeAsync<Dictionary<string, List<CompletedTaskModel>>>("getCompletedTasks");
+            var dateStringToCompletedTasks = await Js.InvokeAsync<Dictionary<string, List<CompletedTaskViewModel>>>("getCompletedTasks");
             var dateToCompletedTasks = dateStringToCompletedTasks
-                .ToDictionary(kvp => DateOnly.ParseExact(kvp.Key, "dd/MM/yyyy"), kvp => IssueAdapter.ToCompletedViewModel(kvp.Value));
+                .ToDictionary(kvp => DateOnly.ParseExact(kvp.Key, "dd/MM/yyyy"), kvp => kvp.Value);
             return new(dateToCompletedTasks);
         }
 

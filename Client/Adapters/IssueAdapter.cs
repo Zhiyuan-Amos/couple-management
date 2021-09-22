@@ -18,12 +18,6 @@ namespace Couple.Client.Adapters
             Content = model.Content,
         };
 
-        public static CompletedTaskViewModel ToCompletedViewModel(List<CompletedTaskModel> models)
-        {
-            var model = models[0];
-            return new(model.For, models.Select(m => m.Content).ToList(), model.IssueTitle, model.CreatedOn);
-        }
-
         public static List<TaskModel> ToTaskModel(IEnumerable<TaskDto> models) =>
             models.Select(ToTaskModel).ToList();
 

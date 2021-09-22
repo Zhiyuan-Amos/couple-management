@@ -85,14 +85,22 @@
                 : issueStore.put(toUpdate);
 
             const key = completedTask.createdOnDate
-            const existingCompletedTasks = await completedTaskStore.get(key)
+            const existingCompletedTasksOnDate = await completedTaskStore.get(key)
 
             let completedTaskPromise
-            if (!existingCompletedTasks) {
-                completedTaskPromise = completedTaskStore.add([completedTask], key)
+            if (!existingCompletedTasksOnDate) {
+                const toAdd = toCompletedTaskViewModel(completedTask)
+                completedTaskPromise = completedTaskStore.add([toAdd], key)
             } else {
-                existingCompletedTasks.push(completedTask)
-                completedTaskPromise = completedTaskStore.put(existingCompletedTasks, key)
+                const existingIssue = existingCompletedTasksOnDate
+                    .find(task => task.issueTitle === completedTask.issueTitle)
+                if (existingIssue) {
+                    existingIssue.contents.push(completedTask.content)
+                } else {
+                    const toAdd = toCompletedTaskViewModel(completedTask)
+                    existingCompletedTasksOnDate.push(toAdd)
+                }
+                completedTaskPromise = completedTaskStore.put(existingCompletedTasksOnDate, key)
             }
 
             await Promise.all([
@@ -100,6 +108,15 @@
                 completedTaskPromise,
                 tx.done,
             ]);
+        }
+
+        function toCompletedTaskViewModel(completedTask) {
+            return {
+                'for': completedTask.for,
+                contents: [completedTask.content],
+                issueTitle: completedTask.issueTitle,
+                createdOn: completedTask.createdOn,
+            }
         }
 
         async function getAllEvents() {

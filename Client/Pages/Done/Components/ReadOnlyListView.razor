@@ -1,25 +1,28 @@
 ﻿@using Couple.Client.Utility
 
 <div style="padding-bottom: 56px;" class="mh-100 overflow-auto">
-    @foreach (var (date, task) in DateToTasks)
+    @foreach (var (date, tasks) in DateToTasks)
     {
         <h5 class="my-1 text-center">@date.ToString("dd MMM")</h5>
-        <div class="card bg-light mx-3 my-2">
-            <div class="card-body">
-                <div class="d-flex card-title">
-                    <i style="@CssHelper.GetIcon(task.For)"></i>
-                    <h5 class="mb-0 ps-2">
-                        @task.IssueTitle
-                    </h5>
+        @foreach (var task in tasks)
+        {
+            <div class="card bg-light mx-3 my-2">
+                <div class="card-body">
+                    <div class="d-flex card-title">
+                        <i style="@CssHelper.GetIcon(task.For)"></i>
+                        <h5 class="mb-0 ps-2">
+                            @task.IssueTitle
+                        </h5>
+                    </div>
+                    @foreach (var content in task.Contents)
+                    {
+                        <h6>
+                            @content
+                        </h6>
+                    }
                 </div>
-                @foreach (var content in task.Contents)
-                {
-                    <h6>
-                        @content
-                    </h6>
-                }
             </div>
-        </div>
+        }
     }
 
     @foreach (var (date, images) in DateToImages)

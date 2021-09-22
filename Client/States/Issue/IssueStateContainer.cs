@@ -10,7 +10,7 @@ namespace Couple.Client.States.Issue
     {
         private List<IssueModel> _issues = new();
         private Dictionary<Guid, IssueModel> _idToIssue = new();
-        private SortedDictionary<DateOnly, CompletedTaskViewModel> _dateToCompletedTasks = new();
+        private SortedDictionary<DateOnly, List<CompletedTaskViewModel>> _dateToCompletedTasks = new();
 
         public IReadOnlyList<IssueModel> Issues
         {
@@ -33,9 +33,9 @@ namespace Couple.Client.States.Issue
             return true;
         }
 
-        public IReadOnlyDictionary<DateOnly, CompletedTaskViewModel> DateToCompletedTasks => _dateToCompletedTasks;
+        public IReadOnlyDictionary<DateOnly, List<CompletedTaskViewModel>> DateToCompletedTasks => _dateToCompletedTasks;
 
-        public void SetDateToCompletedTasks(IDictionary<DateOnly, CompletedTaskViewModel> dateToCompletedTasks) =>
+        public void SetDateToCompletedTasks(IDictionary<DateOnly, List<CompletedTaskViewModel>> dateToCompletedTasks) =>
             _dateToCompletedTasks = new(dateToCompletedTasks);
     }
 }
