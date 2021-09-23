@@ -1,35 +1,36 @@
-﻿@using Couple.Client.Utility
+﻿@using Couple.Client.Model.Image
+@using Couple.Client.Utility
+@using Couple.Client.ViewModel.Issue
 
 <div style="padding-bottom: 56px;" class="mh-100 overflow-auto">
-    @foreach (var (date, tasks) in DateToTasks)
+    @foreach (var (date, items) in DateToItems)
     {
         <h5 class="my-1 text-center">@date.ToString("dd MMM")</h5>
-        @foreach (var task in tasks)
+        @foreach (var item in items)
         {
-            <div class="card bg-light mx-3 my-2">
-                <div class="card-body">
-                    <div class="d-flex card-title">
-                        <i style="@CssHelper.GetIcon(task.For)"></i>
-                        <h5 class="mb-0 ps-2">
-                            @task.IssueTitle
-                        </h5>
+            if (item is CompletedTaskViewModel task)
+            {
+                <div class="card bg-light mx-3 my-2">
+                    <div class="card-body">
+                        <div class="d-flex card-title">
+                            <i style="@CssHelper.GetIcon(task.For)"></i>
+                            <h5 class="mb-0 ps-2">
+                                @task.IssueTitle
+                            </h5>
+                        </div>
+                        @foreach (var content in task.Contents)
+                        {
+                            <h6>
+                                @content
+                            </h6>
+                        }
                     </div>
-                    @foreach (var content in task.Contents)
-                    {
-                        <h6>
-                            @content
-                        </h6>
-                    }
                 </div>
-            </div>
-        }
-    }
-
-    @foreach (var (date, images) in DateToImages)
-    {
-        @foreach (var image in images)
-        {
-            <img class="w-100 h-auto" src="data:image/bmp;base64, @(image)"/>
+            }
+            else if (item is ImageModel image)
+            {
+                <img class="w-100 h-auto" src="data:image/bmp;base64, @(Convert.ToBase64String(image.Data))"/>
+            }
         }
     }
 </div>
