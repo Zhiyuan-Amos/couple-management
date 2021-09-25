@@ -32,6 +32,7 @@
                 if (oldVersion < 1 && newVersion >= 1) {
                     db.createObjectStore('issue', {keyPath: 'id'});
                     db.createObjectStore('event', {keyPath: 'id'});
+                    db.createObjectStore('image', {keyPath: 'id'});
                     db.createObjectStore('done');
                 }
             },
@@ -45,19 +46,24 @@
 
         async function getDone() {
             const kvp = {}
-            let cursor = await (await db)
-                .transaction("done")
-                .store
-                .openCursor()
+
+            const tx = (await db).transaction(['done', 'image'])
+            const doneStore = tx.objectStore('done')
+            let cursor = await doneStore.openCursor()
+
+            const imageStore = tx.objectStore('image')
 
             while (cursor) {
                 for (const item of cursor.value) {
                     if (item.discriminator === "Image") {
-                        let data = '';
-                        for (let i = 0; i < item.data.byteLength; i++) {
-                            data += String.fromCharCode(item.data[i]);
+                        const image = await imageStore.get(item.id)
+                        let data = ''
+                        for (let i = 0; i < image.data.byteLength; i++) {
+                            data += String.fromCharCode(image.data[i])
                         }
-                        item.data = btoa(data);
+
+                        item.takenOn = image.takenOn
+                        item.data = btoa(data)
                     }
                 }
                 kvp[cursor.key] = cursor.value
@@ -258,17 +264,33 @@
         }
 
         async function saveImage(image) {
-            const key = image.takenOnDate
-            const store = (await db).transaction("done", 'readwrite').store
-            const existingDoneOnDate = await store.get(key)
+            const tx = (await db).transaction(['done', 'image'], 'readwrite')
 
-            image.discriminator = 'Image'
-            if (!existingDoneOnDate) {
-                await store.add([image], key)
-            } else {
-                existingDoneOnDate.push(image)
-                await store.put(existingDoneOnDate, key)
+            const imageStore = tx.objectStore('image')
+            const addImageTask = imageStore.add(image)
+
+            const doneStore = tx.objectStore('done')
+            const key = image.takenOnDate
+            const existingDoneOnDate = await doneStore.get(key)
+
+            const doneImage = {
+                id: image.id,
+                discriminator: 'Image'
             }
+
+            let addDoneTask
+            if (!existingDoneOnDate) {
+                addDoneTask = doneStore.add([doneImage], key)
+            } else {
+                existingDoneOnDate.push(doneImage)
+                addDoneTask = doneStore.put(existingDoneOnDate, key)
+            }
+
+            await Promise.all([
+                addImageTask,
+                addDoneTask,
+                tx.done,
+            ])
         }
 
         function disableInput(wrapperElement) {
