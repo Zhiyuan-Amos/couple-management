@@ -187,14 +187,23 @@
 
             const toExport = {}
             for (const storeName of idb.objectStoreNames) {
-                const allObjects = []
                 let cursor = await transaction
                     .objectStore(storeName)
                     .openCursor()
 
-                while (cursor) {
-                    allObjects.push(cursor.value)
-                    cursor = await cursor.continue()
+                let allObjects
+                if (storeName === "done") {
+                    allObjects = {}
+                    while (cursor) {
+                        allObjects[cursor.key] = cursor.value
+                        cursor = await cursor.continue()
+                    }
+                } else {
+                    allObjects = []
+                    while (cursor) {
+                        allObjects.push(cursor.value)
+                        cursor = await cursor.continue()
+                    }
                 }
 
                 toExport[storeName] = allObjects
@@ -215,11 +224,20 @@
             Object.keys(jsonObject)
                 .forEach(storeName => {
                     const store = tx.objectStore(storeName)
-                    jsonObject[storeName]
-                        .forEach(value => {
-                            const promise = store.add(value)
-                            toAwait.push(promise);
-                        })
+                    if (storeName === "done") {
+                        const dateToDone = jsonObject[storeName]
+                        Object.keys(dateToDone)
+                            .forEach(key => {
+                                const promise = store.add(dateToDone[key], key)
+                                toAwait.push(promise);
+                            })
+                    } else {
+                        jsonObject[storeName]
+                            .forEach(value => {
+                                const promise = store.add(value)
+                                toAwait.push(promise);
+                            })
+                    }
                 })
 
             await Promise.all([
