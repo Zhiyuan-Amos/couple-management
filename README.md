@@ -13,6 +13,20 @@ The main purpose of this application is to allow couples to easily manage their 
     [Cosmos DB does not support migrations](https://github.com/dotnet/efcore/issues/13200), database & containers cannot be created using command line. The alternative method of doing so is to uncomment `[FunctionName("DatabaseInitializerFunction")]` in `DatabaseInitializerFunction` and make a HTTP request to that endpoint (`http://localhost:7071/api/DatabaseInitializer`). Do not commit the uncommented line as that should not be used in production.
 
     Ideally, this code should have been placed in `Startup.cs` so that the database & containers are created when starting Azure Functions, but [that's not possible](https://docs.microsoft.com/en-us/azure/azure-functions/functions-dotnet-dependency-injection#caveats).
+4. Download [Azurite](https://docs.microsoft.com/en-us/azure/storage/common/storage-use-azurite?tabs=visual-studio) to run Azure Blob Storage locally.
+    
+    As the command to start Azurite is [rather lengthy](https://docs.microsoft.com/en-us/azure/storage/common/storage-use-azurite?tabs=visual-studio#run-azurite-from-a-command-line), consider adding an alias on PowerShell. To do so:
+
+   1. Launch PowerShell and run `$profile` to print out the value of the `$profile` variable. 
+   2. Create the file if it does not exist. 
+   3. Add the following code:
+      ```
+      Function RunAzurite {azurite --silent --location c:\azurite --debug c:\azurite\debug.log
+      Set-Alias -Name azr -Value RunAzurite
+      ```
+
+   Azurite can now be started by running `azr`.
+6. Download [Azure Storage Explorer](https://azure.microsoft.com/en-us/features/storage-explorer/#overview) and follow this [tutorial](https://docs.microsoft.com/en-us/azure/storage/common/storage-use-azurite?tabs=visual-studio#connect-to-azurite-using-http) to connect to Azurite.
 
 ### Running the Application
 
