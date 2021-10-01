@@ -40,6 +40,10 @@ namespace Couple.Api.Features.Change
             ILogger log,
             IBinder binder)
         {
+            // Running out of memory (1.5GB, see https://docs.microsoft.com/en-us/azure/azure-resource-manager/management/azure-subscription-service-limits#azure-functions-limits)
+            // or sending massive amounts of data to the Client in an instance is not expected to occur
+            // as Synchronization is expected to happen frequently, and the synchronized data is deleted from the
+            // database.
             var toReturn = await _context
                 .Changes
                 .Where(change => change.UserId == _currentUserService.Id)
