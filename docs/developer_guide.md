@@ -28,10 +28,22 @@
 
 ### Running the Application
 
-1. Run Blazor WASM application by navigating to `Client` folder and run `dotnet run`.
-1. Run Azure Functions by navigating to `Api` folder and run `func start`.
-1. Ensure that `Azure Cosmos DB Emulator` is running.
-1. Run Azurite by running `azr`.
+1. Run each command in a new terminal instance:
+    1. Run Blazor WASM
+       ```
+       cd Client
+       dotnet run
+       ```
+    1. Run Azure Functions
+       ```
+       cd Api
+       func start
+       ```
+    1. Run Azurite
+       ```
+       azr
+       ```
+1. Run `Azure Cosmos DB Emulator`.
 1. Access the app at `https://localhost`.
 
 ## Tech Stack
