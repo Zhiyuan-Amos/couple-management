@@ -1,5 +1,6 @@
 using Couple.Client.Adapters;
 using Couple.Client.Model.Image;
+using Couple.Shared;
 using Couple.Shared.Utility;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
@@ -63,7 +64,7 @@ namespace Couple.Client.Pages.Settings
             // `resizedFile` is untrusted, so validate against `resizedFile` as well.
             // See `file.RequestImageFileAsync`'s documentation.
             await using var ms = new MemoryStream();
-            await resizedFile.OpenReadStream(5120000).CopyToAsync(ms);
+            await resizedFile.OpenReadStream(Constants.MaxFileSize).CopyToAsync(ms);
             ms.Position = 0;
 
             if (!ImageExtensions.IsImage(ms))

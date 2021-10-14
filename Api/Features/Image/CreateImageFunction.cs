@@ -1,6 +1,7 @@
 using AutoMapper;
 using Couple.Api.Data;
 using Couple.Api.Infrastructure;
+using Couple.Shared;
 using Couple.Shared.Model;
 using Couple.Shared.Model.Image;
 using Couple.Shared.Utility;
@@ -92,6 +93,11 @@ namespace Couple.Api.Features.Image
                     if (!ImageExtensions.IsImage(new MemoryStream(data)))
                     {
                         context.AddFailure("Invalid file type");
+                    }
+
+                    if (data.Length > Constants.MaxFileSize)
+                    {
+                        context.AddFailure("File exceeded size limit");
                     }
                 });
             }
