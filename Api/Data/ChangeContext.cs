@@ -15,7 +15,6 @@ namespace Couple.Api.Data
 
             modelBuilder.Entity<Change>()
                 .ToContainer("change")
-                .HasPartitionKey(change => change.UserId)
                 .HasNoDiscriminator();
 
             modelBuilder.Entity<Change>()
