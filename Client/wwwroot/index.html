@@ -32,7 +32,8 @@
                 if (oldVersion < 1 && newVersion >= 1) {
                     db.createObjectStore('issue', {keyPath: 'id'});
                     db.createObjectStore('event', {keyPath: 'id'});
-                    db.createObjectStore('image', {keyPath: 'id'});
+                    const imageStore = db.createObjectStore('image', {keyPath: 'id'});
+                    imageStore.createIndex('isFavourite', 'isFavourite')
                     db.createObjectStore('done');
                 }
             },
@@ -57,6 +58,7 @@
                 for (const item of cursor.value) {
                     if (item.discriminator === "Image") {
                         const image = await imageStore.get(item.id)
+                        item.isFavourite = image.isFavourite === 1
                         item.takenOn = image.takenOn
                         item.data = Base64FromUint8Array(image.data)
                     }
@@ -308,7 +310,20 @@
             a.click();
         }
 
-        async function saveImage(image) {
+        async function getImage(id) {
+            const image = await (await db).transaction("image").store.get(id)
+            image.isFavourite = image.isFavourite === 1
+            return image
+        }
+
+        async function getFavouriteImages() {
+            const favouriteImages = await (await db).transaction("image").store.index('isFavourite').getAll(1)
+            favouriteImages.forEach(image => image.isFavourite = image.isFavourite === 1)
+            return favouriteImages
+        }
+
+        async function createImage(image) {
+            image.isFavourite = image.isFavourite ? 1 : 0
             const tx = (await db).transaction(['done', 'image'], 'readwrite')
 
             const imageStore = tx.objectStore('image')
@@ -334,6 +349,38 @@
             await Promise.all([
                 addImageTask,
                 addDoneTask,
+                tx.done,
+            ])
+        }
+
+        async function updateImage(image) {
+            image.isFavourite = image.isFavourite ? 1 : 0;
+            (await db).transaction("image", 'readwrite').store.put(image)
+        }
+
+        async function deleteImage(id) {
+            const tx = (await db).transaction(['done', 'image'], 'readwrite')
+
+            const imageStore = tx.objectStore('image')
+            const image = await imageStore.get(id)
+
+            const key = image.takenOnDate
+            const doneStore = tx.objectStore('done')
+            const existingDoneOnDate = await doneStore.get(key)
+
+            const deleteImageTask = imageStore.delete(id)
+
+            let removeDoneTask
+            if (existingDoneOnDate.length === 1) {
+                removeDoneTask = doneStore.delete(key)
+            } else {
+                const remainingDoneOnDate = existingDoneOnDate.filter(item => item.discriminator !== 'Image' || item.id !== id)
+                removeDoneTask = doneStore.put(remainingDoneOnDate, key)
+            }
+
+            await Promise.all([
+                deleteImageTask,
+                removeDoneTask,
                 tx.done,
             ])
         }

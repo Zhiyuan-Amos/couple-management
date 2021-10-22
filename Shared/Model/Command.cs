@@ -12,6 +12,8 @@
         public const string DeleteIssue = "DeleteIssue";
         public const string CompleteTask = "CompleteTask";
         public const string CreateImage = "CreateImage";
+        public const string UpdateImage = "UpdateImage";
+        public const string DeleteImage = "DeleteImage";
         public const string CreateEvent = "CreateEvent";
         public const string UpdateEvent = "UpdateEvent";
         public const string DeleteEvent = "DeleteEvent";

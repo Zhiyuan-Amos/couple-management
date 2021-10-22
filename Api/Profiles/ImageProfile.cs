@@ -8,6 +8,7 @@ namespace Couple.Api.Profiles
     {
         public ImageProfile() {
             CreateMap<CreateImageDto, Image>();
+            CreateMap<UpdateImageDto, Image>();
         }
     }
 }

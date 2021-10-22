@@ -10,6 +10,6 @@ namespace Couple.Client.Services.Synchronizer
         private readonly CreateImageModel _model;
         public CreateImageCommand(IJSRuntime js, CreateImageModel model) => (_js, _model) = (js, model);
 
-        public Task Execute() => _js.InvokeVoidAsync("saveImage", _model).AsTask();
+        public Task Execute() => _js.InvokeVoidAsync("createImage", _model).AsTask();
     }
 }

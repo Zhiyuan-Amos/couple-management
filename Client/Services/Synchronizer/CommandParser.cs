@@ -31,7 +31,11 @@ namespace Couple.Client.Services
                 Command.CompleteTask => new CompleteTaskCommand(_js,
                     IssueAdapter.ToCompletedModel(JsonSerializer.Deserialize<CompleteTaskDto>(change.Content, Options))),
                 Command.CreateImage => new CreateImageCommand(_js,
-                    ImageAdapter.ToModel(JsonSerializer.Deserialize<CreateImageDto>(change.Content, Options))),
+                    ImageAdapter.ToCreateModel(JsonSerializer.Deserialize<CreateImageDto>(change.Content, Options))),
+                Command.UpdateImage => new UpdateImageCommand(_js,
+                    ImageAdapter.ToUpdateModel(JsonSerializer.Deserialize<UpdateImageDto>(change.Content, Options))),
+                Command.DeleteImage => new DeleteImageCommand(_js,
+                    JsonSerializer.Deserialize<Guid>(change.Content, Options)),
                 _ => throw new ArgumentOutOfRangeException(nameof(change), change, null)
             };
         }

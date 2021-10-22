@@ -53,7 +53,7 @@ namespace Couple.Api.Features.Change
 
             foreach (var change in toReturn)
             {
-                if (change.Command != Command.CreateImage)
+                if (change.Command != Command.CreateImage && change.Command != Command.UpdateImage)
                 {
                     continue;
                 }

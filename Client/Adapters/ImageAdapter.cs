@@ -5,13 +5,26 @@ namespace Couple.Client.Adapters
 {
     public static class ImageAdapter
     {
-        public static CreateImageDto ToDto(CreateImageModel model) => new()
+        public static CreateImageDto ToCreateDto(CreateImageModel model) => new()
         {
             Id = model.Id,
             TakenOn = model.TakenOn,
             Data = model.Data,
+            IsFavourite = model.IsFavourite,
         };
 
-        public static CreateImageModel ToModel(CreateImageDto model) => new(model.Id, model.TakenOn, model.Data);
+        public static UpdateImageDto ToUpdateDto(UpdateImageModel model) => new()
+        {
+            Id = model.Id,
+            TakenOn = model.TakenOn,
+            Data = model.Data,
+            IsFavourite = model.IsFavourite,
+        };
+
+        public static CreateImageModel ToCreateModel(CreateImageDto model) =>
+            new(model.Id, model.TakenOn) { Data = model.Data, IsFavourite = model.IsFavourite };
+
+        public static UpdateImageModel ToUpdateModel(UpdateImageDto model) =>
+            new(model.Id, model.TakenOn, model.Data, model.IsFavourite);
     }
 }

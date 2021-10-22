@@ -16,6 +16,7 @@ namespace Couple.Client.Pages.Done.Components
 {
     public partial class ReadOnlyListView
     {
+        [Inject] private NavigationManager NavigationManager { get; init; }
         [Inject] private IJSRuntime Js { get; init; }
 
         private SortedDictionary<DateOnly, List<object>> DateToItems { get; set; } = new();
@@ -45,5 +46,7 @@ namespace Couple.Client.Pages.Done.Components
                 );
             return new(dateToCompletedItems);
         }
+
+        private void EditImage(ImageModel selectedImage) => NavigationManager.NavigateTo($"/image/{selectedImage.Id}");
     }
 }
