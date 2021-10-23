@@ -9,6 +9,7 @@ using System;
 using System.IO;
 using System.Net.Http;
 using System.Net.Http.Json;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace Couple.Client.Pages.Settings
@@ -34,11 +35,21 @@ namespace Couple.Client.Pages.Settings
         private async Task OnExportSelected()
         {
             var json = await Js.InvokeAsync<string>("exportDatabase");
-            var bytes = System.Text.Encoding.UTF8.GetBytes(json);
-            await Js.InvokeAsync<object>(
-                "saveAsFile",
-                "couple.json",
-                Convert.ToBase64String(bytes));
+            var bytes = Encoding.UTF8.GetBytes(json);
+            const string fileName = "couple.json";
+
+            if (Js is IJSUnmarshalledRuntime webAssemblyJsRuntime)
+            {
+                webAssemblyJsRuntime.InvokeUnmarshalled<string, string, byte[], bool>("saveAsFileFast",
+                    fileName, "application/octet-stream", bytes);
+            }
+            else
+            {
+                await Js.InvokeAsync<object>(
+                    "saveAsFile",
+                    fileName,
+                    Convert.ToBase64String(bytes));
+            }
         }
 
         private async Task OnDeleteDatabaseSelected()
