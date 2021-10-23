@@ -1,19 +1,22 @@
 @page "/settings"
 
-<div class="px-3 py-3 border-bottom file-input-zone user-select-none">
-    <InputFile OnChange="OnImportSelected"/>
-    Import
-</div>
-<div class="px-3 py-3 border-bottom user-select-none"
-     @onclick="OnExportSelected">
-    Export
-</div>
-<div class="px-3 py-3 border-bottom user-select-none"
-     @onclick="OnDeleteDatabaseSelected">
-    Delete Database
-</div>
-<div class="px-3 py-3 border-bottom user-select-none"
-     @onclick="OnUploadImageSelected">
-    Upload Image
+<div style="padding-bottom: 56px;" class="d-flex flex-column h-100">
+    <div class="px-3 py-3 border-bottom file-input-zone user-select-none">
+        <InputFile OnChange="OnImportSelected"/>
+        Import
+    </div>
+    <div class="px-3 py-3 border-bottom user-select-none"
+         @onclick="OnExportSelected">
+        Export
+    </div>
+    <div class="px-3 py-3 border-bottom user-select-none"
+         @onclick="OnUploadImageSelected">
+        Upload Image
+    </div>
+    <div class="flex-grow-1"></div>
+    <div class="px-3 py-3 border-top user-select-none"
+         @onclick="OnDeleteDatabaseSelected">
+        Delete Database
+    </div>
 </div>
 <BottomBar/>
