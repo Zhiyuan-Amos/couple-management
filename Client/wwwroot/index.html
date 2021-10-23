@@ -57,13 +57,8 @@
                 for (const item of cursor.value) {
                     if (item.discriminator === "Image") {
                         const image = await imageStore.get(item.id)
-                        let data = ''
-                        for (let i = 0; i < image.data.byteLength; i++) {
-                            data += String.fromCharCode(image.data[i])
-                        }
-
                         item.takenOn = image.takenOn
-                        item.data = btoa(data)
+                        item.data = Base64FromUint8Array(image.data)
                     }
                 }
                 kvp[cursor.key] = cursor.value
@@ -198,6 +193,14 @@
                         allObjects[cursor.key] = cursor.value
                         cursor = await cursor.continue()
                     }
+                } else if (storeName === 'image') {
+                    allObjects = []
+                    while (cursor) {
+                        const image = cursor.value
+                        image.data = Base64FromUint8Array(image.data)
+                        allObjects.push(image)
+                        cursor = await cursor.continue()
+                    }
                 } else {
                     allObjects = []
                     while (cursor) {
@@ -229,6 +232,13 @@
                         Object.keys(dateToDone)
                             .forEach(key => {
                                 const promise = store.add(dateToDone[key], key)
+                                toAwait.push(promise);
+                            })
+                    } else if (storeName === "image") {
+                        jsonObject[storeName]
+                            .forEach(image => {
+                                image.data = Uint8ArrayFromBase64(image.data);
+                                const promise = store.add(image)
                                 toAwait.push(promise);
                             })
                     } else {
@@ -362,6 +372,21 @@
 
         function next() {
             carousel.next();
+        }
+
+        function Uint8ArrayFromBase64(base64)
+        {
+            return Uint8Array.from(window.atob(base64), (v) => v.charCodeAt(0));
+        }
+
+        function Base64FromUint8Array(uint8Array)
+        {
+            let data = ''
+            for (let i = 0; i < uint8Array.byteLength; i++) {
+                data += String.fromCharCode(uint8Array[i])
+            }
+
+            return btoa(data)
         }
     </script>
 </body>

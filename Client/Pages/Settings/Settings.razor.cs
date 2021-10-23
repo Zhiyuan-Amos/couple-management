@@ -28,7 +28,7 @@ namespace Couple.Client.Pages.Settings
 
             await Js.InvokeVoidAsync("clearDatabase");
             var json =
-                await new StreamReader(e.File.OpenReadStream()).ReadToEndAsync();
+                await new StreamReader(e.File.OpenReadStream(512000000)).ReadToEndAsync();
             await Js.InvokeVoidAsync("importDatabase", json);
         }
 
