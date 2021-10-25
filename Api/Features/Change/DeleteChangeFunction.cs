@@ -69,7 +69,7 @@ namespace Couple.Api.Features.Change
             await _context.SaveChangesAsync();
 
             var imageIdsToDelete = toDelete
-                .Where(change => change.Command == Command.CreateImage)
+                .Where(change => change.Command == Command.CreateImage || change.Command == Command.UpdateImage)
                 .Select(change => change.Content)
                 .Select(content => JsonSerializer.Deserialize<Model.Image>(content))
                 .Select(image => image.Id.ToString())

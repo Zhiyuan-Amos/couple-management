@@ -68,13 +68,28 @@ namespace Couple.Api.Features.Change
                 var data = new byte[stream.Length];
                 await stream.ReadAsync(data.AsMemory(0, (int)stream.Length));
 
-                var toSerialize = new CreateImageDto
+                if (change.Command == Command.CreateImage)
                 {
-                    Id = image.Id,
-                    TakenOn = image.TakenOn,
-                    Data = data,
-                };
-                change.Content = JsonSerializer.Serialize(toSerialize);
+                    var toSerialize = new CreateImageDto
+                    {
+                        Id = image.Id,
+                        TakenOn = image.TakenOn,
+                        Data = data,
+                        IsFavourite = image.IsFavourite,
+                    };
+                    change.Content = JsonSerializer.Serialize(toSerialize);
+                }
+                else if (change.Command == Command.UpdateImage)
+                {
+                    var toSerialize = new UpdateImageDto
+                    {
+                        Id = image.Id,
+                        TakenOn = image.TakenOn,
+                        Data = data,
+                        IsFavourite = image.IsFavourite,
+                    };
+                    change.Content = JsonSerializer.Serialize(toSerialize);
+                }
             }
 
             return new OkObjectResult(toReturn);
