@@ -14,7 +14,7 @@ namespace Couple.Client.Pages.Calendar.Components
         {
             if (firstRender)
             {
-                var calendarHeaderHeight = ((IJSInProcessRuntime) Js).Invoke<double>("getCalendarHeaderHeight");
+                var calendarHeaderHeight = ((IJSInProcessRuntime)Js).Invoke<double>("getCalendarHeaderHeight");
                 AfterRenderCallback.Invoke(calendarHeaderHeight);
             }
         }

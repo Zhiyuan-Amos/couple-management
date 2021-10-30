@@ -82,7 +82,7 @@ namespace Couple.Client.Pages.Calendar
 
         private void SwipeDown()
         {
-            if (IsListViewExpanded && ((IJSInProcessRuntime) Js).Invoke<bool>("isListViewTop"))
+            if (IsListViewExpanded && ((IJSInProcessRuntime)Js).Invoke<bool>("isListViewTop"))
             {
                 IsListViewExpanded = false;
             }

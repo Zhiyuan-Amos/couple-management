@@ -31,8 +31,8 @@ namespace Couple.Client.Pages.Calendar.Components
         {
             if (firstRender)
             {
-                ((IJSInProcessRuntime) Js).InvokeVoid("initializeCarousel");
-                var calendarBodyHeight = ((IJSInProcessRuntime) Js).Invoke<double>("getCalendarBodyHeight");
+                ((IJSInProcessRuntime)Js).InvokeVoid("initializeCarousel");
+                var calendarBodyHeight = ((IJSInProcessRuntime)Js).Invoke<double>("getCalendarBodyHeight");
 
                 AfterRenderCallback.Invoke(calendarBodyHeight / WeeksOnCalendar, calendarBodyHeight);
             }
@@ -43,7 +43,7 @@ namespace Couple.Client.Pages.Calendar.Components
         private List<CellViewModel> GetCells(int year, int month)
         {
             var firstDayOfMonth = new DateTime(year, month, 1);
-            var firstDayOnCalendar = firstDayOfMonth.AddDays((int) firstDayOfMonth.DayOfWeek * -1);
+            var firstDayOnCalendar = firstDayOfMonth.AddDays((int)firstDayOfMonth.DayOfWeek * -1);
 
             return Enumerable.Range(0, DaysOnCalendar)
                 .Select(i => firstDayOnCalendar.AddDays(i))
@@ -51,7 +51,7 @@ namespace Couple.Client.Pages.Calendar.Components
                 .ToList();
         }
 
-        private void SwipeLeft() => ((IJSInProcessRuntime) Js).InvokeVoid("next");
-        private void SwipeRight() => ((IJSInProcessRuntime) Js).InvokeVoid("prev");
+        private void SwipeLeft() => ((IJSInProcessRuntime)Js).InvokeVoid("next");
+        private void SwipeRight() => ((IJSInProcessRuntime)Js).InvokeVoid("prev");
     }
 }

@@ -14,7 +14,7 @@ namespace Couple.Client.Services
     {
         private readonly IJSRuntime _js;
 
-        private static readonly JsonSerializerOptions Options = new() {PropertyNameCaseInsensitive = true};
+        private static readonly JsonSerializerOptions Options = new() { PropertyNameCaseInsensitive = true };
 
         public CommandParser(IJSRuntime js) => _js = js;
 

@@ -6,7 +6,8 @@ namespace Couple.Api.Profiles
 {
     public class ChangeProfile : Profile
     {
-        public ChangeProfile() {
+        public ChangeProfile()
+        {
             CreateMap<Change, ChangeDto>();
         }
     }

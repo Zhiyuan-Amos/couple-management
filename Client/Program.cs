@@ -18,7 +18,7 @@ namespace Couple.Client
 
             builder.Services
                 .AddTransient(_ => new HttpClient
-                    {BaseAddress = new(builder.Configuration["API_Prefix"] ?? builder.HostEnvironment.BaseAddress)})
+                { BaseAddress = new(builder.Configuration["API_Prefix"] ?? builder.HostEnvironment.BaseAddress) })
                 .AddSingleton<IssueStateContainer>()
                 .AddSingleton<EventStateContainer>()
                 .AddSingleton<SelectedDateStateContainer>()
@@ -33,7 +33,7 @@ namespace Couple.Client
                 {
                     await httpClient.GetAsync("api/Ping");
                 }
-                catch (HttpRequestException hre)
+                catch (HttpRequestException)
                 {
                     var navigationManager = host.Services.GetRequiredService<NavigationManager>();
                     navigationManager.NavigateTo("/login", true);
