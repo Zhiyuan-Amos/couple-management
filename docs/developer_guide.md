@@ -2,9 +2,9 @@
 
 ## Setting Up for Local Development
 
-### Installation
+### Initialization
 
-1. Install [Visual Studio 2019](https://visualstudio.microsoft.com/downloads/) for development.
+1. Install [Visual Studio](https://visualstudio.microsoft.com/downloads/) for development.
 1. Install [Azure Functions Core Tools](https://docs.microsoft.com/en-us/azure/azure-functions/functions-run-local?tabs=windows%2Ccsharp%2Cbash#v2) to run Azure Functions locally.
 1. Install [Azure Cosmos DB Emulator](https://docs.microsoft.com/en-us/azure/cosmos-db/local-emulator?tabs=cli%2Cssl-netstd21) to run Azure Cosmos DB locally.
 
@@ -25,6 +25,7 @@
 
    Azurite can now be started by running `azr`.
 1. Install [Azure Storage Explorer](https://azure.microsoft.com/en-us/features/storage-explorer/#overview) to view the contents of Azure Blob Storage on a GUI. Follow this [tutorial](https://docs.microsoft.com/en-us/azure/storage/common/storage-use-azurite?tabs=visual-studio#connect-to-azurite-using-http) to connect Azure Storage Explorer to Azurite.
+1. Run `git config --local core.hooksPath .hooks` in the root directory to configure Git to run Git hooks in `.hooks`.
 
 ### Running the Application
 
