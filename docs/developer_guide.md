@@ -7,10 +7,6 @@
 1. Install [Visual Studio](https://visualstudio.microsoft.com/downloads/) for development.
 1. Install [Azure Functions Core Tools](https://docs.microsoft.com/en-us/azure/azure-functions/functions-run-local?tabs=windows%2Ccsharp%2Cbash#v2) to run Azure Functions locally.
 1. Install [Azure Cosmos DB Emulator](https://docs.microsoft.com/en-us/azure/cosmos-db/local-emulator?tabs=cli%2Cssl-netstd21) to run Azure Cosmos DB locally.
-
-    [Cosmos DB does not support migrations](https://github.com/dotnet/efcore/issues/13200), database & containers cannot be created using command line. The alternative method of doing so is to uncomment `[FunctionName("DatabaseInitializerFunction")]` in `DatabaseInitializerFunction` and make a HTTP request to that endpoint (`http://localhost:7071/api/DatabaseInitializer`). Do not commit the uncommented line as that should not be used in production.
-
-    Ideally, this code should have been placed in `Startup.cs` so that the database & containers are created when starting Azure Functions, but [that's not possible](https://docs.microsoft.com/en-us/azure/azure-functions/functions-dotnet-dependency-injection#caveats).
 1. Install [Azurite](https://docs.microsoft.com/en-us/azure/storage/common/storage-use-azurite?tabs=visual-studio) to run Azure Blob Storage locally.
     
     As the command to start Azurite is [rather lengthy](https://docs.microsoft.com/en-us/azure/storage/common/storage-use-azurite?tabs=visual-studio#run-azurite-from-a-command-line), consider adding an alias on PowerShell. To do so:
