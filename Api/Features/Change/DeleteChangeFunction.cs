@@ -1,3 +1,7 @@
+using System;
+using System.Linq;
+using System.Text.Json;
+using System.Threading.Tasks;
 using Azure.Storage.Blobs;
 using Couple.Api.Data;
 using Couple.Api.Infrastructure;
@@ -10,10 +14,6 @@ using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
-using System;
-using System.Linq;
-using System.Text.Json;
-using System.Threading.Tasks;
 
 namespace Couple.Api.Features.Change
 {

@@ -1,9 +1,9 @@
-﻿using Couple.Client.Model.Issue;
+using System.Collections.Generic;
+using System.Linq;
+using Couple.Client.Model.Issue;
 using Couple.Client.ViewModel.Issue;
 using Couple.Shared.Model.Event;
 using Couple.Shared.Model.Issue;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace Couple.Client.Adapters
 {

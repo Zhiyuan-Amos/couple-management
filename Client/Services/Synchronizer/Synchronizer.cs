@@ -1,15 +1,15 @@
-﻿using Couple.Client.Infrastructure;
+using System.Collections.Generic;
+using System.Linq;
+using System.Net.Http;
+using System.Net.Http.Json;
+using System.Threading.Tasks;
+using Couple.Client.Infrastructure;
 using Couple.Client.Model.Calendar;
 using Couple.Client.Model.Issue;
 using Couple.Client.States.Calendar;
 using Couple.Client.States.Issue;
 using Couple.Shared.Model.Change;
 using Microsoft.JSInterop;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net.Http;
-using System.Net.Http.Json;
-using System.Threading.Tasks;
 
 namespace Couple.Client.Services.Synchronizer
 {

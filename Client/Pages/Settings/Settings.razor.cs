@@ -1,8 +1,8 @@
+using System.IO;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.JSInterop;
-using System.IO;
-using System.Threading.Tasks;
 
 namespace Couple.Client.Pages.Settings
 {

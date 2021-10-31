@@ -1,4 +1,4 @@
-﻿namespace Couple.Shared
+namespace Couple.Shared
 {
     public static class Constants
     {

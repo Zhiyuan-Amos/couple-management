@@ -1,10 +1,10 @@
-﻿using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Text;
 using System.Text.Json;
+using Microsoft.AspNetCore.Http;
 
 namespace Couple.Api.Infrastructure
 {

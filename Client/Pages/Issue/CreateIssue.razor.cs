@@ -1,11 +1,11 @@
-using Couple.Client.Adapters;
-using Couple.Client.Model.Issue;
-using Couple.Shared.Model;
-using Microsoft.JSInterop;
 using System;
 using System.Collections.Generic;
 using System.Net.Http.Json;
 using System.Threading.Tasks;
+using Couple.Client.Adapters;
+using Couple.Client.Model.Issue;
+using Couple.Shared.Model;
+using Microsoft.JSInterop;
 
 namespace Couple.Client.Pages.Issue
 {

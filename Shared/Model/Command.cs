@@ -1,4 +1,4 @@
-﻿namespace Couple.Shared.Model
+namespace Couple.Shared.Model
 {
     /// <summary>
     /// Based on https://docs.microsoft.com/en-us/dotnet/standard/design-guidelines/enum

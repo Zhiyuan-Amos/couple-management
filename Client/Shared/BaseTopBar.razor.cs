@@ -1,6 +1,6 @@
+using System.Threading.Tasks;
 using Couple.Client.Services.Synchronizer;
 using Microsoft.AspNetCore.Components;
-using System.Threading.Tasks;
 
 namespace Couple.Client.Shared
 {

@@ -1,8 +1,8 @@
-﻿using Couple.Client.Model.Calendar;
-using Couple.Client.ViewModel.Calendar;
-using Couple.Shared.Model.Event;
 using System.Collections.Generic;
 using System.Linq;
+using Couple.Client.Model.Calendar;
+using Couple.Client.ViewModel.Calendar;
+using Couple.Shared.Model.Event;
 
 namespace Couple.Client.Adapters
 {

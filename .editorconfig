@@ -1,4 +1,11 @@
-# Copied from https://github.com/dotnet/format/blob/main/.editorconfig
+# Copied from https://github.com/dotnet/format/commit/d226eb8dbc26f4a88606f9cfa220ec4180d084d9
+# With the following modifications:
+# 1. charset = utf-8
+# 2. Remove config for file types not in this project
+# 3. Remove file_header_template
+# 4. csharp_space_around_declaration_statements = false
+# 5. csharp_prefer_braces = true:warning
+
 # EditorConfig is awesome:http://EditorConfig.org
 
 # top-most EditorConfig file
@@ -10,29 +17,18 @@ indent_style = space
 # (Please don't specify an indent_size here; that has too many unintended consequences.)
 
 # Code files
-[*.{cs,csx,vb,vbx}]
+[*.cs]
 indent_size = 4
 insert_final_newline = true
-charset = utf-8-bom
+charset = utf-8
 
 # Xml project files
-[*.{csproj,vbproj,vcxproj,vcxproj.filters,proj,projitems,shproj}]
-indent_size = 2
-
-# Xml config files
-[*.{props,targets,ruleset,config,nuspec,resx,vsixmanifest,vsct}]
+[*.csproj]
 indent_size = 2
 
 # JSON files
 [*.json]
 indent_size = 2
-
-[*.{sh}]
-end_of_line = lf
-indent_size = 2
-
-# Dotnet code style settings:
-[*.{cs,vb}]
 
 # Sort using and Import directives with System.* appearing first
 dotnet_sort_system_directives_first = true
@@ -141,7 +137,6 @@ dotnet_naming_style.pascal_case_style.capitalization = pascal_case
 
 # IDE0073: File header
 dotnet_diagnostic.IDE0073.severity = warning
-file_header_template = Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the MIT license.  See License.txt in the project root for license information.
 
 # IDE0035: Remove unreachable code
 dotnet_diagnostic.IDE0035.severity = warning
@@ -156,7 +151,7 @@ dotnet_diagnostic.IDE0043.severity = warning
 dotnet_diagnostic.IDE0044.severity = warning
 
 # IDE0011: Add braces
-csharp_prefer_braces = when_multiline:warning
+csharp_prefer_braces = true:warning
 # NOTE: We need the below severity entry for Add Braces due to https://github.com/dotnet/roslyn/issues/44201
 dotnet_diagnostic.IDE0011.severity = warning
 
@@ -201,7 +196,6 @@ dotnet_diagnostic.IDE2003.severity = warning
 dotnet_diagnostic.IDE2004.severity = warning
 
 # CSharp code style settings:
-[*.cs]
 # Newline settings
 csharp_new_line_before_open_brace = all
 csharp_new_line_before_else = true
@@ -255,7 +249,7 @@ csharp_space_after_dot = false
 csharp_space_after_keywords_in_control_flow_statements = true
 csharp_space_after_semicolon_in_for_statement = true
 csharp_space_around_binary_operators = before_and_after
-csharp_space_around_declaration_statements = do_not_ignore
+csharp_space_around_declaration_statements = false
 csharp_space_before_colon_in_inheritance_clause = true
 csharp_space_before_comma = false
 csharp_space_before_dot = false
@@ -272,6 +266,5 @@ csharp_space_between_parentheses = false
 csharp_space_between_square_brackets = false
 
 # Blocks are allowed
-csharp_prefer_braces = true:silent
 csharp_preserve_single_line_blocks = true
 csharp_preserve_single_line_statements = true

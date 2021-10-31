@@ -1,6 +1,6 @@
+using System;
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
-using System;
 
 namespace Couple.Client.Pages.Calendar.Components
 {

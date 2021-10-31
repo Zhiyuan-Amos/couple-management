@@ -1,4 +1,4 @@
-﻿namespace Couple.Api.Infrastructure
+namespace Couple.Api.Infrastructure
 {
     public interface ICurrentUserService
     {

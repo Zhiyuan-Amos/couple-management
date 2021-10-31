@@ -1,13 +1,13 @@
-﻿using Couple.Client.Adapters;
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using Couple.Client.Adapters;
 using Couple.Client.Model.Calendar;
 using Couple.Client.States.Calendar;
 using Couple.Client.Utility;
 using Couple.Client.ViewModel.Calendar;
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
-using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 
 namespace Couple.Client.Pages.Calendar.Components
 {

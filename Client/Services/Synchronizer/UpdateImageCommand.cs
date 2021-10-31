@@ -1,6 +1,6 @@
-﻿using Couple.Client.Model.Image;
-using Microsoft.JSInterop;
 using System.Threading.Tasks;
+using Couple.Client.Model.Image;
+using Microsoft.JSInterop;
 
 namespace Couple.Client.Services.Synchronizer
 {

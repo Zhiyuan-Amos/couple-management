@@ -1,11 +1,11 @@
-using Couple.Client.States.Issue;
-using Couple.Client.ViewModel.Issue;
-using Couple.Shared.Model;
-using Microsoft.AspNetCore.Components;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Couple.Client.States.Issue;
+using Couple.Client.ViewModel.Issue;
+using Couple.Shared.Model;
+using Microsoft.AspNetCore.Components;
 
 namespace Couple.Client.Pages.Issue.Components
 {

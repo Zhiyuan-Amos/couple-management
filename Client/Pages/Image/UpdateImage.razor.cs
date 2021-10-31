@@ -1,11 +1,11 @@
-using Couple.Client.Adapters;
-using Couple.Client.Model.Image;
-using Microsoft.AspNetCore.Components;
-using Microsoft.JSInterop;
 using System;
 using System.Net.Http;
 using System.Net.Http.Json;
 using System.Threading.Tasks;
+using Couple.Client.Adapters;
+using Couple.Client.Model.Image;
+using Microsoft.AspNetCore.Components;
+using Microsoft.JSInterop;
 
 namespace Couple.Client.Pages.Image
 {

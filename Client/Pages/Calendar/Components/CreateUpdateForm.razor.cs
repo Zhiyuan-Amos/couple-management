@@ -1,9 +1,9 @@
-using Couple.Client.ViewModel.Issue;
-using Microsoft.AspNetCore.Components;
-using Microsoft.JSInterop;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Couple.Client.ViewModel.Issue;
+using Microsoft.AspNetCore.Components;
+using Microsoft.JSInterop;
 
 namespace Couple.Client.Pages.Calendar.Components
 {
@@ -67,26 +67,6 @@ namespace Couple.Client.Pages.Calendar.Components
             {
                 await Js.InvokeVoidAsync("togglePicker", EndWrapperRef);
             }
-        }
-
-        private async Task StartDateChanged(DateTime newStartDate)
-        {
-            if (End < newStartDate)
-            {
-                await EndChanged.InvokeAsync(newStartDate);
-            }
-
-            await StartChanged.InvokeAsync(newStartDate);
-        }
-
-        private async Task EndDateChanged(DateTime newEndDate)
-        {
-            if (newEndDate < Start)
-            {
-                await StartChanged.InvokeAsync(newEndDate);
-            }
-
-            await EndChanged.InvokeAsync(newEndDate);
         }
 
         private Task Remove(IssueViewModel toRemove) => RemovedChanged.InvokeAsync(toRemove);

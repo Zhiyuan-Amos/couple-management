@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 
 namespace Couple.Client.ViewModel.Issue
 {

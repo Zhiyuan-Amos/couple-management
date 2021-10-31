@@ -1,11 +1,11 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
 using Couple.Client.States.Calendar;
 using Couple.Client.Utility;
 using Couple.Client.ViewModel.Calendar;
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace Couple.Client.Pages.Calendar.Components
 {
@@ -40,7 +40,7 @@ namespace Couple.Client.Pages.Calendar.Components
 
         private const int DaysOnCalendar = 42;
 
-        private List<CellViewModel> GetCells(int year, int month)
+        private static List<CellViewModel> GetCells(int year, int month)
         {
             var firstDayOfMonth = new DateTime(year, month, 1);
             var firstDayOnCalendar = firstDayOfMonth.AddDays((int)firstDayOfMonth.DayOfWeek * -1);

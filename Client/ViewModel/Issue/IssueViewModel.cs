@@ -1,6 +1,6 @@
-﻿using Couple.Shared.Model;
 using System;
 using System.Collections.Generic;
+using Couple.Shared.Model;
 
 namespace Couple.Client.ViewModel.Issue
 {

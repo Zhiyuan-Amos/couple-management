@@ -1,4 +1,4 @@
-﻿using Couple.Client.Model.Image;
+using Couple.Client.Model.Image;
 using Couple.Shared.Model.Image;
 
 namespace Couple.Client.Adapters

@@ -1,6 +1,6 @@
-﻿using Microsoft.JSInterop;
 using System;
 using System.Threading.Tasks;
+using Microsoft.JSInterop;
 
 namespace Couple.Client.Services.Synchronizer
 {

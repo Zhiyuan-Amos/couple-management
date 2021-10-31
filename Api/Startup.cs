@@ -1,11 +1,11 @@
-﻿using Couple.Api;
+using System;
+using Couple.Api;
 using Couple.Api.Data;
 using Couple.Api.Infrastructure;
 using Couple.Api.Profiles;
 using Microsoft.Azure.Functions.Extensions.DependencyInjection;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
-using System;
 
 [assembly: FunctionsStartup(typeof(Startup))]
 

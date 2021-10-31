@@ -1,8 +1,8 @@
-﻿using Couple.Client.States.Calendar;
-using Couple.Client.ViewModel.Calendar;
-using Microsoft.AspNetCore.Components;
 using System;
 using System.Collections.Generic;
+using Couple.Client.States.Calendar;
+using Couple.Client.ViewModel.Calendar;
+using Microsoft.AspNetCore.Components;
 
 namespace Couple.Client.Pages.Calendar.Components
 {

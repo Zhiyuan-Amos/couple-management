@@ -1,5 +1,5 @@
-﻿using Couple.Shared.Model;
 using System;
+using Couple.Shared.Model;
 
 namespace Couple.Client.Model.Issue
 {

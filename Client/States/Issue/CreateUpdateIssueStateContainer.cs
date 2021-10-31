@@ -1,10 +1,10 @@
-﻿using Couple.Client.Adapters;
-using Couple.Client.Model.Issue;
-using Couple.Client.ViewModel.Issue;
-using Couple.Shared.Model;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Couple.Client.Adapters;
+using Couple.Client.Model.Issue;
+using Couple.Client.ViewModel.Issue;
+using Couple.Shared.Model;
 
 namespace Couple.Client.States.Issue
 {

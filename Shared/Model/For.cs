@@ -1,4 +1,4 @@
-﻿namespace Couple.Shared.Model
+namespace Couple.Shared.Model
 {
     public enum For
     {

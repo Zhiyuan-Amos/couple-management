@@ -1,6 +1,6 @@
-using Couple.Shared.Model.Issue;
 using System;
 using System.Collections.Generic;
+using Couple.Shared.Model.Issue;
 
 namespace Couple.Shared.Model.Event
 {
