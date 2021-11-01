@@ -26,7 +26,7 @@ namespace Couple.Client.Pages.Settings
 
         private async Task OnExportSelected()
         {
-            await Js.InvokeAsync<object>("saveAsFile", "couple.json");
+            await Js.InvokeAsync<object>("exportDatabaseAsFile", "couple.json");
         }
 
         private async Task OnDeleteDatabaseSelected()

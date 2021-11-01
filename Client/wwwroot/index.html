@@ -26,6 +26,11 @@
     <script src="https://unpkg.com/idb@6.1.2/build/iife/index-min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4" crossorigin="anonymous"></script>
     <script>navigator.serviceWorker.register('service-worker.js');</script>
+    <script src="js/done.js"></script>
+    <script src="js/index.js"></script>
+    <script src="js/issue.js"></script>
+    <script src="js/settings.js"></script>
+    <script src="js/utils.js"></script>
     <script>
         const db = idb.openDB('Couple', 1, {
             upgrade(db, oldVersion, newVersion, transaction) {
@@ -40,97 +45,6 @@
         });
 
         var carousel;
-
-        async function getIssues() {
-            return (await db).transaction("issue").store.getAll();
-        }
-
-        async function getDone() {
-            const kvp = {}
-
-            const tx = (await db).transaction(['done', 'image'])
-            const doneStore = tx.objectStore('done')
-            let cursor = await doneStore.openCursor()
-
-            const imageStore = tx.objectStore('image')
-
-            while (cursor) {
-                for (const item of cursor.value) {
-                    if (item.discriminator === "Image") {
-                        const image = await imageStore.get(item.id)
-                        item.isFavourite = image.isFavourite === 1
-                        item.takenOn = image.takenOn
-                        item.data = Base64FromUint8Array(image.data)
-                    }
-                }
-                kvp[cursor.key] = cursor.value
-
-                cursor = await cursor.continue()
-            }
-
-            return kvp
-        }
-
-        async function createIssue(issue) {
-            (await db).transaction("issue", 'readwrite').store.add(issue);
-        }
-
-        async function updateIssue(issue) {
-            (await db).transaction("issue", 'readwrite').store.put(issue);
-        }
-
-        async function deleteIssue(id) {
-            (await db).transaction("issue", 'readwrite').store.delete(id);
-        }
-
-        async function completeTask(completedTask) {
-            const tx = (await db).transaction(['done', 'issue'], 'readwrite');
-            const issueStore = tx.objectStore('issue');
-            const doneStore = tx.objectStore('done');
-
-            const toUpdate = await issueStore.get(completedTask.issueId);
-            toUpdate.tasks = toUpdate.tasks
-                .filter(task => task.id !== completedTask.id);
-
-            const issuePromise = toUpdate.tasks.length === 0
-                ? issueStore.delete(completedTask.issueId)
-                : issueStore.put(toUpdate);
-
-            const key = completedTask.createdOnDate
-            const existingDoneOnDate = await doneStore.get(key)
-
-            let completedTaskPromise
-            if (!existingDoneOnDate) {
-                const toAdd = toCompletedTaskViewModel(completedTask)
-                completedTaskPromise = doneStore.add([toAdd], key)
-            } else {
-                const existingIssue = existingDoneOnDate
-                    .find(task => task.issueTitle === completedTask.issueTitle)
-                if (existingIssue) {
-                    existingIssue.contents.push(completedTask.content)
-                } else {
-                    const toAdd = toCompletedTaskViewModel(completedTask)
-                    existingDoneOnDate.push(toAdd)
-                }
-                completedTaskPromise = doneStore.put(existingDoneOnDate, key)
-            }
-
-            await Promise.all([
-                issuePromise,
-                completedTaskPromise,
-                tx.done,
-            ]);
-        }
-
-        function toCompletedTaskViewModel(completedTask) {
-            return {
-                'for': completedTask.for,
-                contents: [completedTask.content],
-                issueTitle: completedTask.issueTitle,
-                createdOn: completedTask.createdOn,
-                discriminator: 'CompletedTask',
-            }
-        }
 
         async function getAllEvents() {
             return (await db).transaction("event").store.getAll();
@@ -175,202 +89,10 @@
             popupBtn.click();
         }
 
-        async function exportDatabase() {
-            const idb = await db
-            const transaction = idb.transaction(
-                idb.objectStoreNames,
-                'readonly'
-            )
-
-            const toExport = {}
-            for (const storeName of idb.objectStoreNames) {
-                let cursor = await transaction
-                    .objectStore(storeName)
-                    .openCursor()
-
-                let allObjects
-                if (storeName === "done") {
-                    allObjects = {}
-                    while (cursor) {
-                        allObjects[cursor.key] = cursor.value
-                        cursor = await cursor.continue()
-                    }
-                } else if (storeName === 'image') {
-                    allObjects = []
-                    while (cursor) {
-                        const image = cursor.value
-                        image.data = Base64FromUint8Array(image.data)
-                        allObjects.push(image)
-                        cursor = await cursor.continue()
-                    }
-                } else {
-                    allObjects = []
-                    while (cursor) {
-                        allObjects.push(cursor.value)
-                        cursor = await cursor.continue()
-                    }
-                }
-
-                toExport[storeName] = allObjects
-            }
-
-            return JSON.stringify(toExport)
-        }
-
-        async function importDatabase(json) {
-            const idb = await db
-            const tx = idb.transaction(
-                idb.objectStoreNames,
-                'readwrite'
-            )
-
-            const toAwait = []
-            const jsonObject = JSON.parse(json)
-            Object.keys(jsonObject)
-                .forEach(storeName => {
-                    const store = tx.objectStore(storeName)
-                    if (storeName === "done") {
-                        const dateToDone = jsonObject[storeName]
-                        Object.keys(dateToDone)
-                            .forEach(key => {
-                                const promise = store.add(dateToDone[key], key)
-                                toAwait.push(promise);
-                            })
-                    } else if (storeName === "image") {
-                        jsonObject[storeName]
-                            .forEach(image => {
-                                image.data = Uint8ArrayFromBase64(image.data);
-                                const promise = store.add(image)
-                                toAwait.push(promise);
-                            })
-                    } else {
-                        jsonObject[storeName]
-                            .forEach(value => {
-                                const promise = store.add(value)
-                                toAwait.push(promise);
-                            })
-                    }
-                })
-
-            await Promise.all([
-                toAwait,
-                tx.done,
-            ])
-        }
-
-        async function clearDatabase() {
-            const idb = await db
-            const tx = idb.transaction(
-                idb.objectStoreNames,
-                'readwrite'
-            )
-
-            const toAwait = []
-            for (const storeName of idb.objectStoreNames) {
-                const promise = tx
-                    .objectStore(storeName)
-                    .clear()
-                toAwait.push(promise)
-            }
-
-            await Promise.all([
-                toAwait,
-                tx.done,
-            ])
-        }
-
-        async function deleteDatabase() {
-            idb.deleteDB('Couple')
-        }
-
-        // Based on https://www.meziantou.net/generating-and-downloading-a-file-in-a-blazor-webassembly-application.htm
-        // Modified to marshal parameters as byte[] is not being passed from C#
-        async function saveAsFile(name) {
-            const jsonContent = await exportDatabase()
-            const file = new File([jsonContent], name);
-            const exportUrl = URL.createObjectURL(file);
-
-            const a = document.createElement("a");
-            document.body.appendChild(a);
-            a.href = exportUrl;
-            a.download = name;
-            a.target = "_self";
-            a.click();
-        }
-
         async function getImage(id) {
             const image = await (await db).transaction("image").store.get(id)
             image.isFavourite = image.isFavourite === 1
             return image
-        }
-
-        async function getFavouriteImages() {
-            const favouriteImages = await (await db).transaction("image").store.index('isFavourite').getAll(1)
-            favouriteImages.forEach(image => image.isFavourite = image.isFavourite === 1)
-            return favouriteImages
-        }
-
-        async function createImage(image) {
-            image.isFavourite = image.isFavourite ? 1 : 0
-            const tx = (await db).transaction(['done', 'image'], 'readwrite')
-
-            const imageStore = tx.objectStore('image')
-            const addImageTask = imageStore.add(image)
-
-            const doneStore = tx.objectStore('done')
-            const key = image.takenOnDate
-            const existingDoneOnDate = await doneStore.get(key)
-
-            const doneImage = {
-                id: image.id,
-                discriminator: 'Image'
-            }
-
-            let addDoneTask
-            if (!existingDoneOnDate) {
-                addDoneTask = doneStore.add([doneImage], key)
-            } else {
-                existingDoneOnDate.push(doneImage)
-                addDoneTask = doneStore.put(existingDoneOnDate, key)
-            }
-
-            await Promise.all([
-                addImageTask,
-                addDoneTask,
-                tx.done,
-            ])
-        }
-
-        async function updateImage(image) {
-            image.isFavourite = image.isFavourite ? 1 : 0;
-            (await db).transaction("image", 'readwrite').store.put(image)
-        }
-
-        async function deleteImage(id) {
-            const tx = (await db).transaction(['done', 'image'], 'readwrite')
-
-            const imageStore = tx.objectStore('image')
-            const image = await imageStore.get(id)
-
-            const key = image.takenOnDate
-            const doneStore = tx.objectStore('done')
-            const existingDoneOnDate = await doneStore.get(key)
-
-            const deleteImageTask = imageStore.delete(id)
-
-            let removeDoneTask
-            if (existingDoneOnDate.length === 1) {
-                removeDoneTask = doneStore.delete(key)
-            } else {
-                const remainingDoneOnDate = existingDoneOnDate.filter(item => item.discriminator !== 'Image' || item.id !== id)
-                removeDoneTask = doneStore.put(remainingDoneOnDate, key)
-            }
-
-            await Promise.all([
-                deleteImageTask,
-                removeDoneTask,
-                tx.done,
-            ])
         }
 
         function disableInput(wrapperElement) {
@@ -407,21 +129,6 @@
 
         function next() {
             carousel.next();
-        }
-
-        function Uint8ArrayFromBase64(base64)
-        {
-            return Uint8Array.from(window.atob(base64), (v) => v.charCodeAt(0));
-        }
-
-        function Base64FromUint8Array(uint8Array)
-        {
-            let data = ''
-            for (let i = 0; i < uint8Array.byteLength; i++) {
-                data += String.fromCharCode(uint8Array[i])
-            }
-
-            return btoa(data)
         }
     </script>
 </body>
