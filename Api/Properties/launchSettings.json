@@ -1,8 +1,9 @@
 {
   "profiles": {
     "Api": {
-      "commandName": "Project",
-      "commandLineArgs": "start --cors *"
+      "commandName": "Executable",
+      "executablePath": "func",
+      "commandLineArgs": "start"
     }
   }
 }
