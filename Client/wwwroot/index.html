@@ -84,9 +84,8 @@
             (await db).transaction("event", 'readwrite').store.delete(id);
         }
 
-        function togglePicker(wrapperElement) {
-            const popupBtn = wrapperElement.querySelector(".k-select");
-            popupBtn.click();
+        function navigateBack() {
+            history.back()
         }
 
         function disableInput(wrapperElement) {

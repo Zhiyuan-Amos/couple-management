@@ -1,13 +1,14 @@
 using Microsoft.AspNetCore.Components;
+using Microsoft.JSInterop;
+using System.Threading.Tasks;
 
 namespace Couple.Client.Pages.Common
 {
     public partial class CreateTopBar
     {
         [Parameter] public string Title { get; init; }
-        [Parameter] public string OnCancelUrl { get; init; }
-        [Inject] private NavigationManager NavigationManager { get; init; }
+        [Inject] private IJSRuntime Js { get; init; }
 
-        private void Cancel() => NavigationManager.NavigateTo(OnCancelUrl);
+        private async Task Cancel() => await Js.InvokeVoidAsync("navigateBack");
     }
 }
