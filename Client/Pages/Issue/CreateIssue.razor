@@ -1,9 +1,10 @@
 @page "/todo/create"
 
+@using Couple.Client.Pages.Common
 @using Couple.Client.Pages.Issue.Components
 @inherits CreateIssueBase
 
 <CascadingValue Name="CreateUpdateIssueStateContainer" Value="@CreateUpdateIssueStateContainer">
-    <CreateTopBar/>
+    <CreateTopBar Title="New To Do" OnCancelUrl="/todo"/>
     <CreateUpdateForm OnSaveCallback="@Save"/>
 </CascadingValue>
