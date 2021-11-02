@@ -89,12 +89,6 @@
             popupBtn.click();
         }
 
-        async function getImage(id) {
-            const image = await (await db).transaction("image").store.get(id)
-            image.isFavourite = image.isFavourite === 1
-            return image
-        }
-
         function disableInput(wrapperElement) {
             const input = wrapperElement.querySelector("input");
             input.setAttribute("disabled", "true");

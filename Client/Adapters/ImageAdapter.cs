@@ -22,7 +22,7 @@ namespace Couple.Client.Adapters
         };
 
         public static CreateImageModel ToCreateModel(CreateImageDto model) =>
-            new(model.Id, model.TakenOn) { Data = model.Data, IsFavourite = model.IsFavourite };
+            new(model.Id, model.TakenOn, model.Data, model.IsFavourite);
 
         public static UpdateImageModel ToUpdateModel(UpdateImageDto model) =>
             new(model.Id, model.TakenOn, model.Data, model.IsFavourite);

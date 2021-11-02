@@ -5,6 +5,7 @@ using System.Net.Http.Json;
 using System.Threading.Tasks;
 using Couple.Client.Adapters;
 using Couple.Client.Model.Image;
+using Couple.Client.States.Image;
 using Couple.Shared;
 using Couple.Shared.Utility;
 using Microsoft.AspNetCore.Components;
@@ -15,7 +16,7 @@ namespace Couple.Client.Pages.Image
 {
     public partial class CreateImage
     {
-        private CreateImageModel _image;
+        private CreateUpdateImageStateContainer CreateUpdateImageStateContainer { get; set; }
 
         [Inject] private HttpClient HttpClient { get; init; }
         [Inject] private NavigationManager NavigationManager { get; init; }
@@ -23,16 +24,18 @@ namespace Couple.Client.Pages.Image
 
         protected override void OnInitialized()
         {
-            _image = new(Guid.NewGuid(), DateTime.Now);
+            CreateUpdateImageStateContainer = new();
         }
 
         private async Task Save()
         {
-            await Js.InvokeVoidAsync("createImage", _image);
+            var toPersist = new CreateImageModel(Guid.NewGuid(), DateTime.Now,
+                CreateUpdateImageStateContainer.Data, CreateUpdateImageStateContainer.IsFavourite);
+            await Js.InvokeVoidAsync("createImage", toPersist);
 
             NavigationManager.NavigateTo("/settings");
 
-            var toCreate = ImageAdapter.ToCreateDto(_image);
+            var toCreate = ImageAdapter.ToCreateDto(toPersist);
             await HttpClient.PostAsJsonAsync("api/Images", toCreate);
         }
 
@@ -63,7 +66,7 @@ namespace Couple.Client.Pages.Image
                 return;
             }
 
-            _image.Data = ms.ToArray();
+            CreateUpdateImageStateContainer.Data = ms.ToArray();
         }
     }
 }

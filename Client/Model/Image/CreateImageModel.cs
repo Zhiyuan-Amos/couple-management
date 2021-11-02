@@ -10,6 +10,7 @@ namespace Couple.Client.Model.Image
         public bool IsFavourite { get; set; }
         public string TakenOnDate => TakenOn.ToString("dd/MM/yyyy");
 
-        public CreateImageModel(Guid id, DateTime takenOn) => (Id, TakenOn) = (id, takenOn);
+        public CreateImageModel(Guid id, DateTime takenOn, byte[] data, bool isFavourite) =>
+            (Id, Data, TakenOn, IsFavourite) = (id, data, takenOn, isFavourite);
     }
 }

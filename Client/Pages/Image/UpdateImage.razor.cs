@@ -4,6 +4,8 @@ using System.Net.Http.Json;
 using System.Threading.Tasks;
 using Couple.Client.Adapters;
 using Couple.Client.Model.Image;
+using Couple.Client.States.Done;
+using Couple.Client.States.Image;
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
 
@@ -12,19 +14,22 @@ namespace Couple.Client.Pages.Image
     public partial class UpdateImage
     {
         [Parameter] public Guid ImageId { get; set; }
-        private UpdateImageModel _image;
+        private ImageModel _imageModel;
+        private CreateUpdateImageStateContainer CreateUpdateImageStateContainer { get; set; }
 
         [Inject] private HttpClient HttpClient { get; init; }
         [Inject] private NavigationManager NavigationManager { get; init; }
         [Inject] private IJSRuntime Js { get; init; }
+        [Inject] private DoneStateContainer DoneStateContainer { get; init; }
 
-        protected override async Task OnInitializedAsync()
+        protected override void OnInitialized()
         {
-            _image = await Js.InvokeAsync<UpdateImageModel>("getImage", ImageId);
-            if (_image == null)
+            if (!DoneStateContainer.TryGetImage(ImageId, out _imageModel))
             {
                 NavigationManager.NavigateTo("/done");
             }
+
+            CreateUpdateImageStateContainer = new(_imageModel.IsFavourite, _imageModel.Data);
         }
 
         private async Task Delete()
@@ -37,11 +42,13 @@ namespace Couple.Client.Pages.Image
 
         private async Task Save()
         {
-            await Js.InvokeVoidAsync("updateImage", _image);
+            var toPersist = new UpdateImageModel(_imageModel.Id, _imageModel.TakenOn,
+                CreateUpdateImageStateContainer.Data, CreateUpdateImageStateContainer.IsFavourite);
+            await Js.InvokeVoidAsync("updateImage", toPersist);
 
             NavigationManager.NavigateTo("/done");
 
-            var toUpdate = ImageAdapter.ToUpdateDto(_image);
+            var toUpdate = ImageAdapter.ToUpdateDto(toPersist);
             await HttpClient.PutAsJsonAsync("api/Images", toUpdate);
         }
     }
