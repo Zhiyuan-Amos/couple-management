@@ -4,22 +4,23 @@ using System.Linq;
 using System.Text.Json;
 using System.Threading.Tasks;
 using Couple.Client.Model.Image;
+using Couple.Client.States.Done;
 using Couple.Client.ViewModel.Issue;
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
 
 namespace Couple.Client.Pages.Done.Components
 {
-    public partial class ReadOnlyListView
+    public partial class ReadOnlyListView : IDisposable
     {
         [Inject] private NavigationManager NavigationManager { get; init; }
         [Inject] private IJSRuntime Js { get; init; }
-
-        private SortedDictionary<DateOnly, List<object>> DateToItems { get; set; } = new();
+        [Inject] private DoneStateContainer DoneStateContainer { get; init; }
 
         protected override async Task OnInitializedAsync()
         {
-            DateToItems = await GetDateToItems();
+            DoneStateContainer.OnChange += StateHasChanged;
+            DoneStateContainer.SetDateToItems(await GetDateToItems());
         }
 
         private async Task<SortedDictionary<DateOnly, List<object>>> GetDateToItems()
@@ -44,5 +45,7 @@ namespace Couple.Client.Pages.Done.Components
         }
 
         private void EditImage(ImageModel selectedImage) => NavigationManager.NavigateTo($"/image/{selectedImage.Id}");
+
+        public void Dispose() => DoneStateContainer.OnChange -= StateHasChanged;
     }
 }

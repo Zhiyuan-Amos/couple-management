@@ -3,7 +3,7 @@
 @using Couple.Client.ViewModel.Issue
 
 <div style="padding-bottom: 56px;" class="mh-100 overflow-auto">
-    @foreach (var (date, items) in DateToItems)
+    @foreach (var (date, items) in DoneStateContainer.GetDateToItems())
     {
         <h5 class="my-1 text-center">@date.ToString("dd MMM")</h5>
         @foreach (var item in items)
