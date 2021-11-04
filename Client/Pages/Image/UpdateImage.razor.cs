@@ -42,7 +42,7 @@ namespace Couple.Client.Pages.Image
 
         private async Task Save()
         {
-            var toPersist = new UpdateImageModel(_imageModel.Id, _imageModel.TakenOn,
+            var toPersist = new ImageModel(_imageModel.Id, _imageModel.TakenOn,
                 CreateUpdateImageStateContainer.Data, CreateUpdateImageStateContainer.IsFavourite);
             await Js.InvokeVoidAsync("updateImage", toPersist);
 

@@ -1,4 +1,16 @@
-﻿export async function createImage(image) {
+﻿function padTo2Digits(num) {
+    return num.toString().padStart(2, '0');
+}
+
+function formatDate(date) {
+    return [
+        padTo2Digits(date.getDate()),
+        padTo2Digits(date.getMonth() + 1),
+        date.getFullYear(),
+    ].join('/');
+}
+
+async function createImage(image) {
     image.isFavourite = image.isFavourite ? 1 : 0
     const tx = (await db).transaction(['done', 'image'], 'readwrite')
 
@@ -6,7 +18,7 @@
     const addImageTask = imageStore.add(image)
 
     const doneStore = tx.objectStore('done')
-    const key = image.takenOnDate
+    const key = formatDate(new Date(image.takenOn))
     const existingDoneOnDate = await doneStore.get(key)
 
     const doneImage = {
@@ -29,18 +41,18 @@
     ])
 }
 
-export async function updateImage(image) {
+async function updateImage(image) {
     image.isFavourite = image.isFavourite ? 1 : 0;
     (await db).transaction("image", 'readwrite').store.put(image)
 }
 
-export async function deleteImage(id) {
+async function deleteImage(id) {
     const tx = (await db).transaction(['done', 'image'], 'readwrite')
 
     const imageStore = tx.objectStore('image')
     const image = await imageStore.get(id)
 
-    const key = image.takenOnDate
+    const key = formatDate(new Date(image.takenOn))
     const doneStore = tx.objectStore('done')
     const existingDoneOnDate = await doneStore.get(key)
 

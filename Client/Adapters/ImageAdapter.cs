@@ -5,7 +5,7 @@ namespace Couple.Client.Adapters
 {
     public static class ImageAdapter
     {
-        public static CreateImageDto ToCreateDto(CreateImageModel model) => new()
+        public static CreateImageDto ToCreateDto(ImageModel model) => new()
         {
             Id = model.Id,
             TakenOn = model.TakenOn,
@@ -13,7 +13,7 @@ namespace Couple.Client.Adapters
             IsFavourite = model.IsFavourite,
         };
 
-        public static UpdateImageDto ToUpdateDto(UpdateImageModel model) => new()
+        public static UpdateImageDto ToUpdateDto(ImageModel model) => new()
         {
             Id = model.Id,
             TakenOn = model.TakenOn,
@@ -21,10 +21,10 @@ namespace Couple.Client.Adapters
             IsFavourite = model.IsFavourite,
         };
 
-        public static CreateImageModel ToCreateModel(CreateImageDto model) =>
+        public static ImageModel ToCreateModel(CreateImageDto model) =>
             new(model.Id, model.TakenOn, model.Data, model.IsFavourite);
 
-        public static UpdateImageModel ToUpdateModel(UpdateImageDto model) =>
+        public static ImageModel ToUpdateModel(UpdateImageDto model) =>
             new(model.Id, model.TakenOn, model.Data, model.IsFavourite);
     }
 }

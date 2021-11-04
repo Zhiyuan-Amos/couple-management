@@ -29,7 +29,7 @@ namespace Couple.Client.Pages.Image
 
         private async Task Save()
         {
-            var toPersist = new CreateImageModel(Guid.NewGuid(), DateTime.Now,
+            var toPersist = new ImageModel(Guid.NewGuid(), DateTime.Now,
                 CreateUpdateImageStateContainer.Data, CreateUpdateImageStateContainer.IsFavourite);
             await Js.InvokeVoidAsync("createImage", toPersist);
 

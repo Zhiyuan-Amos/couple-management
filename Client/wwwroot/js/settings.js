@@ -20,7 +20,7 @@ async function exportDatabase() {
         'readonly'
     )
 
-    const to= {}
+    const toExport = {}
     for (const storeName of idb.objectStoreNames) {
         let cursor = await transaction
             .objectStore(storeName)
