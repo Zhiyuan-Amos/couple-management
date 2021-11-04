@@ -1,6 +1,6 @@
+using Couple.Client.Model.Issue;
 using System;
 using System.Collections.Generic;
-using Couple.Client.ViewModel.Issue;
 
 namespace Couple.Client.ViewModel.Calendar
 {
@@ -9,6 +9,6 @@ namespace Couple.Client.ViewModel.Calendar
         public string Title { get; set; }
         public DateTime Start { get; set; }
         public DateTime End { get; set; }
-        public List<IssueViewModel> ToDos { get; set; }
+        public List<IssueModel> ToDos { get; set; }
     }
 }

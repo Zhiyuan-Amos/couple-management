@@ -2,10 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Couple.Client.Adapters;
 using Couple.Client.Model.Issue;
 using Couple.Client.States.Issue;
-using Couple.Client.ViewModel.Issue;
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
 
@@ -19,14 +17,13 @@ namespace Couple.Client.Pages.Issue
 
         [Inject] private IssueStateContainer IssueStateContainer { get; init; }
 
-        private List<IssueViewModel> Issues
+        private List<IssueModel> Issues
         {
             get
             {
-                var orderedIssues = IssueStateContainer.Issues
+                return IssueStateContainer.Issues
                     .OrderByDescending(issue => issue.CreatedOn)
                     .ToList();
-                return IssueAdapter.ToViewModel(orderedIssues);
             }
         }
 

@@ -10,7 +10,6 @@ using Couple.Client.Model.Issue;
 using Couple.Client.States.Calendar;
 using Couple.Client.States.Issue;
 using Couple.Client.ViewModel.Calendar;
-using Couple.Client.ViewModel.Issue;
 using Couple.Shared.Model.Event;
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
@@ -33,9 +32,9 @@ namespace Couple.Client.Pages.Calendar
 
         private UpdateEventViewModel ToUpdate { get; set; }
 
-        private List<IssueViewModel> Original { get; set; }
-        private List<IssueViewModel> Added { get; set; }
-        private List<IssueViewModel> Removed { get; set; }
+        private List<IssueModel> Original { get; set; }
+        private List<IssueModel> Added { get; set; }
+        private List<IssueModel> Removed { get; set; }
 
         protected override void OnInitialized()
         {
@@ -45,7 +44,7 @@ namespace Couple.Client.Pages.Calendar
                 return;
             }
 
-            Original = IssueAdapter.ToViewModel(@event.ToDos);
+            Original = new(@event.ToDos);
             Added = new();
             Removed = new();
 
@@ -60,7 +59,7 @@ namespace Couple.Client.Pages.Calendar
             {
                 toPersist,
                 added,
-                IssueAdapter.ToModel(Removed)
+                Removed
             });
 
             var toDosTask = Js.InvokeAsync<List<IssueModel>>("getToDos").AsTask();
@@ -96,7 +95,7 @@ namespace Couple.Client.Pages.Calendar
                                     && ToUpdate.Start != DateTime.UnixEpoch
                                     && ToUpdate.End != DateTime.UnixEpoch;
 
-        private void AddedChanged(List<IssueViewModel> added)
+        private void AddedChanged(List<IssueModel> added)
         {
             foreach (var add in added)
             {
@@ -114,7 +113,7 @@ namespace Couple.Client.Pages.Calendar
             ToUpdate.ToDos = new(ToUpdate.ToDos); // https://docs.telerik.com/blazor-ui/common-features/observable-data
         }
 
-        private void RemovedChanged(IssueViewModel removed)
+        private void RemovedChanged(IssueModel removed)
         {
             if (Original.Any(toDo => toDo.Id == removed.Id))
             {

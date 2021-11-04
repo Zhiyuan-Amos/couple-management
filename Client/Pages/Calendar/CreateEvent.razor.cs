@@ -10,7 +10,6 @@ using Couple.Client.Model.Issue;
 using Couple.Client.States.Calendar;
 using Couple.Client.States.Issue;
 using Couple.Client.ViewModel.Calendar;
-using Couple.Client.ViewModel.Issue;
 using Couple.Shared.Model.Event;
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
@@ -31,7 +30,7 @@ namespace Couple.Client.Pages.Calendar
 
         private CreateEventViewModel ToCreate { get; set; }
 
-        private List<IssueViewModel> Added { get; set; }
+        private List<IssueModel> Added { get; set; }
 
         protected override void OnInitialized()
         {
@@ -57,7 +56,7 @@ namespace Couple.Client.Pages.Calendar
                 Title = ToCreate.Title,
                 Start = ToCreate.Start,
                 End = ToCreate.End,
-                ToDos = IssueAdapter.ToModel(ToCreate.ToDos),
+                ToDos = ToCreate.ToDos,
             };
             await Js.InvokeVoidAsync("addEvent", toPersist, added);
 
@@ -82,13 +81,13 @@ namespace Couple.Client.Pages.Calendar
                                     && ToCreate.Start != DateTime.UnixEpoch
                                     && ToCreate.End != DateTime.UnixEpoch;
 
-        private void AddedChanged(List<IssueViewModel> added)
+        private void AddedChanged(List<IssueModel> added)
         {
             ToCreate.ToDos.AddRange(added);
             Added = ToCreate.ToDos = new(ToCreate.ToDos); // https://docs.telerik.com/blazor-ui/common-features/observable-data
         }
 
-        private void RemovedChanged(IssueViewModel removed)
+        private void RemovedChanged(IssueModel removed)
         {
             ToCreate.ToDos.Remove(removed);
             Added = ToCreate.ToDos = new(ToCreate.ToDos);

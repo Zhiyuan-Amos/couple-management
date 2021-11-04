@@ -1,3 +1,4 @@
+using Couple.Client.Model.Issue;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -23,15 +24,15 @@ namespace Couple.Client.Pages.Calendar.Components
 
         [Parameter] public EventCallback<DateTime> EndChanged { get; init; }
 
-        [Parameter] public List<IssueViewModel> Added { get; set; }
+        [Parameter] public List<IssueModel> Added { get; set; }
 
-        [Parameter] public EventCallback<List<IssueViewModel>> AddedChanged { get; init; }
+        [Parameter] public EventCallback<List<IssueModel>> AddedChanged { get; init; }
 
-        [Parameter] public List<IssueViewModel> Removed { get; set; }
+        [Parameter] public List<IssueModel> Removed { get; set; }
 
-        [Parameter] public EventCallback<IssueViewModel> RemovedChanged { get; init; }
+        [Parameter] public EventCallback<IssueModel> RemovedChanged { get; init; }
 
-        [Parameter] public List<IssueViewModel> Total { get; set; }
+        [Parameter] public List<IssueModel> Total { get; set; }
 
         protected override async Task OnAfterRenderAsync(bool firstRender)
         {
@@ -69,6 +70,6 @@ namespace Couple.Client.Pages.Calendar.Components
             }
         }
 
-        private Task Remove(IssueViewModel toRemove) => RemovedChanged.InvokeAsync(toRemove);
+        private Task Remove(IssueModel toRemove) => RemovedChanged.InvokeAsync(toRemove);
     }
 }

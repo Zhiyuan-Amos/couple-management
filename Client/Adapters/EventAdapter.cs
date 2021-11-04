@@ -12,7 +12,7 @@ namespace Couple.Client.Adapters
             models.Select(ToViewModel).ToList();
 
         public static EventViewModel ToViewModel(EventModel model) =>
-            new(model.Id, model.Title, model.Start, model.End, IssueAdapter.ToViewModel(model.ToDos));
+            new(model.Id, model.Title, model.Start, model.End, new(model.ToDos));
 
         public static EventDto ToDto(EventModel model) => new()
         {
@@ -47,7 +47,7 @@ namespace Couple.Client.Adapters
             Title = model.Title,
             Start = model.Start,
             End = model.End,
-            ToDos = IssueAdapter.ToModel(model.ToDos),
+            ToDos = model.ToDos,
         };
 
         public static UpdateEventViewModel ToUpdateViewModel(EventModel model) => new()
@@ -56,7 +56,7 @@ namespace Couple.Client.Adapters
             Title = model.Title,
             Start = model.Start,
             End = model.End,
-            ToDos = IssueAdapter.ToViewModel(model.ToDos),
+            ToDos = new(model.ToDos),
         };
     }
 }

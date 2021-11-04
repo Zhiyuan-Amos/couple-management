@@ -20,11 +20,11 @@ namespace Couple.Client.Pages.Issue.Components
         [Inject] private NavigationManager NavigationManager { get; init; }
         [Inject] private IJSRuntime Js { get; init; }
 
-        [Parameter] public List<IssueViewModel> Issues { get; set; }
+        [Parameter] public List<IssueModel> Issues { get; set; }
 
-        private void EditIssue(IssueViewModel selectedIssue) => NavigationManager.NavigateTo($"/todo/{selectedIssue.Id}");
+        private void EditIssue(IssueModel selectedIssue) => NavigationManager.NavigateTo($"/todo/{selectedIssue.Id}");
 
-        private async Task OnCheckboxToggle(Guid id, TaskViewModel task)
+        private async Task OnCheckboxToggle(Guid id, TaskModel task)
         {
             var viewModel = Issues.Single(x => x.Id == id);
 
