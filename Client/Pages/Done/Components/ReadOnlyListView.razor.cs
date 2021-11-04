@@ -23,12 +23,12 @@ namespace Couple.Client.Pages.Done.Components
             DoneStateContainer.SetDateToItems(await GetDateToItems());
         }
 
-        private async Task<SortedDictionary<DateOnly, List<object>>> GetDateToItems()
+        private async Task<SortedDictionary<DateOnly, IReadOnlyList<object>>> GetDateToItems()
         {
             var dateStringToCompletedElements = await Js.InvokeAsync<Dictionary<string, List<JsonElement>>>("getDone");
             var dateToCompletedItems = dateStringToCompletedElements
                 .ToDictionary(kvp => DateOnly.ParseExact(kvp.Key, "dd/MM/yyyy"), kvp =>
-                    kvp.Value
+                    (IReadOnlyList<object>)kvp.Value
                         .Select(jsonElement =>
                             jsonElement.GetProperty("discriminator").GetString() switch
                             {

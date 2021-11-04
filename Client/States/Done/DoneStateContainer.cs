@@ -7,12 +7,12 @@ namespace Couple.Client.States.Done
 {
     public class DoneStateContainer : Notifier
     {
-        private SortedDictionary<DateOnly, List<object>> _dateToItems = new();
+        private SortedDictionary<DateOnly, IReadOnlyList<object>> _dateToItems = new();
         private Dictionary<Guid, ImageModel> _idToImage = new();
 
-        public IReadOnlyDictionary<DateOnly, List<object>> GetDateToItems() => _dateToItems;
+        public IReadOnlyDictionary<DateOnly, IReadOnlyList<object>> GetDateToItems() => _dateToItems;
 
-        public void SetDateToItems(IDictionary<DateOnly, List<object>> toSet)
+        public void SetDateToItems(IDictionary<DateOnly, IReadOnlyList<object>> toSet)
         {
             _dateToItems = new(toSet);
             _idToImage = toSet.Values
