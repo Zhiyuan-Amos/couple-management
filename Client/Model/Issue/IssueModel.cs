@@ -9,7 +9,7 @@ namespace Couple.Client.Model.Issue
         public Guid Id { get; init; }
         public string Title { get; init; }
         public For For { get; init; }
-        public List<TaskModel> Tasks { get; init; }
+        public IReadOnlyList<TaskModel> Tasks { get; init; }
         public DateTime CreatedOn { get; init; }
     }
 }
