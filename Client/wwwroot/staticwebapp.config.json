@@ -46,7 +46,16 @@
       }
     },
     {
-      "route": "/js/*",
+      "route": "/{css,js}/*",
+      "allowedRoles": [
+        "user"
+      ],
+      "headers": {
+        "Cache-Control": "public, max-age=31536000, immutable"
+      }
+    },
+    {
+      "route": "/Couple.Client.styles.css",
       "allowedRoles": [
         "user"
       ],
