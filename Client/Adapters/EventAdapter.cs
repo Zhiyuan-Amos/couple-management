@@ -1,8 +1,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using Couple.Client.Model.Calendar;
+using Couple.Client.Model.Issue;
 using Couple.Client.ViewModel.Calendar;
 using Couple.Shared.Model.Event;
+using Couple.Shared.Model.Issue;
 
 namespace Couple.Client.Adapters
 {
@@ -20,7 +22,7 @@ namespace Couple.Client.Adapters
             Title = model.Title,
             Start = model.Start,
             End = model.End,
-            ToDos = IssueAdapter.ToDto(model.ToDos),
+            ToDos = ToDto(model.ToDos),
         };
 
         public static EventDto ToDto(UpdateEventViewModel model) => new()
@@ -29,16 +31,27 @@ namespace Couple.Client.Adapters
             Title = model.Title,
             Start = model.Start,
             End = model.End,
-            ToDos = IssueAdapter.ToDto(model.ToDos),
+            ToDos = ToDto(model.ToDos),
         };
 
-        public static EventModel ToModel(EventDto model) => new()
+        public static List<IssueDto> ToDto(IEnumerable<IssueModel> models) => models.Select(ToDto).ToList();
+
+        public static IssueDto ToDto(IssueModel model) => new()
         {
             Id = model.Id,
             Title = model.Title,
-            Start = model.Start,
-            End = model.End,
-            ToDos = IssueAdapter.ToModel(model.ToDos),
+            For = model.For,
+            Tasks = ToTaskDto(model.Tasks),
+            CreatedOn = model.CreatedOn,
+        };
+
+        public static List<TaskDto> ToTaskDto(IEnumerable<TaskModel> models) =>
+            models.Select(ToTaskDto).ToList();
+
+        public static TaskDto ToTaskDto(TaskModel model) => new()
+        {
+            Id = model.Id,
+            Content = model.Content,
         };
 
         public static EventModel ToModel(UpdateEventViewModel model) => new()

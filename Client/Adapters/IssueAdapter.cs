@@ -2,7 +2,6 @@ using System.Collections.Generic;
 using System.Linq;
 using Couple.Client.Model.Issue;
 using Couple.Client.ViewModel.Issue;
-using Couple.Shared.Model.Event;
 using Couple.Shared.Model.Issue;
 
 namespace Couple.Client.Adapters
@@ -38,24 +37,10 @@ namespace Couple.Client.Adapters
             Content = model.Content,
         };
 
-        public static List<TaskDto> ToTaskDto(IEnumerable<TaskModel> models) =>
-            models.Select(ToTaskDto).ToList();
-
         public static TaskDto ToTaskDto(TaskModel model) => new()
         {
             Id = model.Id,
             Content = model.Content,
-        };
-
-        public static List<IssueModel> ToModel(IEnumerable<IssueDto> models) => models.Select(ToModel).ToList();
-
-        public static IssueModel ToModel(IssueDto model) => new()
-        {
-            Id = model.Id,
-            Title = model.Title,
-            For = model.For,
-            Tasks = ToTaskModel(model.Tasks),
-            CreatedOn = model.CreatedOn,
         };
 
         public static IssueModel ToModel(CreateIssueDto model) => new()
@@ -111,17 +96,6 @@ namespace Couple.Client.Adapters
             Content = model.Content,
             IssueId = model.IssueId,
             IssueTitle = model.IssueTitle,
-            CreatedOn = model.CreatedOn,
-        };
-
-        public static List<IssueDto> ToDto(IEnumerable<IssueModel> models) => models.Select(ToDto).ToList();
-
-        public static IssueDto ToDto(IssueModel model) => new()
-        {
-            Id = model.Id,
-            Title = model.Title,
-            For = model.For,
-            Tasks = ToTaskDto(model.Tasks),
             CreatedOn = model.CreatedOn,
         };
     }

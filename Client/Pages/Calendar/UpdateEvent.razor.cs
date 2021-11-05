@@ -74,7 +74,7 @@ namespace Couple.Client.Pages.Calendar
             {
                 Event = EventAdapter.ToDto(ToUpdate),
                 Added = added,
-                Removed = IssueAdapter.ToDto(Removed),
+                Removed = EventAdapter.ToDto(Removed),
             };
             await HttpClient.PutAsJsonAsync($"api/Events", toUpdate);
         }
