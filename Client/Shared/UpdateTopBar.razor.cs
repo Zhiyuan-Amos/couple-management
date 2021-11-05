@@ -1,13 +1,15 @@
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
+using System;
 using System.Threading.Tasks;
 
-namespace Couple.Client.Pages.Common
+namespace Couple.Client.Shared
 {
-    public partial class CreateTopBar
+    public partial class UpdateTopBar
     {
-        [Parameter] public string Title { get; init; }
         [Inject] private IJSRuntime Js { get; init; }
+        [Parameter] public string Title { get; init; }
+        [Parameter] public Func<Task> OnDeleteCallback { get; set; }
 
         private async Task Cancel() => await Js.InvokeVoidAsync("navigateBack");
     }
