@@ -15,8 +15,11 @@ namespace Couple.Client.States.Issue
             get => _issues.AsReadOnly();
             set
             {
-                _issues = value.ToList();
+                _issues.Clear();
+                _issues.AddRange(value);
+
                 _idToIssue = value.ToDictionary(issue => issue.Id);
+
                 NotifyStateChanged();
             }
         }
