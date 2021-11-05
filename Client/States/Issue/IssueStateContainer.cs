@@ -7,7 +7,7 @@ namespace Couple.Client.States.Issue
 {
     public class IssueStateContainer : Notifier
     {
-        private List<IssueModel> _issues = new();
+        private readonly List<IssueModel> _issues = new();
         private Dictionary<Guid, IssueModel> _idToIssue = new();
 
         public IReadOnlyList<IssueModel> Issues
