@@ -34,7 +34,10 @@
       "route": "/manifest.json",
       "allowedRoles": [
         "anonymous"
-      ]
+      ],
+      "headers": {
+        "Cache-Control": "public, max-age=31536000, immutable"
+      }
     },
     {
       "route": "/icons/*",
@@ -50,12 +53,6 @@
     },
     {
       "route": "/favicon.ico",
-      "headers": {
-        "Cache-Control": "public, max-age=31536000, immutable"
-      }
-    },
-    {
-      "route": "/manifest.json",
       "headers": {
         "Cache-Control": "public, max-age=31536000, immutable"
       }
