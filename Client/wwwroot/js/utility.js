@@ -12,3 +12,7 @@ function Base64FromUint8Array(uint8Array)
 
     return btoa(data)
 }
+
+function navigateBack() {
+    history.back()
+}

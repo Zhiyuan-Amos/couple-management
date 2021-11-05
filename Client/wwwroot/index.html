@@ -85,10 +85,6 @@
             (await db).transaction("event", 'readwrite').store.delete(id);
         }
 
-        function navigateBack() {
-            history.back()
-        }
-
         function disableInput(wrapperElement) {
             const input = wrapperElement.querySelector("input");
             input.setAttribute("disabled", "true");
