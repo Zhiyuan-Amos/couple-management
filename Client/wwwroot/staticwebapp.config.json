@@ -34,10 +34,37 @@
       "route": "/manifest.json",
       "allowedRoles": [
         "anonymous"
-      ]
+      ],
+      "headers": {
+        "Cache-Control": "public, max-age=31536000, immutable"
+      }
     },
     {
       "route": "/icons/*",
+      "headers": {
+        "Cache-Control": "public, max-age=31536000, immutable"
+      }
+    },
+    {
+      "route": "/{css,js}/*",
+      "allowedRoles": [
+        "user"
+      ],
+      "headers": {
+        "Cache-Control": "public, max-age=31536000, immutable"
+      }
+    },
+    {
+      "route": "/Couple.Client.styles.css",
+      "allowedRoles": [
+        "user"
+      ],
+      "headers": {
+        "Cache-Control": "public, max-age=31536000, immutable"
+      }
+    },
+    {
+      "route": "/favicon.ico",
       "headers": {
         "Cache-Control": "public, max-age=31536000, immutable"
       }
