@@ -12,7 +12,7 @@ namespace Couple.Client.Shared
         {
             if (firstRender)
             {
-                await Synchronizer.SynchronizeAsync();
+                // await Synchronizer.SynchronizeAsync();
             }
         }
     }
