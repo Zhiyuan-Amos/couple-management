@@ -11,7 +11,7 @@ namespace Couple.Client.Pages.Issue.Components
 {
     public partial class CreateUpdateForm
     {
-        [Parameter] public Func<Task> OnSaveCallback { get; set; }
+        [EditorRequired] [Parameter] public Func<Task> OnSaveCallback { get; set; }
 
         [CascadingParameter(Name = "CreateUpdateIssueStateContainer")]
         private CreateUpdateIssueStateContainer CreateUpdateIssueStateContainer { get; init; }

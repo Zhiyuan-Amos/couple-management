@@ -13,7 +13,7 @@ namespace Couple.Client.Pages.Image
 {
     public partial class UpdateImage
     {
-        [Parameter] public Guid ImageId { get; set; }
+        [EditorRequired] [Parameter] public Guid ImageId { get; set; }
         private ImageModel _imageModel;
         private CreateUpdateImageStateContainer CreateUpdateImageStateContainer { get; set; }
 

@@ -11,7 +11,7 @@ namespace Couple.Client.Pages.Issue
 {
     public class UpdateIssueBase : CreateUpdateIssueBase
     {
-        [Parameter] public Guid IssueId { get; set; }
+        [EditorRequired] [Parameter] public Guid IssueId { get; set; }
         private IssueModel _currentIssueModel;
 
         protected override void OnInitialized()

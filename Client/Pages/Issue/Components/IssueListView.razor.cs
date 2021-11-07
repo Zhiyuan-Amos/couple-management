@@ -19,7 +19,7 @@ namespace Couple.Client.Pages.Issue.Components
         [Inject] private NavigationManager NavigationManager { get; init; }
         [Inject] private IJSRuntime Js { get; init; }
 
-        [Parameter] public List<IssueModel> Issues { get; set; }
+        [EditorRequired] [Parameter] public List<IssueModel> Issues { get; set; }
 
         private void EditIssue(IssueModel selectedIssue) => NavigationManager.NavigateTo($"/todo/{selectedIssue.Id}");
 
