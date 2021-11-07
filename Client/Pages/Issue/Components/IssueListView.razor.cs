@@ -7,7 +7,6 @@ using System.Threading.Tasks;
 using Couple.Client.Adapters;
 using Couple.Client.Model.Issue;
 using Couple.Client.States.Issue;
-using Couple.Client.ViewModel.Issue;
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
 

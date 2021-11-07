@@ -1,14 +1,13 @@
 using System;
 using System.Text.Json;
 using Couple.Client.Adapters;
-using Couple.Client.Services.Synchronizer;
 using Couple.Shared.Model;
 using Couple.Shared.Model.Change;
 using Couple.Shared.Model.Image;
 using Couple.Shared.Model.Issue;
 using Microsoft.JSInterop;
 
-namespace Couple.Client.Services
+namespace Couple.Client.Services.Synchronizer
 {
     public class CommandParser
     {
