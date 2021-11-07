@@ -8,11 +8,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Content Update="wwwroot\scss\*" CopyToPublishDirectory="Never" />
     <Content Update="wwwroot\appsettings.Development.json" CopyToPublishDirectory="Never" />
-
-    <Content Remove="compilerconfig.json" />
-    <Content Remove="libman.json" />
   </ItemGroup>
 
   <ItemGroup>
@@ -29,88 +25,4 @@
     <ServiceWorker Include="wwwroot\service-worker.js" PublishedContent="wwwroot\service-worker.published.js" />
   </ItemGroup>
 
-  <ItemGroup>
-    <_ContentIncludedByDefault Remove="wwwroot\css\bootstrap\bootstrap.min.css" />
-    <_ContentIncludedByDefault Remove="wwwroot\css\bootstrap\bootstrap.min.css.map" />
-    <_ContentIncludedByDefault Remove="wwwroot\css\bootstrap\scss\bootstrap-grid.scss" />
-    <_ContentIncludedByDefault Remove="wwwroot\css\bootstrap\scss\bootstrap-reboot.scss" />
-    <_ContentIncludedByDefault Remove="wwwroot\css\bootstrap\scss\bootstrap-utilities.scss" />
-    <_ContentIncludedByDefault Remove="wwwroot\css\bootstrap\scss\bootstrap.scss" />
-    <_ContentIncludedByDefault Remove="wwwroot\css\bootstrap\scss\forms\_floating-labels.scss" />
-    <_ContentIncludedByDefault Remove="wwwroot\css\bootstrap\scss\forms\_form-check.scss" />
-    <_ContentIncludedByDefault Remove="wwwroot\css\bootstrap\scss\forms\_form-control.scss" />
-    <_ContentIncludedByDefault Remove="wwwroot\css\bootstrap\scss\forms\_form-range.scss" />
-    <_ContentIncludedByDefault Remove="wwwroot\css\bootstrap\scss\forms\_form-select.scss" />
-    <_ContentIncludedByDefault Remove="wwwroot\css\bootstrap\scss\forms\_form-text.scss" />
-    <_ContentIncludedByDefault Remove="wwwroot\css\bootstrap\scss\forms\_input-group.scss" />
-    <_ContentIncludedByDefault Remove="wwwroot\css\bootstrap\scss\forms\_labels.scss" />
-    <_ContentIncludedByDefault Remove="wwwroot\css\bootstrap\scss\forms\_validation.scss" />
-    <_ContentIncludedByDefault Remove="wwwroot\css\bootstrap\scss\helpers\_clearfix.scss" />
-    <_ContentIncludedByDefault Remove="wwwroot\css\bootstrap\scss\helpers\_colored-links.scss" />
-    <_ContentIncludedByDefault Remove="wwwroot\css\bootstrap\scss\helpers\_position.scss" />
-    <_ContentIncludedByDefault Remove="wwwroot\css\bootstrap\scss\helpers\_ratio.scss" />
-    <_ContentIncludedByDefault Remove="wwwroot\css\bootstrap\scss\helpers\_stretched-link.scss" />
-    <_ContentIncludedByDefault Remove="wwwroot\css\bootstrap\scss\helpers\_text-truncation.scss" />
-    <_ContentIncludedByDefault Remove="wwwroot\css\bootstrap\scss\helpers\_visually-hidden.scss" />
-    <_ContentIncludedByDefault Remove="wwwroot\css\bootstrap\scss\mixins\_alert.scss" />
-    <_ContentIncludedByDefault Remove="wwwroot\css\bootstrap\scss\mixins\_border-radius.scss" />
-    <_ContentIncludedByDefault Remove="wwwroot\css\bootstrap\scss\mixins\_box-shadow.scss" />
-    <_ContentIncludedByDefault Remove="wwwroot\css\bootstrap\scss\mixins\_breakpoints.scss" />
-    <_ContentIncludedByDefault Remove="wwwroot\css\bootstrap\scss\mixins\_buttons.scss" />
-    <_ContentIncludedByDefault Remove="wwwroot\css\bootstrap\scss\mixins\_caret.scss" />
-    <_ContentIncludedByDefault Remove="wwwroot\css\bootstrap\scss\mixins\_clearfix.scss" />
-    <_ContentIncludedByDefault Remove="wwwroot\css\bootstrap\scss\mixins\_container.scss" />
-    <_ContentIncludedByDefault Remove="wwwroot\css\bootstrap\scss\mixins\_deprecate.scss" />
-    <_ContentIncludedByDefault Remove="wwwroot\css\bootstrap\scss\mixins\_forms.scss" />
-    <_ContentIncludedByDefault Remove="wwwroot\css\bootstrap\scss\mixins\_gradients.scss" />
-    <_ContentIncludedByDefault Remove="wwwroot\css\bootstrap\scss\mixins\_grid.scss" />
-    <_ContentIncludedByDefault Remove="wwwroot\css\bootstrap\scss\mixins\_image.scss" />
-    <_ContentIncludedByDefault Remove="wwwroot\css\bootstrap\scss\mixins\_list-group.scss" />
-    <_ContentIncludedByDefault Remove="wwwroot\css\bootstrap\scss\mixins\_lists.scss" />
-    <_ContentIncludedByDefault Remove="wwwroot\css\bootstrap\scss\mixins\_pagination.scss" />
-    <_ContentIncludedByDefault Remove="wwwroot\css\bootstrap\scss\mixins\_reset-text.scss" />
-    <_ContentIncludedByDefault Remove="wwwroot\css\bootstrap\scss\mixins\_resize.scss" />
-    <_ContentIncludedByDefault Remove="wwwroot\css\bootstrap\scss\mixins\_table-variants.scss" />
-    <_ContentIncludedByDefault Remove="wwwroot\css\bootstrap\scss\mixins\_text-truncate.scss" />
-    <_ContentIncludedByDefault Remove="wwwroot\css\bootstrap\scss\mixins\_transition.scss" />
-    <_ContentIncludedByDefault Remove="wwwroot\css\bootstrap\scss\mixins\_utilities.scss" />
-    <_ContentIncludedByDefault Remove="wwwroot\css\bootstrap\scss\mixins\_visually-hidden.scss" />
-    <_ContentIncludedByDefault Remove="wwwroot\css\bootstrap\scss\utilities\_api.scss" />
-    <_ContentIncludedByDefault Remove="wwwroot\css\bootstrap\scss\vendor\_rfs.scss" />
-    <_ContentIncludedByDefault Remove="wwwroot\css\bootstrap\scss\_accordion.scss" />
-    <_ContentIncludedByDefault Remove="wwwroot\css\bootstrap\scss\_alert.scss" />
-    <_ContentIncludedByDefault Remove="wwwroot\css\bootstrap\scss\_badge.scss" />
-    <_ContentIncludedByDefault Remove="wwwroot\css\bootstrap\scss\_breadcrumb.scss" />
-    <_ContentIncludedByDefault Remove="wwwroot\css\bootstrap\scss\_button-group.scss" />
-    <_ContentIncludedByDefault Remove="wwwroot\css\bootstrap\scss\_buttons.scss" />
-    <_ContentIncludedByDefault Remove="wwwroot\css\bootstrap\scss\_card.scss" />
-    <_ContentIncludedByDefault Remove="wwwroot\css\bootstrap\scss\_carousel.scss" />
-    <_ContentIncludedByDefault Remove="wwwroot\css\bootstrap\scss\_close.scss" />
-    <_ContentIncludedByDefault Remove="wwwroot\css\bootstrap\scss\_containers.scss" />
-    <_ContentIncludedByDefault Remove="wwwroot\css\bootstrap\scss\_dropdown.scss" />
-    <_ContentIncludedByDefault Remove="wwwroot\css\bootstrap\scss\_forms.scss" />
-    <_ContentIncludedByDefault Remove="wwwroot\css\bootstrap\scss\_functions.scss" />
-    <_ContentIncludedByDefault Remove="wwwroot\css\bootstrap\scss\_grid.scss" />
-    <_ContentIncludedByDefault Remove="wwwroot\css\bootstrap\scss\_helpers.scss" />
-    <_ContentIncludedByDefault Remove="wwwroot\css\bootstrap\scss\_images.scss" />
-    <_ContentIncludedByDefault Remove="wwwroot\css\bootstrap\scss\_list-group.scss" />
-    <_ContentIncludedByDefault Remove="wwwroot\css\bootstrap\scss\_mixins.scss" />
-    <_ContentIncludedByDefault Remove="wwwroot\css\bootstrap\scss\_modal.scss" />
-    <_ContentIncludedByDefault Remove="wwwroot\css\bootstrap\scss\_nav.scss" />
-    <_ContentIncludedByDefault Remove="wwwroot\css\bootstrap\scss\_navbar.scss" />
-    <_ContentIncludedByDefault Remove="wwwroot\css\bootstrap\scss\_pagination.scss" />
-    <_ContentIncludedByDefault Remove="wwwroot\css\bootstrap\scss\_popover.scss" />
-    <_ContentIncludedByDefault Remove="wwwroot\css\bootstrap\scss\_progress.scss" />
-    <_ContentIncludedByDefault Remove="wwwroot\css\bootstrap\scss\_reboot.scss" />
-    <_ContentIncludedByDefault Remove="wwwroot\css\bootstrap\scss\_root.scss" />
-    <_ContentIncludedByDefault Remove="wwwroot\css\bootstrap\scss\_spinners.scss" />
-    <_ContentIncludedByDefault Remove="wwwroot\css\bootstrap\scss\_tables.scss" />
-    <_ContentIncludedByDefault Remove="wwwroot\css\bootstrap\scss\_toasts.scss" />
-    <_ContentIncludedByDefault Remove="wwwroot\css\bootstrap\scss\_tooltip.scss" />
-    <_ContentIncludedByDefault Remove="wwwroot\css\bootstrap\scss\_transitions.scss" />
-    <_ContentIncludedByDefault Remove="wwwroot\css\bootstrap\scss\_type.scss" />
-    <_ContentIncludedByDefault Remove="wwwroot\css\bootstrap\scss\_utilities.scss" />
-    <_ContentIncludedByDefault Remove="wwwroot\css\bootstrap\scss\_variables.scss" />
-  </ItemGroup>
-    
 </Project>
