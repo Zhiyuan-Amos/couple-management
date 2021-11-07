@@ -1,7 +1,9 @@
 @using Couple.Client.Utility
 <div style="padding-bottom: 56px;" class="mh-100 overflow-auto">
-    <Virtualize Items="@Issues" Context="issue">
-        <div class="card bg-light mx-3 my-2"
+    @foreach (var (issue, issueIndex) in Issues.Select((issue, index) => (issue, index)))
+    {
+        <div style="@CssHelper.GetBackgroundColor(issueIndex)"
+             class="card mx-3 my-2"
              @onclick="@(() => EditIssue(issue))">
             <div class="card-body">
                 <div class="d-flex card-title">
@@ -28,5 +30,5 @@
                 }
             </div>
         </div>
-    </Virtualize>
+    }
 </div>

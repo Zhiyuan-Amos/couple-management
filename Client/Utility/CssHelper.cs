@@ -15,5 +15,15 @@ namespace Couple.Client.Utility
                 _ => throw new ArgumentOutOfRangeException(nameof(@for), @for, null)
             };
         }
+
+        public static string GetBackgroundColor(int index)
+        {
+            return (index % 3) switch
+            {
+                0 => "background-color:#FF99C8",
+                1 => "background-color:#A6BFAD",
+                2 => "background-color:#FCF6BD"
+            };
+        }
     }
 }
