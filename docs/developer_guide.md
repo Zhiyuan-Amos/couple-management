@@ -4,8 +4,8 @@
 
 ### Initialization
 
-1. Install [Visual Studio](https://visualstudio.microsoft.com/downloads/) for development.
-1. Install [Azure Functions Core Tools](https://docs.microsoft.com/en-us/azure/azure-functions/functions-run-local?tabs=windows%2Ccsharp%2Cbash#v2) to run Azure Functions locally.
+1. Install [Visual Studio](https://visualstudio.microsoft.com/downloads/) and [.NET 6 SDK](https://dotnet.microsoft.com/download/dotnet/6.0) for development.
+1. Install [Azure Functions Core Tools v4.x](https://docs.microsoft.com/en-us/azure/azure-functions/functions-run-local?tabs=windows%2Ccsharp%2Cbash#v2) to run Azure Functions locally.
 1. Install [Azure Cosmos DB Emulator](https://docs.microsoft.com/en-us/azure/cosmos-db/local-emulator?tabs=cli%2Cssl-netstd21) to run Azure Cosmos DB locally.
 1. Install [Azurite](https://docs.microsoft.com/en-us/azure/storage/common/storage-use-azurite?tabs=visual-studio) to run Azure Blob Storage locally.
     
