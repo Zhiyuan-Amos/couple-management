@@ -16,3 +16,7 @@ resource "azurerm_storage_container" "storageContainer" {
   storage_account_name  = azurerm_storage_account.storageAcc.name
   container_access_type = "blob"
 }
+
+output "storage_account_name" {
+  value = azurerm_storage_account.storageAcc.name
+}
