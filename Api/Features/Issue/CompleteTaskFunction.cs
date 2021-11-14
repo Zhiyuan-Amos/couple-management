@@ -1,13 +1,14 @@
 using System;
-using System.Net;
 using System.Threading.Tasks;
 using Couple.Api.Data;
 using Couple.Api.Infrastructure;
 using Couple.Shared.Model;
 using Couple.Shared.Model.Issue;
 using FluentValidation;
-using Microsoft.Azure.Functions.Worker;
-using Microsoft.Azure.Functions.Worker.Http;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Azure.WebJobs;
+using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.Extensions.Logging;
 
 namespace Couple.Api.Features.Issue
@@ -27,27 +28,23 @@ namespace Couple.Api.Features.Issue
             _currentUserService = currentUserService;
         }
 
-        [Function("CompleteTaskFunction")]
-        public async Task<HttpResponseData> Run(
+        [FunctionName("CompleteTaskFunction")]
+        public async Task<ActionResult> CompleteTask(
             [HttpTrigger(AuthorizationLevel.Anonymous, "put", Route = "Tasks/Complete")]
-            HttpRequestData req,
-            FunctionContext executionContext)
+            HttpRequest req,
+            ILogger log)
         {
             var form = await req.GetJsonBody<CompleteTaskDto, Validator>();
 
             if (!form.IsValid)
             {
-                var logger = executionContext.GetLogger(GetType().Name);
-                var errorMessage = form.ErrorMessage();
-                logger.LogWarning("{ErrorMessage}", errorMessage);
-                var response = req.CreateResponse(HttpStatusCode.BadRequest);
-                await response.WriteStringAsync(errorMessage);
-                return response;
+                log.LogWarning("{ErrorMessage}", form.ErrorMessage());
+                return form.ToBadRequest();
             }
 
             if (_currentUserService.PartnerId == null)
             {
-                return req.CreateResponse(HttpStatusCode.BadRequest);
+                return new BadRequestResult();
             }
 
             var toCreate = new Model.Change
@@ -64,7 +61,7 @@ namespace Couple.Api.Features.Issue
                 .Add(toCreate);
             await _context.SaveChangesAsync();
 
-            return req.CreateResponse(HttpStatusCode.OK);
+            return new OkResult();
         }
 
         private class Validator : AbstractValidator<CompleteTaskDto>

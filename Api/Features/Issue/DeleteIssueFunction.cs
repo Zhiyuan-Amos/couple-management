@@ -1,12 +1,14 @@
 using System;
-using System.Net;
 using System.Text.Json;
 using System.Threading.Tasks;
 using Couple.Api.Data;
 using Couple.Api.Infrastructure;
 using Couple.Shared.Model;
-using Microsoft.Azure.Functions.Worker;
-using Microsoft.Azure.Functions.Worker.Http;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Azure.WebJobs;
+using Microsoft.Azure.WebJobs.Extensions.Http;
+using Microsoft.Extensions.Logging;
 
 namespace Couple.Api.Features.Issue
 {
@@ -25,15 +27,15 @@ namespace Couple.Api.Features.Issue
             _currentUserService = currentUserService;
         }
 
-        [Function("DeleteIssueFunction")]
-        public async Task<HttpResponseData> Run(
-            [HttpTrigger(AuthorizationLevel.Anonymous, "delete", Route = "Issues/{id:guid}")]
-            HttpRequestData req,
-            Guid id)
+        [FunctionName("DeleteIssueFunction")]
+        public async Task<ActionResult> DeleteIssue(
+            [HttpTrigger(AuthorizationLevel.Anonymous, "delete", Route = "Issues/{id:guid}")] HttpRequest req,
+            Guid id,
+            ILogger log)
         {
             if (_currentUserService.PartnerId == null)
             {
-                return req.CreateResponse(HttpStatusCode.BadRequest);
+                return new BadRequestResult();
             }
 
             var toCreate = new Model.Change
@@ -50,7 +52,7 @@ namespace Couple.Api.Features.Issue
                 .Add(toCreate);
             await _context.SaveChangesAsync();
 
-            return req.CreateResponse(HttpStatusCode.OK);
+            return new OkResult();
         }
     }
 }

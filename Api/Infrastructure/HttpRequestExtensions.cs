@@ -4,12 +4,14 @@ using System.Text.Json;
 using System.Threading.Tasks;
 using FluentValidation;
 using FluentValidation.Results;
-using Microsoft.Azure.Functions.Worker.Http;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Azure.WebJobs.Extensions.Http;
 
 namespace Couple.Api.Infrastructure
 {
-    // Adapted from https://www.tomfaltesek.com/azure-functions-input-validation/
-    public static class HttpRequestDataExtensions
+    // https://www.tomfaltesek.com/azure-functions-input-validation/
+    public static class HttpRequestExtensions
     {
         private static readonly JsonSerializerOptions Options = new JsonSerializerOptions
         {
@@ -25,7 +27,7 @@ namespace Couple.Api.Infrastructure
         /// </typeparam>
         /// <param name="request"></param>
         /// <returns></returns>
-        public static async Task<ValidatableRequest<T>> GetJsonBody<T, TV>(this HttpRequestData request)
+        public static async Task<ValidatableRequest<T>> GetJsonBody<T, TV>(this HttpRequest request)
             where TV : AbstractValidator<T>, new()
         {
             var requestBody = await request.ReadAsStringAsync();
@@ -35,7 +37,7 @@ namespace Couple.Api.Infrastructure
 
             if (!validationResult.IsValid)
             {
-                return new()
+                return new ValidatableRequest<T>
                 {
                     Value = requestObject,
                     Json = requestBody,
@@ -44,12 +46,30 @@ namespace Couple.Api.Infrastructure
                 };
             }
 
-            return new()
+            return new ValidatableRequest<T>
             {
                 Value = requestObject,
                 Json = requestBody,
                 IsValid = true
             };
+        }
+    }
+
+    public static class ValidationExtensions
+    {
+        /// <summary>
+        /// Creates a <see cref="BadRequestObjectResult"/> containing a collection
+        /// of minimal validation error details.
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        public static BadRequestObjectResult ToBadRequest<T>(this ValidatableRequest<T> request)
+        {
+            return new BadRequestObjectResult(request.Errors.Select(e => new
+            {
+                Field = e.PropertyName,
+                Error = e.ErrorMessage
+            }));
         }
     }
 
@@ -74,9 +94,9 @@ namespace Couple.Api.Infrastructure
 
         public string ErrorMessage()
         {
-            return string.Join('\n', Errors
+            return Errors
                 .Select(error => error.ToString())
-                .ToList());
+                .ToString();
         }
     }
 }

@@ -1,5 +1,4 @@
 using System;
-using System.Net;
 using System.Threading.Tasks;
 using Couple.Api.Data;
 using Couple.Api.Infrastructure;
@@ -7,8 +6,10 @@ using Couple.Api.Validators;
 using Couple.Shared.Model;
 using Couple.Shared.Model.Event;
 using FluentValidation;
-using Microsoft.Azure.Functions.Worker;
-using Microsoft.Azure.Functions.Worker.Http;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Azure.WebJobs;
+using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.Extensions.Logging;
 
 namespace Couple.Api.Features.Event
@@ -28,27 +29,22 @@ namespace Couple.Api.Features.Event
             _currentUserService = currentUserService;
         }
 
-        [Function("CreateEventFunction")]
-        public async Task<HttpResponseData> Run(
-            [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "Events")]
-            HttpRequestData req,
-            FunctionContext executionContext)
+        [FunctionName("CreateEventFunction")]
+        public async Task<ActionResult> CreateEvent(
+            [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "Events")] HttpRequest req,
+            ILogger log)
         {
             var form = await req.GetJsonBody<CreateEventDto, Validator>();
 
             if (!form.IsValid)
             {
-                var logger = executionContext.GetLogger(GetType().Name);
-                var errorMessage = form.ErrorMessage();
-                logger.LogWarning("{ErrorMessage}", errorMessage);
-                var response = req.CreateResponse(HttpStatusCode.BadRequest);
-                await response.WriteStringAsync(errorMessage);
-                return response;
+                log.LogWarning("{ErrorMessage}", form.ErrorMessage());
+                return form.ToBadRequest();
             }
 
             if (_currentUserService.PartnerId == null)
             {
-                return req.CreateResponse(HttpStatusCode.BadRequest);
+                return new BadRequestResult();
             }
 
             var toCreate = new Model.Change
@@ -65,7 +61,7 @@ namespace Couple.Api.Features.Event
                 .Add(toCreate);
             await _context.SaveChangesAsync();
 
-            return req.CreateResponse(HttpStatusCode.OK);
+            return new OkResult();
         }
 
         private class Validator : AbstractValidator<CreateEventDto>
