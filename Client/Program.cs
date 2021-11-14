@@ -5,6 +5,7 @@ using Couple.Client.States.Calendar;
 using Couple.Client.States.Done;
 using Couple.Client.States.Issue;
 using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -16,6 +17,7 @@ namespace Couple.Client
         {
             var builder = WebAssemblyHostBuilder.CreateDefault(args);
             builder.RootComponents.Add<App>("#app");
+            builder.RootComponents.Add<HeadOutlet>("head::after");
 
             builder.Services
                 .AddTransient(_ => new HttpClient

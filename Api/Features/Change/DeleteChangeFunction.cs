@@ -1,5 +1,6 @@
 using System;
 using System.Linq;
+using System.Net;
 using System.Text.Json;
 using System.Threading.Tasks;
 using Azure.Storage.Blobs;
@@ -8,10 +9,8 @@ using Couple.Api.Infrastructure;
 using Couple.Shared.Model;
 using Couple.Shared.Model.Change;
 using FluentValidation;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.Azure.WebJobs;
-using Microsoft.Azure.WebJobs.Extensions.Http;
+using Microsoft.Azure.Functions.Worker;
+using Microsoft.Azure.Functions.Worker.Http;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 
@@ -29,17 +28,22 @@ namespace Couple.Api.Features.Change
             _context = context;
         }
 
-        [FunctionName("DeleteChangeFunction")]
-        public async Task<ActionResult> DeleteChange(
-            [HttpTrigger(AuthorizationLevel.Anonymous, "delete", Route = "Changes")] HttpRequest req,
-            ILogger log)
+        [Function("DeleteChangeFunction")]
+        public async Task<HttpResponseData> Run(
+            [HttpTrigger(AuthorizationLevel.Anonymous, "delete", Route = "Changes")]
+            HttpRequestData req,
+            FunctionContext executionContext)
         {
             var form = await req.GetJsonBody<DeleteChangeDto, Validator>();
 
             if (!form.IsValid)
             {
-                log.LogWarning("{ErrorMessage}", form.ErrorMessage());
-                return form.ToBadRequest();
+                var logger = executionContext.GetLogger(GetType().Name);
+                var errorMessage = form.ErrorMessage();
+                logger.LogWarning("{ErrorMessage}", errorMessage);
+                var response = req.CreateResponse(HttpStatusCode.BadRequest);
+                await response.WriteStringAsync(errorMessage);
+                return response;
             }
 
             var model = form.Value;
@@ -53,14 +57,14 @@ namespace Couple.Api.Features.Change
 
             if (!areIdsValid)
             {
-                return new BadRequestResult();
+                return req.CreateResponse(HttpStatusCode.BadRequest);
             }
 
             var canDelete = toDelete.All(change => change.UserId == _currentUserService.Id);
 
             if (!canDelete)
             {
-                return new ForbidResult();
+                return req.CreateResponse(HttpStatusCode.Forbidden);
             }
 
             _context
@@ -75,14 +79,14 @@ namespace Couple.Api.Features.Change
                 .Select(image => image.Id.ToString())
                 .ToList();
 
-            var connectionString = Environment.GetEnvironmentVariable("ImagesConnectionString")!;
+            var connectionString = Environment.GetEnvironmentVariable("ImagesConnectionString");
             foreach (var id in imageIdsToDelete)
             {
                 var client = new BlobClient(connectionString, "images", id);
                 await client.DeleteIfExistsAsync();
             }
 
-            return new OkResult();
+            return req.CreateResponse(HttpStatusCode.OK);
         }
 
         public class Validator : AbstractValidator<DeleteChangeDto>

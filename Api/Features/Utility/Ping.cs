@@ -1,19 +1,16 @@
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.Azure.WebJobs;
-using Microsoft.Azure.WebJobs.Extensions.Http;
-using Microsoft.Extensions.Logging;
+using System.Net;
+using Microsoft.Azure.Functions.Worker;
+using Microsoft.Azure.Functions.Worker.Http;
 
 namespace Couple.Api.Features.Utility
 {
-    public static class Ping
+    public class Ping
     {
-        [FunctionName("Ping")]
-        public static IActionResult Run(
-            [HttpTrigger(AuthorizationLevel.Function, "get", Route = null)] HttpRequest req,
-            ILogger log)
+        [Function("Ping")]
+        public HttpResponseData Run(
+            [HttpTrigger(AuthorizationLevel.Anonymous, "get")] HttpRequestData req)
         {
-            return new OkResult();
+            return req.CreateResponse(HttpStatusCode.OK);
         }
     }
 }

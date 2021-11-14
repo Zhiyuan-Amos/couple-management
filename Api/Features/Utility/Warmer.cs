@@ -1,19 +1,16 @@
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.Azure.WebJobs;
-using Microsoft.Azure.WebJobs.Extensions.Http;
-using Microsoft.Extensions.Logging;
+using System.Net;
+using Microsoft.Azure.Functions.Worker;
+using Microsoft.Azure.Functions.Worker.Http;
 
 namespace Couple.Api.Features.Utility
 {
-    public static class Warmer
+    public class Warmer
     {
-        [FunctionName("Warmer")]
-        public static IActionResult Run(
-            [HttpTrigger(AuthorizationLevel.Function, "get", "post", Route = null)] HttpRequest req,
-            ILogger log)
+        [Function("Warmer")]
+        public HttpResponseData Run(
+            [HttpTrigger(AuthorizationLevel.Anonymous, "get", "post")] HttpRequestData req)
         {
-            return new OkResult();
+            return req.CreateResponse(HttpStatusCode.OK);
         }
     }
 }
