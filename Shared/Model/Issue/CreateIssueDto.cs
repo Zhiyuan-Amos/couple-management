@@ -16,7 +16,7 @@ namespace Couple.Shared.Model.Issue
             Id = id;
             Title = title;
             For = @for;
-            Tasks = tasks;
+            Tasks = new(tasks);
             CreatedOn = createdOn;
         }
     }

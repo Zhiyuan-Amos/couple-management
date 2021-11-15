@@ -9,7 +9,7 @@ namespace Couple.Shared.Model.Change
 
         public DeleteChangeDto(List<Guid> guids)
         {
-            Guids = guids;
+            Guids = new(guids);
         }
     }
 }

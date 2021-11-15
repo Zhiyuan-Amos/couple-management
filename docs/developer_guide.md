@@ -64,6 +64,10 @@
 1. Azure Cosmos DB
 1. Azure Blob Storage
 
-## Guidelines
+## Guidelines & Caveats
 
 1. State Management: Within the same page, use `Parameters` or `Cascading Parameters`. Across Pages, use `States` or `Query String Parameters`.
+1. Deserialization:
+    1. Reading data from EF Core minimally requires properties to have init-only setter & private parameterless constructor
+    1. Deserializing through JS interop minimally requires properties to have init-only setter & public parameterless constructor
+    1. `List` cannot be deserialized into `IEnumerable`

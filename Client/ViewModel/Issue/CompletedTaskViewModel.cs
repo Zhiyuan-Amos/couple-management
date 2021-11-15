@@ -16,6 +16,6 @@ namespace Couple.Client.ViewModel.Issue
             List<string> contents,
             string issueTitle,
             DateTime createdOn) =>
-            (For, Contents, IssueTitle, CreatedOn) = (@for, contents, issueTitle, createdOn);
+            (For, Contents, IssueTitle, CreatedOn) = (@for, new(contents), issueTitle, createdOn);
     }
 }
