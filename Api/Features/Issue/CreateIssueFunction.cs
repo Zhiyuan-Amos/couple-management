@@ -1,14 +1,13 @@
 using System;
+using System.Net;
 using System.Threading.Tasks;
 using Couple.Api.Data;
 using Couple.Api.Infrastructure;
 using Couple.Shared.Model;
 using Couple.Shared.Model.Issue;
 using FluentValidation;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.Azure.WebJobs;
-using Microsoft.Azure.WebJobs.Extensions.Http;
+using Microsoft.Azure.Functions.Worker;
+using Microsoft.Azure.Functions.Worker.Http;
 using Microsoft.Extensions.Logging;
 
 namespace Couple.Api.Features.Issue
@@ -28,30 +27,35 @@ namespace Couple.Api.Features.Issue
             _currentUserService = currentUserService;
         }
 
-        [FunctionName("CreateIssueFunction")]
-        public async Task<ActionResult> CreateIssue(
+        [Function("CreateIssueFunction")]
+        public async Task<HttpResponseData> Run(
             [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "Issues")]
-            HttpRequest req,
-            ILogger log)
+            HttpRequestData req,
+            FunctionContext executionContext)
         {
             var form = await req.GetJsonBody<CreateIssueDto, Validator>();
 
             if (!form.IsValid)
             {
-                log.LogWarning("{ErrorMessage}", form.ErrorMessage());
-                return form.ToBadRequest();
+                var logger = executionContext.GetLogger(GetType().Name);
+                var errorMessage = form.ErrorMessage();
+                logger.LogWarning("{ErrorMessage}", errorMessage);
+                var response = req.CreateResponse(HttpStatusCode.BadRequest);
+                await response.WriteStringAsync(errorMessage);
+                return response;
             }
 
-            if (_currentUserService.PartnerId == null)
+            var claims = _currentUserService.GetClaims(req.Headers);
+            if (claims.PartnerId == null)
             {
-                return new BadRequestResult();
+                return req.CreateResponse(HttpStatusCode.BadRequest);
             }
 
             var toCreate = new Model.Change
             {
                 Id = Guid.NewGuid(),
                 Command = Command.CreateIssue,
-                UserId = _currentUserService.PartnerId,
+                UserId = claims.PartnerId,
                 Timestamp = _dateTimeService.Now,
                 Content = form.Json,
             };
@@ -61,7 +65,7 @@ namespace Couple.Api.Features.Issue
                 .Add(toCreate);
             await _context.SaveChangesAsync();
 
-            return new OkResult();
+            return req.CreateResponse(HttpStatusCode.OK);
         }
 
         private class Validator : AbstractValidator<CreateIssueDto>

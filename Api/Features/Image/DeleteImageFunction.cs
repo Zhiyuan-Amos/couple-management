@@ -1,14 +1,12 @@
 using System;
+using System.Net;
 using System.Text.Json;
 using System.Threading.Tasks;
 using Couple.Api.Data;
 using Couple.Api.Infrastructure;
 using Couple.Shared.Model;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.Azure.WebJobs;
-using Microsoft.Azure.WebJobs.Extensions.Http;
-using Microsoft.Extensions.Logging;
+using Microsoft.Azure.Functions.Worker;
+using Microsoft.Azure.Functions.Worker.Http;
 
 namespace Couple.Api.Features.Image
 {
@@ -27,23 +25,23 @@ namespace Couple.Api.Features.Image
             _currentUserService = currentUserService;
         }
 
-        [FunctionName("DeleteImageFunction")]
-        public async Task<ActionResult> DeleteImage(
+        [Function("DeleteImageFunction")]
+        public async Task<HttpResponseData> Run(
             [HttpTrigger(AuthorizationLevel.Anonymous, "delete", Route = "Images/{id:guid}")]
-            HttpRequest req,
-            Guid id,
-            ILogger log)
+            HttpRequestData req,
+            Guid id)
         {
-            if (_currentUserService.PartnerId == null)
+            var claims = _currentUserService.GetClaims(req.Headers);
+            if (claims.PartnerId == null)
             {
-                return new BadRequestResult();
+                return req.CreateResponse(HttpStatusCode.BadRequest);
             }
 
             var toCreate = new Model.Change
             {
                 Id = Guid.NewGuid(),
                 Command = Command.DeleteImage,
-                UserId = _currentUserService.PartnerId,
+                UserId = claims.PartnerId,
                 Timestamp = _dateTimeService.Now,
                 Content = JsonSerializer.Serialize(id),
             };
@@ -53,7 +51,7 @@ namespace Couple.Api.Features.Image
                 .Add(toCreate);
             await _context.SaveChangesAsync();
 
-            return new OkResult();
+            return req.CreateResponse(HttpStatusCode.OK);
         }
     }
 }

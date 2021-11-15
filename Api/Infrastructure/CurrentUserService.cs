@@ -1,41 +1,39 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http.Headers;
 using System.Security.Claims;
 using System.Text;
 using System.Text.Json;
-using Microsoft.AspNetCore.Http;
 
 namespace Couple.Api.Infrastructure
 {
     public class CurrentUserService : ICurrentUserService
     {
         private const string ClaimTypePartnerId = "PartnerId";
-        private readonly ClaimsPrincipal _claimsPrincipal;
 
-        public CurrentUserService(IHttpContextAccessor httpContextAccessor)
+        public Claims GetClaims(HttpHeaders headers)
         {
-            _claimsPrincipal = StaticWebAppsAuth.Parse(httpContextAccessor.HttpContext?.Request);
+            var clientPrincipal = StaticWebAppsAuth.Parse(headers);
+            return new(clientPrincipal.FindFirstValue(ClaimTypes.NameIdentifier),
+                clientPrincipal.FindFirstValue(ClaimTypes.Email),
+                clientPrincipal.FindFirstValue(ClaimTypePartnerId));
         }
-
-        public string Id => _claimsPrincipal.FindFirstValue(ClaimTypes.NameIdentifier);
-        public string Email => _claimsPrincipal.FindFirstValue(ClaimTypes.Email);
-        public string PartnerId => _claimsPrincipal.FindFirstValue(ClaimTypePartnerId);
 
         // from https://docs.microsoft.com/en-us/azure/static-web-apps/user-information?tabs=csharp#api-functions
         private static class StaticWebAppsAuth
         {
             private class ClientPrincipal
             {
-                public string IdentityProvider { get; set; }
-                public string UserId { get; set; }
-                public string UserDetails { get; set; }
-                public IEnumerable<string> UserRoles { get; set; }
+                public string? IdentityProvider { get; set; }
+                public string? UserId { get; set; }
+                public string? UserDetails { get; set; }
+                public IEnumerable<string>? UserRoles { get; set; }
             }
 
-            public static ClaimsPrincipal Parse(HttpRequest req)
+            public static ClaimsPrincipal Parse(HttpHeaders headers)
             {
-                var data = req.Headers["x-ms-client-principal"][0];
+                var data = headers.GetValues("x-ms-client-principal").First();
                 var decoded = Convert.FromBase64String(data);
                 var json = Encoding.ASCII.GetString(decoded);
                 var principal = JsonSerializer.Deserialize<ClientPrincipal>(json, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
@@ -50,7 +48,7 @@ namespace Couple.Api.Infrastructure
 
                 if (!roles.Any())
                 {
-                    return new ClaimsPrincipal();
+                    return new();
                 }
 
                 var adminAssignedId = principal.UserRoles
@@ -68,11 +66,11 @@ namespace Couple.Api.Infrastructure
                 // See https://github.com/Azure/static-web-apps/issues/3
                 // An alternative implementation is to return a custom Cookie / JWT, but that requires more effort
                 // with little gains, given the current state of the project.
-                identity.AddClaim(new Claim(ClaimTypes.NameIdentifier, adminAssignedId[3..]));
-                identity.AddClaim(new Claim(ClaimTypes.Email, principal.UserDetails));
-                identity.AddClaim(new Claim(ClaimTypePartnerId, partnerId[10..]));
+                identity.AddClaim(new(ClaimTypes.NameIdentifier, adminAssignedId[3..]));
+                identity.AddClaim(new(ClaimTypes.Email, principal.UserDetails));
+                identity.AddClaim(new(ClaimTypePartnerId, partnerId[10..]));
                 identity.AddClaims(roles);
-                return new ClaimsPrincipal(identity);
+                return new(identity);
             }
         }
     }

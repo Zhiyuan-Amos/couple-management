@@ -1,21 +1,20 @@
 using System;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Text.Json;
 using System.Threading.Tasks;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
+using Azure.Storage.Blobs;
 using Couple.Api.Data;
 using Couple.Api.Infrastructure;
 using Couple.Shared.Model;
 using Couple.Shared.Model.Change;
 using Couple.Shared.Model.Image;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.Azure.WebJobs;
-using Microsoft.Azure.WebJobs.Extensions.Http;
+using Microsoft.Azure.Functions.Worker;
+using Microsoft.Azure.Functions.Worker.Http;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Logging;
 
 namespace Couple.Api.Features.Change
 {
@@ -34,19 +33,19 @@ namespace Couple.Api.Features.Change
             _context = context;
         }
 
-        [FunctionName("SynchronizeChangeFunction")]
-        public async Task<ActionResult> Synchronize(
-            [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "synchronize")] HttpRequest req,
-            ILogger log,
-            IBinder binder)
+        [Function("SynchronizeChangeFunction")]
+        public async Task<HttpResponseData> Run(
+            [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "Synchronize")]
+            HttpRequestData req)
         {
             // Running out of memory (1.5GB, see https://docs.microsoft.com/en-us/azure/azure-resource-manager/management/azure-subscription-service-limits#azure-functions-limits)
             // or sending massive amounts of data to the Client in an instance is not expected to occur
             // as Synchronization is expected to happen frequently, and the synchronized data is deleted from the
             // database.
+            var claims = _currentUserService.GetClaims(req.Headers);
             var toReturn = await _context
                 .Changes
-                .Where(change => change.UserId == _currentUserService.Id)
+                .Where(change => change.UserId == claims.Id)
                 .OrderBy(change => change.Timestamp)
                 .ProjectTo<ChangeDto>(_mapper.ConfigurationProvider)
                 .ToListAsync();
@@ -60,12 +59,11 @@ namespace Couple.Api.Features.Change
 
                 var image = JsonSerializer.Deserialize<Model.Image>(change.Content);
 
-                var blobAttribute = new BlobAttribute($"images/{image.Id}", FileAccess.Read)
-                {
-                    Connection = "ImagesConnectionString"
-                };
-                await using var stream = binder.Bind<Stream>(blobAttribute);
-                var data = new byte[stream.Length];
+                var connectionString = Environment.GetEnvironmentVariable("ImagesConnectionString");
+                var client = new BlobClient(connectionString, "images", image!.Id.ToString());
+                var stream = new MemoryStream();
+                await client.DownloadToAsync(stream);
+                var data = stream.ToArray();
                 await stream.ReadAsync(data.AsMemory(0, (int)stream.Length));
 
                 if (change.Command == Command.CreateImage)
@@ -92,7 +90,9 @@ namespace Couple.Api.Features.Change
                 }
             }
 
-            return new OkObjectResult(toReturn);
+            var response = req.CreateResponse(HttpStatusCode.OK);
+            await response.WriteAsJsonAsync(toReturn);
+            return response;
         }
     }
 }

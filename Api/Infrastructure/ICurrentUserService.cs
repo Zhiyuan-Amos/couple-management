@@ -1,9 +1,9 @@
+using System.Net.Http.Headers;
+
 namespace Couple.Api.Infrastructure
 {
     public interface ICurrentUserService
     {
-        string Id { get; }
-        string Email { get; }
-        string PartnerId { get; }
+        Claims GetClaims(HttpHeaders headers);
     }
 }

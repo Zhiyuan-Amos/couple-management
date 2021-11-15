@@ -1,18 +1,18 @@
 using System;
 using System.IO;
+using System.Net;
 using System.Text.Json;
 using System.Threading.Tasks;
 using AutoMapper;
+using Azure.Storage.Blobs;
 using Couple.Api.Data;
 using Couple.Api.Infrastructure;
 using Couple.Shared.Model;
 using Couple.Shared.Model.Image;
 using Couple.Shared.Utility;
 using FluentValidation;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.Azure.WebJobs;
-using Microsoft.Azure.WebJobs.Extensions.Http;
+using Microsoft.Azure.Functions.Worker;
+using Microsoft.Azure.Functions.Worker.Http;
 using Microsoft.Extensions.Logging;
 
 namespace Couple.Api.Features.Image
@@ -35,24 +35,28 @@ namespace Couple.Api.Features.Image
             _mapper = mapper;
         }
 
-        [FunctionName("UpdateImageFunction")]
-        public async Task<ActionResult> UpdateImage(
+        [Function("UpdateImageFunction")]
+        public async Task<HttpResponseData> Run(
             [HttpTrigger(AuthorizationLevel.Anonymous, "put", Route = "Images")]
-            HttpRequest req,
-            ILogger log,
-            IBinder binder)
+            HttpRequestData req,
+            FunctionContext executionContext)
         {
             var form = await req.GetJsonBody<UpdateImageDto, Validator>();
 
             if (!form.IsValid)
             {
-                log.LogWarning("{ErrorMessage}", form.ErrorMessage());
-                return form.ToBadRequest();
+                var logger = executionContext.GetLogger(GetType().Name);
+                var errorMessage = form.ErrorMessage();
+                logger.LogWarning("{ErrorMessage}", errorMessage);
+                var response = req.CreateResponse(HttpStatusCode.BadRequest);
+                await response.WriteStringAsync(errorMessage);
+                return response;
             }
 
-            if (_currentUserService.PartnerId == null)
+            var claims = _currentUserService.GetClaims(req.Headers);
+            if (claims.PartnerId == null)
             {
-                return new BadRequestResult();
+                return req.CreateResponse(HttpStatusCode.BadRequest);
             }
 
             var dto = form.Value;
@@ -60,7 +64,7 @@ namespace Couple.Api.Features.Image
             {
                 Id = Guid.NewGuid(),
                 Command = Command.UpdateImage,
-                UserId = _currentUserService.PartnerId,
+                UserId = claims.PartnerId,
                 Timestamp = _dateTimeService.Now,
                 Content = JsonSerializer.Serialize(_mapper.Map<Model.Image>(dto)),
             };
@@ -70,15 +74,11 @@ namespace Couple.Api.Features.Image
                 .Add(toCreate);
             await _context.SaveChangesAsync();
 
-            // Late binding is required to name the file using the Id
-            var blobAttribute = new BlobAttribute($"images/{dto.Id}", FileAccess.Write)
-            {
-                Connection = "ImagesConnectionString"
-            };
-            await using var stream = binder.Bind<Stream>(blobAttribute);
-            await stream.WriteAsync(dto.Data.AsMemory(0, dto.Data.Length));
+            var connectionString = Environment.GetEnvironmentVariable("ImagesConnectionString");
+            var client = new BlobClient(connectionString, "images", dto.Id.ToString());
+            await client.UploadAsync(new BinaryData(dto.Data), true);
 
-            return new OkResult();
+            return req.CreateResponse(HttpStatusCode.OK);
         }
 
         private class Validator : AbstractValidator<UpdateImageDto>

@@ -8,10 +8,11 @@ namespace Couple.Shared.Utility
     {
         // See https://www.filesignatures.net/
         private static readonly Dictionary<string, List<byte[]>> ImageSignatures =
-            new Dictionary<string, List<byte[]>>
+            new()
             {
                 {
-                    ".jpg", new List<byte[]>
+                    ".jpg",
+                    new()
                     {
                         new byte[] { 0xFF, 0xD8, 0xFF, 0xE0 },
                         new byte[] { 0xFF, 0xD8, 0xFF, 0xE1 },
@@ -19,7 +20,8 @@ namespace Couple.Shared.Utility
                     }
                 },
                 {
-                    ".jpeg", new List<byte[]>
+                    ".jpeg",
+                    new()
                     {
                         new byte[] { 0xFF, 0xD8, 0xFF, 0xE0 },
                         new byte[] { 0xFF, 0xD8, 0xFF, 0xE2 },
@@ -27,9 +29,10 @@ namespace Couple.Shared.Utility
                     }
                 },
                 {
-                    ".png", new List<byte[]>
+                    ".png",
+                    new()
                     {
-                        new byte[] {0x89, 0x50, 0x4E, 0x47, 0x0D, 0x0A, 0x1A, 0x0A},
+                        new byte[] { 0x89, 0x50, 0x4E, 0x47, 0x0D, 0x0A, 0x1A, 0x0A },
                     }
                 }
             };
@@ -49,6 +52,6 @@ namespace Couple.Shared.Utility
         }
 
         // Less precise validation compared to IsImage(Stream)
-        public static bool IsImage(string fileExtension) => ImageSignatures.Keys.Contains(fileExtension);
+        public static bool IsImage(string fileExtension) => ImageSignatures.ContainsKey(fileExtension);
     }
 }
