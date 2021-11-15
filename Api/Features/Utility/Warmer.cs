@@ -8,7 +8,7 @@ namespace Couple.Api.Features.Utility
     {
         [Function("Warmer")]
         public HttpResponseData Run(
-            [HttpTrigger(AuthorizationLevel.Anonymous, "get", "post")] HttpRequestData req)
+            [HttpTrigger(AuthorizationLevel.Anonymous, "get")] HttpRequestData req)
         {
             return req.CreateResponse(HttpStatusCode.OK);
         }
