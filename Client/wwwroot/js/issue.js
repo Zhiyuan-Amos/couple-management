@@ -27,7 +27,7 @@ async function completeTask(completedTask) {
         ? issueStore.delete(completedTask.issueId)
         : issueStore.put(toUpdate);
 
-    const key = completedTask.createdOnDate
+    const key = formatDate(new Date(completedTask.createdOn))
     const existingDoneOnDate = await doneStore.get(key)
 
     let completedTaskPromise

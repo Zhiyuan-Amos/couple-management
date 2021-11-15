@@ -12,7 +12,6 @@ namespace Couple.Client.Model.Issue
         public Guid IssueId { get; }
         public string IssueTitle { get; }
         public DateTime CreatedOn { get; }
-        public string CreatedOnDate => CreatedOn.ToString("dd/MM/yyyy");
 
         public CreateCompletedTaskModel(Guid id, For @for, string content, Guid issueId, string issueTitle, DateTime createdOn)
         {
