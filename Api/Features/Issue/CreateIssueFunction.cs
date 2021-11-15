@@ -51,14 +51,11 @@ namespace Couple.Api.Features.Issue
                 return req.CreateResponse(HttpStatusCode.BadRequest);
             }
 
-            var toCreate = new Model.Change
-            {
-                Id = Guid.NewGuid(),
-                Command = Command.CreateIssue,
-                UserId = claims.PartnerId,
-                Timestamp = _dateTimeService.Now,
-                Content = form.Json,
-            };
+            var toCreate = new Model.Change(Guid.NewGuid(),
+                Command.CreateIssue,
+                claims.PartnerId,
+                _dateTimeService.Now,
+                form.Json);
 
             _context
                 .Changes

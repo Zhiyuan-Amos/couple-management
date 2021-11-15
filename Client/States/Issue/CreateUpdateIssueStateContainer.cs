@@ -18,11 +18,7 @@ namespace Couple.Client.States.Issue
 
         public void AddTask(string content)
         {
-            _tasks.Add(new()
-            {
-                Id = Guid.NewGuid(),
-                Content = content,
-            });
+            _tasks.Add(new(Guid.NewGuid(), content));
         }
 
         public void RemoveEmptyTasks() => _tasks.RemoveAll(task => !task.Content.Any());

@@ -4,8 +4,15 @@ namespace Couple.Api.Model
 {
     public class Image
     {
-        public Guid Id { get; set; }
-        public DateTime TakenOn { get; set; }
-        public bool IsFavourite { get; set; }
+        public Guid Id { get; }
+        public DateTime TakenOn { get; }
+        public bool IsFavourite { get; }
+
+        public Image(Guid id, DateTime takenOn, bool isFavourite)
+        {
+            Id = id;
+            TakenOn = takenOn;
+            IsFavourite = isFavourite;
+        }
     }
 }

@@ -17,25 +17,18 @@ namespace Couple.Client.Pages.Issue
                 For.Him,
                 new List<TaskModel>
                 {
-                    new()
-                    {
-                        Id = Guid.NewGuid(),
-                        Content = "",
-                    },
+                    new(Guid.NewGuid(), ""),
                 });
         }
 
         protected override async Task Save()
         {
             var id = Guid.NewGuid();
-            var toPersist = new IssueModel
-            {
-                Id = id,
-                Title = CreateUpdateIssueStateContainer.Title,
-                For = CreateUpdateIssueStateContainer.For,
-                Tasks = IssueAdapter.ToTaskModel(CreateUpdateIssueStateContainer.Tasks),
-                CreatedOn = DateTime.Now,
-            };
+            var toPersist = new IssueModel(id,
+                CreateUpdateIssueStateContainer.Title,
+                CreateUpdateIssueStateContainer.For,
+                IssueAdapter.ToTaskModel(CreateUpdateIssueStateContainer.Tasks),
+                DateTime.Now);
             await Js.InvokeVoidAsync("createIssue", toPersist);
 
             IssueStateContainer.Issues = await Js.InvokeAsync<List<IssueModel>>("getIssues");

@@ -44,12 +44,9 @@ namespace Couple.Client.Services.Synchronizer
                 await command.Execute();
             }
 
-            var idsToDelete = new DeleteChangeDto
-            {
-                Guids = toSynchronize
-                    .Select(change => change.Id)
-                    .ToList(),
-            };
+            var idsToDelete = new DeleteChangeDto(toSynchronize
+                .Select(change => change.Id)
+                .ToList());
 
             if (idsToDelete.Guids.Any())
             {

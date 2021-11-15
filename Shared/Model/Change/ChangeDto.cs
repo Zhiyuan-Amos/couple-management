@@ -4,10 +4,19 @@ namespace Couple.Shared.Model.Change
 {
     public class ChangeDto
     {
-        public Guid Id { get; set; }
-        public string Command { get; set; }
-        public string UserId { get; set; }
-        public DateTime Timestamp { get; set; }
-        public string Content { get; set; }
+        public Guid Id { get; }
+        public string Command { get; }
+        public string UserId { get; }
+        public DateTime Timestamp { get; }
+        public string Content { get; }
+
+        public ChangeDto(Guid id, string command, string userId, DateTime timestamp, string content)
+        {
+            Id = id;
+            Command = command;
+            UserId = userId;
+            Timestamp = timestamp;
+            Content = content;
+        }
     }
 }

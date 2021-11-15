@@ -4,13 +4,19 @@ namespace Couple.Api.Model
 {
     public class Change
     {
-        public Guid Id { get; set; }
-        public string Command { get; set; }
-        public string UserId { get; set; }
-        public DateTime Timestamp { get; set; }
+        public Guid Id { get; }
+        public string Command { get; }
+        public string UserId { get; }
+        public DateTime Timestamp { get; }
+        public string Content { get; }
 
-        // Ideally, this is a parent type where different forms of content inherit this parent type.
-        // However, owned types do not support inheritance https://github.com/dotnet/efcore/issues/9630.
-        public string Content { get; set; }
+        public Change(Guid id, string command, string userId, DateTime timestamp, string content)
+        {
+            Id = id;
+            Command = command;
+            UserId = userId;
+            Timestamp = timestamp;
+            Content = content;
+        }
     }
 }

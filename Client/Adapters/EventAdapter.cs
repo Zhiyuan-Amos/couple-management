@@ -48,11 +48,7 @@ namespace Couple.Client.Adapters
         public static List<TaskDto> ToTaskDto(IEnumerable<TaskModel> models) =>
             models.Select(ToTaskDto).ToList();
 
-        public static TaskDto ToTaskDto(TaskModel model) => new()
-        {
-            Id = model.Id,
-            Content = model.Content,
-        };
+        public static TaskDto ToTaskDto(TaskModel model) => new(model.Id, model.Content);
 
         public static EventModel ToModel(UpdateEventViewModel model) => new()
         {

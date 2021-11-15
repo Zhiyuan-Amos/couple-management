@@ -37,14 +37,11 @@ namespace Couple.Api.Features.Event
                 return req.CreateResponse(HttpStatusCode.BadRequest);
             }
 
-            var toCreate = new Model.Change
-            {
-                Id = Guid.NewGuid(),
-                Command = Command.DeleteEvent,
-                UserId = claims.PartnerId,
-                Timestamp = _dateTimeService.Now,
-                Content = JsonSerializer.Serialize(id),
-            };
+            var toCreate = new Model.Change(Guid.NewGuid(),
+                Command.DeleteEvent,
+                claims.PartnerId,
+                _dateTimeService.Now,
+                JsonSerializer.Serialize(id));
 
             _context
                 .Changes

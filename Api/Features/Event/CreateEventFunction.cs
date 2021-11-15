@@ -52,14 +52,11 @@ namespace Couple.Api.Features.Event
                 return req.CreateResponse(HttpStatusCode.BadRequest);
             }
 
-            var toCreate = new Model.Change
-            {
-                Id = Guid.NewGuid(),
-                Command = Command.CreateEvent,
-                UserId = claims.PartnerId,
-                Timestamp = _dateTimeService.Now,
-                Content = form.Json,
-            };
+            var toCreate = new Model.Change(Guid.NewGuid(),
+                Command.CreateEvent,
+                claims.PartnerId,
+                _dateTimeService.Now,
+                form.Json);
 
             _context
                 .Changes

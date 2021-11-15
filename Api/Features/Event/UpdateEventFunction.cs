@@ -20,8 +20,8 @@ namespace Couple.Api.Features.Event
         private readonly ICurrentUserService _currentUserService;
 
         public UpdateEventFunction(ChangeContext changeContext,
-                                   IDateTimeService dateTimeService,
-                                   ICurrentUserService currentUserService)
+            IDateTimeService dateTimeService,
+            ICurrentUserService currentUserService)
         {
             _changeContext = changeContext;
             _dateTimeService = dateTimeService;
@@ -52,14 +52,11 @@ namespace Couple.Api.Features.Event
                 return req.CreateResponse(HttpStatusCode.BadRequest);
             }
 
-            var toCreate = new Model.Change
-            {
-                Id = Guid.NewGuid(),
-                Command = Command.UpdateEvent,
-                UserId = claims.PartnerId,
-                Timestamp = _dateTimeService.Now,
-                Content = form.Json,
-            };
+            var toCreate = new Model.Change(Guid.NewGuid(),
+                Command.UpdateEvent,
+                claims.PartnerId,
+                _dateTimeService.Now,
+                form.Json);
 
             _changeContext
                 .Changes

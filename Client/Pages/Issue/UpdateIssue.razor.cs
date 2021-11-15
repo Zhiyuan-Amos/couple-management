@@ -12,7 +12,7 @@ namespace Couple.Client.Pages.Issue
     public class UpdateIssueBase : CreateUpdateIssueBase
     {
         [EditorRequired] [Parameter] public Guid IssueId { get; set; }
-        private IssueModel _currentIssueModel;
+        private IssueModel? _currentIssueModel;
 
         protected override void OnInitialized()
         {
@@ -39,14 +39,11 @@ namespace Couple.Client.Pages.Issue
 
         protected override async Task Save()
         {
-            var toPersist = new IssueModel
-            {
-                Id = IssueId,
-                Title = CreateUpdateIssueStateContainer.Title,
-                For = CreateUpdateIssueStateContainer.For,
-                Tasks = IssueAdapter.ToTaskModel(CreateUpdateIssueStateContainer.Tasks),
-                CreatedOn = _currentIssueModel.CreatedOn,
-            };
+            var toPersist = new IssueModel(IssueId,
+                CreateUpdateIssueStateContainer.Title,
+                CreateUpdateIssueStateContainer.For,
+                IssueAdapter.ToTaskModel(CreateUpdateIssueStateContainer.Tasks),
+                _currentIssueModel.CreatedOn);
             await Js.InvokeVoidAsync("updateIssue", toPersist);
 
             IssueStateContainer.Issues = await Js.InvokeAsync<List<IssueModel>>("getIssues");

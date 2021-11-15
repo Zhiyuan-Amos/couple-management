@@ -61,14 +61,11 @@ namespace Couple.Api.Features.Image
             }
 
             var dto = form.Value;
-            var toCreate = new Model.Change
-            {
-                Id = Guid.NewGuid(),
-                Command = Command.CreateImage,
-                UserId = claims.PartnerId,
-                Timestamp = _dateTimeService.Now,
-                Content = JsonSerializer.Serialize(_mapper.Map<Model.Image>(dto)),
-            };
+            var toCreate = new Model.Change(Guid.NewGuid(),
+                Command.CreateImage,
+                claims.PartnerId,
+                _dateTimeService.Now,
+                JsonSerializer.Serialize(_mapper.Map<Model.Image>(dto)));
 
             _context
                 .Changes

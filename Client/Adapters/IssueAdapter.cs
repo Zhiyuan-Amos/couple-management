@@ -11,92 +11,38 @@ namespace Couple.Client.Adapters
         public static List<TaskModel> ToTaskModel(IEnumerable<TaskDto> models) =>
             models.Select(ToTaskModel).ToList();
 
-        public static TaskModel ToTaskModel(TaskDto model) => new()
-        {
-            Id = model.Id,
-            Content = model.Content,
-        };
+        public static TaskModel ToTaskModel(TaskDto model) => new(model.Id, model.Content);
 
         public static List<TaskModel> ToTaskModel(IEnumerable<IReadOnlyTaskViewModel> models) =>
             models.Select(ToTaskModel).ToList();
 
-        public static TaskModel ToTaskModel(IReadOnlyTaskViewModel model) => new()
-        {
-            Id = model.Id,
-            Content = model.Content,
-        };
+        public static TaskModel ToTaskModel(IReadOnlyTaskViewModel model) => new(model.Id, model.Content);
 
         public static List<CreateUpdateTaskViewModel>
             ToCreateUpdateTaskViewModel(IEnumerable<TaskModel> models) =>
             models.Select(ToCreateUpdateTaskViewModel)
                 .ToList();
 
-        public static CreateUpdateTaskViewModel ToCreateUpdateTaskViewModel(TaskModel model) => new()
-        {
-            Id = model.Id,
-            Content = model.Content,
-        };
+        public static CreateUpdateTaskViewModel ToCreateUpdateTaskViewModel(TaskModel model) => new(model.Id, model.Content);
 
-        public static TaskDto ToTaskDto(TaskModel model) => new()
-        {
-            Id = model.Id,
-            Content = model.Content,
-        };
+        public static TaskDto ToTaskDto(TaskModel model) => new(model.Id, model.Content);
 
-        public static IssueModel ToModel(CreateIssueDto model) => new()
-        {
-            Id = model.Id,
-            Title = model.Title,
-            For = model.For,
-            Tasks = ToTaskModel(model.Tasks),
-            CreatedOn = model.CreatedOn,
-        };
+        public static IssueModel ToModel(CreateIssueDto model) => new(model.Id, model.Title, model.For,
+            ToTaskModel(model.Tasks), model.CreatedOn);
 
-        public static IssueModel ToModel(UpdateIssueDto model) => new()
-        {
-            Id = model.Id,
-            Title = model.Title,
-            For = model.For,
-            Tasks = ToTaskModel(model.Tasks),
-            CreatedOn = model.CreatedOn,
-        };
+        public static IssueModel ToModel(UpdateIssueDto model) => new(model.Id, model.Title, model.For,
+            ToTaskModel(model.Tasks), model.CreatedOn);
 
-        public static CreateCompletedTaskModel ToCompletedModel(CompleteTaskDto model) => new()
-        {
-            Id = model.Id,
-            For = model.For,
-            Content = model.Content,
-            IssueId = model.IssueId,
-            IssueTitle = model.IssueTitle,
-            CreatedOn = model.CreatedOn,
-        };
+        public static CreateCompletedTaskModel ToCompletedModel(CompleteTaskDto model) => new(model.Id, model.For,
+            model.Content, model.IssueId, model.IssueTitle, model.CreatedOn);
 
-        public static CreateIssueDto ToCreateDto(IssueModel model) => new()
-        {
-            Id = model.Id,
-            Title = model.Title,
-            For = model.For,
-            Tasks = model.Tasks.Select(ToTaskDto).ToList(),
-            CreatedOn = model.CreatedOn,
-        };
+        public static CreateIssueDto ToCreateDto(IssueModel model) => new(model.Id, model.Title, model.For,
+            model.Tasks.Select(ToTaskDto).ToList(), model.CreatedOn);
 
-        public static UpdateIssueDto ToUpdateDto(IssueModel model) => new()
-        {
-            Id = model.Id,
-            Title = model.Title,
-            For = model.For,
-            Tasks = model.Tasks.Select(ToTaskDto).ToList(),
-            CreatedOn = model.CreatedOn,
-        };
+        public static UpdateIssueDto ToUpdateDto(IssueModel model) => new(model.Id, model.Title, model.For,
+            model.Tasks.Select(ToTaskDto).ToList(), model.CreatedOn);
 
-        public static CompleteTaskDto ToCompleteDto(CreateCompletedTaskModel model) => new()
-        {
-            Id = model.Id,
-            For = model.For,
-            Content = model.Content,
-            IssueId = model.IssueId,
-            IssueTitle = model.IssueTitle,
-            CreatedOn = model.CreatedOn,
-        };
+        public static CompleteTaskDto ToCompleteDto(CreateCompletedTaskModel model) => new(model.Id, model.For,
+            model.Content, model.IssueId, model.IssueTitle, model.CreatedOn);
     }
 }

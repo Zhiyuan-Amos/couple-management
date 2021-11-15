@@ -14,12 +14,12 @@ namespace Couple.Client.Pages.Issue.Components
 {
     public partial class IssueListView
     {
-        [Inject] protected IssueStateContainer IssueStateContainer { get; init; }
-        [Inject] protected HttpClient HttpClient { get; init; }
-        [Inject] private NavigationManager NavigationManager { get; init; }
-        [Inject] private IJSRuntime Js { get; init; }
+        [Inject] protected IssueStateContainer? IssueStateContainer { get; init; }
+        [Inject] protected HttpClient? HttpClient { get; init; }
+        [Inject] private NavigationManager? NavigationManager { get; init; }
+        [Inject] private IJSRuntime? Js { get; init; }
 
-        [EditorRequired] [Parameter] public List<IssueModel> Issues { get; set; }
+        [EditorRequired] [Parameter] public List<IssueModel>? Issues { get; set; }
 
         private void EditIssue(IssueModel selectedIssue) => NavigationManager.NavigateTo($"/todo/{selectedIssue.Id}");
 
@@ -27,15 +27,12 @@ namespace Couple.Client.Pages.Issue.Components
         {
             var viewModel = Issues.Single(x => x.Id == id);
 
-            var toPersist = new CreateCompletedTaskModel
-            {
-                Id = task.Id,
-                For = viewModel.For,
-                Content = task.Content,
-                IssueId = id,
-                IssueTitle = viewModel.Title,
-                CreatedOn = DateTime.Now,
-            };
+            var toPersist = new CreateCompletedTaskModel(task.Id,
+                viewModel.For,
+                task.Content,
+                id,
+                viewModel.Title,
+                DateTime.Now);
 
             await Js.InvokeVoidAsync("completeTask", toPersist);
             IssueStateContainer.Issues = await Js.InvokeAsync<List<IssueModel>>("getIssues");
