@@ -70,14 +70,12 @@ namespace Couple.Api.Features.Change
                 if (change.Command == Command.CreateImage)
                 {
                     var toSerialize = new CreateImageDto(image.Id, image.TakenOn, data, image.IsFavourite);
-                    toReturn[i] = new(change.Id, change.Command, change.UserId, change.Timestamp,
-                        JsonSerializer.Serialize(toSerialize));
+                    toReturn[i] = new(change.Id, change.Command, JsonSerializer.Serialize(toSerialize));
                 }
                 else if (change.Command == Command.UpdateImage)
                 {
                     var toSerialize = new UpdateImageDto(image.Id, image.TakenOn, data, image.IsFavourite);
-                    toReturn[i] = new(change.Id, change.Command, change.UserId, change.Timestamp,
-                        JsonSerializer.Serialize(toSerialize));
+                    toReturn[i] = new(change.Id, change.Command, JsonSerializer.Serialize(toSerialize));
                 }
             }
 
