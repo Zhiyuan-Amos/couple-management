@@ -12,12 +12,7 @@ provider "azurerm" {
   features {}
 }
 
-resource "random_integer" "ri" {
-  min = 10000
-  max = 99999
-}
-
 resource "azurerm_resource_group" "rg" {
-  name      = "${var.prefix}Resource"
+  name      = "StateResource"
   location  = var.location
 }
