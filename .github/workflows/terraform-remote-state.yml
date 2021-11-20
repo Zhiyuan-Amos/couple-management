@@ -2,8 +2,11 @@ name: Terraform remote state
 
 on:
   push:
+    branches:
+      - master
   pull_request:
-    types: [opened]
+    branches: 
+      - master
 
 jobs:
   terraform:
