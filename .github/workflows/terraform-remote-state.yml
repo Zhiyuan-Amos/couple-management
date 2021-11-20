@@ -3,9 +3,11 @@ name: Terraform remote state
 on:
   push:
   pull_request:
+    types: [opened]
 
 jobs:
   terraform:
+    name: Setup terraform backend
     runs-on: ubuntu-latest
 
     env:
@@ -13,11 +15,20 @@ jobs:
       ARM_CLIENT_SECRET: ${{ secrets.ARM_CLIENT_SECRET }}
       ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
       ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
+      working-directory: ./terraform/terraform-remote-state
 
     steps:
       - name: Checkout
         uses: actions/checkout@v2
 
       - name: Terraform Init
-        working-directory: ./terraform/terraform-remote-state
         run: terraform init
+
+      - name: Terraform Validate
+        run: terraform validate 
+
+      - name: Terraform Plan
+        run: terraform plan
+
+      - name: Terraform Apply
+        run: terraform apply -auto-approve
