@@ -56,6 +56,7 @@ namespace Couple.Api.Features.Event
                 Command.UpdateEvent,
                 claims.PartnerId,
                 _dateTimeService.Now,
+                form.Value.Event.Id,
                 form.Json);
 
             _changeContext

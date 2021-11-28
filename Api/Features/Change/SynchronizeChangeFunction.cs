@@ -46,6 +46,7 @@ namespace Couple.Api.Features.Change
             var toReturn = await _context
                 .Changes
                 .Where(change => change.UserId == claims.Id)
+                .Where(change => change.Ttl == -1)
                 .OrderBy(change => change.Timestamp)
                 .ProjectTo<ChangeDto>(_mapper.ConfigurationProvider)
                 .ToListAsync();

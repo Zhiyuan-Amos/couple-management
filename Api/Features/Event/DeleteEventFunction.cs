@@ -41,6 +41,7 @@ namespace Couple.Api.Features.Event
                 Command.DeleteEvent,
                 claims.PartnerId,
                 _dateTimeService.Now,
+                id,
                 JsonSerializer.Serialize(id));
 
             _context

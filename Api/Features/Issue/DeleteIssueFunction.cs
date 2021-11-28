@@ -41,6 +41,7 @@ namespace Couple.Api.Features.Issue
                 Command.DeleteIssue,
                 claims.PartnerId,
                 _dateTimeService.Now,
+                id,
                 JsonSerializer.Serialize(id));
 
             _context

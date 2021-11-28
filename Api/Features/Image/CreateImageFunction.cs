@@ -65,6 +65,7 @@ namespace Couple.Api.Features.Image
                 Command.CreateImage,
                 claims.PartnerId,
                 _dateTimeService.Now,
+                dto.Id,
                 JsonSerializer.Serialize(_mapper.Map<Model.Image>(dto)));
 
             _context

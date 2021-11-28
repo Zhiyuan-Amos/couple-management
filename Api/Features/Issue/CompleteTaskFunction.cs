@@ -55,6 +55,7 @@ namespace Couple.Api.Features.Issue
                 Command.CompleteTask,
                 claims.PartnerId,
                 _dateTimeService.Now,
+                form.Value.Id,
                 form.Json);
 
             _context

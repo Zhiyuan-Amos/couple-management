@@ -21,6 +21,10 @@ namespace Couple.Api.Data
                 .Property(change => change.Id)
                 .ToJsonProperty("id")
                 .HasConversion<string>();
+
+            modelBuilder.Entity<Change>()
+                .Property(change => change.Ttl)
+                .ToJsonProperty("ttl");
         }
     }
 }
