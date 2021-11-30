@@ -88,6 +88,12 @@ namespace Couple.Api.Features.Image
                 RuleFor(dto => dto.TakenOn).NotEmpty();
                 RuleFor(dto => dto.Data).Custom((data, context) =>
                 {
+                    if (data == null)
+                    {
+                        context.AddFailure("Data cannot be null");
+                        return;
+                    }
+
                     if (!ImageExtensions.IsImage(new MemoryStream(data)))
                     {
                         context.AddFailure("Invalid file type");

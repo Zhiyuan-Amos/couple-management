@@ -16,11 +16,11 @@ namespace Couple.Client.Pages.Image
 {
     public partial class CreateImage
     {
-        private CreateUpdateImageStateContainer CreateUpdateImageStateContainer { get; set; }
+        private CreateUpdateImageStateContainer? CreateUpdateImageStateContainer { get; set; }
 
-        [Inject] private HttpClient HttpClient { get; init; }
-        [Inject] private NavigationManager NavigationManager { get; init; }
-        [Inject] private IJSRuntime Js { get; init; }
+        [Inject] private HttpClient? HttpClient { get; init; }
+        [Inject] private NavigationManager? NavigationManager { get; init; }
+        [Inject] private IJSRuntime? Js { get; init; }
 
         protected override void OnInitialized()
         {
@@ -68,5 +68,7 @@ namespace Couple.Client.Pages.Image
 
             CreateUpdateImageStateContainer.Data = ms.ToArray();
         }
+
+        private bool IsSaveEnabled => CreateUpdateImageStateContainer?.Data != null;
     }
 }
