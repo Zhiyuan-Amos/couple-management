@@ -16,9 +16,9 @@ resource "azurerm_cosmosdb_account" "db" {
     offer_type                            = "Standard"
     public_network_access_enabled         = true
     resource_group_name                   = "testResource"
-    tags                                  = {
-        "defaultExperience"       = "Core (SQL)"
-        "hidden-cosmos-mmspecial" = ""
+
+    capabilities {
+    name = "EnableServerless"
     }
 
     backup {
