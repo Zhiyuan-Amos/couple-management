@@ -42,7 +42,7 @@ jobs:
   run-if-failed:
     runs-on: ubuntu-latest
     needs: [terraform]
-    if: needs.terraform.result == 'failure'
+    if: failure()
 
     steps:
       - name: Checkout
