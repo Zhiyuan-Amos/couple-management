@@ -10,6 +10,7 @@ namespace Couple.Messaging.Model
         public string? UserId { get; init; }
         public DateTime Timestamp { get; init; }
         public Guid ContentId { get; init; }
+        public string ContentType { get; init; }
         public string? Content { get; init; }
 
         [JsonPropertyName("ttl")]

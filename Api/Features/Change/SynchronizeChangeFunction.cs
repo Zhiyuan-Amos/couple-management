@@ -25,8 +25,8 @@ namespace Couple.Api.Features.Change
         private readonly ChangeContext _context;
 
         public SynchronizeChangeFunction(ICurrentUserService currentUserService,
-                                         IMapper mapper,
-                                         ChangeContext context)
+            IMapper mapper,
+            ChangeContext context)
         {
             _currentUserService = currentUserService;
             _mapper = mapper;
@@ -54,7 +54,8 @@ namespace Couple.Api.Features.Change
             for (int i = 0; i < toReturn.Count; i++)
             {
                 var change = toReturn[i];
-                if (change.Command != Command.CreateImage && change.Command != Command.UpdateImage)
+                if (change.ContentType != Entity.Image ||
+                    (change.Command != Command.Create && change.Command != Command.Update))
                 {
                     continue;
                 }
@@ -68,15 +69,15 @@ namespace Couple.Api.Features.Change
                 var data = stream.ToArray();
                 await stream.ReadAsync(data.AsMemory(0, (int)stream.Length));
 
-                if (change.Command == Command.CreateImage)
+                if (change.Command == Command.Create && change.ContentType == Entity.Image)
                 {
                     var toSerialize = new CreateImageDto(image.Id, image.TakenOn, data, image.IsFavourite);
-                    toReturn[i] = new(change.Id, change.Command, JsonSerializer.Serialize(toSerialize));
+                    toReturn[i] = new(change.Id, change.Command, Entity.Image, JsonSerializer.Serialize(toSerialize));
                 }
-                else if (change.Command == Command.UpdateImage)
+                else if (change.Command == Command.Update && change.ContentType == Entity.Image)
                 {
                     var toSerialize = new UpdateImageDto(image.Id, image.TakenOn, data, image.IsFavourite);
-                    toReturn[i] = new(change.Id, change.Command, JsonSerializer.Serialize(toSerialize));
+                    toReturn[i] = new(change.Id, change.Command, Entity.Image, JsonSerializer.Serialize(toSerialize));
                 }
             }
 

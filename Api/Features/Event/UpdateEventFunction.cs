@@ -52,15 +52,16 @@ namespace Couple.Api.Features.Event
                 return req.CreateResponse(HttpStatusCode.BadRequest);
             }
 
-            var toCreate = new Model.Change(Guid.NewGuid(),
-                Command.UpdateEvent,
+            var toCreate = new Model.CachedChange(Guid.NewGuid(),
+                Command.Update,
                 claims.PartnerId,
                 _dateTimeService.Now,
                 form.Value.Event.Id,
+                Entity.Event,
                 form.Json);
 
             _changeContext
-                .Changes
+                .CachedChanges
                 .Add(toCreate);
             await _changeContext.SaveChangesAsync();
 

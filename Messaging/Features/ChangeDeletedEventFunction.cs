@@ -24,7 +24,7 @@ namespace Couple.Messaging.Features
             var changes = documents.Select(d => d.ToString())
                 .Select(json => JsonSerializer.Deserialize<Change>(json)!)
                 .Where(change => change.Ttl != -1)
-                .Where(change => change.Command is Command.CreateImage or Command.UpdateImage)
+                .Where(change => change.ContentType == Entity.Image && (change.Command is Command.Create or Command.Update))
                 .ToList();
 
             List<Task> tasks = new();

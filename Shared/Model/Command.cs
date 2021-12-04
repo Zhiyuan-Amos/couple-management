@@ -7,15 +7,9 @@ namespace Couple.Shared.Model
     /// </summary>
     public static class Command
     {
-        public const string CreateIssue = "CreateIssue";
-        public const string UpdateIssue = "UpdateIssue";
-        public const string DeleteIssue = "DeleteIssue";
-        public const string CompleteTask = "CompleteTask";
-        public const string CreateImage = "CreateImage";
-        public const string UpdateImage = "UpdateImage";
-        public const string DeleteImage = "DeleteImage";
-        public const string CreateEvent = "CreateEvent";
-        public const string UpdateEvent = "UpdateEvent";
-        public const string DeleteEvent = "DeleteEvent";
+        public const string Create = "Create";
+        public const string Update = "Update";
+        public const string Delete = "Delete";
+        public const string Complete = "Complete";
     }
 }

@@ -37,15 +37,16 @@ namespace Couple.Api.Features.Image
                 return req.CreateResponse(HttpStatusCode.BadRequest);
             }
 
-            var toCreate = new Model.Change(Guid.NewGuid(),
-                Command.DeleteImage,
+            var toCreate = new Model.CachedChange(Guid.NewGuid(),
+                Command.Delete,
                 claims.PartnerId,
                 _dateTimeService.Now,
                 id,
+                Entity.Image,
                 JsonSerializer.Serialize(id));
 
             _context
-                .Changes
+                .CachedChanges
                 .Add(toCreate);
             await _context.SaveChangesAsync();
 

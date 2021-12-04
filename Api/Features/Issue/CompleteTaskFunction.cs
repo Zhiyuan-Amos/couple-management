@@ -51,15 +51,16 @@ namespace Couple.Api.Features.Issue
                 return req.CreateResponse(HttpStatusCode.BadRequest);
             }
 
-            var toCreate = new Model.Change(Guid.NewGuid(),
-                Command.CompleteTask,
+            var toCreate = new Model.CachedChange(Guid.NewGuid(),
+                Command.Complete,
                 claims.PartnerId,
                 _dateTimeService.Now,
                 form.Value.Id,
+                Entity.Task,
                 form.Json);
 
             _context
-                .Changes
+                .CachedChanges
                 .Add(toCreate);
             await _context.SaveChangesAsync();
 

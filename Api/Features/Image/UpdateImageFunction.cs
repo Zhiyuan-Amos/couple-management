@@ -60,15 +60,16 @@ namespace Couple.Api.Features.Image
             }
 
             var dto = form.Value;
-            var toCreate = new Model.Change(Guid.NewGuid(),
-                Command.UpdateImage,
+            var toCreate = new Model.CachedChange(Guid.NewGuid(),
+                Command.Update,
                 claims.PartnerId,
                 _dateTimeService.Now,
                 dto.Id,
+                Entity.Image,
                 JsonSerializer.Serialize(_mapper.Map<Model.Image>(dto)));
 
             _context
-                .Changes
+                .CachedChanges
                 .Add(toCreate);
             await _context.SaveChangesAsync();
 
