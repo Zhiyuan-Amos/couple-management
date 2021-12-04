@@ -9,8 +9,8 @@ on:
       - master
 
 jobs:
-  terraform:
-    name: Create Resource
+  terraform-create-resource:
+    # name: Create Resource
     runs-on: ubuntu-latest
     
     env:
@@ -37,4 +37,20 @@ jobs:
 
       - name: Terraform Apply
         run: terraform apply -auto-approve
+        working-directory: ./terraform/terraform-create-resource
+
+  run-if-failed:
+    runs-on: ubuntu-latest
+    needs: [terraform-create-resource]
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Terraform Init
+        run: terraform init
+        working-directory: ./terraform/terraform-create-resource
+
+      - name: Terraform Destroy
+        run: terraform destroy -target azurerm_resource_group.rg
         working-directory: ./terraform/terraform-create-resource
