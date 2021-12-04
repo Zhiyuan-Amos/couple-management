@@ -1,4 +1,4 @@
-name: Terraform create resource
+name: Terraform Create Azure Resource
 
 on:
   push:
@@ -10,7 +10,7 @@ on:
 
 jobs:
   terraform:
-    name: Terraform create resource
+    name: Create Resource
     runs-on: ubuntu-latest
     
     env:
