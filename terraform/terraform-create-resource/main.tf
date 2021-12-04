@@ -8,11 +8,16 @@ terraform {
   }
 
   backend "azurerm" {
-        resource_group_name  = "testResource"
-        storage_account_name = var.storagename
-        container_name       = "tfstate"
-        key                  = "terraform.tfstate"
+        resource_group_name  = "StateResource"
+        storage_account_name = "couplemgmtstates"
+        container_name       = "tfstates"
+        key                  = "any-branch-name.tfstate"
     }
+}
+
+resource "azurerm_resource_group" "rg" {
+  name      = "${var.prefix}Resource"
+  location  = var.location
 }
 
 provider "azurerm" {
