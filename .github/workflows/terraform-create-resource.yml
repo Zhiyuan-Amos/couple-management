@@ -9,7 +9,7 @@ on:
       - master
 
 jobs:
-  terraform-create-resource:
+  terraform:
     # name: Create Resource
     runs-on: ubuntu-latest
     
@@ -41,7 +41,8 @@ jobs:
 
   run-if-failed:
     runs-on: ubuntu-latest
-    needs: [terraform-create-resource]
+    needs: [terraform]
+    if: needs.terraform.result == 'failure'
 
     steps:
       - name: Checkout
