@@ -60,16 +60,18 @@ namespace Couple.Api.Features.Image
             }
 
             var dto = form.Value;
-            var toCreate = new Model.CachedChange(Guid.NewGuid(),
+            var url = Environment.GetEnvironmentVariable("GetImageUrl");
+            var toCreate = new Model.HyperlinkChange(Guid.NewGuid(),
                 Command.Update,
                 claims.PartnerId,
                 _dateTimeService.Now,
                 dto.Id,
                 Entity.Image,
-                JsonSerializer.Serialize(_mapper.Map<Model.Image>(dto)));
+                JsonSerializer.Serialize(_mapper.Map<Model.Image>(dto)),
+                url);
 
             _context
-                .CachedChanges
+                .HyperlinkChanges
                 .Add(toCreate);
             await _context.SaveChangesAsync();
 

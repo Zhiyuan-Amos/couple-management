@@ -16,6 +16,7 @@ namespace Couple.Api
                 .ConfigureFunctionsWorkerDefaults()
                 .ConfigureServices(builder =>
                 {
+                    builder.AddHttpClient();
                     builder.AddDbContext<ChangeContext>(options => DbParams(options));
                     builder.AddAutoMapper(typeof(ChangeProfile), typeof(ImageProfile));
 

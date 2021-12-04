@@ -8,6 +8,7 @@ namespace Couple.Api.Data
         // DbSet of sub-classes of Change are required to persist sub-class specific information
         public DbSet<Change> Changes { get; set; }
         public DbSet<CachedChange> CachedChanges { get; set; }
+        public DbSet<HyperlinkChange> HyperlinkChanges { get; set; }
 
         public ChangeContext(DbContextOptions<ChangeContext> options) : base(options) { }
 
