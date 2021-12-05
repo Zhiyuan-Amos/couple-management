@@ -49,6 +49,16 @@ namespace Couple.Api.Features.Change
                 .Where(change => model.Guids.Contains(change.Id))
                 .ToListAsync();
 
+            var missingIds = model.Guids
+                .Except(toDelete.Select(change => change.Id))
+                .ToList();
+
+            if (missingIds.Count != 0)
+            {
+                var logger = executionContext.GetLogger(GetType().Name);
+                logger.LogWarning("Changes of {Ids} are not found", string.Join(", ", missingIds));
+            }
+
             var claims = _currentUserService.GetClaims(req.Headers);
             var canDelete = toDelete.All(change => change.UserId == claims.Id);
 
