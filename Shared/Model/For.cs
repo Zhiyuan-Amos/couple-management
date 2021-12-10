@@ -1,9 +1,8 @@
-namespace Couple.Shared.Model
+namespace Couple.Shared.Model;
+
+public enum For
 {
-    public enum For
-    {
-        Him,
-        Her,
-        Us
-    }
+    Him,
+    Her,
+    Us
 }

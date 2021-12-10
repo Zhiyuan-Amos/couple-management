@@ -1,32 +1,31 @@
 using Couple.Api.Model;
 using Microsoft.EntityFrameworkCore;
 
-namespace Couple.Api.Data
+namespace Couple.Api.Data;
+
+public class ChangeContext : DbContext
 {
-    public class ChangeContext : DbContext
+    // DbSet of sub-classes of Change are required to persist sub-class specific information
+    public DbSet<Change> Changes { get; set; }
+    public DbSet<CachedChange> CachedChanges { get; set; }
+    public DbSet<HyperlinkChange> HyperlinkChanges { get; set; }
+
+    public ChangeContext(DbContextOptions<ChangeContext> options) : base(options) { }
+
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        // DbSet of sub-classes of Change are required to persist sub-class specific information
-        public DbSet<Change> Changes { get; set; }
-        public DbSet<CachedChange> CachedChanges { get; set; }
-        public DbSet<HyperlinkChange> HyperlinkChanges { get; set; }
+        base.OnModelCreating(modelBuilder);
 
-        public ChangeContext(DbContextOptions<ChangeContext> options) : base(options) { }
+        modelBuilder.Entity<Change>()
+            .ToContainer("change");
 
-        protected override void OnModelCreating(ModelBuilder modelBuilder)
-        {
-            base.OnModelCreating(modelBuilder);
+        modelBuilder.Entity<Change>()
+            .Property(change => change.Id)
+            .ToJsonProperty("id")
+            .HasConversion<string>();
 
-            modelBuilder.Entity<Change>()
-                .ToContainer("change");
-
-            modelBuilder.Entity<Change>()
-                .Property(change => change.Id)
-                .ToJsonProperty("id")
-                .HasConversion<string>();
-
-            modelBuilder.Entity<Change>()
-                .Property(change => change.Ttl)
-                .ToJsonProperty("ttl");
-        }
+        modelBuilder.Entity<Change>()
+            .Property(change => change.Ttl)
+            .ToJsonProperty("ttl");
     }
 }

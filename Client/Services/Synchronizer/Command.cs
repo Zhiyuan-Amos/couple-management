@@ -1,9 +1,8 @@
 using System.Threading.Tasks;
 
-namespace Couple.Client.Services.Synchronizer
+namespace Couple.Client.Services.Synchronizer;
+
+public interface ICommand
 {
-    public interface ICommand
-    {
-        Task Execute();
-    }
+    Task Execute();
 }

@@ -1,6 +1,5 @@
-namespace Couple.Client.Pages.Done
+namespace Couple.Client.Pages.Done;
+
+public partial class Done
 {
-    public partial class Done
-    {
-    }
 }

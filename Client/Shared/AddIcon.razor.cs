@@ -1,9 +1,8 @@
 using Microsoft.AspNetCore.Components;
 
-namespace Couple.Client.Shared
+namespace Couple.Client.Shared;
+
+public partial class AddIcon
 {
-    public partial class AddIcon
-    {
-        [EditorRequired] [Parameter] public EventCallback OnClickCallback { get; init; }
-    }
+    [EditorRequired] [Parameter] public EventCallback OnClickCallback { get; init; }
 }

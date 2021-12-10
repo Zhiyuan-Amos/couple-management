@@ -1,9 +1,8 @@
 using System.Net.Http.Headers;
 
-namespace Couple.Api.Infrastructure
+namespace Couple.Api.Infrastructure;
+
+public interface ICurrentUserService
 {
-    public interface ICurrentUserService
-    {
-        Claims GetClaims(HttpHeaders headers);
-    }
+    Claims GetClaims(HttpHeaders headers);
 }

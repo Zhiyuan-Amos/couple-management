@@ -14,118 +14,117 @@ using Couple.Shared.Model.Event;
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
 
-namespace Couple.Client.Pages.Calendar
+namespace Couple.Client.Pages.Calendar;
+
+public partial class UpdateEvent
 {
-    public partial class UpdateEvent
+    [Inject] private HttpClient HttpClient { get; init; }
+
+    [Inject] private NavigationManager NavigationManager { get; init; }
+
+    [Inject] private IssueStateContainer IssueStateContainer { get; init; }
+
+    [Inject] private EventStateContainer EventStateContainer { get; init; }
+
+    [Inject] private IJSRuntime Js { get; init; }
+
+    [Parameter] public Guid EventId { get; set; }
+
+    private UpdateEventViewModel ToUpdate { get; set; }
+
+    private List<IssueModel> Original { get; set; }
+    private List<IssueModel> Added { get; set; }
+    private List<IssueModel> Removed { get; set; }
+
+    protected override void OnInitialized()
     {
-        [Inject] private HttpClient HttpClient { get; init; }
-
-        [Inject] private NavigationManager NavigationManager { get; init; }
-
-        [Inject] private IssueStateContainer IssueStateContainer { get; init; }
-
-        [Inject] private EventStateContainer EventStateContainer { get; init; }
-
-        [Inject] private IJSRuntime Js { get; init; }
-
-        [Parameter] public Guid EventId { get; set; }
-
-        private UpdateEventViewModel ToUpdate { get; set; }
-
-        private List<IssueModel> Original { get; set; }
-        private List<IssueModel> Added { get; set; }
-        private List<IssueModel> Removed { get; set; }
-
-        protected override void OnInitialized()
+        if (!EventStateContainer.TryGetEvent(EventId, out var @event))
         {
-            if (!EventStateContainer.TryGetEvent(EventId, out var @event))
-            {
-                NavigationManager.NavigateTo("/calendar");
-                return;
-            }
-
-            Original = new(@event.ToDos);
-            Added = new();
-            Removed = new();
-
-            ToUpdate = EventAdapter.ToUpdateViewModel(@event);
-        }
-
-        private async Task Save()
-        {
-            var added = Added.Select(toDo => toDo.Id).ToList();
-            var toPersist = EventAdapter.ToModel(ToUpdate);
-            await Js.InvokeVoidAsync("updateEvent", new object[]
-            {
-                toPersist,
-                added,
-                Removed
-            });
-
-            var toDosTask = Js.InvokeAsync<List<IssueModel>>("getToDos").AsTask();
-            var eventsTask = Js.InvokeAsync<List<EventModel>>("getAllEvents").AsTask();
-            await Task.WhenAll(toDosTask, eventsTask);
-            IssueStateContainer.Issues = toDosTask.Result;
-            EventStateContainer.SetEvents(eventsTask.Result);
-
             NavigationManager.NavigateTo("/calendar");
-
-            var toUpdate = new UpdateEventDto
-            {
-                Event = EventAdapter.ToDto(ToUpdate),
-                Added = added,
-                Removed = EventAdapter.ToDto(Removed),
-            };
-            await HttpClient.PutAsJsonAsync($"api/Events", toUpdate);
+            return;
         }
 
-        private async Task Delete()
+        Original = new(@event.ToDos);
+        Added = new();
+        Removed = new();
+
+        ToUpdate = EventAdapter.ToUpdateViewModel(@event);
+    }
+
+    private async Task Save()
+    {
+        var added = Added.Select(toDo => toDo.Id).ToList();
+        var toPersist = EventAdapter.ToModel(ToUpdate);
+        await Js.InvokeVoidAsync("updateEvent", new object[]
         {
-            await Js.InvokeVoidAsync("removeEvent", ToUpdate.Id);
-            var events = await Js.InvokeAsync<List<EventModel>>("getAllEvents");
-            EventStateContainer.SetEvents(events);
+            toPersist,
+            added,
+            Removed
+        });
 
-            NavigationManager.NavigateTo("/calendar");
+        var toDosTask = Js.InvokeAsync<List<IssueModel>>("getToDos").AsTask();
+        var eventsTask = Js.InvokeAsync<List<EventModel>>("getAllEvents").AsTask();
+        await Task.WhenAll(toDosTask, eventsTask);
+        IssueStateContainer.Issues = toDosTask.Result;
+        EventStateContainer.SetEvents(eventsTask.Result);
 
-            await HttpClient.DeleteAsync($"api/Events/{ToUpdate.Id}");
-        }
+        NavigationManager.NavigateTo("/calendar");
 
-        private bool IsEnabled => !string.IsNullOrWhiteSpace(ToUpdate?.Title)
-                                    && ToUpdate.End >= ToUpdate.Start
-                                    && ToUpdate.Start != DateTime.UnixEpoch
-                                    && ToUpdate.End != DateTime.UnixEpoch;
-
-        private void AddedChanged(List<IssueModel> added)
+        var toUpdate = new UpdateEventDto
         {
-            foreach (var add in added)
+            Event = EventAdapter.ToDto(ToUpdate),
+            Added = added,
+            Removed = EventAdapter.ToDto(Removed),
+        };
+        await HttpClient.PutAsJsonAsync($"api/Events", toUpdate);
+    }
+
+    private async Task Delete()
+    {
+        await Js.InvokeVoidAsync("removeEvent", ToUpdate.Id);
+        var events = await Js.InvokeAsync<List<EventModel>>("getAllEvents");
+        EventStateContainer.SetEvents(events);
+
+        NavigationManager.NavigateTo("/calendar");
+
+        await HttpClient.DeleteAsync($"api/Events/{ToUpdate.Id}");
+    }
+
+    private bool IsEnabled => !string.IsNullOrWhiteSpace(ToUpdate?.Title)
+                              && ToUpdate.End >= ToUpdate.Start
+                              && ToUpdate.Start != DateTime.UnixEpoch
+                              && ToUpdate.End != DateTime.UnixEpoch;
+
+    private void AddedChanged(List<IssueModel> added)
+    {
+        foreach (var add in added)
+        {
+            if (Original.Any(toDo => toDo.Id == add.Id))
             {
-                if (Original.Any(toDo => toDo.Id == add.Id))
-                {
-                    Removed.Remove(add);
-                }
-                else
-                {
-                    Added.Add(add);
-                }
-            }
-
-            ToUpdate.ToDos.AddRange(added);
-            ToUpdate.ToDos = new(ToUpdate.ToDos); // https://docs.telerik.com/blazor-ui/common-features/observable-data
-        }
-
-        private void RemovedChanged(IssueModel removed)
-        {
-            if (Original.Any(toDo => toDo.Id == removed.Id))
-            {
-                Removed.Add(removed);
+                Removed.Remove(add);
             }
             else
             {
-                Added.Remove(removed);
+                Added.Add(add);
             }
-
-            ToUpdate.ToDos.Remove(removed);
-            ToUpdate.ToDos = new(ToUpdate.ToDos);
         }
+
+        ToUpdate.ToDos.AddRange(added);
+        ToUpdate.ToDos = new(ToUpdate.ToDos); // https://docs.telerik.com/blazor-ui/common-features/observable-data
+    }
+
+    private void RemovedChanged(IssueModel removed)
+    {
+        if (Original.Any(toDo => toDo.Id == removed.Id))
+        {
+            Removed.Add(removed);
+        }
+        else
+        {
+            Added.Remove(removed);
+        }
+
+        ToUpdate.ToDos.Remove(removed);
+        ToUpdate.ToDos = new(ToUpdate.ToDos);
     }
 }

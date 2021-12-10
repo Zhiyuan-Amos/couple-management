@@ -9,43 +9,42 @@ using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Couple.Client
+namespace Couple.Client;
+
+public class Program
 {
-    public class Program
+    public static async Task Main(string[] args)
     {
-        public static async Task Main(string[] args)
+        var builder = WebAssemblyHostBuilder.CreateDefault(args);
+        builder.RootComponents.Add<App>("#app");
+        builder.RootComponents.Add<HeadOutlet>("head::after");
+
+        builder.Services
+            .AddTransient(_ => new HttpClient
+            { BaseAddress = new(builder.Configuration["API_Prefix"] ?? builder.HostEnvironment.BaseAddress) })
+            .AddSingleton<IssueStateContainer>()
+            .AddSingleton<DoneStateContainer>()
+            .AddSingleton<EventStateContainer>()
+            .AddSingleton<SelectedDateStateContainer>()
+            .AddSingleton<Synchronizer>();
+
+        var host = builder.Build();
+        var httpClient = host.Services.GetRequiredService<HttpClient>();
+
+        if (builder.HostEnvironment.IsStaging() || builder.HostEnvironment.IsProduction())
         {
-            var builder = WebAssemblyHostBuilder.CreateDefault(args);
-            builder.RootComponents.Add<App>("#app");
-            builder.RootComponents.Add<HeadOutlet>("head::after");
-
-            builder.Services
-                .AddTransient(_ => new HttpClient
-                { BaseAddress = new(builder.Configuration["API_Prefix"] ?? builder.HostEnvironment.BaseAddress) })
-                .AddSingleton<IssueStateContainer>()
-                .AddSingleton<DoneStateContainer>()
-                .AddSingleton<EventStateContainer>()
-                .AddSingleton<SelectedDateStateContainer>()
-                .AddSingleton<Synchronizer>();
-
-            var host = builder.Build();
-            var httpClient = host.Services.GetRequiredService<HttpClient>();
-
-            if (builder.HostEnvironment.IsStaging() || builder.HostEnvironment.IsProduction())
+            try
             {
-                try
-                {
-                    await httpClient.GetAsync("api/Ping");
-                }
-                catch (HttpRequestException)
-                {
-                    var navigationManager = host.Services.GetRequiredService<NavigationManager>();
-                    navigationManager.NavigateTo("/login", true);
-                    return;
-                }
+                await httpClient.GetAsync("api/Ping");
             }
-
-            await host.RunAsync();
+            catch (HttpRequestException)
+            {
+                var navigationManager = host.Services.GetRequiredService<NavigationManager>();
+                navigationManager.NavigateTo("/login", true);
+                return;
+            }
         }
+
+        await host.RunAsync();
     }
 }

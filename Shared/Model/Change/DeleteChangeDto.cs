@@ -1,15 +1,14 @@
 using System;
 using System.Collections.Generic;
 
-namespace Couple.Shared.Model.Change
-{
-    public class DeleteChangeDto
-    {
-        public List<Guid> Guids { get; }
+namespace Couple.Shared.Model.Change;
 
-        public DeleteChangeDto(List<Guid> guids)
-        {
-            Guids = new(guids);
-        }
+public class DeleteChangeDto
+{
+    public List<Guid> Guids { get; }
+
+    public DeleteChangeDto(List<Guid> guids)
+    {
+        Guids = new(guids);
     }
 }

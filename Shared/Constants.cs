@@ -1,7 +1,6 @@
-namespace Couple.Shared
+namespace Couple.Shared;
+
+public static class Constants
 {
-    public static class Constants
-    {
-        public const int MaxFileSize = 512000;
-    }
+    public const int MaxFileSize = 512000;
 }

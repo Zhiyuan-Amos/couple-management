@@ -1,25 +1,24 @@
 using System;
 
-namespace Couple.Shared.Model.Issue
+namespace Couple.Shared.Model.Issue;
+
+public class CompleteTaskDto
 {
-    public class CompleteTaskDto
+    public Guid Id { get; }
+    public For For { get; }
+    public string Content { get; }
+
+    public Guid IssueId { get; }
+    public string IssueTitle { get; }
+    public DateTime CreatedOn { get; }
+
+    public CompleteTaskDto(Guid id, For @for, string content, Guid issueId, string issueTitle, DateTime createdOn)
     {
-        public Guid Id { get; }
-        public For For { get; }
-        public string Content { get; }
-
-        public Guid IssueId { get; }
-        public string IssueTitle { get; }
-        public DateTime CreatedOn { get; }
-
-        public CompleteTaskDto(Guid id, For @for, string content, Guid issueId, string issueTitle, DateTime createdOn)
-        {
-            Id = id;
-            For = @for;
-            Content = content;
-            IssueId = issueId;
-            IssueTitle = issueTitle;
-            CreatedOn = createdOn;
-        }
+        Id = id;
+        For = @for;
+        Content = content;
+        IssueId = issueId;
+        IssueTitle = issueTitle;
+        CreatedOn = createdOn;
     }
 }

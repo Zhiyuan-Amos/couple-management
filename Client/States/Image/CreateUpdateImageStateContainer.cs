@@ -1,19 +1,18 @@
-namespace Couple.Client.States.Image
+namespace Couple.Client.States.Image;
+
+public class CreateUpdateImageStateContainer
 {
-    public class CreateUpdateImageStateContainer
+    public bool IsFavourite { get; set; }
+    public byte[] Data { get; set; }
+
+    public CreateUpdateImageStateContainer()
     {
-        public bool IsFavourite { get; set; }
-        public byte[] Data { get; set; }
+        IsFavourite = false;
+    }
 
-        public CreateUpdateImageStateContainer()
-        {
-            IsFavourite = false;
-        }
-
-        public CreateUpdateImageStateContainer(bool isFavourite, byte[] data)
-        {
-            IsFavourite = isFavourite;
-            Data = data;
-        }
+    public CreateUpdateImageStateContainer(bool isFavourite, byte[] data)
+    {
+        IsFavourite = isFavourite;
+        Data = data;
     }
 }

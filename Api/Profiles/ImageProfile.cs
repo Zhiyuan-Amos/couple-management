@@ -2,14 +2,13 @@ using AutoMapper;
 using Couple.Api.Model;
 using Couple.Shared.Model.Image;
 
-namespace Couple.Api.Profiles
+namespace Couple.Api.Profiles;
+
+public class ImageProfile : Profile
 {
-    public class ImageProfile : Profile
+    public ImageProfile()
     {
-        public ImageProfile()
-        {
-            CreateMap<CreateImageDto, Image>();
-            CreateMap<UpdateImageDto, Image>();
-        }
+        CreateMap<CreateImageDto, Image>();
+        CreateMap<UpdateImageDto, Image>();
     }
 }

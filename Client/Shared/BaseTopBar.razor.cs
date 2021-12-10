@@ -2,16 +2,15 @@ using System.Threading.Tasks;
 using Couple.Client.Services.Synchronizer;
 using Microsoft.AspNetCore.Components;
 
-namespace Couple.Client.Shared
+namespace Couple.Client.Shared;
+
+public partial class BaseTopBar
 {
-    public partial class BaseTopBar
-    {
-        [Parameter] public RenderFragment Content { get; init; }
+    [Parameter] public RenderFragment Content { get; init; }
 
-        [Parameter] public EventCallback OnSynchronisationCallback { get; init; }
+    [Parameter] public EventCallback OnSynchronisationCallback { get; init; }
 
-        [Inject] private Synchronizer Synchronizer { get; init; }
+    [Inject] private Synchronizer Synchronizer { get; init; }
 
-        private Task Synchronize() => Synchronizer.SynchronizeAsync();
-    }
+    private Task Synchronize() => Synchronizer.SynchronizeAsync();
 }

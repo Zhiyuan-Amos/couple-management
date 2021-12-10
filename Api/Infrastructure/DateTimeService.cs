@@ -1,9 +1,8 @@
 using System;
 
-namespace Couple.Api.Infrastructure
+namespace Couple.Api.Infrastructure;
+
+public class DateTimeService : IDateTimeService
 {
-    public class DateTimeService : IDateTimeService
-    {
-        public DateTime Now => DateTime.Now;
-    }
+    public DateTime Now => DateTime.Now;
 }

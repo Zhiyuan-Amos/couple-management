@@ -8,49 +8,48 @@ using Couple.Shared.Model;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Http;
 
-namespace Couple.Api.Features.Event
+namespace Couple.Api.Features.Event;
+
+public class DeleteChangesFunction
 {
-    public class DeleteChangesFunction
+    private readonly ChangeContext _context;
+    private readonly IDateTimeService _dateTimeService;
+    private readonly ICurrentUserService _currentUserService;
+
+    public DeleteChangesFunction(ChangeContext context,
+        IDateTimeService dateTimeService,
+        ICurrentUserService currentUserService)
     {
-        private readonly ChangeContext _context;
-        private readonly IDateTimeService _dateTimeService;
-        private readonly ICurrentUserService _currentUserService;
+        _context = context;
+        _dateTimeService = dateTimeService;
+        _currentUserService = currentUserService;
+    }
 
-        public DeleteChangesFunction(ChangeContext context,
-                                     IDateTimeService dateTimeService,
-                                     ICurrentUserService currentUserService)
+    [Function("DeleteEventFunction")]
+    public async Task<HttpResponseData> Run(
+        [HttpTrigger(AuthorizationLevel.Anonymous, "delete", Route = "Events/{id:guid}")]
+        HttpRequestData req,
+        Guid id)
+    {
+        var claims = _currentUserService.GetClaims(req.Headers);
+        if (claims.PartnerId == null)
         {
-            _context = context;
-            _dateTimeService = dateTimeService;
-            _currentUserService = currentUserService;
+            return req.CreateResponse(HttpStatusCode.BadRequest);
         }
 
-        [Function("DeleteEventFunction")]
-        public async Task<HttpResponseData> Run(
-            [HttpTrigger(AuthorizationLevel.Anonymous, "delete", Route = "Events/{id:guid}")]
-            HttpRequestData req,
-            Guid id)
-        {
-            var claims = _currentUserService.GetClaims(req.Headers);
-            if (claims.PartnerId == null)
-            {
-                return req.CreateResponse(HttpStatusCode.BadRequest);
-            }
+        var toCreate = new Model.CachedChange(Guid.NewGuid(),
+            Command.Delete,
+            claims.PartnerId,
+            _dateTimeService.Now,
+            id,
+            Entity.Event,
+            JsonSerializer.Serialize(id));
 
-            var toCreate = new Model.CachedChange(Guid.NewGuid(),
-                Command.Delete,
-                claims.PartnerId,
-                _dateTimeService.Now,
-                id,
-                Entity.Event,
-                JsonSerializer.Serialize(id));
+        _context
+            .CachedChanges
+            .Add(toCreate);
+        await _context.SaveChangesAsync();
 
-            _context
-                .CachedChanges
-                .Add(toCreate);
-            await _context.SaveChangesAsync();
-
-            return req.CreateResponse(HttpStatusCode.OK);
-        }
+        return req.CreateResponse(HttpStatusCode.OK);
     }
 }

@@ -1,19 +1,18 @@
 using System;
 
-namespace Couple.Client.States.Calendar
-{
-    public class SelectedDateStateContainer : Notifier
-    {
-        private DateTime _selectedDate;
+namespace Couple.Client.States.Calendar;
 
-        public DateTime SelectedDate
+public class SelectedDateStateContainer : Notifier
+{
+    private DateTime _selectedDate;
+
+    public DateTime SelectedDate
+    {
+        get => _selectedDate;
+        set
         {
-            get => _selectedDate;
-            set
-            {
-                _selectedDate = value;
-                NotifyStateChanged();
-            }
+            _selectedDate = value;
+            NotifyStateChanged();
         }
     }
 }

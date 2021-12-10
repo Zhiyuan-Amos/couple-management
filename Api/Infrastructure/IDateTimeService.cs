@@ -1,9 +1,8 @@
 using System;
 
-namespace Couple.Api.Infrastructure
+namespace Couple.Api.Infrastructure;
+
+public interface IDateTimeService
 {
-    public interface IDateTimeService
-    {
-        DateTime Now { get; }
-    }
+    DateTime Now { get; }
 }

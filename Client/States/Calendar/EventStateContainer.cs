@@ -3,34 +3,33 @@ using System.Collections.Generic;
 using System.Linq;
 using Couple.Client.Model.Calendar;
 
-namespace Couple.Client.States.Calendar
+namespace Couple.Client.States.Calendar;
+
+public class EventStateContainer : Notifier
 {
-    public class EventStateContainer : Notifier
+    private Dictionary<DateTime, List<EventModel>> DateToEvents { get; set; } = new();
+
+    public bool TryGetEvents(DateTime dateTime, out List<EventModel> events)
+        => DateToEvents.TryGetValue(dateTime, out events);
+
+    public bool TryGetEvent(Guid id, out EventModel @event)
     {
-        private Dictionary<DateTime, List<EventModel>> DateToEvents { get; set; } = new();
+        @event = DateToEvents.Values
+            .SelectMany(events => events)
+            .ToList()
+            .FirstOrDefault(innerEvent => innerEvent.Id == id);
 
-        public bool TryGetEvents(DateTime dateTime, out List<EventModel> events)
-            => DateToEvents.TryGetValue(dateTime, out events);
+        return @event != null;
+    }
 
-        public bool TryGetEvent(Guid id, out EventModel @event)
-        {
-            @event = DateToEvents.Values
-                .SelectMany(events => events)
-                .ToList()
-                .FirstOrDefault(innerEvent => innerEvent.Id == id);
+    public void SetEvents(IEnumerable<EventModel> events)
+    {
+        DateToEvents = events
+            .GroupBy(@event => @event.Start.Date)
+            .ToDictionary(grouping => grouping.Key, grouping => grouping
+                .OrderBy(@event => @event.Start)
+                .ToList());
 
-            return @event != null;
-        }
-
-        public void SetEvents(IEnumerable<EventModel> events)
-        {
-            DateToEvents = events
-                .GroupBy(@event => @event.Start.Date)
-                .ToDictionary(grouping => grouping.Key, grouping => grouping
-                    .OrderBy(@event => @event.Start)
-                    .ToList());
-
-            NotifyStateChanged();
-        }
+        NotifyStateChanged();
     }
 }
