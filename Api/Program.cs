@@ -1,4 +1,3 @@
-using System;
 using Couple.Api.Data;
 using Couple.Api.Infrastructure;
 using Couple.Api.Profiles;

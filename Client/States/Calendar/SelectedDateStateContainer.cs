@@ -1,5 +1,3 @@
-using System;
-
 namespace Couple.Client.States.Calendar;
 
 public class SelectedDateStateContainer : Notifier

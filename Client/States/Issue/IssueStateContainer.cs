@@ -1,6 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using Couple.Client.Model.Issue;
 
 namespace Couple.Client.States.Issue;

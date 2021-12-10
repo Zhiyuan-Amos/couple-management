@@ -1,5 +1,3 @@
-using System;
-
 namespace Couple.Api.Model;
 
 public abstract class Change

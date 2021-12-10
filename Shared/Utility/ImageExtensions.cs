@@ -1,7 +1,3 @@
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-
 namespace Couple.Shared.Utility;
 
 public static class ImageExtensions

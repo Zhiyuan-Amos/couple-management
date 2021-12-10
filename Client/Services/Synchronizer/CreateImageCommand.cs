@@ -1,4 +1,3 @@
-using System.Threading.Tasks;
 using Couple.Client.Model.Image;
 using Microsoft.JSInterop;
 

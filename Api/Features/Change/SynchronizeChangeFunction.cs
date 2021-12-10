@@ -1,6 +1,4 @@
-using System.Linq;
 using System.Net;
-using System.Threading.Tasks;
 using AutoMapper;
 using Couple.Api.Data;
 using Couple.Api.Infrastructure;
@@ -11,10 +9,7 @@ using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Http;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
-using System;
-using System.Collections.Generic;
 using System.Dynamic;
-using System.Net.Http;
 using System.Net.Http.Json;
 using System.Text.Json;
 

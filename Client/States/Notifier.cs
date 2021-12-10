@@ -1,5 +1,3 @@
-using System;
-
 namespace Couple.Client.States;
 
 public class Notifier

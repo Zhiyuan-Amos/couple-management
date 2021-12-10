@@ -1,5 +1,3 @@
-using System;
-
 namespace Couple.Client.Model.Issue;
 
 public class TaskModel

@@ -1,5 +1,3 @@
-using System;
-
 namespace Couple.Client.ViewModel.Issue;
 
 public interface IReadOnlyTaskViewModel

@@ -1,6 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using Couple.Client.Model.Calendar;
 
 namespace Couple.Client.States.Calendar;

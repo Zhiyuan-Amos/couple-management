@@ -1,5 +1,3 @@
-using System.Net.Http;
-using System.Threading.Tasks;
 using Couple.Client.Services.Synchronizer;
 using Couple.Client.States.Calendar;
 using Couple.Client.States.Done;
@@ -7,7 +5,6 @@ using Couple.Client.States.Issue;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
-using Microsoft.Extensions.DependencyInjection;
 
 namespace Couple.Client;
 

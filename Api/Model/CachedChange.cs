@@ -1,5 +1,3 @@
-using System;
-
 namespace Couple.Api.Model;
 
 public class CachedChange : Change

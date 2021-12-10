@@ -1,6 +1,4 @@
 using Couple.Client.Model.Issue;
-using System;
-using System.Collections.Generic;
 
 namespace Couple.Client.ViewModel.Calendar;
 

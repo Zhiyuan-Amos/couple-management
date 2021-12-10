@@ -1,5 +1,3 @@
-using System;
-
 namespace Couple.Api.Infrastructure;
 
 public interface IDateTimeService

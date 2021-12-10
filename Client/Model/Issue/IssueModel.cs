@@ -1,5 +1,3 @@
-using System;
-using System.Collections.Generic;
 using Couple.Shared.Model;
 
 namespace Couple.Client.Model.Issue;

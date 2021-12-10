@@ -1,5 +1,3 @@
-using System;
-
 namespace Couple.Shared.Model.Change;
 
 public class ChangeDto

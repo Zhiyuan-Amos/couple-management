@@ -1,5 +1,3 @@
-using System.Net.Http;
-using System.Threading.Tasks;
 using Couple.Client.States.Issue;
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;

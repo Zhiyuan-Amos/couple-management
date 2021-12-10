@@ -1,8 +1,4 @@
-using System.Collections.Generic;
-using System.Linq;
-using System.Net.Http;
 using System.Net.Http.Json;
-using System.Threading.Tasks;
 using Couple.Client.Infrastructure;
 using Couple.Client.Model.Calendar;
 using Couple.Client.Model.Issue;

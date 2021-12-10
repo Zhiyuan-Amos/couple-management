@@ -1,4 +1,3 @@
-using System;
 using System.Text.Json;
 using Couple.Client.Adapters;
 using Couple.Shared.Model;

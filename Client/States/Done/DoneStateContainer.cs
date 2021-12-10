@@ -1,7 +1,4 @@
 using Couple.Client.Model.Image;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace Couple.Client.States.Done;
 

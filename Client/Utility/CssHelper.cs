@@ -1,4 +1,3 @@
-using System;
 using Couple.Shared.Model;
 
 namespace Couple.Client.Utility;

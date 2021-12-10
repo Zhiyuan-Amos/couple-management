@@ -1,5 +1,3 @@
-using System;
-
 namespace Couple.Client.ViewModel.Calendar;
 
 public class CellViewModel

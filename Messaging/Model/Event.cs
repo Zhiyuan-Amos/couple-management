@@ -1,6 +1,3 @@
-using System;
-using System.Collections.Generic;
-
 namespace Couple.Messaging.Model;
 
 public class Event

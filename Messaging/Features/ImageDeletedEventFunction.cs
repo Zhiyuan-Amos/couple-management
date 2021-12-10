@@ -2,8 +2,6 @@ using Azure.Storage.Blobs;
 using Couple.Messaging.Model;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.EventGrid;
-using System;
-using System.Threading.Tasks;
 
 namespace Couple.Messaging.Features;
 

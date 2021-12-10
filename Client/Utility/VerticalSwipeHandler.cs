@@ -1,4 +1,3 @@
-using System;
 using Microsoft.AspNetCore.Components.Web;
 
 namespace Couple.Client.Utility;

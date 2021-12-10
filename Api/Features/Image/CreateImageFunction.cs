@@ -1,8 +1,5 @@
-using System;
-using System.IO;
 using System.Net;
 using System.Text.Json;
-using System.Threading.Tasks;
 using AutoMapper;
 using Azure.Storage.Blobs;
 using Couple.Api.Data;
