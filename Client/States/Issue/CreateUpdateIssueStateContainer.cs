@@ -7,9 +7,17 @@ namespace Couple.Client.States.Issue;
 
 public class CreateUpdateIssueStateContainer
 {
+    private readonly List<CreateUpdateTaskViewModel> _tasks;
+
+    public CreateUpdateIssueStateContainer(string title, For @for, IEnumerable<TaskModel> tasks)
+    {
+        Title = title;
+        For = @for;
+        _tasks = IssueAdapter.ToCreateUpdateTaskViewModel(tasks);
+    }
+
     public string Title { get; set; }
     public For For { get; set; }
-    private readonly List<CreateUpdateTaskViewModel> _tasks;
 
     public IReadOnlyList<IReadOnlyTaskViewModel> Tasks => _tasks;
 
@@ -18,17 +26,13 @@ public class CreateUpdateIssueStateContainer
         _tasks.Add(new(Guid.NewGuid(), content));
     }
 
-    public void RemoveEmptyTasks() => _tasks.RemoveAll(task => !task.Content.Any());
+    public void RemoveEmptyTasks()
+    {
+        _tasks.RemoveAll(task => !task.Content.Any());
+    }
 
     public void SetContent(int index, string content)
     {
         _tasks[index].Content = content;
-    }
-
-    public CreateUpdateIssueStateContainer(string title, For @for, IEnumerable<TaskModel> tasks)
-    {
-        Title = title;
-        For = @for;
-        _tasks = IssueAdapter.ToCreateUpdateTaskViewModel(tasks);
     }
 }

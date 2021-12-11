@@ -1,15 +1,13 @@
 @page "/calendar/create"
 
-@using Couple.Client.Pages.Calendar.Components
-
-<CreateUpdateTopBar Title="Create Event"
-                    IsEnabled="@IsEnabled"
-                    OnClickCallback="@Save"/>
-<CreateUpdateForm @bind-Title="@ToCreate.Title"
-                  @bind-Start="@ToCreate.Start"
-                  @bind-End="@ToCreate.End"
-                  Added="@Added"
+<CreateUpdateTopBar IsEnabled="@IsEnabled"
+                    OnClickCallback="@Save"
+                    Title="Create Event"/>
+<CreateUpdateForm Added="@Added"
                   AddedChanged="@AddedChanged"
+                  @bind-End="@ToCreate.End"
+                  @bind-Start="@ToCreate.Start"
+                  @bind-Title="@ToCreate.Title"
                   Removed="@new()"
                   RemovedChanged="@RemovedChanged"
                   Total="@ToCreate.ToDos"/>

@@ -1,6 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 using Couple.Client.Adapters;
 using Couple.Client.Model.Calendar;
 using Couple.Client.States.Calendar;
@@ -13,6 +10,7 @@ namespace Couple.Client.Pages.Calendar.Components;
 
 public partial class CalendarEventListComponent
 {
+    private VerticalSwipeHandler _verticalSwipeHandler;
     [Inject] private EventStateContainer EventStateContainer { get; init; }
     [Inject] private SelectedDateStateContainer SelectedDateStateContainer { get; init; }
     [Inject] private NavigationManager NavigationManager { get; init; }
@@ -22,7 +20,15 @@ public partial class CalendarEventListComponent
     [Parameter] public Action OnSwipeUpCallback { get; init; }
     [Parameter] public Action OnSwipeDownCallback { get; init; }
 
-    private VerticalSwipeHandler _verticalSwipeHandler;
+    private ICollection<EventViewModel> Events =>
+        EventStateContainer.TryGetEvents(SelectedDateStateContainer.SelectedDate, out var events)
+            ? EventAdapter.ToViewModel(events)
+            : new();
+
+    public void Dispose()
+    {
+        EventStateContainer.OnChange -= StateHasChanged;
+    }
 
     protected override async Task OnInitializedAsync()
     {
@@ -34,16 +40,18 @@ public partial class CalendarEventListComponent
         EventStateContainer.SetEvents(events);
     }
 
-    private ICollection<EventViewModel> Events =>
-        EventStateContainer.TryGetEvents(SelectedDateStateContainer.SelectedDate, out var events)
-            ? EventAdapter.ToViewModel(events)
-            : new();
-
-    private void EditEvent(EventViewModel selectedEvent) =>
+    private void EditEvent(EventViewModel selectedEvent)
+    {
         NavigationManager.NavigateTo($"/calendar/{selectedEvent.Id}");
+    }
 
-    private void SwipeUp() => OnSwipeUpCallback.Invoke();
-    private void SwipeDown() => OnSwipeDownCallback.Invoke();
+    private void SwipeUp()
+    {
+        OnSwipeUpCallback.Invoke();
+    }
 
-    public void Dispose() => EventStateContainer.OnChange -= StateHasChanged;
+    private void SwipeDown()
+    {
+        OnSwipeDownCallback.Invoke();
+    }
 }

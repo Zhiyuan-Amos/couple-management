@@ -1,6 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using Couple.Client.States.Calendar;
 using Couple.Client.Utility;
 using Couple.Client.ViewModel.Calendar;
@@ -11,15 +8,16 @@ namespace Couple.Client.Pages.Calendar.Components;
 
 public partial class CalendarCarouselComponent
 {
+    private const int WeeksOnCalendar = 6;
+
+    private const int DaysOnCalendar = 42;
+
+    private HorizontalSwipeHandler _horizontalSwipeHandler;
     [Parameter] public string Style { get; set; }
     [Parameter] public Action<double, double> AfterRenderCallback { get; init; }
 
     [Inject] private SelectedDateStateContainer SelectedDateStateContainer { get; init; }
     [Inject] private IJSRuntime Js { get; init; }
-
-    private const int WeeksOnCalendar = 6;
-
-    private HorizontalSwipeHandler _horizontalSwipeHandler;
 
     protected override void OnInitialized()
     {
@@ -38,8 +36,6 @@ public partial class CalendarCarouselComponent
         }
     }
 
-    private const int DaysOnCalendar = 42;
-
     private static List<CellViewModel> GetCells(int year, int month)
     {
         var firstDayOfMonth = new DateTime(year, month, 1);
@@ -51,6 +47,13 @@ public partial class CalendarCarouselComponent
             .ToList();
     }
 
-    private void SwipeLeft() => ((IJSInProcessRuntime)Js).InvokeVoid("next");
-    private void SwipeRight() => ((IJSInProcessRuntime)Js).InvokeVoid("prev");
+    private void SwipeLeft()
+    {
+        ((IJSInProcessRuntime)Js).InvokeVoid("next");
+    }
+
+    private void SwipeRight()
+    {
+        ((IJSInProcessRuntime)Js).InvokeVoid("prev");
+    }
 }

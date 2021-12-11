@@ -1,11 +1,11 @@
 ﻿@page "/"
 
-<div style="padding-bottom: 56px;" class="mh-100 overflow-auto">
+<div class="mh-100 overflow-auto" style="padding-bottom: 56px;">
     @foreach (var image in FavouriteImages)
     {
         <img class="w-100 h-auto"
-             src="data:image/bmp;base64, @(Convert.ToBase64String(image.Data))"
-             @onclick="@(() => EditImage(image))"/>
+             @onclick="@(() => EditImage(image))"
+             src="data:image/bmp;base64, @(Convert.ToBase64String(image.Data))"/>
     }
 </div>
 <BottomBar/>

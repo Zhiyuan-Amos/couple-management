@@ -1,26 +1,38 @@
-# Copied from https://github.com/dotnet/format/commit/d226eb8dbc26f4a88606f9cfa220ec4180d084d9
-# With the following modifications:
-# 1. charset = utf-8
-# 2. Remove config for file types not in this project
-# 3. Remove file_header_template
-# 4. csharp_space_around_declaration_statements = false
-# 5. csharp_prefer_braces = true:warning
-
-# EditorConfig is awesome:http://EditorConfig.org
-
-# top-most EditorConfig file
+# Adapted from https://github.com/dotnet/format/commit/d226eb8dbc26f4a88606f9cfa220ec4180d084d9
 root = true
 
-# Don't use tabs for indentation.
 [*]
+charset = utf-8
+end_of_line = crlf
+insert_final_newline = true
+indent_size = 4
 indent_style = space
-# (Please don't specify an indent_size here; that has too many unintended consequences.)
+
+# Microsoft .NET properties
+csharp_new_line_before_members_in_object_initializers = false
+csharp_preferred_modifier_order = public, private, protected, internal, new, static, abstract, virtual, sealed, readonly, override, extern, unsafe, volatile, async:suggestion
+csharp_style_var_elsewhere = true:suggestion
+csharp_style_var_for_built_in_types = true:suggestion
+csharp_style_var_when_type_is_apparent = true:suggestion
+dotnet_sort_system_directives_first = false
+dotnet_style_parentheses_in_arithmetic_binary_operators = never_if_unnecessary:none
+dotnet_style_parentheses_in_other_binary_operators = never_if_unnecessary:none
+dotnet_style_parentheses_in_relational_binary_operators = never_if_unnecessary:none
+dotnet_style_predefined_type_for_locals_parameters_members = true:suggestion
+dotnet_style_predefined_type_for_member_access = true:suggestion
+dotnet_style_qualification_for_event = false:suggestion
+dotnet_style_qualification_for_field = false:suggestion
+dotnet_style_qualification_for_method = false:suggestion
+dotnet_style_qualification_for_property = false:suggestion
+dotnet_style_require_accessibility_modifiers = for_non_interface_members:suggestion
+
+# ReSharper properties
+resharper_object_creation_when_type_not_evident = target_typed
+resharper_html_sort_attributes = true
 
 # Code files
-[*.cs]
-indent_size = 4
-insert_final_newline = true
-charset = utf-8
+[*.{cs,razor}]
+tab_width = 4
 
 # Xml project files
 [*.csproj]
@@ -136,64 +148,64 @@ dotnet_naming_symbols.all_members.applicable_kinds = *
 dotnet_naming_style.pascal_case_style.capitalization = pascal_case
 
 # IDE0073: File header
-dotnet_diagnostic.IDE0073.severity = warning
+dotnet_diagnostic.ide0073.severity = warning
 
 # IDE0035: Remove unreachable code
-dotnet_diagnostic.IDE0035.severity = warning
+dotnet_diagnostic.ide0035.severity = warning
 
 # IDE0036: Order modifiers
-dotnet_diagnostic.IDE0036.severity = warning
+dotnet_diagnostic.ide0036.severity = warning
 
 # IDE0043: Format string contains invalid placeholder
-dotnet_diagnostic.IDE0043.severity = warning
+dotnet_diagnostic.ide0043.severity = warning
 
 # IDE0044: Make field readonly
-dotnet_diagnostic.IDE0044.severity = warning
+dotnet_diagnostic.ide0044.severity = warning
 
 # IDE0011: Add braces
 csharp_prefer_braces = true:warning
 # NOTE: We need the below severity entry for Add Braces due to https://github.com/dotnet/roslyn/issues/44201
-dotnet_diagnostic.IDE0011.severity = warning
+dotnet_diagnostic.ide0011.severity = warning
 
 # IDE0040: Add accessibility modifiers
-dotnet_diagnostic.IDE0040.severity = warning
+dotnet_diagnostic.ide0040.severity = warning
 
 # CONSIDER: Are IDE0051 and IDE0052 too noisy to be warnings for IDE editing scenarios? Should they be made build-only warnings?
 # IDE0051: Remove unused private member
-dotnet_diagnostic.IDE0051.severity = warning
+dotnet_diagnostic.ide0051.severity = warning
 
 # IDE0052: Remove unread private member
-dotnet_diagnostic.IDE0052.severity = warning
+dotnet_diagnostic.ide0052.severity = warning
 
 # IDE0059: Unnecessary assignment to a value
-dotnet_diagnostic.IDE0059.severity = warning
+dotnet_diagnostic.ide0059.severity = warning
 
 # IDE0060: Remove unused parameter
-dotnet_diagnostic.IDE0060.severity = warning
+dotnet_diagnostic.ide0060.severity = warning
 
 # CA1012: Abstract types should not have public constructors
-dotnet_diagnostic.CA1012.severity = warning
+dotnet_diagnostic.ca1012.severity = warning
 
 # CA1822: Make member static
-dotnet_diagnostic.CA1822.severity = warning
+dotnet_diagnostic.ca1822.severity = warning
 
 # IDE0005: Using directive is unnecessary
-dotnet_diagnostic.IDE0005.severity = warning
+dotnet_diagnostic.ide0005.severity = warning
 
 # dotnet_style_allow_multiple_blank_lines_experimental
-dotnet_diagnostic.IDE2000.severity = warning
+dotnet_diagnostic.ide2000.severity = warning
 
 # csharp_style_allow_embedded_statements_on_same_line_experimental
-dotnet_diagnostic.IDE2001.severity = warning
+dotnet_diagnostic.ide2001.severity = warning
 
 # csharp_style_allow_blank_lines_between_consecutive_braces_experimental
-dotnet_diagnostic.IDE2002.severity = warning
+dotnet_diagnostic.ide2002.severity = warning
 
 # dotnet_style_allow_statement_immediately_after_block_experimental
-dotnet_diagnostic.IDE2003.severity = warning
+dotnet_diagnostic.ide2003.severity = warning
 
 # csharp_style_allow_blank_line_after_colon_in_constructor_initializer_experimental
-dotnet_diagnostic.IDE2004.severity = warning
+dotnet_diagnostic.ide2004.severity = warning
 
 # CSharp code style settings:
 # Newline settings
@@ -219,15 +231,15 @@ csharp_style_allow_blank_lines_between_consecutive_braces_experimental = false
 csharp_style_allow_blank_line_after_colon_in_constructor_initializer_experimental = false
 
 # Prefer "var" everywhere
-dotnet_diagnostic.IDE0007.severity = error
+dotnet_diagnostic.ide0007.severity = error
 csharp_style_var_for_built_in_types = true:error
 csharp_style_var_when_type_is_apparent = true:error
 csharp_style_var_elsewhere = true:error
 
-# Prefer method-like constructs to have a block body
-csharp_style_expression_bodied_methods = false:none
-csharp_style_expression_bodied_constructors = false:none
-csharp_style_expression_bodied_operators = false:none
+# Prefer method-like constructs to have a expression-body
+csharp_style_expression_bodied_methods = true:error
+csharp_style_expression_bodied_constructors = true:error
+csharp_style_expression_bodied_operators = true:error
 
 # Prefer property-like constructs to have an expression-body
 csharp_style_expression_bodied_properties = true:error
@@ -240,6 +252,7 @@ csharp_style_pattern_matching_over_as_with_null_check = true:error
 csharp_style_inlined_variable_declaration = true:suggestion
 csharp_style_throw_expression = true:error
 csharp_style_conditional_delegate_call = true:suggestion
+csharp_style_namespace_declarations = file_scoped:warning
 
 # Spacing
 csharp_space_after_cast = false

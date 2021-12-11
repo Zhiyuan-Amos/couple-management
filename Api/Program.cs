@@ -21,19 +21,18 @@ public class Program
 
                 var environmentName = Environment.GetEnvironmentVariable("AZURE_FUNCTIONS_ENVIRONMENT");
                 if (environmentName == "Development")
-                {
                     builder.AddScoped<ICurrentUserService, DevelopmentCurrentUserService>();
-                }
                 else
-                {
                     builder.AddScoped<ICurrentUserService, CurrentUserService>();
-                }
                 builder.AddSingleton<IDateTimeService, DateTimeService>();
 
-                static DbContextOptionsBuilder DbParams(DbContextOptionsBuilder options) => options.UseCosmos(
-                    Environment.GetEnvironmentVariable("AccountEndpoint")!,
-                    Environment.GetEnvironmentVariable("AccountKey")!,
-                    Environment.GetEnvironmentVariable("DatabaseName")!);
+                static DbContextOptionsBuilder DbParams(DbContextOptionsBuilder options)
+                {
+                    return options.UseCosmos(
+                        Environment.GetEnvironmentVariable("AccountEndpoint")!,
+                        Environment.GetEnvironmentVariable("AccountKey")!,
+                        Environment.GetEnvironmentVariable("DatabaseName")!);
+                }
             })
             .Build();
 

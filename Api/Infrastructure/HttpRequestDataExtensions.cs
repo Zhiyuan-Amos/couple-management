@@ -1,24 +1,24 @@
-using System.Text.Json;
 using FluentValidation;
 using FluentValidation.Results;
 using Microsoft.Azure.Functions.Worker.Http;
+using System.Text.Json;
 
 namespace Couple.Api.Infrastructure;
 
 // Adapted from https://www.tomfaltesek.com/azure-functions-input-validation/
 public static class HttpRequestDataExtensions
 {
-    private static readonly JsonSerializerOptions Options = new JsonSerializerOptions
+    private static readonly JsonSerializerOptions Options = new()
     {
-        PropertyNameCaseInsensitive = true,
+        PropertyNameCaseInsensitive = true
     };
 
     /// <summary>
-    /// Returns the deserialized request body with validation information.
+    ///     Returns the deserialized request body with validation information.
     /// </summary>
     /// <typeparam name="T">Type used for deserialization of the request body.</typeparam>
     /// <typeparam name="TV">
-    /// Validator used to validate the deserialized request body.
+    ///     Validator used to validate the deserialized request body.
     /// </typeparam>
     /// <param name="request"></param>
     /// <returns></returns>
@@ -31,7 +31,6 @@ public static class HttpRequestDataExtensions
         var validationResult = validator.Validate(requestObject);
 
         if (!validationResult.IsValid)
-        {
             return new()
             {
                 Value = requestObject,
@@ -39,7 +38,6 @@ public static class HttpRequestDataExtensions
                 IsValid = false,
                 Errors = validationResult.Errors
             };
-        }
 
         return new()
         {
@@ -53,19 +51,19 @@ public static class HttpRequestDataExtensions
 public class ValidatableRequest<T>
 {
     /// <summary>
-    /// The deserialized value of the request.
+    ///     The deserialized value of the request.
     /// </summary>
     public T Value { get; set; }
 
     public string Json { get; set; }
 
     /// <summary>
-    /// Whether or not the deserialized value was found to be valid.
+    ///     Whether or not the deserialized value was found to be valid.
     /// </summary>
     public bool IsValid { get; set; }
 
     /// <summary>
-    /// The collection of validation errors.
+    ///     The collection of validation errors.
     /// </summary>
     public IList<ValidationFailure> Errors { get; set; }
 

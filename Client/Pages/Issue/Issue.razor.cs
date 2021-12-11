@@ -23,13 +23,19 @@ public partial class Issue : IDisposable
         }
     }
 
+    public void Dispose()
+    {
+        IssueStateContainer.OnChange -= StateHasChanged;
+    }
+
     protected override async Task OnInitializedAsync()
     {
         IssueStateContainer.OnChange += StateHasChanged;
         IssueStateContainer.Issues = await Js.InvokeAsync<List<IssueModel>>("getIssues");
     }
 
-    public void Dispose() => IssueStateContainer.OnChange -= StateHasChanged;
-
-    private void AddIssue() => NavigationManager.NavigateTo($"/todo/create");
+    private void AddIssue()
+    {
+        NavigationManager.NavigateTo("/todo/create");
+    }
 }

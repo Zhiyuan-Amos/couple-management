@@ -12,6 +12,5 @@ public class Change
     public string ContentType { get; init; }
     public string? Content { get; init; }
 
-    [JsonPropertyName("ttl")]
-    public int? Ttl { get; set; }
+    [JsonPropertyName("ttl")] public int? Ttl { get; set; }
 }

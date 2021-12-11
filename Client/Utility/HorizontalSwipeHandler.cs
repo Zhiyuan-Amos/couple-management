@@ -5,9 +5,9 @@ namespace Couple.Client.Utility;
 public class HorizontalSwipeHandler
 {
     private const double SwipeThreshold = 0.8;
-    private (TouchPoint ReferencePoint, DateTime StartTime) _startPoint;
     private readonly Action _swipeLeft;
     private readonly Action _swipeRight;
+    private (TouchPoint ReferencePoint, DateTime StartTime) _startPoint;
 
     public HorizontalSwipeHandler(Action swipeLeft, Action swipeRight)
     {
@@ -29,18 +29,11 @@ public class HorizontalSwipeHandler
         var diffTime = DateTime.Now - _startPoint.StartTime;
         var velocityX = Math.Abs(diffX / diffTime.Milliseconds);
 
-        if (velocityX < SwipeThreshold)
-        {
-            return;
-        }
+        if (velocityX < SwipeThreshold) return;
 
         if (diffX < 0)
-        {
             _swipeRight.Invoke();
-        }
         else
-        {
             _swipeLeft.Invoke();
-        }
     }
 }

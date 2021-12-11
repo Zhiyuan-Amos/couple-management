@@ -1,4 +1,3 @@
-using System.Net.Http.Json;
 using Couple.Client.Adapters;
 using Couple.Client.Model.Image;
 using Couple.Client.States.Image;
@@ -7,6 +6,7 @@ using Couple.Shared.Utility;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.JSInterop;
+using System.Net.Http.Json;
 
 namespace Couple.Client.Pages.Image;
 
@@ -17,6 +17,8 @@ public partial class CreateImage
     [Inject] private HttpClient? HttpClient { get; init; }
     [Inject] private NavigationManager? NavigationManager { get; init; }
     [Inject] private IJSRuntime? Js { get; init; }
+
+    private bool IsSaveEnabled => CreateUpdateImageStateContainer?.Data != null;
 
     protected override void OnInitialized()
     {
@@ -64,6 +66,4 @@ public partial class CreateImage
 
         CreateUpdateImageStateContainer.Data = ms.ToArray();
     }
-
-    private bool IsSaveEnabled => CreateUpdateImageStateContainer?.Data != null;
 }

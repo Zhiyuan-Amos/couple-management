@@ -2,7 +2,9 @@ namespace Couple.Api.Model;
 
 public class CachedChange : Change
 {
-    private CachedChange() { }
+    private CachedChange()
+    {
+    }
 
     public CachedChange(Guid id,
         string command,
@@ -10,5 +12,7 @@ public class CachedChange : Change
         DateTime timestamp,
         Guid contentId,
         string contentType,
-        string content) : base(id, command, userId, timestamp, contentId, contentType, content) { }
+        string content) : base(id, command, userId, timestamp, contentId, contentType, content)
+    {
+    }
 }

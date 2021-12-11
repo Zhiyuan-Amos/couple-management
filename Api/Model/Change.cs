@@ -2,16 +2,9 @@ namespace Couple.Api.Model;
 
 public abstract class Change
 {
-    public Guid Id { get; init; }
-    public string Command { get; init; }
-    public string UserId { get; init; }
-    public DateTime Timestamp { get; init; }
-    public Guid ContentId { get; init; }
-    public string ContentType { get; init; }
-    public string Content { get; init; }
-    public int? Ttl { get; set; }
-
-    protected Change() { }
+    protected Change()
+    {
+    }
 
     protected Change(Guid id,
         string command,
@@ -36,4 +29,13 @@ public abstract class Change
         // which is much more troublesome than this solution.
         Ttl = -1;
     }
+
+    public Guid Id { get; init; }
+    public string Command { get; init; }
+    public string UserId { get; init; }
+    public DateTime Timestamp { get; init; }
+    public Guid ContentId { get; init; }
+    public string ContentType { get; init; }
+    public string Content { get; init; }
+    public int? Ttl { get; set; }
 }

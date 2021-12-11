@@ -1,15 +1,15 @@
-<div id="calendar-carousel" class="carousel slide">
+<div class="carousel slide" id="calendar-carousel">
     <div class="carousel-inner">
         <div class="carousel-item">
             1
         </div>
         <div class="carousel-item active">
             <div style="@Style">
-                <div id="calendar-body"
-                     class="container text-center"
-                     @ontouchstart="@_horizontalSwipeHandler.HandleTouchStart"
+                <div class="container text-center"
+                     id="calendar-body"
+                     @onkeypress:preventDefault="true"
                      @ontouchend="@_horizontalSwipeHandler.HandleTouchEnd"
-                     @onkeypress:preventDefault="true">
+                     @ontouchstart="@_horizontalSwipeHandler.HandleTouchStart">
                     <CalendarBodyComponent Cells="@GetCells(DateTime.Today.Year, DateTime.Today.Month)"/>
                 </div>
             </div>

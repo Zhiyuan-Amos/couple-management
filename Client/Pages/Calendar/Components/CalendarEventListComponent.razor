@@ -1,14 +1,14 @@
 ﻿@implements IDisposable
 
-<div id="events-list"
-     style="@Style"
-     class="w-100"
-     @ontouchstart="@_verticalSwipeHandler.HandleTouchStart"
+<div class="w-100"
+     id="events-list"
+     @onkeypress:preventDefault="true"
      @ontouchend="@_verticalSwipeHandler.HandleTouchEnd"
-     @onkeypress:preventDefault="true">
+     @ontouchstart="@_verticalSwipeHandler.HandleTouchStart"
+     style="@Style">
     <Virtualize Items="@Events">
         <div class="px-3 py-2 border-bottom"
-            @onclick="@(_ => EditEvent(context))">
+             @onclick="@(_ => EditEvent(context))">
             <h6 class="mb-1">
                 @context.Title
             </h6>

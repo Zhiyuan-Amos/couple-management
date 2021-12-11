@@ -1,9 +1,8 @@
-using System.Net;
-using System.Text.Json;
 using AutoMapper;
 using Azure.Storage.Blobs;
 using Couple.Api.Data;
 using Couple.Api.Infrastructure;
+using Couple.Api.Model;
 using Couple.Shared;
 using Couple.Shared.Model;
 using Couple.Shared.Model.Image;
@@ -12,14 +11,16 @@ using FluentValidation;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Http;
 using Microsoft.Extensions.Logging;
+using System.Net;
+using System.Text.Json;
 
 namespace Couple.Api.Features.Image;
 
 public class CreateImageFunction
 {
     private readonly ChangeContext _context;
-    private readonly IDateTimeService _dateTimeService;
     private readonly ICurrentUserService _currentUserService;
+    private readonly IDateTimeService _dateTimeService;
     private readonly IMapper _mapper;
 
     public CreateImageFunction(ChangeContext context,
@@ -52,14 +53,11 @@ public class CreateImageFunction
         }
 
         var claims = _currentUserService.GetClaims(req.Headers);
-        if (claims.PartnerId == null)
-        {
-            return req.CreateResponse(HttpStatusCode.BadRequest);
-        }
+        if (claims.PartnerId == null) return req.CreateResponse(HttpStatusCode.BadRequest);
 
         var dto = form.Value;
         var url = Environment.GetEnvironmentVariable("GetImageUrl");
-        var toCreate = new Model.HyperlinkChange(Guid.NewGuid(),
+        var toCreate = new HyperlinkChange(Guid.NewGuid(),
             Command.Create,
             claims.PartnerId,
             _dateTimeService.Now,
@@ -94,15 +92,9 @@ public class CreateImageFunction
                     return;
                 }
 
-                if (!ImageExtensions.IsImage(new MemoryStream(data)))
-                {
-                    context.AddFailure("Invalid file type");
-                }
+                if (!ImageExtensions.IsImage(new MemoryStream(data))) context.AddFailure("Invalid file type");
 
-                if (data.Length > Constants.MaxFileSize)
-                {
-                    context.AddFailure("File exceeded size limit");
-                }
+                if (data.Length > Constants.MaxFileSize) context.AddFailure("File exceeded size limit");
             });
         }
     }

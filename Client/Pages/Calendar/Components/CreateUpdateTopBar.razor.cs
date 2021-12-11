@@ -12,5 +12,8 @@ public partial class CreateUpdateTopBar
 
     [Parameter] public bool IsEnabled { get; set; }
 
-    private void Cancel() => NavigationManager.NavigateTo("/calendar");
+    private void Cancel()
+    {
+        NavigationManager.NavigateTo("/calendar");
+    }
 }

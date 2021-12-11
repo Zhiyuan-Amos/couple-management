@@ -1,10 +1,10 @@
 @using Couple.Client.Utility
-<div style="padding-bottom: 56px;" class="mh-100 overflow-auto">
+<div class="mh-100 overflow-auto" style="padding-bottom: 56px;">
     @foreach (var (issue, issueIndex) in Issues.Select((issue, index) => (issue, index)))
     {
-        <div style="@CssHelper.GetBackgroundColor(issueIndex)"
-             class="card mx-3 my-2"
-             @onclick="@(() => EditIssue(issue))">
+        <div class="card mx-3 my-2"
+             @onclick="@(() => EditIssue(issue))"
+             style="@CssHelper.GetBackgroundColor(issueIndex)">
             <div class="card-body">
                 <div class="d-flex card-title">
                     <i style="@CssHelper.GetIcon(issue.For)"></i>
@@ -14,14 +14,14 @@
                 </div>
                 @foreach (var (task, index) in issue.Tasks.Select((item, index) => (item, index)))
                 {
-                    <div style="min-height: 2rem; margin-bottom: .25rem;"
-                         class="d-flex align-items-center">
-                        <input style="min-height: 2em; min-width: 2em; margin-top: 0;"
-                               class="form-check-input"
-                               type="checkbox"
-                               @onchange="@(_ => OnCheckboxToggle(issue.Id, task))"
+                    <div class="d-flex align-items-center"
+                         style="margin-bottom: .25rem; min-height: 2rem;">
+                        <input class="form-check-input"
                                id="@index"
-                               @onclick:stopPropagation=true>
+                               @onchange="@(_ => OnCheckboxToggle(issue.Id, task))"
+                               @onclick:stopPropagation=true
+                               style="margin-top: 0; min-height: 2em; min-width: 2em;"
+                               type="checkbox">
                         <label class="ps-1"
                                for="@index">
                             @task.Content

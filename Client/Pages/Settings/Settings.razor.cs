@@ -11,10 +11,7 @@ public partial class Settings
 
     private async Task OnImportSelected(InputFileChangeEventArgs e)
     {
-        if (e.File.ContentType != "application/json")
-        {
-            return;
-        }
+        if (e.File.ContentType != "application/json") return;
 
         await Js.InvokeVoidAsync("clearDatabase");
         var json =

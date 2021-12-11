@@ -23,10 +23,7 @@ public class IssueStateContainer : Notifier
 
     public bool TryGetIssue(Guid id, out IssueModel issue)
     {
-        if (!_idToIssue.TryGetValue(id, out issue))
-        {
-            return false;
-        }
+        if (!_idToIssue.TryGetValue(id, out issue)) return false;
 
         return true;
     }

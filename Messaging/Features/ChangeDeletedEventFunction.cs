@@ -14,14 +14,16 @@ public class DeletedEventFunction
     public async Task Run([CosmosDBTrigger("%DatabaseName%",
             "%CollectionName%",
             ConnectionStringSetting = "DatabaseConnectionString",
-            CreateLeaseCollectionIfNotExists = true)] IReadOnlyList<Document> documents,
+            CreateLeaseCollectionIfNotExists = true)]
+        IReadOnlyList<Document> documents,
         [EventGrid(TopicEndpointUri = "EventGridEndpoint",
-            TopicKeySetting = "EventGridKey")] IAsyncCollector<EventGridEvent> eventCollector)
+            TopicKeySetting = "EventGridKey")]
+        IAsyncCollector<EventGridEvent> eventCollector)
     {
         var changes = documents.Select(d => d.ToString())
             .Select(json => JsonSerializer.Deserialize<Change>(json)!)
             .Where(change => change.Ttl != -1)
-            .Where(change => change.ContentType == Entity.Image && (change.Command is Command.Create or Command.Update))
+            .Where(change => change.ContentType == Entity.Image && change.Command is Command.Create or Command.Update)
             .ToList();
 
         List<Task> tasks = new();

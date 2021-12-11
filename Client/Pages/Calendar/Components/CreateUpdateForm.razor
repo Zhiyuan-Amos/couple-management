@@ -1,8 +1,8 @@
 @* nested binding, so use ValueChanged instead of bind-Value *@
 <input class="form-control form-control-lg rounded-0 border-top-0 border-end-0 border-start-0"
+       @oninput="@(e => TitleChanged.InvokeAsync(e.Value!.ToString()))"
        placeholder="Title"
-       value="@Title"
-       @oninput="@(e => TitleChanged.InvokeAsync(e.Value!.ToString()))">
+       value="@Title">
 <div class="d-flex align-items-center justify-content-between px-3 py-1 border-bottom">
     <label class="col-form-label user-select-none">
         Start Date
@@ -33,7 +33,7 @@
     </label>
 </div>
 <div>
-    <Virtualize Items="@Total" Context="task">
+    <Virtualize Context="task" Items="@Total">
         <div class="px-3 py-1 border-bottom d-flex align-items-center justify-content-between">
             <h3 class="text-break mb-0 user-select-none">
                 @task.Title

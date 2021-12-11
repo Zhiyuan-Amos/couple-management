@@ -2,9 +2,9 @@ namespace Couple.Api.Model;
 
 public class HyperlinkChange : Change
 {
-    public string Url { get; init; }
-
-    private HyperlinkChange() { }
+    private HyperlinkChange()
+    {
+    }
 
     public HyperlinkChange(Guid id,
         string command,
@@ -17,4 +17,6 @@ public class HyperlinkChange : Change
     {
         Url = url;
     }
+
+    public string Url { get; init; }
 }

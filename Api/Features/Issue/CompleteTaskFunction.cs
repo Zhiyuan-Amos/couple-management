@@ -1,20 +1,21 @@
-using System.Net;
 using Couple.Api.Data;
 using Couple.Api.Infrastructure;
+using Couple.Api.Model;
 using Couple.Shared.Model;
 using Couple.Shared.Model.Issue;
 using FluentValidation;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Http;
 using Microsoft.Extensions.Logging;
+using System.Net;
 
 namespace Couple.Api.Features.Issue;
 
 public class CompleteTaskFunction
 {
     private readonly ChangeContext _context;
-    private readonly IDateTimeService _dateTimeService;
     private readonly ICurrentUserService _currentUserService;
+    private readonly IDateTimeService _dateTimeService;
 
     public CompleteTaskFunction(ChangeContext context,
         IDateTimeService dateTimeService,
@@ -44,12 +45,9 @@ public class CompleteTaskFunction
         }
 
         var claims = _currentUserService.GetClaims(req.Headers);
-        if (claims.PartnerId == null)
-        {
-            return req.CreateResponse(HttpStatusCode.BadRequest);
-        }
+        if (claims.PartnerId == null) return req.CreateResponse(HttpStatusCode.BadRequest);
 
-        var toCreate = new Model.CachedChange(Guid.NewGuid(),
+        var toCreate = new CachedChange(Guid.NewGuid(),
             Command.Complete,
             claims.PartnerId,
             _dateTimeService.Now,

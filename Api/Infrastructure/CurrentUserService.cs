@@ -20,20 +20,13 @@ public class CurrentUserService : ICurrentUserService
     // from https://docs.microsoft.com/en-us/azure/static-web-apps/user-information?tabs=csharp#api-functions
     private static class StaticWebAppsAuth
     {
-        private class ClientPrincipal
-        {
-            public string? IdentityProvider { get; set; }
-            public string? UserId { get; set; }
-            public string? UserDetails { get; set; }
-            public IEnumerable<string>? UserRoles { get; set; }
-        }
-
         public static ClaimsPrincipal Parse(HttpHeaders headers)
         {
             var data = headers.GetValues("x-ms-client-principal").First();
             var decoded = Convert.FromBase64String(data);
             var json = Encoding.ASCII.GetString(decoded);
-            var principal = JsonSerializer.Deserialize<ClientPrincipal>(json, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+            var principal = JsonSerializer.Deserialize<ClientPrincipal>(json,
+                new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
 
             var roles = principal.UserRoles
                 .Where(role => role != "anonymous"
@@ -43,10 +36,7 @@ public class CurrentUserService : ICurrentUserService
                 .Select(r => new Claim(ClaimTypes.Role, r))
                 .ToList();
 
-            if (!roles.Any())
-            {
-                return new();
-            }
+            if (!roles.Any()) return new();
 
             var adminAssignedId = principal.UserRoles
                 .Single(role => role.StartsWith("id_"));
@@ -68,6 +58,14 @@ public class CurrentUserService : ICurrentUserService
             identity.AddClaim(new(ClaimTypePartnerId, partnerId[10..]));
             identity.AddClaims(roles);
             return new(identity);
+        }
+
+        private class ClientPrincipal
+        {
+            public string? IdentityProvider { get; set; }
+            public string? UserId { get; set; }
+            public string? UserDetails { get; set; }
+            public IEnumerable<string>? UserRoles { get; set; }
         }
     }
 }

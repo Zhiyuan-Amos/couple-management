@@ -43,10 +43,7 @@ public partial class Calendar
 
     private string GetCalendarStyle()
     {
-        if (!HasExpanded)
-        {
-            return InitialBodyStyle;
-        }
+        if (!HasExpanded) return InitialBodyStyle;
 
         return IsListViewExpanded ? CollapsedBodyStyle : ExpandedBodyStyle;
     }
@@ -72,23 +69,20 @@ public partial class Calendar
     {
         HasExpanded = true;
 
-        if (!IsListViewExpanded)
-        {
-            IsListViewExpanded = true;
-        }
+        if (!IsListViewExpanded) IsListViewExpanded = true;
 
         StateHasChanged();
     }
 
     private void SwipeDown()
     {
-        if (IsListViewExpanded && ((IJSInProcessRuntime)Js).Invoke<bool>("isListViewTop"))
-        {
-            IsListViewExpanded = false;
-        }
+        if (IsListViewExpanded && ((IJSInProcessRuntime)Js).Invoke<bool>("isListViewTop")) IsListViewExpanded = false;
 
         StateHasChanged();
     }
 
-    private void AddEvent() => NavigationManager.NavigateTo($"/calendar/create");
+    private void AddEvent()
+    {
+        NavigationManager.NavigateTo("/calendar/create");
+    }
 }

@@ -1,17 +1,17 @@
-using System.Net.Http.Json;
 using Couple.Client.Adapters;
 using Couple.Client.Model.Image;
 using Couple.Client.States.Done;
 using Couple.Client.States.Image;
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
+using System.Net.Http.Json;
 
 namespace Couple.Client.Pages.Image;
 
 public partial class UpdateImage
 {
-    [EditorRequired] [Parameter] public Guid ImageId { get; set; }
     private ImageModel _imageModel;
+    [EditorRequired] [Parameter] public Guid ImageId { get; set; }
     private CreateUpdateImageStateContainer CreateUpdateImageStateContainer { get; set; }
 
     [Inject] private HttpClient HttpClient { get; init; }
@@ -21,10 +21,7 @@ public partial class UpdateImage
 
     protected override void OnInitialized()
     {
-        if (!DoneStateContainer.TryGetImage(ImageId, out _imageModel))
-        {
-            NavigationManager.NavigateTo("/done");
-        }
+        if (!DoneStateContainer.TryGetImage(ImageId, out _imageModel)) NavigationManager.NavigateTo("/done");
 
         CreateUpdateImageStateContainer = new(_imageModel.IsFavourite, _imageModel.Data);
     }

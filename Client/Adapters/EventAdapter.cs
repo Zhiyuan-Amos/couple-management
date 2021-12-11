@@ -8,61 +8,88 @@ namespace Couple.Client.Adapters;
 
 public static class EventAdapter
 {
-    public static List<EventViewModel> ToViewModel(IEnumerable<EventModel> models) =>
-        models.Select(ToViewModel).ToList();
-
-    public static EventViewModel ToViewModel(EventModel model) =>
-        new(model.Id, model.Title, model.Start, model.End, new(model.ToDos));
-
-    public static EventDto ToDto(EventModel model) => new()
+    public static List<EventViewModel> ToViewModel(IEnumerable<EventModel> models)
     {
-        Id = model.Id,
-        Title = model.Title,
-        Start = model.Start,
-        End = model.End,
-        ToDos = ToDto(model.ToDos),
-    };
+        return models.Select(ToViewModel).ToList();
+    }
 
-    public static EventDto ToDto(UpdateEventViewModel model) => new()
+    public static EventViewModel ToViewModel(EventModel model)
     {
-        Id = model.Id,
-        Title = model.Title,
-        Start = model.Start,
-        End = model.End,
-        ToDos = ToDto(model.ToDos),
-    };
+        return new(model.Id, model.Title, model.Start, model.End, new(model.ToDos));
+    }
 
-    public static List<IssueDto> ToDto(IEnumerable<IssueModel> models) => models.Select(ToDto).ToList();
-
-    public static IssueDto ToDto(IssueModel model) => new()
+    public static EventDto ToDto(EventModel model)
     {
-        Id = model.Id,
-        Title = model.Title,
-        For = model.For,
-        Tasks = ToTaskDto(model.Tasks),
-        CreatedOn = model.CreatedOn,
-    };
+        return new()
+        {
+            Id = model.Id,
+            Title = model.Title,
+            Start = model.Start,
+            End = model.End,
+            ToDos = ToDto(model.ToDos)
+        };
+    }
 
-    public static List<TaskDto> ToTaskDto(IEnumerable<TaskModel> models) =>
-        models.Select(ToTaskDto).ToList();
-
-    public static TaskDto ToTaskDto(TaskModel model) => new(model.Id, model.Content);
-
-    public static EventModel ToModel(UpdateEventViewModel model) => new()
+    public static EventDto ToDto(UpdateEventViewModel model)
     {
-        Id = model.Id,
-        Title = model.Title,
-        Start = model.Start,
-        End = model.End,
-        ToDos = model.ToDos,
-    };
+        return new()
+        {
+            Id = model.Id,
+            Title = model.Title,
+            Start = model.Start,
+            End = model.End,
+            ToDos = ToDto(model.ToDos)
+        };
+    }
 
-    public static UpdateEventViewModel ToUpdateViewModel(EventModel model) => new()
+    public static List<IssueDto> ToDto(IEnumerable<IssueModel> models)
     {
-        Id = model.Id,
-        Title = model.Title,
-        Start = model.Start,
-        End = model.End,
-        ToDos = new(model.ToDos),
-    };
+        return models.Select(ToDto).ToList();
+    }
+
+    public static IssueDto ToDto(IssueModel model)
+    {
+        return new()
+        {
+            Id = model.Id,
+            Title = model.Title,
+            For = model.For,
+            Tasks = ToTaskDto(model.Tasks),
+            CreatedOn = model.CreatedOn
+        };
+    }
+
+    public static List<TaskDto> ToTaskDto(IEnumerable<TaskModel> models)
+    {
+        return models.Select(ToTaskDto).ToList();
+    }
+
+    public static TaskDto ToTaskDto(TaskModel model)
+    {
+        return new(model.Id, model.Content);
+    }
+
+    public static EventModel ToModel(UpdateEventViewModel model)
+    {
+        return new()
+        {
+            Id = model.Id,
+            Title = model.Title,
+            Start = model.Start,
+            End = model.End,
+            ToDos = model.ToDos
+        };
+    }
+
+    public static UpdateEventViewModel ToUpdateViewModel(EventModel model)
+    {
+        return new()
+        {
+            Id = model.Id,
+            Title = model.Title,
+            Start = model.Start,
+            End = model.End,
+            ToDos = new(model.ToDos)
+        };
+    }
 }

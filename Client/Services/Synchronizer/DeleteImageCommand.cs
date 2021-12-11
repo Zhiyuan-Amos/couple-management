@@ -4,9 +4,16 @@ namespace Couple.Client.Services.Synchronizer;
 
 public class DeleteImageCommand : ICommand
 {
-    private readonly IJSRuntime _js;
     private readonly Guid _guid;
-    public DeleteImageCommand(IJSRuntime js, Guid guid) => (_js, _guid) = (js, guid);
+    private readonly IJSRuntime _js;
 
-    public Task Execute() => _js.InvokeVoidAsync("deleteImage", _guid).AsTask();
+    public DeleteImageCommand(IJSRuntime js, Guid guid)
+    {
+        (_js, _guid) = (js, guid);
+    }
+
+    public Task Execute()
+    {
+        return _js.InvokeVoidAsync("deleteImage", _guid).AsTask();
+    }
 }

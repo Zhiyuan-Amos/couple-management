@@ -1,25 +1,17 @@
-﻿html, body {
-    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-}
+﻿html, body { font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; }
 
-body {
-    overscroll-behavior: contain;
-}
+body { overscroll-behavior: contain; }
 
-.navbar-height {
-    height: 56px;
-}
+.navbar-height { height: 56px; }
 
 .w-fit-content {
     width: -moz-fit-content;
     width: fit-content;
 }
 
-.file-input-zone {
-    position: relative;
-}
+.file-input-zone { position: relative; }
 
 .file-input-zone input[type=file] {
-    position: absolute;
     opacity: 0;
+    position: absolute;
 }

@@ -1,7 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Couple.Client.States.Issue;
 using Couple.Client.ViewModel.Issue;
 using Couple.Shared.Model;
@@ -18,24 +14,34 @@ public partial class CreateUpdateForm
 
     private IReadOnlyList<IReadOnlyTaskViewModel> Tasks { get; set; }
 
+    private bool IsAddNewTaskEnabled => Tasks.All(task => task.Content.Any());
+
+    private bool IsSaveEnabled => CreateUpdateIssueStateContainer.Title.Any()
+                                  && Tasks.Any(task => task.Content.Any());
+
     protected override void OnInitialized()
     {
         Tasks = CreateUpdateIssueStateContainer.Tasks;
     }
 
-    private void OnForChange(For @for) => CreateUpdateIssueStateContainer.For = @for;
+    private void OnForChange(For @for)
+    {
+        CreateUpdateIssueStateContainer.For = @for;
+    }
 
-    private bool IsAddNewTaskEnabled => Tasks.All(task => task.Content.Any());
+    private void AddNewTask()
+    {
+        CreateUpdateIssueStateContainer.AddTask("");
+    }
 
-    private void AddNewTask() => CreateUpdateIssueStateContainer.AddTask("");
-    private void SetContent(int index, string content) => CreateUpdateIssueStateContainer.SetContent(index, content);
+    private void SetContent(int index, string content)
+    {
+        CreateUpdateIssueStateContainer.SetContent(index, content);
+    }
 
     private void Save()
     {
         CreateUpdateIssueStateContainer.RemoveEmptyTasks();
         OnSaveCallback();
     }
-
-    private bool IsSaveEnabled => CreateUpdateIssueStateContainer.Title.Any()
-                                  && Tasks.Any(task => task.Content.Any());
 }

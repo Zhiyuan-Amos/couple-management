@@ -1,7 +1,2 @@
 #!/bin/sh
-
-FILES=$(git diff --cached --name-only --diff-filter=ACM "*.cs")
-[ -z "$FILES" ] && exit 0
-
-dotnet format --include $FILES
-echo "$FILES" | xargs git add
+C:/Windows/System32/WindowsPowerShell/v1.0/powershell.exe -ExecutionPolicy RemoteSigned -File '.hooks\pre-commit.ps1'

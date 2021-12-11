@@ -1,20 +1,22 @@
-using System.Text.Json;
 using Couple.Client.Adapters;
 using Couple.Shared.Model;
 using Couple.Shared.Model.Change;
 using Couple.Shared.Model.Image;
 using Couple.Shared.Model.Issue;
 using Microsoft.JSInterop;
+using System.Text.Json;
 
 namespace Couple.Client.Services.Synchronizer;
 
 public class CommandParser
 {
+    private static readonly JsonSerializerOptions Options = new() { PropertyNameCaseInsensitive = true };
     private readonly IJSRuntime _js;
 
-    private static readonly JsonSerializerOptions Options = new() { PropertyNameCaseInsensitive = true };
-
-    public CommandParser(IJSRuntime js) => _js = js;
+    public CommandParser(IJSRuntime js)
+    {
+        _js = js;
+    }
 
     public ICommand Parse(ChangeDto change)
     {

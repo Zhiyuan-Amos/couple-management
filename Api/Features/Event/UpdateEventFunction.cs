@@ -1,6 +1,6 @@
-using System.Net;
 using Couple.Api.Data;
 using Couple.Api.Infrastructure;
+using Couple.Api.Model;
 using Couple.Api.Validators;
 using Couple.Shared.Model;
 using Couple.Shared.Model.Event;
@@ -8,14 +8,15 @@ using FluentValidation;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Http;
 using Microsoft.Extensions.Logging;
+using System.Net;
 
 namespace Couple.Api.Features.Event;
 
 public class UpdateEventFunction
 {
     private readonly ChangeContext _changeContext;
-    private readonly IDateTimeService _dateTimeService;
     private readonly ICurrentUserService _currentUserService;
+    private readonly IDateTimeService _dateTimeService;
 
     public UpdateEventFunction(ChangeContext changeContext,
         IDateTimeService dateTimeService,
@@ -45,12 +46,9 @@ public class UpdateEventFunction
         }
 
         var claims = _currentUserService.GetClaims(req.Headers);
-        if (claims.PartnerId == null)
-        {
-            return req.CreateResponse(HttpStatusCode.BadRequest);
-        }
+        if (claims.PartnerId == null) return req.CreateResponse(HttpStatusCode.BadRequest);
 
-        var toCreate = new Model.CachedChange(Guid.NewGuid(),
+        var toCreate = new CachedChange(Guid.NewGuid(),
             Command.Update,
             claims.PartnerId,
             _dateTimeService.Now,

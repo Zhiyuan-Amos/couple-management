@@ -1,4 +1,3 @@
-using System.Net.Http.Json;
 using Couple.Client.Adapters;
 using Couple.Client.Model.Calendar;
 using Couple.Client.Model.Issue;
@@ -8,6 +7,7 @@ using Couple.Client.ViewModel.Calendar;
 using Couple.Shared.Model.Event;
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
+using System.Net.Http.Json;
 
 namespace Couple.Client.Pages.Calendar;
 
@@ -31,6 +31,11 @@ public partial class UpdateEvent
     private List<IssueModel> Added { get; set; }
     private List<IssueModel> Removed { get; set; }
 
+    private bool IsEnabled => !string.IsNullOrWhiteSpace(ToUpdate?.Title)
+                              && ToUpdate.End >= ToUpdate.Start
+                              && ToUpdate.Start != DateTime.UnixEpoch
+                              && ToUpdate.End != DateTime.UnixEpoch;
+
     protected override void OnInitialized()
     {
         if (!EventStateContainer.TryGetEvent(EventId, out var @event))
@@ -50,12 +55,7 @@ public partial class UpdateEvent
     {
         var added = Added.Select(toDo => toDo.Id).ToList();
         var toPersist = EventAdapter.ToModel(ToUpdate);
-        await Js.InvokeVoidAsync("updateEvent", new object[]
-        {
-            toPersist,
-            added,
-            Removed
-        });
+        await Js.InvokeVoidAsync("updateEvent", toPersist, added, Removed);
 
         var toDosTask = Js.InvokeAsync<List<IssueModel>>("getToDos").AsTask();
         var eventsTask = Js.InvokeAsync<List<EventModel>>("getAllEvents").AsTask();
@@ -69,9 +69,9 @@ public partial class UpdateEvent
         {
             Event = EventAdapter.ToDto(ToUpdate),
             Added = added,
-            Removed = EventAdapter.ToDto(Removed),
+            Removed = EventAdapter.ToDto(Removed)
         };
-        await HttpClient.PutAsJsonAsync($"api/Events", toUpdate);
+        await HttpClient.PutAsJsonAsync("api/Events", toUpdate);
     }
 
     private async Task Delete()
@@ -85,24 +85,13 @@ public partial class UpdateEvent
         await HttpClient.DeleteAsync($"api/Events/{ToUpdate.Id}");
     }
 
-    private bool IsEnabled => !string.IsNullOrWhiteSpace(ToUpdate?.Title)
-                              && ToUpdate.End >= ToUpdate.Start
-                              && ToUpdate.Start != DateTime.UnixEpoch
-                              && ToUpdate.End != DateTime.UnixEpoch;
-
     private void AddedChanged(List<IssueModel> added)
     {
         foreach (var add in added)
-        {
             if (Original.Any(toDo => toDo.Id == add.Id))
-            {
                 Removed.Remove(add);
-            }
             else
-            {
                 Added.Add(add);
-            }
-        }
 
         ToUpdate.ToDos.AddRange(added);
         ToUpdate.ToDos = new(ToUpdate.ToDos); // https://docs.telerik.com/blazor-ui/common-features/observable-data
@@ -111,13 +100,9 @@ public partial class UpdateEvent
     private void RemovedChanged(IssueModel removed)
     {
         if (Original.Any(toDo => toDo.Id == removed.Id))
-        {
             Removed.Add(removed);
-        }
         else
-        {
             Added.Remove(removed);
-        }
 
         ToUpdate.ToDos.Remove(removed);
         ToUpdate.ToDos = new(ToUpdate.ToDos);

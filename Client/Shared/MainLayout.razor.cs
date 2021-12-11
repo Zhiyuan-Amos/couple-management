@@ -9,9 +9,6 @@ public partial class MainLayout
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-        if (firstRender)
-        {
-            await Synchronizer.SynchronizeAsync();
-        }
+        if (firstRender) await Synchronizer.SynchronizeAsync();
     }
 }

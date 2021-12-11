@@ -1,8 +1,8 @@
-using System.Net.Http.Json;
 using Couple.Client.Adapters;
 using Couple.Client.Model.Issue;
 using Couple.Shared.Model;
 using Microsoft.JSInterop;
+using System.Net.Http.Json;
 
 namespace Couple.Client.Pages.Issue;
 
@@ -14,7 +14,7 @@ public class CreateIssueBase : CreateUpdateIssueBase
             For.Him,
             new List<TaskModel>
             {
-                new(Guid.NewGuid(), ""),
+                new(Guid.NewGuid(), "")
             });
     }
 
@@ -32,6 +32,6 @@ public class CreateIssueBase : CreateUpdateIssueBase
         NavigationManager.NavigateTo("/todo");
 
         var toCreate = IssueAdapter.ToCreateDto(toPersist);
-        await HttpClient.PostAsJsonAsync($"api/Issues", toCreate);
+        await HttpClient.PostAsJsonAsync("api/Issues", toCreate);
     }
 }

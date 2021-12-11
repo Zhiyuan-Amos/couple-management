@@ -1,18 +1,19 @@
-using System.Net;
-using System.Text.Json;
 using Couple.Api.Data;
 using Couple.Api.Infrastructure;
+using Couple.Api.Model;
 using Couple.Shared.Model;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Http;
+using System.Net;
+using System.Text.Json;
 
 namespace Couple.Api.Features.Image;
 
 public class DeleteImageFunction
 {
     private readonly ChangeContext _context;
-    private readonly IDateTimeService _dateTimeService;
     private readonly ICurrentUserService _currentUserService;
+    private readonly IDateTimeService _dateTimeService;
 
     public DeleteImageFunction(ChangeContext context,
         IDateTimeService dateTimeService,
@@ -30,12 +31,9 @@ public class DeleteImageFunction
         Guid id)
     {
         var claims = _currentUserService.GetClaims(req.Headers);
-        if (claims.PartnerId == null)
-        {
-            return req.CreateResponse(HttpStatusCode.BadRequest);
-        }
+        if (claims.PartnerId == null) return req.CreateResponse(HttpStatusCode.BadRequest);
 
-        var toCreate = new Model.CachedChange(Guid.NewGuid(),
+        var toCreate = new CachedChange(Guid.NewGuid(),
             Command.Delete,
             claims.PartnerId,
             _dateTimeService.Now,

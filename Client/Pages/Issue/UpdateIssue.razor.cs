@@ -1,15 +1,15 @@
-using System.Net.Http.Json;
 using Couple.Client.Adapters;
 using Couple.Client.Model.Issue;
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
+using System.Net.Http.Json;
 
 namespace Couple.Client.Pages.Issue;
 
 public class UpdateIssueBase : CreateUpdateIssueBase
 {
-    [EditorRequired] [Parameter] public Guid IssueId { get; set; }
     private IssueModel? _currentIssueModel;
+    [EditorRequired] [Parameter] public Guid IssueId { get; set; }
 
     protected override void OnInitialized()
     {

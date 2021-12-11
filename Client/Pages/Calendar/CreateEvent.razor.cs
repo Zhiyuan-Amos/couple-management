@@ -1,4 +1,3 @@
-using System.Net.Http.Json;
 using Couple.Client.Adapters;
 using Couple.Client.Model.Calendar;
 using Couple.Client.Model.Issue;
@@ -8,6 +7,7 @@ using Couple.Client.ViewModel.Calendar;
 using Couple.Shared.Model.Event;
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
+using System.Net.Http.Json;
 
 namespace Couple.Client.Pages.Calendar;
 
@@ -27,6 +27,11 @@ public partial class CreateEvent
 
     private List<IssueModel> Added { get; set; }
 
+    private bool IsEnabled => !string.IsNullOrWhiteSpace(ToCreate?.Title)
+                              && ToCreate.End >= ToCreate.Start
+                              && ToCreate.Start != DateTime.UnixEpoch
+                              && ToCreate.End != DateTime.UnixEpoch;
+
     protected override void OnInitialized()
     {
         Added = new();
@@ -35,7 +40,7 @@ public partial class CreateEvent
             Title = "",
             Start = DateTime.Now,
             End = DateTime.Now,
-            ToDos = new(),
+            ToDos = new()
         };
     }
 
@@ -51,7 +56,7 @@ public partial class CreateEvent
             Title = ToCreate.Title,
             Start = ToCreate.Start,
             End = ToCreate.End,
-            ToDos = ToCreate.ToDos,
+            ToDos = ToCreate.ToDos
         };
         await Js.InvokeVoidAsync("addEvent", toPersist, added);
 
@@ -66,20 +71,16 @@ public partial class CreateEvent
         var toCreate = new CreateEventDto
         {
             Event = EventAdapter.ToDto(toPersist),
-            Added = added,
+            Added = added
         };
-        await HttpClient.PostAsJsonAsync($"api/Events", toCreate);
+        await HttpClient.PostAsJsonAsync("api/Events", toCreate);
     }
-
-    private bool IsEnabled => !string.IsNullOrWhiteSpace(ToCreate?.Title)
-                              && ToCreate.End >= ToCreate.Start
-                              && ToCreate.Start != DateTime.UnixEpoch
-                              && ToCreate.End != DateTime.UnixEpoch;
 
     private void AddedChanged(List<IssueModel> added)
     {
         ToCreate.ToDos.AddRange(added);
-        Added = ToCreate.ToDos = new(ToCreate.ToDos); // https://docs.telerik.com/blazor-ui/common-features/observable-data
+        Added = ToCreate.ToDos =
+            new(ToCreate.ToDos); // https://docs.telerik.com/blazor-ui/common-features/observable-data
     }
 
     private void RemovedChanged(IssueModel removed)

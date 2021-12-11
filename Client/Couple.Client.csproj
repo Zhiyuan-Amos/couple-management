@@ -10,21 +10,21 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Content Update="wwwroot\appsettings.Development.json" CopyToPublishDirectory="Never" />
+    <Content Update="wwwroot\appsettings.Development.json" CopyToPublishDirectory="Never"/>
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="6.0.0" />
-    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="6.0.0" PrivateAssets="all" />
-    <PackageReference Include="System.Net.Http.Json" Version="6.0.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="6.0.0"/>
+    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="6.0.0" PrivateAssets="all"/>
+    <PackageReference Include="System.Net.Http.Json" Version="6.0.0"/>
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Shared\Couple.Shared.csproj" />
+    <ProjectReference Include="..\Shared\Couple.Shared.csproj"/>
   </ItemGroup>
 
   <ItemGroup>
-    <ServiceWorker Include="wwwroot\service-worker.js" PublishedContent="wwwroot\service-worker.published.js" />
+    <ServiceWorker Include="wwwroot\service-worker.js" PublishedContent="wwwroot\service-worker.published.js"/>
   </ItemGroup>
 
 </Project>

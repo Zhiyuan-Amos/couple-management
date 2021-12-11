@@ -15,5 +15,8 @@ public partial class Index
         FavouriteImages = await Js.InvokeAsync<List<ImageModel>>("getFavouriteImages");
     }
 
-    private void EditImage(ImageModel selectedImage) => NavigationManager.NavigateTo($"/image/{selectedImage.Id}");
+    private void EditImage(ImageModel selectedImage)
+    {
+        NavigationManager.NavigateTo($"/image/{selectedImage.Id}");
+    }
 }

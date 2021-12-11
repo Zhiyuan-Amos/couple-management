@@ -5,9 +5,9 @@ namespace Couple.Client.Utility;
 public class VerticalSwipeHandler
 {
     private const double SwipeThreshold = 0.8;
-    private (TouchPoint ReferencePoint, DateTime StartTime) _startPoint;
-    private readonly Action _swipeUp;
     private readonly Action _swipeDown;
+    private readonly Action _swipeUp;
+    private (TouchPoint ReferencePoint, DateTime StartTime) _startPoint;
 
     public VerticalSwipeHandler(Action swipeUp, Action swipeDown)
     {
@@ -29,18 +29,11 @@ public class VerticalSwipeHandler
         var diffTime = DateTime.Now - _startPoint.StartTime;
         var velocityY = Math.Abs(diffY / diffTime.Milliseconds);
 
-        if (velocityY < SwipeThreshold)
-        {
-            return;
-        }
+        if (velocityY < SwipeThreshold) return;
 
         if (diffY < 0)
-        {
             _swipeDown.Invoke();
-        }
         else
-        {
             _swipeUp.Invoke();
-        }
     }
 }

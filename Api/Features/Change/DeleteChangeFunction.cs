@@ -1,4 +1,3 @@
-using System.Net;
 using Couple.Api.Data;
 using Couple.Api.Infrastructure;
 using Couple.Shared.Model.Change;
@@ -7,13 +6,14 @@ using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Http;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using System.Net;
 
 namespace Couple.Api.Features.Change;
 
 public class DeleteChangesFunction
 {
-    private readonly ICurrentUserService _currentUserService;
     private readonly ChangeContext _context;
+    private readonly ICurrentUserService _currentUserService;
 
     public DeleteChangesFunction(ICurrentUserService currentUserService,
         ChangeContext context)
@@ -60,15 +60,9 @@ public class DeleteChangesFunction
         var claims = _currentUserService.GetClaims(req.Headers);
         var canDelete = toDelete.All(change => change.UserId == claims.Id);
 
-        if (!canDelete)
-        {
-            return req.CreateResponse(HttpStatusCode.Forbidden);
-        }
+        if (!canDelete) return req.CreateResponse(HttpStatusCode.Forbidden);
 
-        foreach (var change in toDelete)
-        {
-            change.Ttl = 3600;
-        }
+        foreach (var change in toDelete) change.Ttl = 3600;
 
         _context
             .Changes

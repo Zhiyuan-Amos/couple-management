@@ -1,7 +1,5 @@
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
-using System;
-using System.Threading.Tasks;
 
 namespace Couple.Client.Shared;
 
@@ -11,5 +9,8 @@ public partial class UpdateTopBar
     [EditorRequired] [Parameter] public string Title { get; init; }
     [EditorRequired] [Parameter] public Func<Task> OnDeleteCallback { get; set; }
 
-    private async Task Cancel() => await Js.InvokeVoidAsync("navigateBack");
+    private async Task Cancel()
+    {
+        await Js.InvokeVoidAsync("navigateBack");
+    }
 }

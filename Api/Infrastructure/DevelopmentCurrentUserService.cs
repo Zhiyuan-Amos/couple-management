@@ -4,5 +4,8 @@ namespace Couple.Api.Infrastructure;
 
 public class DevelopmentCurrentUserService : ICurrentUserService
 {
-    public Claims GetClaims(HttpHeaders headers) => new("Id", "Email", "Id");
+    public Claims GetClaims(HttpHeaders headers)
+    {
+        return new("Id", "Email", "Id");
+    }
 }

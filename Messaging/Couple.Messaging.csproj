@@ -7,17 +7,17 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="Azure.Storage.Blobs" Version="12.10.0" />
-    <PackageReference Include="FluentValidation.AspNetCore" Version="10.3.5" />
-    <PackageReference Include="Microsoft.Azure.WebJobs.Extensions.CosmosDB" Version="3.0.10" />
-    <PackageReference Include="Microsoft.Azure.WebJobs.Extensions.EventGrid" Version="3.0.0" />
-    <PackageReference Include="Microsoft.NET.Sdk.Functions" Version="4.0.1" />
+    <PackageReference Include="Azure.Storage.Blobs" Version="12.10.0"/>
+    <PackageReference Include="FluentValidation.AspNetCore" Version="10.3.5"/>
+    <PackageReference Include="Microsoft.Azure.WebJobs.Extensions.CosmosDB" Version="3.0.10"/>
+    <PackageReference Include="Microsoft.Azure.WebJobs.Extensions.EventGrid" Version="3.0.0"/>
+    <PackageReference Include="Microsoft.NET.Sdk.Functions" Version="4.0.1"/>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Shared\Couple.Shared.csproj" />
+    <ProjectReference Include="..\Shared\Couple.Shared.csproj"/>
   </ItemGroup>
   <ItemGroup>
-    <None Update="host.json" CopyToOutputDirectory="PreserveNewest" />
-    <None Update="local.settings.json" CopyToOutputDirectory="PreserveNewest" CopyToPublishDirectory="Never" />
+    <None Update="host.json" CopyToOutputDirectory="PreserveNewest"/>
+    <None Update="local.settings.json" CopyToOutputDirectory="PreserveNewest" CopyToPublishDirectory="Never"/>
   </ItemGroup>
 </Project>

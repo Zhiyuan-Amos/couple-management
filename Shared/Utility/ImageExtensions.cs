@@ -12,7 +12,7 @@ public static class ImageExtensions
                 {
                     new byte[] { 0xFF, 0xD8, 0xFF, 0xE0 },
                     new byte[] { 0xFF, 0xD8, 0xFF, 0xE1 },
-                    new byte[] { 0xFF, 0xD8, 0xFF, 0xE8 },
+                    new byte[] { 0xFF, 0xD8, 0xFF, 0xE8 }
                 }
             },
             {
@@ -21,14 +21,14 @@ public static class ImageExtensions
                 {
                     new byte[] { 0xFF, 0xD8, 0xFF, 0xE0 },
                     new byte[] { 0xFF, 0xD8, 0xFF, 0xE2 },
-                    new byte[] { 0xFF, 0xD8, 0xFF, 0xE3 },
+                    new byte[] { 0xFF, 0xD8, 0xFF, 0xE3 }
                 }
             },
             {
                 ".png",
                 new()
                 {
-                    new byte[] { 0x89, 0x50, 0x4E, 0x47, 0x0D, 0x0A, 0x1A, 0x0A },
+                    new byte[] { 0x89, 0x50, 0x4E, 0x47, 0x0D, 0x0A, 0x1A, 0x0A }
                 }
             }
         };
@@ -48,5 +48,8 @@ public static class ImageExtensions
     }
 
     // Less precise validation compared to IsImage(Stream)
-    public static bool IsImage(string fileExtension) => ImageSignatures.ContainsKey(fileExtension);
+    public static bool IsImage(string fileExtension)
+    {
+        return ImageSignatures.ContainsKey(fileExtension);
+    }
 }

@@ -3,21 +3,21 @@
 }
 
 async function createIssue(issue) {
-    (await db).transaction("issue", 'readwrite').store.add(issue);
+    (await db).transaction("issue", "readwrite").store.add(issue);
 }
 
 async function updateIssue(issue) {
-    (await db).transaction("issue", 'readwrite').store.put(issue);
+    (await db).transaction("issue", "readwrite").store.put(issue);
 }
 
 async function deleteIssue(id) {
-    (await db).transaction("issue", 'readwrite').store.delete(id);
+    (await db).transaction("issue", "readwrite").store.delete(id);
 }
 
 async function completeTask(completedTask) {
-    const tx = (await db).transaction(['done', 'issue'], 'readwrite');
-    const issueStore = tx.objectStore('issue');
-    const doneStore = tx.objectStore('done');
+    const tx = (await db).transaction(["done", "issue"], "readwrite");
+    const issueStore = tx.objectStore("issue");
+    const doneStore = tx.objectStore("done");
 
     const toUpdate = await issueStore.get(completedTask.issueId);
     toUpdate.tasks = toUpdate.tasks
@@ -27,23 +27,23 @@ async function completeTask(completedTask) {
         ? issueStore.delete(completedTask.issueId)
         : issueStore.put(toUpdate);
 
-    const key = formatDate(new Date(completedTask.createdOn))
-    const existingDoneOnDate = await doneStore.get(key)
+    const key = formatDate(new Date(completedTask.createdOn));
+    const existingDoneOnDate = await doneStore.get(key);
 
-    let completedTaskPromise
+    let completedTaskPromise;
     if (!existingDoneOnDate) {
-        const toAdd = toCompletedTaskViewModel(completedTask)
-        completedTaskPromise = doneStore.add([toAdd], key)
+        const toAdd = toCompletedTaskViewModel(completedTask);
+        completedTaskPromise = doneStore.add([toAdd], key);
     } else {
         const existingIssue = existingDoneOnDate
-            .find(task => task.issueTitle === completedTask.issueTitle)
+            .find(task => task.issueTitle === completedTask.issueTitle);
         if (existingIssue) {
-            existingIssue.contents.push(completedTask.content)
+            existingIssue.contents.push(completedTask.content);
         } else {
-            const toAdd = toCompletedTaskViewModel(completedTask)
-            existingDoneOnDate.push(toAdd)
+            const toAdd = toCompletedTaskViewModel(completedTask);
+            existingDoneOnDate.push(toAdd);
         }
-        completedTaskPromise = doneStore.put(existingDoneOnDate, key)
+        completedTaskPromise = doneStore.put(existingDoneOnDate, key);
     }
 
     await Promise.all([
@@ -59,6 +59,6 @@ function toCompletedTaskViewModel(completedTask) {
         contents: [completedTask.content],
         issueTitle: completedTask.issueTitle,
         createdOn: completedTask.createdOn,
-        discriminator: 'CompletedTask',
-    }
+        discriminator: "CompletedTask",
+    };
 }

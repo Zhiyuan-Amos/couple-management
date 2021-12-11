@@ -7,7 +7,9 @@ public class EventStateContainer : Notifier
     private Dictionary<DateTime, List<EventModel>> DateToEvents { get; set; } = new();
 
     public bool TryGetEvents(DateTime dateTime, out List<EventModel> events)
-        => DateToEvents.TryGetValue(dateTime, out events);
+    {
+        return DateToEvents.TryGetValue(dateTime, out events);
+    }
 
     public bool TryGetEvent(Guid id, out EventModel @event)
     {

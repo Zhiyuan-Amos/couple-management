@@ -1,4 +1,3 @@
-using System.Net;
 using AutoMapper;
 using Couple.Api.Data;
 using Couple.Api.Infrastructure;
@@ -10,6 +9,7 @@ using Microsoft.Azure.Functions.Worker.Http;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using System.Dynamic;
+using System.Net;
 using System.Net.Http.Json;
 using System.Text.Json;
 
@@ -17,10 +17,10 @@ namespace Couple.Api.Features.Change;
 
 public class SynchronizeChangeFunction
 {
-    private readonly ICurrentUserService _currentUserService;
     private readonly HttpClient _client;
-    private readonly IMapper _mapper;
     private readonly ChangeContext _context;
+    private readonly ICurrentUserService _currentUserService;
+    private readonly IMapper _mapper;
 
     public SynchronizeChangeFunction(ICurrentUserService currentUserService,
         IHttpClientFactory httpClientFactory,
@@ -68,7 +68,6 @@ public class SynchronizeChangeFunction
 
         List<ChangeDto> toReturn = new();
         foreach (var change in changes)
-        {
             if (change is CachedChange)
             {
                 var toAdd = _mapper.Map<ChangeDto>(change);
@@ -89,7 +88,6 @@ public class SynchronizeChangeFunction
                     JsonSerializer.Serialize(image));
                 toReturn.Add(toAdd);
             }
-        }
 
         var response = req.CreateResponse(HttpStatusCode.OK);
         await response.WriteAsJsonAsync(toReturn);

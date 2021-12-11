@@ -5,9 +5,9 @@
         @for (var col = 0; col < DaysOfWeek; col++)
         {
             var viewModel = Cells[row * DaysOfWeek + col];
-            <div style="@(_selected == viewModel.Date ? "" : "border: 1px solid transparent !important;")"
-                 class="@(_selected == viewModel.Date ? "border rounded-3" : "") col p-2"
-                 @onclick="@(_ => SelectionHandler(viewModel.Date))">
+            <div class="@(_selected == viewModel.Date ? "border rounded-3" : "") col p-2"
+                 @onclick="@(_ => SelectionHandler(viewModel.Date))"
+                 style="@(_selected == viewModel.Date ? "" : "border: 1px solid transparent !important;")">
                 <h3 class="@(viewModel.IsThisMonth ? "" : "text-muted") mb-0">@viewModel.Date.Day</h3>
             </div>
         }

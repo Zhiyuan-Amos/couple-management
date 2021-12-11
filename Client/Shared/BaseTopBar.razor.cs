@@ -1,4 +1,3 @@
-using System.Threading.Tasks;
 using Couple.Client.Services.Synchronizer;
 using Microsoft.AspNetCore.Components;
 
@@ -12,5 +11,8 @@ public partial class BaseTopBar
 
     [Inject] private Synchronizer Synchronizer { get; init; }
 
-    private Task Synchronize() => Synchronizer.SynchronizeAsync();
+    private Task Synchronize()
+    {
+        return Synchronizer.SynchronizeAsync();
+    }
 }
