@@ -32,7 +32,7 @@
        cd Client
        dotnet run
        ```
-    1. Run Azure Functions
+    1. Run Azure Functions (Api)
        ```
        cd Api
        func start
@@ -41,8 +41,21 @@
        ```
        azr
        ```
+    1. Run Azure Functions (Messaging)
+       ```
+       cd Messaging
+       func start -p 7072
+       ```
 1. Run `Azure Cosmos DB Emulator`.
 1. Access the app at `https://localhost`.
+
+### Guides
+
+1. [Debugging Azure Function Event Grid Triggers Locally](https://harrybellamy.com/posts/debugging-azure-function-event-grid-triggers-locally/)
+
+### Caveats
+
+1. Some of the cloud resources used by this application, such as Azure Event Grid, cannot be run locally / external to Azure.
 
 ## Tech Stack
 
@@ -59,6 +72,10 @@
 ### Hosting
 
 1. Azure Static Web App
+
+### Messaging
+
+1. Azure Event Grid
 
 ### Persistence
 
