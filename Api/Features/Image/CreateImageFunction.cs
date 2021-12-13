@@ -57,11 +57,13 @@ public class CreateImageFunction
 
         var dto = form.Value;
         var url = Environment.GetEnvironmentVariable("GetImageUrl");
+        var now = _dateTimeService.Now;
+        var contentId = $"{dto.Id}_{now.Ticks / TimeSpan.TicksPerMillisecond}";
         var toCreate = new HyperlinkChange(Guid.NewGuid(),
             Command.Create,
             claims.PartnerId,
-            _dateTimeService.Now,
-            dto.Id,
+            now,
+            contentId,
             Entity.Image,
             JsonSerializer.Serialize(_mapper.Map<Model.Image>(dto)),
             url);
@@ -72,7 +74,7 @@ public class CreateImageFunction
         await _context.SaveChangesAsync();
 
         var connectionString = Environment.GetEnvironmentVariable("ImagesConnectionString");
-        var client = new BlobClient(connectionString, "images", dto.Id.ToString());
+        var client = new BlobClient(connectionString, "images", contentId);
         await client.UploadAsync(new BinaryData(dto.Data));
 
         return req.CreateResponse(HttpStatusCode.OK);

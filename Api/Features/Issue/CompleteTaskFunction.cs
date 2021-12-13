@@ -51,7 +51,7 @@ public class CompleteTaskFunction
             Command.Complete,
             claims.PartnerId,
             _dateTimeService.Now,
-            form.Value.Id,
+            form.Value.Id.ToString(),
             Entity.Task,
             form.Json);
 

@@ -10,7 +10,7 @@ public class HyperlinkChange : Change
         string command,
         string userId,
         DateTime timestamp,
-        Guid contentId,
+        string contentId,
         string contentType,
         string content,
         string url) : base(id, command, userId, timestamp, contentId, contentType, content)

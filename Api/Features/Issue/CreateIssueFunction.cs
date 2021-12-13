@@ -51,7 +51,7 @@ public class CreateIssueFunction
             Command.Create,
             claims.PartnerId,
             _dateTimeService.Now,
-            form.Value.Id,
+            form.Value.Id.ToString(),
             Entity.Issue,
             form.Json);
 

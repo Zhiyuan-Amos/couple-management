@@ -52,7 +52,7 @@ public class SynchronizeChangeFunction
             .ToListAsync();
 
         var hyperlinkChanges = changes.OfType<HyperlinkChange>().ToList();
-        Dictionary<Guid, byte[]> imageIdToData = new();
+        Dictionary<string, byte[]> imageIdToData = new();
         if (hyperlinkChanges.Count > 0)
         {
             var url = hyperlinkChanges[0].Url;

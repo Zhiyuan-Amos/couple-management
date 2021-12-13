@@ -52,7 +52,7 @@ public class UpdateEventFunction
             Command.Update,
             claims.PartnerId,
             _dateTimeService.Now,
-            form.Value.Event.Id,
+            form.Value.Event.Id.ToString(),
             Entity.Event,
             form.Json);
 

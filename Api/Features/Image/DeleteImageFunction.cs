@@ -37,7 +37,7 @@ public class DeleteImageFunction
             Command.Delete,
             claims.PartnerId,
             _dateTimeService.Now,
-            id,
+            id.ToString(),
             Entity.Image,
             JsonSerializer.Serialize(id));
 

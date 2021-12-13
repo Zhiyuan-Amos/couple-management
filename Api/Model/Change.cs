@@ -10,7 +10,7 @@ public abstract class Change
         string command,
         string userId,
         DateTime timestamp,
-        Guid contentId,
+        string contentId,
         string contentType,
         string content)
     {
@@ -34,7 +34,7 @@ public abstract class Change
     public string Command { get; init; }
     public string UserId { get; init; }
     public DateTime Timestamp { get; init; }
-    public Guid ContentId { get; init; }
+    public string ContentId { get; init; }
     public string ContentType { get; init; }
     public string Content { get; init; }
     public int? Ttl { get; set; }

@@ -10,7 +10,7 @@ public class CachedChange : Change
         string command,
         string userId,
         DateTime timestamp,
-        Guid contentId,
+        string contentId,
         string contentType,
         string content) : base(id, command, userId, timestamp, contentId, contentType, content)
     {

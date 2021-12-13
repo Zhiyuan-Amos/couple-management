@@ -37,7 +37,7 @@ public class DeleteChangesFunction
             Command.Delete,
             claims.PartnerId,
             _dateTimeService.Now,
-            id,
+            id.ToString(),
             Entity.Event,
             JsonSerializer.Serialize(id));
 

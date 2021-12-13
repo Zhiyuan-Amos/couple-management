@@ -21,7 +21,7 @@ public class GetImageFunction
         var apiKey = req.Headers["x-api-key"];
         if (apiKey != Environment.GetEnvironmentVariable("GetImageKey")) return new UnauthorizedObjectResult(null);
 
-        var form = await req.GetJsonBody<List<Guid>, Validator>();
+        var form = await req.GetJsonBody<List<string>, Validator>();
 
         if (!form.IsValid)
         {
@@ -35,7 +35,7 @@ public class GetImageFunction
         List<ImageDto> toReturn = new();
         foreach (var id in model)
         {
-            var client = new BlobClient(connectionString, "images", id.ToString());
+            var client = new BlobClient(connectionString, "images", id);
             var stream = new MemoryStream();
             await client.DownloadToAsync(stream);
             var data = stream.ToArray();
@@ -47,7 +47,7 @@ public class GetImageFunction
         return new OkObjectResult(toReturn);
     }
 
-    public class Validator : AbstractValidator<List<Guid>>
+    public class Validator : AbstractValidator<List<string>>
     {
         public Validator()
         {

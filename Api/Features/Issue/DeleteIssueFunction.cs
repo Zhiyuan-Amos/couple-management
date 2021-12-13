@@ -37,7 +37,7 @@ public class DeleteIssueFunction
             Command.Delete,
             claims.PartnerId,
             _dateTimeService.Now,
-            id,
+            id.ToString(),
             Entity.Issue,
             JsonSerializer.Serialize(id));
 
