@@ -9,13 +9,13 @@
 1. Install [Azure Cosmos DB Emulator](https://docs.microsoft.com/en-us/azure/cosmos-db/local-emulator?tabs=cli%2Cssl-netstd21) to run Azure Cosmos DB locally.
 1. Install [Azurite](https://docs.microsoft.com/en-us/azure/storage/common/storage-use-azurite?tabs=visual-studio) to run Azure Blob Storage locally.
     
-    As the command to start Azurite is [rather lengthy](https://docs.microsoft.com/en-us/azure/storage/common/storage-use-azurite?tabs=visual-studio#run-azurite-from-a-command-line), consider adding an alias on PowerShell. To do so:
+    As the command to start Azurite is rather lengthy, consider adding an alias on PowerShell. To do so:
 
    1. Launch PowerShell and run `$profile` to print out the value of the `$profile` variable. 
    1. Create the file if it does not exist. 
    1. Add the following code:
       ```
-      Function RunAzurite {azurite --silent --location c:\azurite --debug c:\azurite\debug.log
+      Function RunAzurite {azurite --silent --location c:\azurite --debug c:\azurite\debug.log}
       Set-Alias -Name azr -Value RunAzurite
       ```
 
