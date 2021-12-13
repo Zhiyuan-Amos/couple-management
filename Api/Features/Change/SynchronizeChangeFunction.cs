@@ -28,7 +28,7 @@ public class SynchronizeChangeFunction
         ChangeContext context)
     {
         _currentUserService = currentUserService;
-        _client = httpClientFactory.CreateClient();
+        _client = httpClientFactory.CreateClient("Image");
         _mapper = mapper;
         _context = context;
     }

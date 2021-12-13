@@ -4,6 +4,7 @@ using Couple.Api.Profiles;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Polly;
 
 namespace Couple.Api;
 
@@ -15,7 +16,8 @@ public class Program
             .ConfigureFunctionsWorkerDefaults()
             .ConfigureServices(builder =>
             {
-                builder.AddHttpClient();
+                builder.AddHttpClient("Image")
+                    .AddTransientHttpErrorPolicy(p => p.CircuitBreakerAsync(2, TimeSpan.FromMinutes(1)));
                 builder.AddDbContext<ChangeContext>(options => DbParams(options));
                 builder.AddAutoMapper(typeof(ChangeProfile), typeof(ImageProfile));
 
