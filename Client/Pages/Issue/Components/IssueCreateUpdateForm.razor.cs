@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Components;
 
 namespace Couple.Client.Pages.Issue.Components;
 
-public partial class CreateUpdateForm
+public partial class IssueCreateUpdateForm
 {
     [EditorRequired] [Parameter] public Func<Task> OnSaveCallback { get; set; }
 
