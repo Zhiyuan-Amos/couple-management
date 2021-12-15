@@ -10,7 +10,6 @@ on:
 
 jobs:
   terraform:
-    # name: Create Resource
     runs-on: ubuntu-latest
     
     env:
@@ -32,11 +31,11 @@ jobs:
         working-directory: ./terraform/terraform-create-resource
 
       - name: Terraform Plan
-        run: terraform plan
+        run: terraform plan -out=./terraform-plan
         working-directory: ./terraform/terraform-create-resource
 
       - name: Terraform Apply
-        run: terraform apply -auto-approve
+        run: terraform apply terraform-plan -auto-approve
         working-directory: ./terraform/terraform-create-resource
 
   run-if-failed:
@@ -59,5 +58,9 @@ jobs:
         working-directory: ./terraform/terraform-create-resource
 
       - name: Terraform Destroy
-        run: terraform destroy -target azurerm_resource_group.rg
+        run: terraform destroy -out=./terraform-destroy
+        working-directory: ./terraform/terraform-create-resource
+
+      - name: Terraform Apply
+        run: terraform apply terraform-destroy -auto-approve 
         working-directory: ./terraform/terraform-create-resource
