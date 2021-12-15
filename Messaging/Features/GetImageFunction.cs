@@ -1,11 +1,14 @@
 using Azure.Storage.Blobs;
+using Couple.Messaging.Data;
 using Couple.Messaging.Infrastructure;
-using Couple.Shared.Model.Image;
+using Couple.Messaging.Model;
+using Couple.Shared.Model;
 using FluentValidation;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.Http;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 
 namespace Couple.Messaging.Features;
@@ -13,8 +16,15 @@ namespace Couple.Messaging.Features;
 // File is part of Messaging rather than Api so it doesn't interfere with Static Web App's auth
 public class GetImageFunction
 {
+    private readonly ImageContext _context;
+
+    public GetImageFunction(ImageContext context)
+    {
+        _context = context;
+    }
+
     [FunctionName("GetImageFunction")]
-    public static async Task<IActionResult> Run(
+    public async Task<IActionResult> Run(
         [HttpTrigger(AuthorizationLevel.Function, "post", Route = "Images")]
         HttpRequest req, ILogger log)
     {
@@ -31,8 +41,12 @@ public class GetImageFunction
 
         var model = form.Value;
 
+        var imageIdToImage = await _context.Images
+            .Where(image => model.Contains(image.TimeSensitiveId))
+            .ToDictionaryAsync(image => image.TimeSensitiveId, image => image);
+
         var connectionString = Environment.GetEnvironmentVariable("ImagesConnectionString");
-        List<ImageDto> toReturn = new();
+        List<HyperlinkContent> toReturn = new();
         foreach (var id in model)
         {
             var client = new BlobClient(connectionString, "images", id);
@@ -41,7 +55,9 @@ public class GetImageFunction
             var data = stream.ToArray();
             await stream.ReadAsync(data.AsMemory(0, (int)stream.Length));
 
-            toReturn.Add(new(id, data));
+            var image = imageIdToImage[id];
+            var content = new ImageDto(image.Id, image.TakenOn, data, image.IsFavourite);
+            toReturn.Add(new(id, content));
         }
 
         return new OkObjectResult(toReturn);

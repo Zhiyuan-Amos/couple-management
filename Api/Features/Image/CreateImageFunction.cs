@@ -12,25 +12,27 @@ using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Http;
 using Microsoft.Extensions.Logging;
 using System.Net;
-using System.Text.Json;
 
 namespace Couple.Api.Features.Image;
 
 public class CreateImageFunction
 {
-    private readonly ChangeContext _context;
+    private readonly ChangeContext _changeContext;
     private readonly ICurrentUserService _currentUserService;
     private readonly IDateTimeService _dateTimeService;
+    private readonly ImageContext _imageContext;
     private readonly IMapper _mapper;
 
-    public CreateImageFunction(ChangeContext context,
-        IDateTimeService dateTimeService,
+    public CreateImageFunction(ChangeContext changeContext,
         ICurrentUserService currentUserService,
+        IDateTimeService dateTimeService,
+        ImageContext imageContext,
         IMapper mapper)
     {
-        _context = context;
-        _dateTimeService = dateTimeService;
+        _changeContext = changeContext;
         _currentUserService = currentUserService;
+        _dateTimeService = dateTimeService;
+        _imageContext = imageContext;
         _mapper = mapper;
     }
 
@@ -56,25 +58,29 @@ public class CreateImageFunction
         if (claims.PartnerId == null) return req.CreateResponse(HttpStatusCode.BadRequest);
 
         var dto = form.Value;
+
+        var imageToCreate = _mapper.Map<Model.Image>(dto);
+        _imageContext
+            .Images
+            .Add(imageToCreate);
+        await _imageContext.SaveChangesAsync();
+
         var url = Environment.GetEnvironmentVariable("GetImageUrl");
-        var now = _dateTimeService.Now;
-        var contentId = $"{dto.Id}_{now.Ticks / TimeSpan.TicksPerMillisecond}";
         var toCreate = new HyperlinkChange(Guid.NewGuid(),
             Command.Create,
             claims.PartnerId,
-            now,
-            contentId,
+            _dateTimeService.Now,
+            imageToCreate.TimeSensitiveId,
             Entity.Image,
-            JsonSerializer.Serialize(_mapper.Map<Model.Image>(dto)),
             url);
 
-        _context
+        _changeContext
             .HyperlinkChanges
             .Add(toCreate);
-        await _context.SaveChangesAsync();
+        await _changeContext.SaveChangesAsync();
 
         var connectionString = Environment.GetEnvironmentVariable("ImagesConnectionString");
-        var client = new BlobClient(connectionString, "images", contentId);
+        var client = new BlobClient(connectionString, "images", imageToCreate.TimeSensitiveId);
         await client.UploadAsync(new BinaryData(dto.Data));
 
         return req.CreateResponse(HttpStatusCode.OK);

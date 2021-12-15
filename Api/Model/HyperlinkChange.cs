@@ -12,8 +12,7 @@ public class HyperlinkChange : Change
         DateTime timestamp,
         string contentId,
         string contentType,
-        string content,
-        string url) : base(id, command, userId, timestamp, contentId, contentType, content)
+        string url) : base(id, command, userId, timestamp, contentId, contentType)
     {
         Url = url;
     }

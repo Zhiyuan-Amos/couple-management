@@ -11,8 +11,7 @@ public abstract class Change
         string userId,
         DateTime timestamp,
         string contentId,
-        string contentType,
-        string content)
+        string contentType)
     {
         Id = id;
         Command = command;
@@ -20,7 +19,6 @@ public abstract class Change
         Timestamp = timestamp;
         ContentId = contentId;
         ContentType = contentType;
-        Content = content;
 
         // 1. Annotating this property with Json Attributes don't seem to work e.g.
         // [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)] and [JsonPropertyName("ttl")]
@@ -36,6 +34,5 @@ public abstract class Change
     public DateTime Timestamp { get; init; }
     public string ContentId { get; init; }
     public string ContentType { get; init; }
-    public string Content { get; init; }
     public int? Ttl { get; set; }
 }

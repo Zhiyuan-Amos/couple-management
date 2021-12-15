@@ -1,4 +1,4 @@
-namespace Couple.Api.Model;
+namespace Couple.Messaging.Model;
 
 public class Image
 {

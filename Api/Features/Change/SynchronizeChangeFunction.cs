@@ -2,13 +2,12 @@ using AutoMapper;
 using Couple.Api.Data;
 using Couple.Api.Infrastructure;
 using Couple.Api.Model;
+using Couple.Shared.Model;
 using Couple.Shared.Model.Change;
-using Couple.Shared.Model.Image;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Http;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
-using System.Dynamic;
 using System.Net;
 using System.Net.Http.Json;
 using System.Text.Json;
@@ -52,7 +51,7 @@ public class SynchronizeChangeFunction
             .ToListAsync();
 
         var hyperlinkChanges = changes.OfType<HyperlinkChange>().ToList();
-        Dictionary<string, byte[]> imageIdToData = new();
+        Dictionary<string, HyperlinkContent> imageIdToImage = new();
         if (hyperlinkChanges.Count > 0)
         {
             var url = hyperlinkChanges[0].Url;
@@ -65,8 +64,8 @@ public class SynchronizeChangeFunction
             request.Headers.Add("x-api-key", Environment.GetEnvironmentVariable("GetImageKey"));
             var result = await _client.SendAsync(request);
 
-            var images = (await result.Content.ReadFromJsonAsync<List<ImageDto>>())!;
-            imageIdToData = images.ToDictionary(image => image.Id, image => image.Data);
+            var images = (await result.Content.ReadFromJsonAsync<List<HyperlinkContent>>())!;
+            imageIdToImage = images.ToDictionary(image => image.ContentId, image => image);
         }
 
         List<ChangeDto> toReturn = new();
@@ -78,17 +77,15 @@ public class SynchronizeChangeFunction
             }
             else
             {
-                if (!imageIdToData.TryGetValue(change.ContentId, out var data))
+                if (!imageIdToImage.TryGetValue(change.ContentId, out var image))
                 {
                     var logger = executionContext.GetLogger(GetType().Name);
                     logger.LogWarning("Image of {Id} is not found", change.ContentId);
                     continue;
                 }
 
-                dynamic image = JsonSerializer.Deserialize<ExpandoObject>(change.Content)!;
-                image.Data = data;
                 var toAdd = new ChangeDto(change.Id, change.Command, change.ContentType,
-                    JsonSerializer.Serialize(image));
+                    JsonSerializer.Serialize(image.Content));
                 toReturn.Add(toAdd);
             }
 
