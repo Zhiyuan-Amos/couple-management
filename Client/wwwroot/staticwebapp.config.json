@@ -13,11 +13,11 @@
       ]
     },
     {
-      "route": "/.auth/login/aad",
+      "route": "/.auth/login/facebook",
       "statusCode": "404"
     },
     {
-      "route": "/.auth/login/facebook",
+      "route": "/.auth/login/github",
       "statusCode": "404"
     },
     {
@@ -30,7 +30,7 @@
     },
     {
       "route": "/login",
-      "rewrite": "/.auth/login/github"
+      "rewrite": "/.auth/login/aad"
     },
     {
       "route": "/logout",
