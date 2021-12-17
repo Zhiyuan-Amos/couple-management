@@ -16,8 +16,10 @@ public class Startup : FunctionsStartup
 
         static DbContextOptionsBuilder DbParams(DbContextOptionsBuilder options)
         {
-            return options.UseCosmos(Environment.GetEnvironmentVariable("DatabaseName")!,
-                Environment.GetEnvironmentVariable("DatabaseConnectionString")!);
+            return options.UseCosmos(
+                Environment.GetEnvironmentVariable("AccountEndpoint")!,
+                Environment.GetEnvironmentVariable("AccountKey")!,
+                Environment.GetEnvironmentVariable("DatabaseName")!);
         }
     }
 }
