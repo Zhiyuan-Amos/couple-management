@@ -8,7 +8,7 @@ using System.Text.Json;
 
 namespace Couple.Messaging.Features;
 
-public class DeletedEventFunction
+public class ChangeDeletedEventFunction
 {
     [FunctionName("ChangeDeletedEventFunction")]
     public async Task Run([CosmosDBTrigger("%DatabaseName%",

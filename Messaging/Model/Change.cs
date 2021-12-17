@@ -8,9 +8,8 @@ public class Change
     public string? Command { get; init; }
     public string? UserId { get; init; }
     public DateTime Timestamp { get; init; }
-    public Guid ContentId { get; init; }
-    public string ContentType { get; init; }
-    public string? Content { get; init; }
+    public string? ContentId { get; init; }
+    public string? ContentType { get; init; }
 
     [JsonPropertyName("ttl")] public int? Ttl { get; set; }
 }
