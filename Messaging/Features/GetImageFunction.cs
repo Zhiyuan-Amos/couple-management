@@ -28,9 +28,6 @@ public class GetImageFunction
         [HttpTrigger(AuthorizationLevel.Function, "post", Route = "Images")]
         HttpRequest req, ILogger log)
     {
-        var apiKey = req.Headers["x-api-key"];
-        if (apiKey != Environment.GetEnvironmentVariable("GetImageKey")) return new UnauthorizedObjectResult(null);
-
         var form = await req.GetJsonBody<List<string>, Validator>();
 
         if (!form.IsValid)

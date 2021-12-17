@@ -59,10 +59,7 @@ public class SynchronizeChangeFunction
                 .Select(hyperlinkChange => hyperlinkChange.ContentId)
                 .ToList();
             // See https://www.elastic.co/guide/en/elasticsearch/guide/current/_empty_search.html
-            var request = new HttpRequestMessage(HttpMethod.Post, url);
-            request.Content = JsonContent.Create(ids);
-            request.Headers.Add("x-api-key", Environment.GetEnvironmentVariable("GetImageKey"));
-            var result = await _client.SendAsync(request);
+            var result = await _client.PostAsJsonAsync(url, ids);
 
             var images = (await result.Content.ReadFromJsonAsync<List<HyperlinkContent>>())!;
             imageIdToImage = images.ToDictionary(image => image.ContentId, image => image);
