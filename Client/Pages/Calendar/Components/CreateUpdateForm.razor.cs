@@ -51,17 +51,20 @@ public partial class CreateUpdateForm
     private async Task ToggleStartPicker()
     {
         StartDoubleClick = !StartDoubleClick;
-        if (!StartDoubleClick) await Js.InvokeVoidAsync("togglePicker", StartWrapperRef);
+        if (!StartDoubleClick)
+        {
+            await Js.InvokeVoidAsync("togglePicker", StartWrapperRef);
+        }
     }
 
     private async Task ToggleEndPicker() // can't extract w/ ToggleStartPicker() as bool is value type
     {
         EndDoubleClick = !EndDoubleClick;
-        if (!EndDoubleClick) await Js.InvokeVoidAsync("togglePicker", EndWrapperRef);
+        if (!EndDoubleClick)
+        {
+            await Js.InvokeVoidAsync("togglePicker", EndWrapperRef);
+        }
     }
 
-    private Task Remove(IssueModel toRemove)
-    {
-        return RemovedChanged.InvokeAsync(toRemove);
-    }
+    private Task Remove(IssueModel toRemove) => RemovedChanged.InvokeAsync(toRemove);
 }

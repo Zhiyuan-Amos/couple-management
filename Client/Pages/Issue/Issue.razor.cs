@@ -13,20 +13,12 @@ public partial class Issue : IDisposable
 
     [Inject] private IssueStateContainer IssueStateContainer { get; init; }
 
-    private List<IssueModel> Issues
-    {
-        get
-        {
-            return IssueStateContainer.Issues
-                .OrderByDescending(issue => issue.CreatedOn)
-                .ToList();
-        }
-    }
+    private List<IssueModel> Issues =>
+        IssueStateContainer.Issues
+            .OrderByDescending(issue => issue.CreatedOn)
+            .ToList();
 
-    public void Dispose()
-    {
-        IssueStateContainer.OnChange -= StateHasChanged;
-    }
+    public void Dispose() => IssueStateContainer.OnChange -= StateHasChanged;
 
     protected override async Task OnInitializedAsync()
     {
@@ -34,8 +26,5 @@ public partial class Issue : IDisposable
         IssueStateContainer.Issues = await Js.InvokeAsync<List<IssueModel>>("getIssues");
     }
 
-    private void AddIssue()
-    {
-        NavigationManager.NavigateTo("/todo/create");
-    }
+    private void AddIssue() => NavigationManager.NavigateTo("/todo/create");
 }

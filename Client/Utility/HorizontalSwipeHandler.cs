@@ -29,11 +29,18 @@ public class HorizontalSwipeHandler
         var diffTime = DateTime.Now - _startPoint.StartTime;
         var velocityX = Math.Abs(diffX / diffTime.Milliseconds);
 
-        if (velocityX < SwipeThreshold) return;
+        if (velocityX < SwipeThreshold)
+        {
+            return;
+        }
 
         if (diffX < 0)
+        {
             _swipeRight.Invoke();
+        }
         else
+        {
             _swipeLeft.Invoke();
+        }
     }
 }

@@ -1,9 +1,9 @@
+using System.Text.Json;
 using Couple.Client.Model.Image;
 using Couple.Client.States.Done;
 using Couple.Client.ViewModel.Issue;
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
-using System.Text.Json;
 
 namespace Couple.Client.Pages.Done.Components;
 
@@ -13,10 +13,7 @@ public partial class ReadOnlyListView : IDisposable
     [Inject] private IJSRuntime Js { get; init; }
     [Inject] private DoneStateContainer DoneStateContainer { get; init; }
 
-    public void Dispose()
-    {
-        DoneStateContainer.OnChange -= StateHasChanged;
-    }
+    public void Dispose() => DoneStateContainer.OnChange -= StateHasChanged;
 
     protected override async Task OnInitializedAsync()
     {
@@ -45,8 +42,5 @@ public partial class ReadOnlyListView : IDisposable
         return new(dateToCompletedItems);
     }
 
-    private void EditImage(ImageModel selectedImage)
-    {
-        NavigationManager.NavigateTo($"/image/{selectedImage.Id}");
-    }
+    private void EditImage(ImageModel selectedImage) => NavigationManager.NavigateTo($"/image/{selectedImage.Id}");
 }

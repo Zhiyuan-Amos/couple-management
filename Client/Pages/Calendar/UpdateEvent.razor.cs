@@ -1,3 +1,4 @@
+using System.Net.Http.Json;
 using Couple.Client.Adapters;
 using Couple.Client.Model.Calendar;
 using Couple.Client.Model.Issue;
@@ -7,7 +8,6 @@ using Couple.Client.ViewModel.Calendar;
 using Couple.Shared.Model.Event;
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
-using System.Net.Http.Json;
 
 namespace Couple.Client.Pages.Calendar;
 
@@ -67,9 +67,7 @@ public partial class UpdateEvent
 
         var toUpdate = new UpdateEventDto
         {
-            Event = EventAdapter.ToDto(ToUpdate),
-            Added = added,
-            Removed = EventAdapter.ToDto(Removed)
+            Event = EventAdapter.ToDto(ToUpdate), Added = added, Removed = EventAdapter.ToDto(Removed)
         };
         await HttpClient.PutAsJsonAsync("api/Events", toUpdate);
     }
@@ -88,21 +86,32 @@ public partial class UpdateEvent
     private void AddedChanged(List<IssueModel> added)
     {
         foreach (var add in added)
+        {
             if (Original.Any(toDo => toDo.Id == add.Id))
+            {
                 Removed.Remove(add);
+            }
             else
+            {
                 Added.Add(add);
+            }
+        }
 
         ToUpdate.ToDos.AddRange(added);
-        ToUpdate.ToDos = new(ToUpdate.ToDos); // https://docs.telerik.com/blazor-ui/common-features/observable-data
+        ToUpdate.ToDos =
+            new(ToUpdate.ToDos); // https://docs.telerik.com/blazor-ui/common-features/observable-data
     }
 
     private void RemovedChanged(IssueModel removed)
     {
         if (Original.Any(toDo => toDo.Id == removed.Id))
+        {
             Removed.Add(removed);
+        }
         else
+        {
             Added.Remove(removed);
+        }
 
         ToUpdate.ToDos.Remove(removed);
         ToUpdate.ToDos = new(ToUpdate.ToDos);

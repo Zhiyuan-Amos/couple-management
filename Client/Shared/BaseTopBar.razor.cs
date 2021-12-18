@@ -11,8 +11,5 @@ public partial class BaseTopBar
 
     [Inject] private Synchronizer Synchronizer { get; init; }
 
-    private Task Synchronize()
-    {
-        return Synchronizer.SynchronizeAsync();
-    }
+    private Task Synchronize() => Synchronizer.SynchronizeAsync();
 }

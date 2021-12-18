@@ -47,13 +47,7 @@ public partial class CalendarCarouselComponent
             .ToList();
     }
 
-    private void SwipeLeft()
-    {
-        ((IJSInProcessRuntime)Js).InvokeVoid("next");
-    }
+    private void SwipeLeft() => ((IJSInProcessRuntime)Js).InvokeVoid("next");
 
-    private void SwipeRight()
-    {
-        ((IJSInProcessRuntime)Js).InvokeVoid("prev");
-    }
+    private void SwipeRight() => ((IJSInProcessRuntime)Js).InvokeVoid("prev");
 }

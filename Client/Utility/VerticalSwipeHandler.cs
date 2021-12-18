@@ -29,11 +29,18 @@ public class VerticalSwipeHandler
         var diffTime = DateTime.Now - _startPoint.StartTime;
         var velocityY = Math.Abs(diffY / diffTime.Milliseconds);
 
-        if (velocityY < SwipeThreshold) return;
+        if (velocityY < SwipeThreshold)
+        {
+            return;
+        }
 
         if (diffY < 0)
+        {
             _swipeDown.Invoke();
+        }
         else
+        {
             _swipeUp.Invoke();
+        }
     }
 }

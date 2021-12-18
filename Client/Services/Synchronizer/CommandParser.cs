@@ -1,10 +1,10 @@
+using System.Text.Json;
 using Couple.Client.Adapters;
 using Couple.Shared.Model;
 using Couple.Shared.Model.Change;
 using Couple.Shared.Model.Image;
 using Couple.Shared.Model.Issue;
 using Microsoft.JSInterop;
-using System.Text.Json;
 
 namespace Couple.Client.Services.Synchronizer;
 
@@ -13,14 +13,10 @@ public class CommandParser
     private static readonly JsonSerializerOptions Options = new() { PropertyNameCaseInsensitive = true };
     private readonly IJSRuntime _js;
 
-    public CommandParser(IJSRuntime js)
-    {
-        _js = js;
-    }
+    public CommandParser(IJSRuntime js) => _js = js;
 
-    public ICommand Parse(ChangeDto change)
-    {
-        return change switch
+    public ICommand Parse(ChangeDto change) =>
+        change switch
         {
             { Command: Command.Create, ContentType: Entity.Issue }
                 => new CreateIssueCommand(_js,
@@ -48,5 +44,4 @@ public class CommandParser
                     JsonSerializer.Deserialize<Guid>(change.Content, Options)),
             _ => throw new ArgumentOutOfRangeException(nameof(change), change, null)
         };
-    }
 }

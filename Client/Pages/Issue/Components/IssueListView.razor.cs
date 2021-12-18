@@ -1,9 +1,9 @@
+using System.Net.Http.Json;
 using Couple.Client.Adapters;
 using Couple.Client.Model.Issue;
 using Couple.Client.States.Issue;
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
-using System.Net.Http.Json;
 
 namespace Couple.Client.Pages.Issue.Components;
 
@@ -16,10 +16,7 @@ public partial class IssueListView
 
     [EditorRequired] [Parameter] public List<IssueModel>? Issues { get; set; }
 
-    private void EditIssue(IssueModel selectedIssue)
-    {
-        NavigationManager.NavigateTo($"/todo/{selectedIssue.Id}");
-    }
+    private void EditIssue(IssueModel selectedIssue) => NavigationManager.NavigateTo($"/todo/{selectedIssue.Id}");
 
     private async Task OnCheckboxToggle(Guid id, TaskModel task)
     {

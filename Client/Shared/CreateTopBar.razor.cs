@@ -8,8 +8,5 @@ public partial class CreateTopBar
     [EditorRequired] [Parameter] public string Title { get; init; }
     [Inject] private IJSRuntime Js { get; init; }
 
-    private async Task Cancel()
-    {
-        await Js.InvokeVoidAsync("navigateBack");
-    }
+    private async Task Cancel() => await Js.InvokeVoidAsync("navigateBack");
 }

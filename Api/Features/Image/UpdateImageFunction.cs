@@ -1,3 +1,4 @@
+using System.Net;
 using AutoMapper;
 using Azure.Storage.Blobs;
 using Couple.Api.Data;
@@ -10,7 +11,6 @@ using FluentValidation;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Http;
 using Microsoft.Extensions.Logging;
-using System.Net;
 
 namespace Couple.Api.Features.Image;
 
@@ -54,7 +54,10 @@ public class UpdateImageFunction
         }
 
         var claims = _currentUserService.GetClaims(req.Headers);
-        if (claims.PartnerId == null) return req.CreateResponse(HttpStatusCode.BadRequest);
+        if (claims.PartnerId == null)
+        {
+            return req.CreateResponse(HttpStatusCode.BadRequest);
+        }
 
         var dto = form.Value;
 
@@ -93,7 +96,10 @@ public class UpdateImageFunction
             RuleFor(dto => dto.TakenOn).NotEmpty();
             RuleFor(dto => dto.Data).Custom((data, context) =>
             {
-                if (!ImageExtensions.IsImage(new MemoryStream(data))) context.AddFailure("Invalid file type");
+                if (!ImageExtensions.IsImage(new MemoryStream(data)))
+                {
+                    context.AddFailure("Invalid file type");
+                }
             });
         }
     }

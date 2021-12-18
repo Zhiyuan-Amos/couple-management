@@ -11,7 +11,10 @@ public partial class Settings
 
     private async Task OnImportSelected(InputFileChangeEventArgs e)
     {
-        if (e.File.ContentType != "application/json") return;
+        if (e.File.ContentType != "application/json")
+        {
+            return;
+        }
 
         await Js.InvokeVoidAsync("clearDatabase");
         var json =
@@ -19,18 +22,9 @@ public partial class Settings
         await Js.InvokeVoidAsync("importDatabase", json);
     }
 
-    private async Task OnExportSelected()
-    {
-        await Js.InvokeAsync<object>("exportDatabaseAsFile", "couple.json");
-    }
+    private async Task OnExportSelected() => await Js.InvokeAsync<object>("exportDatabaseAsFile", "couple.json");
 
-    private async Task OnDeleteDatabaseSelected()
-    {
-        await Js.InvokeVoidAsync("deleteDatabase");
-    }
+    private async Task OnDeleteDatabaseSelected() => await Js.InvokeVoidAsync("deleteDatabase");
 
-    private void OnUploadImageSelected()
-    {
-        NavigationManager.NavigateTo("/image/create");
-    }
+    private void OnUploadImageSelected() => NavigationManager.NavigateTo("/image/create");
 }

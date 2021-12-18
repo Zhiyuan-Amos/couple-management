@@ -18,10 +18,7 @@ public class GetImageFunction
 {
     private readonly ImageContext _context;
 
-    public GetImageFunction(ImageContext context)
-    {
-        _context = context;
-    }
+    public GetImageFunction(ImageContext context) => _context = context;
 
     [FunctionName("GetImageFunction")]
     public async Task<IActionResult> Run(
@@ -62,9 +59,6 @@ public class GetImageFunction
 
     public class Validator : AbstractValidator<List<string>>
     {
-        public Validator()
-        {
-            RuleFor(dto => dto).NotEmpty();
-        }
+        public Validator() => RuleFor(dto => dto).NotEmpty();
     }
 }

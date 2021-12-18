@@ -24,13 +24,7 @@ public static class ImageExtensions
                     new byte[] { 0xFF, 0xD8, 0xFF, 0xE3 }
                 }
             },
-            {
-                ".png",
-                new()
-                {
-                    new byte[] { 0x89, 0x50, 0x4E, 0x47, 0x0D, 0x0A, 0x1A, 0x0A }
-                }
-            }
+            { ".png", new() { new byte[] { 0x89, 0x50, 0x4E, 0x47, 0x0D, 0x0A, 0x1A, 0x0A } } }
         };
 
     // See https://docs.microsoft.com/en-us/aspnet/core/mvc/models/file-uploads?view=aspnetcore-5.0#file-signature-validation
@@ -48,8 +42,5 @@ public static class ImageExtensions
     }
 
     // Less precise validation compared to IsImage(Stream)
-    public static bool IsImage(string fileExtension)
-    {
-        return ImageSignatures.ContainsKey(fileExtension);
-    }
+    public static bool IsImage(string fileExtension) => ImageSignatures.ContainsKey(fileExtension);
 }

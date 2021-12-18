@@ -1,11 +1,11 @@
+using System.Net;
+using System.Text.Json;
 using Couple.Api.Data;
 using Couple.Api.Infrastructure;
 using Couple.Api.Model;
 using Couple.Shared.Model;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Http;
-using System.Net;
-using System.Text.Json;
 
 namespace Couple.Api.Features.Event;
 
@@ -31,7 +31,10 @@ public class DeleteChangesFunction
         Guid id)
     {
         var claims = _currentUserService.GetClaims(req.Headers);
-        if (claims.PartnerId == null) return req.CreateResponse(HttpStatusCode.BadRequest);
+        if (claims.PartnerId == null)
+        {
+            return req.CreateResponse(HttpStatusCode.BadRequest);
+        }
 
         var toCreate = new CachedChange(Guid.NewGuid(),
             Command.Delete,

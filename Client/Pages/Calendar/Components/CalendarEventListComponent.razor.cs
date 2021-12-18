@@ -25,10 +25,7 @@ public partial class CalendarEventListComponent
             ? EventAdapter.ToViewModel(events)
             : new();
 
-    public void Dispose()
-    {
-        EventStateContainer.OnChange -= StateHasChanged;
-    }
+    public void Dispose() => EventStateContainer.OnChange -= StateHasChanged;
 
     protected override async Task OnInitializedAsync()
     {
@@ -40,18 +37,10 @@ public partial class CalendarEventListComponent
         EventStateContainer.SetEvents(events);
     }
 
-    private void EditEvent(EventViewModel selectedEvent)
-    {
+    private void EditEvent(EventViewModel selectedEvent) =>
         NavigationManager.NavigateTo($"/calendar/{selectedEvent.Id}");
-    }
 
-    private void SwipeUp()
-    {
-        OnSwipeUpCallback.Invoke();
-    }
+    private void SwipeUp() => OnSwipeUpCallback.Invoke();
 
-    private void SwipeDown()
-    {
-        OnSwipeDownCallback.Invoke();
-    }
+    private void SwipeDown() => OnSwipeDownCallback.Invoke();
 }

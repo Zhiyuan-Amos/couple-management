@@ -1,17 +1,14 @@
+using System.Text.Json;
 using FluentValidation;
 using FluentValidation.Results;
 using Microsoft.Azure.Functions.Worker.Http;
-using System.Text.Json;
 
 namespace Couple.Api.Infrastructure;
 
 // Adapted from https://www.tomfaltesek.com/azure-functions-input-validation/
 public static class HttpRequestDataExtensions
 {
-    private static readonly JsonSerializerOptions Options = new()
-    {
-        PropertyNameCaseInsensitive = true
-    };
+    private static readonly JsonSerializerOptions Options = new() { PropertyNameCaseInsensitive = true };
 
     /// <summary>
     ///     Returns the deserialized request body with validation information.
@@ -31,20 +28,14 @@ public static class HttpRequestDataExtensions
         var validationResult = validator.Validate(requestObject);
 
         if (!validationResult.IsValid)
+        {
             return new()
             {
-                Value = requestObject,
-                Json = requestBody,
-                IsValid = false,
-                Errors = validationResult.Errors
+                Value = requestObject, Json = requestBody, IsValid = false, Errors = validationResult.Errors
             };
+        }
 
-        return new()
-        {
-            Value = requestObject,
-            Json = requestBody,
-            IsValid = true
-        };
+        return new() { Value = requestObject, Json = requestBody, IsValid = true };
     }
 }
 
@@ -67,10 +58,8 @@ public class ValidatableRequest<T>
     /// </summary>
     public IList<ValidationFailure> Errors { get; set; }
 
-    public string ErrorMessage()
-    {
-        return string.Join('\n', Errors
+    public string ErrorMessage() =>
+        string.Join('\n', Errors
             .Select(error => error.ToString())
             .ToList());
-    }
 }

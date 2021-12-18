@@ -1,3 +1,4 @@
+using System.Net;
 using Couple.Api.Data;
 using Couple.Api.Infrastructure;
 using Couple.Api.Model;
@@ -8,7 +9,6 @@ using FluentValidation;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Http;
 using Microsoft.Extensions.Logging;
-using System.Net;
 
 namespace Couple.Api.Features.Event;
 
@@ -46,7 +46,10 @@ public class UpdateEventFunction
         }
 
         var claims = _currentUserService.GetClaims(req.Headers);
-        if (claims.PartnerId == null) return req.CreateResponse(HttpStatusCode.BadRequest);
+        if (claims.PartnerId == null)
+        {
+            return req.CreateResponse(HttpStatusCode.BadRequest);
+        }
 
         var toCreate = new CachedChange(Guid.NewGuid(),
             Command.Update,

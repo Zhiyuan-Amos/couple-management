@@ -13,10 +13,7 @@ public class ImageDeletedEventFunction
 {
     private readonly ImageContext _context;
 
-    public ImageDeletedEventFunction(ImageContext context)
-    {
-        _context = context;
-    }
+    public ImageDeletedEventFunction(ImageContext context) => _context = context;
 
     [FunctionName("ImageDeletedEventFunction")]
     public async Task Run([EventGridTrigger] Event @event, ILogger log)
@@ -48,9 +45,6 @@ public class ImageDeletedEventFunction
 
     public class Validator : AbstractValidator<Event>
     {
-        public Validator()
-        {
-            RuleFor(dto => dto.Subject).NotEmpty();
-        }
+        public Validator() => RuleFor(dto => dto.Subject).NotEmpty();
     }
 }

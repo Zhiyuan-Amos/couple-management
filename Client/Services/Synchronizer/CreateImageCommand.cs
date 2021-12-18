@@ -8,13 +8,7 @@ public class CreateImageCommand : ICommand
     private readonly IJSRuntime _js;
     private readonly ImageModel _model;
 
-    public CreateImageCommand(IJSRuntime js, ImageModel model)
-    {
-        (_js, _model) = (js, model);
-    }
+    public CreateImageCommand(IJSRuntime js, ImageModel model) => (_js, _model) = (js, model);
 
-    public Task Execute()
-    {
-        return _js.InvokeVoidAsync("createImage", _model).AsTask();
-    }
+    public Task Execute() => _js.InvokeVoidAsync("createImage", _model).AsTask();
 }

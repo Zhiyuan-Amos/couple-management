@@ -25,8 +25,5 @@ public partial class Index
         }
     }
 
-    private void EditImage(ImageModel selectedImage)
-    {
-        NavigationManager.NavigateTo($"/image/{selectedImage.Id}");
-    }
+    private void EditImage(ImageModel selectedImage) => NavigationManager.NavigateTo($"/image/{selectedImage.Id}");
 }

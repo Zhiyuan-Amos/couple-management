@@ -36,7 +36,10 @@ public class CurrentUserService : ICurrentUserService
                 .Select(r => new Claim(ClaimTypes.Role, r))
                 .ToList();
 
-            if (!roles.Any()) return new();
+            if (!roles.Any())
+            {
+                return new();
+            }
 
             var adminAssignedId = principal.UserRoles
                 .Single(role => role.StartsWith("id_"));

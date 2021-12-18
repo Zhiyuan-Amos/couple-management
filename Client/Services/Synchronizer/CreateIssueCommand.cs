@@ -8,13 +8,7 @@ public class CreateIssueCommand : ICommand
     private readonly IJSRuntime _js;
     private readonly IssueModel _model;
 
-    public CreateIssueCommand(IJSRuntime js, IssueModel model)
-    {
-        (_js, _model) = (js, model);
-    }
+    public CreateIssueCommand(IJSRuntime js, IssueModel model) => (_js, _model) = (js, model);
 
-    public Task Execute()
-    {
-        return _js.InvokeVoidAsync("createIssue", _model).AsTask();
-    }
+    public Task Execute() => _js.InvokeVoidAsync("createIssue", _model).AsTask();
 }

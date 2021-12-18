@@ -1,3 +1,4 @@
+using System.Net.Http.Json;
 using Couple.Client.Infrastructure;
 using Couple.Client.Model.Calendar;
 using Couple.Client.Model.Issue;
@@ -5,7 +6,6 @@ using Couple.Client.States.Calendar;
 using Couple.Client.States.Issue;
 using Couple.Shared.Model.Change;
 using Microsoft.JSInterop;
-using System.Net.Http.Json;
 
 namespace Couple.Client.Services.Synchronizer;
 
@@ -44,7 +44,10 @@ public class Synchronizer
             .Select(change => change.Id)
             .ToList());
 
-        if (idsToDelete.Guids.Any()) await _httpClient.DeleteAsJsonAsync("api/Changes", idsToDelete);
+        if (idsToDelete.Guids.Any())
+        {
+            await _httpClient.DeleteAsJsonAsync("api/Changes", idsToDelete);
+        }
 
         var issues = _js.InvokeAsync<List<IssueModel>>("getIssues").AsTask();
         var eventsTask = _js.InvokeAsync<List<EventModel>>("getAllEvents").AsTask();

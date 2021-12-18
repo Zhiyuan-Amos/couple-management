@@ -2,10 +2,7 @@ namespace Couple.Client.States.Image;
 
 public class CreateUpdateImageStateContainer
 {
-    public CreateUpdateImageStateContainer()
-    {
-        IsFavourite = false;
-    }
+    public CreateUpdateImageStateContainer() => IsFavourite = false;
 
     public CreateUpdateImageStateContainer(bool isFavourite, byte[] data)
     {

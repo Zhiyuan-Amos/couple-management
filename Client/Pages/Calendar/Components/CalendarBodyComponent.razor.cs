@@ -14,10 +14,7 @@ public partial class CalendarBodyComponent
 
     [Parameter] public List<CellViewModel> Cells { get; set; }
 
-    public void Dispose()
-    {
-        SelectedDateStateContainer.OnChange -= SelectedDateChangedHandler;
-    }
+    public void Dispose() => SelectedDateStateContainer.OnChange -= SelectedDateChangedHandler;
 
     protected override void OnInitialized()
     {
@@ -25,13 +22,7 @@ public partial class CalendarBodyComponent
         SelectedDateStateContainer.OnChange += SelectedDateChangedHandler;
     }
 
-    private void SelectionHandler(DateTime selected)
-    {
-        SelectedDateStateContainer.SelectedDate = selected;
-    }
+    private void SelectionHandler(DateTime selected) => SelectedDateStateContainer.SelectedDate = selected;
 
-    private void SelectedDateChangedHandler()
-    {
-        _selected = SelectedDateStateContainer.SelectedDate;
-    }
+    private void SelectedDateChangedHandler() => _selected = SelectedDateStateContainer.SelectedDate;
 }

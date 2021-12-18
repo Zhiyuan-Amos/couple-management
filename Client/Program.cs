@@ -18,7 +18,9 @@ public class Program
 
         builder.Services
             .AddTransient(_ => new HttpClient
-                { BaseAddress = new(builder.Configuration["API_Prefix"] ?? builder.HostEnvironment.BaseAddress) })
+            {
+                BaseAddress = new(builder.Configuration["API_Prefix"] ?? builder.HostEnvironment.BaseAddress)
+            })
             .AddSingleton<IssueStateContainer>()
             .AddSingleton<DoneStateContainer>()
             .AddSingleton<EventStateContainer>()
@@ -29,6 +31,7 @@ public class Program
         var httpClient = host.Services.GetRequiredService<HttpClient>();
 
         if (builder.HostEnvironment.IsStaging() || builder.HostEnvironment.IsProduction())
+        {
             try
             {
                 await httpClient.GetAsync("api/Ping");
@@ -39,6 +42,7 @@ public class Program
                 navigationManager.NavigateTo("/login", true);
                 return;
             }
+        }
 
         await host.RunAsync();
     }

@@ -1,8 +1,8 @@
+using System.Net.Http.Json;
 using Couple.Client.Adapters;
 using Couple.Client.Model.Issue;
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
-using System.Net.Http.Json;
 
 namespace Couple.Client.Pages.Issue;
 
