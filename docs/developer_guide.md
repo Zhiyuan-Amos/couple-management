@@ -23,6 +23,7 @@
 1. Install [Azure Storage Explorer](https://azure.microsoft.com/en-us/features/storage-explorer/#overview) to view the contents of Azure Blob Storage on a GUI. Follow this [tutorial](https://docs.microsoft.com/en-us/azure/storage/common/storage-use-azurite?tabs=visual-studio#connect-to-azurite-using-http) to connect Azure Storage Explorer to Azurite.
 1. Install [CleanupCode](https://www.jetbrains.com/help/rider/CleanupCode.html) to perform code cleanup based on `.editorconfig` by running `dotnet tool install -g JetBrains.ReSharper.GlobalTools`. Compared to [dotnet format](https://github.com/dotnet/format), `CleanupCode` formats additional file types, such as `razor`, `html`, `css` and `js`.
 1. Run `git config --local core.hooksPath .hooks` in the root directory to configure Git to run Git hooks in `.hooks`.
+1. Create the relevant database(s) & container(s) using `Azure Cosmos DB Emulator`, and create the relevant Blob Container(s) using `Azure Storage Explorer`.
 
 ### Running the Application
 
