@@ -29,7 +29,7 @@ public class ChangeDeletedEventFunction
         List<Task> tasks = new();
         foreach (var change in changes)
         {
-            var task = eventCollector.AddAsync(new(change.ContentId.ToString(), "ImageDeleted", "1", new { }));
+            var task = eventCollector.AddAsync(new(change.ContentId, "ImageDeleted", "1", new { }));
             tasks.Add(task);
         }
 
