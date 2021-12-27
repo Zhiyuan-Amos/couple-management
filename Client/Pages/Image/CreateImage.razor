@@ -4,6 +4,22 @@
 <div class="d-flex flex-column mh-100 overflow-hidden" style="padding-bottom: 14px; padding-top: 56px;">
     <div class="m-3">
         <label class="mb-0 form-label">
+            Date
+        </label>
+        <input @bind="@CreateUpdateImageStateContainer.Day"
+               @bind:event="oninput"
+               style="width: 26px;">
+        /
+        <input @bind="@CreateUpdateImageStateContainer.Month"
+               @bind:event="oninput"
+               style="width: 26px;">
+        /
+        <input @bind="@CreateUpdateImageStateContainer.Year"
+               @bind:event="oninput"
+               style="width: 26px;">
+    </div>
+    <div class="m-3">
+        <label class="mb-0 form-label">
             Favourite
         </label>
         <input @bind="@CreateUpdateImageStateContainer.IsFavourite"

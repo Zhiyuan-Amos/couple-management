@@ -27,7 +27,7 @@ public partial class UpdateImage
         }
 
         CreateUpdateImageStateContainer =
-            new(_imageModel.IsFavourite, _imageModel.Data);
+            new(DateOnly.FromDateTime(_imageModel.TakenOn), _imageModel.IsFavourite, _imageModel.Data);
     }
 
     private async Task Delete()
@@ -40,7 +40,10 @@ public partial class UpdateImage
 
     private async Task Save()
     {
-        var toPersist = new ImageModel(_imageModel.Id, _imageModel.TakenOn,
+        var date = CreateUpdateImageStateContainer.GetDate();
+        var updatedDateTime = new DateTime(date.Year, date.Month, date.Day, _imageModel.TakenOn.Hour,
+            _imageModel.TakenOn.Minute, _imageModel.TakenOn.Second);
+        var toPersist = new ImageModel(_imageModel.Id, updatedDateTime,
             CreateUpdateImageStateContainer.Data, CreateUpdateImageStateContainer.IsFavourite);
         await Js.InvokeVoidAsync("updateImage", toPersist);
 

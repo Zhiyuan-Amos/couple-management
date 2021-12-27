@@ -24,7 +24,10 @@ public partial class CreateImage
 
     private async Task Save()
     {
-        var toPersist = new ImageModel(Guid.NewGuid(), DateTime.Now,
+        var now = DateTime.Now;
+        var date = CreateUpdateImageStateContainer.GetDate();
+        var toPersist = new ImageModel(Guid.NewGuid(),
+            new(date.Year, date.Month, date.Day, now.Hour, now.Minute, now.Second),
             CreateUpdateImageStateContainer.Data, CreateUpdateImageStateContainer.IsFavourite);
         await Js.InvokeVoidAsync("createImage", toPersist);
 
