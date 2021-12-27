@@ -2,7 +2,7 @@
 @using Couple.Client.Utility
 @using Couple.Client.Model.Image
 <div class="mh-100 overflow-auto" style="padding-bottom: 56px;">
-    @foreach (var (date, items) in DoneStateContainer.GetDateToItems())
+    @foreach (var (date, items) in DoneStateContainer.GetDateToItems().Reverse())
     {
         <h5 class="my-1 text-center">@date.ToString("dd MMM")</h5>
         @foreach (var item in items)
