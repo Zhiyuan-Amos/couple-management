@@ -18,7 +18,22 @@ public partial class CreateImage
     [Inject] private NavigationManager? NavigationManager { get; init; }
     [Inject] private IJSRuntime? Js { get; init; }
 
-    private bool IsSaveEnabled => CreateUpdateImageStateContainer?.Data != null;
+    private bool IsSaveEnabled
+    {
+        get
+        {
+            try
+            {
+                CreateUpdateImageStateContainer.GetDate();
+            }
+            catch (ArgumentOutOfRangeException)
+            {
+                return false;
+            }
+
+            return CreateUpdateImageStateContainer?.Data != null;
+        }
+    }
 
     protected override void OnInitialized() => CreateUpdateImageStateContainer = new();
 

@@ -19,6 +19,22 @@ public partial class UpdateImage
     [Inject] private IJSRuntime Js { get; init; }
     [Inject] private DoneStateContainer DoneStateContainer { get; init; }
 
+    private bool IsSaveEnabled
+    {
+        get
+        {
+            try
+            {
+                CreateUpdateImageStateContainer.GetDate();
+                return true;
+            }
+            catch (ArgumentOutOfRangeException)
+            {
+                return false;
+            }
+        }
+    }
+
     protected override void OnInitialized()
     {
         if (!DoneStateContainer.TryGetImage(ImageId, out _imageModel))

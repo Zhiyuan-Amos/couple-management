@@ -33,6 +33,7 @@
              src="data:image/bmp;base64, @(Convert.ToBase64String(CreateUpdateImageStateContainer.Data))"/>
         <div class="d-grid px-3">
             <button class="btn btn-secondary"
+                    disabled="@(!IsSaveEnabled)"
                     @onclick="@Save"
                     type="button">
                 Save
