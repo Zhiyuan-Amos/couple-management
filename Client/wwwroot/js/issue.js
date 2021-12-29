@@ -3,10 +3,12 @@
 }
 
 async function createIssue(issue) {
+    issue.createdOn = new Date(issue.createdOn);
     (await db).transaction("issue", "readwrite").store.add(issue);
 }
 
 async function updateIssue(issue) {
+    issue.createdOn = new Date(issue.createdOn);
     (await db).transaction("issue", "readwrite").store.put(issue);
 }
 
@@ -15,6 +17,8 @@ async function deleteIssue(id) {
 }
 
 async function completeTask(completedTask) {
+    completedTask.createdOn = new Date(completedTask.createdOn);
+
     const tx = (await db).transaction(["done", "issue"], "readwrite");
     const issueStore = tx.objectStore("issue");
     const doneStore = tx.objectStore("done");
@@ -27,7 +31,7 @@ async function completeTask(completedTask) {
         ? issueStore.delete(completedTask.issueId)
         : issueStore.put(toUpdate);
 
-    const key = formatDate(new Date(completedTask.createdOn));
+    const key = formatDate(completedTask.createdOn);
     const existingDoneOnDate = await doneStore.get(key);
 
     let completedTaskPromise;

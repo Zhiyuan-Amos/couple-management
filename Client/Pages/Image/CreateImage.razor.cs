@@ -42,7 +42,7 @@ public partial class CreateImage
         var now = DateTime.Now;
         var date = CreateUpdateImageStateContainer.GetDate();
         var toPersist = new ImageModel(Guid.NewGuid(),
-            new(date.Year, date.Month, date.Day, now.Hour, now.Minute, now.Second),
+            new(date.Year, date.Month, date.Day, now.Hour, now.Minute, now.Second, DateTimeKind.Utc),
             CreateUpdateImageStateContainer.Data, CreateUpdateImageStateContainer.IsFavourite);
         await Js.InvokeVoidAsync("createImage", toPersist);
 

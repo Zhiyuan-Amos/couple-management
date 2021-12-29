@@ -58,7 +58,7 @@ public partial class UpdateImage
     {
         var date = CreateUpdateImageStateContainer.GetDate();
         var updatedDateTime = new DateTime(date.Year, date.Month, date.Day, _imageModel.TakenOn.Hour,
-            _imageModel.TakenOn.Minute, _imageModel.TakenOn.Second);
+            _imageModel.TakenOn.Minute, _imageModel.TakenOn.Second, DateTimeKind.Utc);
         var toPersist = new ImageModel(_imageModel.Id, updatedDateTime,
             CreateUpdateImageStateContainer.Data, CreateUpdateImageStateContainer.IsFavourite);
         await Js.InvokeVoidAsync("updateImage", toPersist);

@@ -1,12 +1,13 @@
 ﻿async function createImage(image) {
     image.isFavourite = image.isFavourite ? 1 : 0;
+    image.takenOn = new Date(image.takenOn);
     const tx = (await db).transaction(["done", "image"], "readwrite");
 
     const imageStore = tx.objectStore("image");
     const addImageTask = imageStore.add(image);
 
     const doneStore = tx.objectStore("done");
-    const key = formatDate(new Date(image.takenOn));
+    const key = formatDate(image.takenOn);
     const existingDoneOnDate = await doneStore.get(key);
 
     const doneImage = {
