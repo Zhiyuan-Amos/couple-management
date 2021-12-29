@@ -32,7 +32,48 @@
 
 async function updateImage(image) {
     image.isFavourite = image.isFavourite ? 1 : 0;
-    (await db).transaction("image", "readwrite").store.put(image);
+    image.takenOn = new Date(image.takenOn);
+
+    const tx = (await db).transaction(["done", "image"], "readwrite");
+    const imageStore = tx.objectStore("image");
+
+    const existingImage = await imageStore.get(image.id);
+    const existingDate = formatDate(existingImage.takenOn);
+    const updatedDate = formatDate(image.takenOn);
+
+    const updateImageTask = imageStore.put(image);
+
+    if (existingDate === updatedDate) {
+        await updateImageTask;
+    } else {
+        const doneStore = tx.objectStore("done");
+
+        const doneOnUpdatedDate = await doneStore.get(updatedDate);
+        let addDoneTask;
+        if (!doneOnUpdatedDate) {
+            addDoneTask = doneStore.add([image], updatedDate);
+        } else {
+            doneOnUpdatedDate.push(image);
+            addDoneTask = doneStore.put(doneOnUpdatedDate, updatedDate);
+        }
+
+        const doneOnExistingDate = await doneStore.get(existingDate);
+        const removed = doneOnExistingDate.filter(item => item.discriminator !== "Image" || item.id !== image.id);
+
+        let removeDoneTask;
+        if (removed.length === 0) {
+            doneStore.delete(existingDate);
+        } else {
+            removeDoneTask = doneStore.put(removed, existingDate);
+        }
+
+        await Promise.all([
+            updateImageTask,
+            addDoneTask,
+            removeDoneTask,
+            tx.done,
+        ]);
+    }
 }
 
 async function deleteImage(id) {
