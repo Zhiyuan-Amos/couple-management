@@ -1,4 +1,3 @@
-using System.Dynamic;
 using System.Text.Json;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
@@ -39,7 +38,7 @@ public partial class Settings
                             var count = 0;
                             while (item != "")
                             {
-                                var toPersist = JsonSerializer.Deserialize<ExpandoObject>(item);
+                                var toPersist = JsonSerializer.Deserialize<object>(item);
                                 await Js.InvokeVoidAsync("importDone", toPersist, date);
                                 item = await reader.ReadLineAsync();
 
@@ -71,7 +70,7 @@ public partial class Settings
                         var count = 0;
                         while (line != "---")
                         {
-                            var toPersist = JsonSerializer.Deserialize<ExpandoObject>(line);
+                            var toPersist = JsonSerializer.Deserialize<object>(line);
                             await Js.InvokeVoidAsync("importImage", toPersist);
                             line = await reader.ReadLineAsync();
 
@@ -90,7 +89,7 @@ public partial class Settings
                         var count = 0;
                         while (line != "---")
                         {
-                            var toPersist = JsonSerializer.Deserialize<ExpandoObject>(line);
+                            var toPersist = JsonSerializer.Deserialize<object>(line);
                             await Js.InvokeVoidAsync("importIssue", toPersist);
                             line = await reader.ReadLineAsync();
 
