@@ -49,11 +49,17 @@ async function updateImage(image) {
         const doneStore = tx.objectStore("done");
 
         const doneOnUpdatedDate = await doneStore.get(updatedDate);
+
+        const doneImage = {
+            id: image.id,
+            discriminator: "Image"
+        };
+
         let addDoneTask;
         if (!doneOnUpdatedDate) {
-            addDoneTask = doneStore.add([image], updatedDate);
+            addDoneTask = doneStore.add([doneImage], updatedDate);
         } else {
-            doneOnUpdatedDate.push(image);
+            doneOnUpdatedDate.push(doneImage);
             addDoneTask = doneStore.put(doneOnUpdatedDate, updatedDate);
         }
 
