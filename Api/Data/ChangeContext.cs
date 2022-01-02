@@ -22,6 +22,11 @@ public class ChangeContext : DbContext
             .ToContainer("change");
 
         modelBuilder.Entity<Change>()
+            .Property(change => change.Id)
+            .ToJsonProperty("id")
+            .HasConversion<string>();
+
+        modelBuilder.Entity<Change>()
             .Property(change => change.Ttl)
             .ToJsonProperty("ttl");
     }
