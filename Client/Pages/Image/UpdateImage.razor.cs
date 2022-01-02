@@ -28,7 +28,7 @@ public partial class UpdateImage
                 CreateUpdateImageStateContainer.GetDate();
                 return true;
             }
-            catch (ArgumentOutOfRangeException)
+            catch (Exception e) when (e is ArgumentOutOfRangeException or FormatException)
             {
                 return false;
             }
