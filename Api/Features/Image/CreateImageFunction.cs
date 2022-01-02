@@ -1,5 +1,4 @@
 using System.Net;
-using AutoMapper;
 using Azure.Storage.Blobs;
 using Couple.Api.Data;
 using Couple.Api.Infrastructure;
@@ -21,19 +20,16 @@ public class CreateImageFunction
     private readonly ICurrentUserService _currentUserService;
     private readonly IDateTimeService _dateTimeService;
     private readonly ImageContext _imageContext;
-    private readonly IMapper _mapper;
 
     public CreateImageFunction(ChangeContext changeContext,
         ICurrentUserService currentUserService,
         IDateTimeService dateTimeService,
-        ImageContext imageContext,
-        IMapper mapper)
+        ImageContext imageContext)
     {
         _changeContext = changeContext;
         _currentUserService = currentUserService;
         _dateTimeService = dateTimeService;
         _imageContext = imageContext;
-        _mapper = mapper;
     }
 
     [Function("CreateImageFunction")]
@@ -62,7 +58,7 @@ public class CreateImageFunction
 
         var dto = form.Value;
 
-        var imageToCreate = _mapper.Map<Model.Image>(dto);
+        var imageToCreate = new Model.Image(dto.Id, dto.TakenOn, dto.IsFavourite);
         _imageContext
             .Images
             .Add(imageToCreate);

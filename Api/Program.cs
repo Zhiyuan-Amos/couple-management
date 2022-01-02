@@ -20,7 +20,7 @@ public class Program
                     .AddTransientHttpErrorPolicy(p => p.CircuitBreakerAsync(2, TimeSpan.FromMinutes(1)));
                 builder.AddDbContext<ChangeContext>(options => DbParams(options));
                 builder.AddDbContext<ImageContext>(options => DbParams(options));
-                builder.AddAutoMapper(typeof(ChangeProfile), typeof(ImageProfile));
+                builder.AddAutoMapper(typeof(ChangeProfile));
 
                 var environmentName = Environment.GetEnvironmentVariable("AZURE_FUNCTIONS_ENVIRONMENT");
                 if (environmentName == "Development")

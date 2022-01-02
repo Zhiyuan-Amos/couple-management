@@ -50,7 +50,7 @@ public class GetImageFunction
             await stream.ReadAsync(data.AsMemory(0, (int)stream.Length));
 
             var image = imageIdToImage[id];
-            var content = new ImageDto(image.Id, image.TakenOn, data, image.IsFavourite);
+            var content = new ImageDto(image.ObjectId, image.TakenOn, data, image.IsFavourite);
             toReturn.Add(new(id, content));
         }
 

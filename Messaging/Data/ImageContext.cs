@@ -18,10 +18,5 @@ public class ImageContext : DbContext
         modelBuilder.Entity<Image>()
             .ToContainer("image")
             .HasNoDiscriminator();
-
-        modelBuilder.Entity<Image>()
-            .Property(image => image.Id)
-            .ToJsonProperty("id")
-            .HasConversion<string>();
     }
 }
