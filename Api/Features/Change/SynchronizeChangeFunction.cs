@@ -59,9 +59,15 @@ public class SynchronizeChangeFunction
                 .Select(hyperlinkChange => hyperlinkChange.ContentId)
                 .ToList();
             // See https://www.elastic.co/guide/en/elasticsearch/guide/current/_empty_search.html
-            var result = await _client.PostAsJsonAsync(url, ids);
+            var httpResponseMessage = await _client.PostAsJsonAsync(url, ids);
+            if (!httpResponseMessage.IsSuccessStatusCode)
+            {
+                var errorResponse = req.CreateResponse(HttpStatusCode.InternalServerError);
+                await errorResponse.WriteStringAsync("Request to retrieve images is unsuccessful");
+                return errorResponse;
+            }
 
-            var images = (await result.Content.ReadFromJsonAsync<List<HyperlinkContent>>())!;
+            var images = (await httpResponseMessage.Content.ReadFromJsonAsync<List<HyperlinkContent>>())!;
             imageIdToImage = images.ToDictionary(image => image.ContentId, image => image);
         }
 

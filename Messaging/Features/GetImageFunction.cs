@@ -1,3 +1,4 @@
+using System.Web.Http;
 using Azure.Storage.Blobs;
 using Couple.Messaging.Data;
 using Couple.Messaging.Infrastructure;
@@ -38,6 +39,11 @@ public class GetImageFunction
         var imageIdToImage = await _context.Images
             .Where(image => model.Contains(image.TimeSensitiveId))
             .ToDictionaryAsync(image => image.TimeSensitiveId, image => image);
+
+        if (model.Count != imageIdToImage.Count)
+        {
+            return new InternalServerErrorResult();
+        }
 
         var connectionString = Environment.GetEnvironmentVariable("ImagesConnectionString");
         List<HyperlinkContent> toReturn = new();
