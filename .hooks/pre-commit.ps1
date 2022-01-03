@@ -8,7 +8,3 @@ if ($files.Count -eq 0) {
 
 $joinedFiles = [string]::Join(';', $files)
 jb cleanupcode Couple.sln --include=$joinedFiles
-
-foreach ($file in $files) {
-    git add $file
-}
