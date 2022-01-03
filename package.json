@@ -1,0 +1,28 @@
+{
+  "name": "couple-management",
+  "version": "1.0.0",
+  "description": "The main purpose of this application is to allow couples to easily manage their schedules and review shared memories.",
+  "main": "index.js",
+  "directories": {
+    "doc": "docs"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "prepare": "husky install"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Zhiyuan-Amos/couple-management.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Zhiyuan-Amos/couple-management/issues"
+  },
+  "homepage": "https://github.com/Zhiyuan-Amos/couple-management#readme",
+  "devDependencies": {
+    "husky": "^7.0.0",
+    "lint-staged": "^12.1.5"
+  }
+}
