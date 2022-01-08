@@ -19,22 +19,6 @@ public partial class UpdateImage
     [Inject] private IJSRuntime Js { get; init; }
     [Inject] private DoneStateContainer DoneStateContainer { get; init; }
 
-    private bool IsSaveEnabled
-    {
-        get
-        {
-            try
-            {
-                CreateUpdateImageStateContainer.GetDate();
-                return true;
-            }
-            catch (Exception e) when (e is ArgumentOutOfRangeException or FormatException)
-            {
-                return false;
-            }
-        }
-    }
-
     protected override void OnInitialized()
     {
         if (!DoneStateContainer.TryGetImage(ImageId, out _imageModel))
@@ -56,7 +40,7 @@ public partial class UpdateImage
 
     private async Task Save()
     {
-        var date = CreateUpdateImageStateContainer.GetDate();
+        var date = CreateUpdateImageStateContainer.Date;
         var updatedDateTime = new DateTime(date.Year, date.Month, date.Day);
         var toPersist = new ImageModel(_imageModel.Id, updatedDateTime,
             CreateUpdateImageStateContainer.Data, CreateUpdateImageStateContainer.IsFavourite);

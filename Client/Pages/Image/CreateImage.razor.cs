@@ -18,28 +18,13 @@ public partial class CreateImage
     [Inject] private NavigationManager? NavigationManager { get; init; }
     [Inject] private IJSRuntime? Js { get; init; }
 
-    private bool IsSaveEnabled
-    {
-        get
-        {
-            try
-            {
-                CreateUpdateImageStateContainer.GetDate();
-            }
-            catch (Exception e) when (e is ArgumentOutOfRangeException or FormatException)
-            {
-                return false;
-            }
-
-            return CreateUpdateImageStateContainer?.Data != null;
-        }
-    }
+    private bool IsSaveEnabled => CreateUpdateImageStateContainer?.Data != null;
 
     protected override void OnInitialized() => CreateUpdateImageStateContainer = new();
 
     private async Task Save()
     {
-        var date = CreateUpdateImageStateContainer.GetDate();
+        var date = CreateUpdateImageStateContainer.Date;
         var toPersist = new ImageModel(Guid.NewGuid(),
             new(date.Year, date.Month, date.Day),
             CreateUpdateImageStateContainer.Data, CreateUpdateImageStateContainer.IsFavourite);
