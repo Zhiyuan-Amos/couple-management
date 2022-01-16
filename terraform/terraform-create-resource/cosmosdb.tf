@@ -15,7 +15,7 @@ resource "azurerm_cosmosdb_account" "db" {
     network_acl_bypass_ids                = []
     offer_type                            = "Standard"
     public_network_access_enabled         = true
-    resource_group_name                   = "testResource"
+    resource_group_name                   = azurerm_resource_group.rg.name
 
     capabilities {
     name = "EnableServerless"
