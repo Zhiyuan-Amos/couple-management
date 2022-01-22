@@ -11,12 +11,15 @@ terraform {
         resource_group_name  = "StateResource"
         storage_account_name = "couplemgmtstates"
         container_name       = "tfstates"
-        key                  = "any-branch-name.tfstate"
+        key                  = "test.terraform.tfstate"
     }
 }
 
+resource "random_uuid" "test" {
+}
+
 resource "azurerm_resource_group" "rg" {
-  name      = "${var.prefix}Resource"
+  name      = "${random_uuid.test.result}-rg-${var.prefix}"
   location  = var.location
 }
 
