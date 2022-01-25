@@ -9,5 +9,5 @@ public class DeleteImageCommand : ICommand
 
     public DeleteImageCommand(IJSRuntime js, Guid guid) => (_js, _guid) = (js, guid);
 
-    public Task Execute() => _js.InvokeVoidAsync("deleteImage", _guid).AsTask();
+    public async Task Execute() => await _js.InvokeVoidAsync("deleteImage", _guid);
 }

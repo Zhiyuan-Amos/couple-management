@@ -9,5 +9,5 @@ public class DeleteIssueCommand : ICommand
 
     public DeleteIssueCommand(IJSRuntime js, Guid guid) => (_js, _guid) = (js, guid);
 
-    public Task Execute() => _js.InvokeVoidAsync("deleteIssue", _guid).AsTask();
+    public async Task Execute() => await _js.InvokeVoidAsync("deleteIssue", _guid);
 }

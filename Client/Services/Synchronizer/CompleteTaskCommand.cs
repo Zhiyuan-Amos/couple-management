@@ -10,5 +10,5 @@ public class CompleteTaskCommand : ICommand
 
     public CompleteTaskCommand(IJSRuntime js, CreateCompletedTaskModel model) => (_js, _model) = (js, model);
 
-    public Task Execute() => _js.InvokeVoidAsync("completeTask", _model).AsTask();
+    public async Task Execute() => await _js.InvokeVoidAsync("completeTask", _model);
 }

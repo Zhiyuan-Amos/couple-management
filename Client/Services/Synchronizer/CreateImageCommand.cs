@@ -10,5 +10,5 @@ public class CreateImageCommand : ICommand
 
     public CreateImageCommand(IJSRuntime js, ImageModel model) => (_js, _model) = (js, model);
 
-    public Task Execute() => _js.InvokeVoidAsync("createImage", _model).AsTask();
+    public async Task Execute() => await _js.InvokeVoidAsync("createImage", _model);
 }

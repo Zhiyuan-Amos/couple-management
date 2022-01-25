@@ -66,5 +66,5 @@ public partial class CreateUpdateForm
         }
     }
 
-    private Task Remove(IssueModel toRemove) => RemovedChanged.InvokeAsync(toRemove);
+    private async Task Remove(IssueModel toRemove) => await RemovedChanged.InvokeAsync(toRemove);
 }

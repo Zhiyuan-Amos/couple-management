@@ -10,5 +10,5 @@ public class UpdateImageCommand : ICommand
 
     public UpdateImageCommand(IJSRuntime js, ImageModel model) => (_js, _model) = (js, model);
 
-    public Task Execute() => _js.InvokeVoidAsync("updateImage", _model).AsTask();
+    public async Task Execute() => await _js.InvokeVoidAsync("updateImage", _model);
 }

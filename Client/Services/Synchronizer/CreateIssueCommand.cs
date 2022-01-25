@@ -10,5 +10,5 @@ public class CreateIssueCommand : ICommand
 
     public CreateIssueCommand(IJSRuntime js, IssueModel model) => (_js, _model) = (js, model);
 
-    public Task Execute() => _js.InvokeVoidAsync("createIssue", _model).AsTask();
+    public async Task Execute() => await _js.InvokeVoidAsync("createIssue", _model);
 }
