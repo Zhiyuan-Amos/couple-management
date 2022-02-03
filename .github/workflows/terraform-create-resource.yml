@@ -11,17 +11,23 @@ on:
 permissions:
   id-token: write
 
-
 jobs:
   terraform:
     runs-on: ubuntu-latest
+    env:
+      ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
+      ARM_CLIENT_SECRET: ${{ secrets.ARM_CLIENT_SECRET }}
+      ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
+      ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
+
     steps:
       - uses: actions/checkout@v2
-      - uses: azure/login@v1
-        with:
-          client-id: ${{ secrets.AZURE_CLIENT_ID }}
-          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
-          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+      # - uses: azure/login@v1
+      #   with:
+      #     client-id: ${{ secrets.ARM_CLIENT_ID }}
+      #     tenant-id: ${{ secrets.ARM_TENANT_ID }}
+      #     subscription-id: ${{ secrets.ARM_SUBSCRIPTION_ID }}
+      #     client-secret: ${{ secrets.ARM_ClIENT_SECRET }}
 
       - name: Terraform Init
         run: terraform init
