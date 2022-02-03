@@ -8,6 +8,9 @@ on:
     branches: 
       - master
 
+permissions:
+  id-token: read
+
 jobs:
   terraform:
     runs-on: ubuntu-latest
