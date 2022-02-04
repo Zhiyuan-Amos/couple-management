@@ -25,5 +25,7 @@ resource "azurerm_resource_group" "rg" {
 
 provider "azurerm" {
   features {}
+
+  subscription_id = "716e9fd7-2458-49f5-a95a-329619d39339"
 }
 
