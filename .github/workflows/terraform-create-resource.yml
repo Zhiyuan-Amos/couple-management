@@ -17,6 +17,9 @@ jobs:
       ARM_CLIENT_SECRET: ${{ secrets.ARM_CLIENT_SECRET }}
       ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
       ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
+
+    outputs:
+      rgName: ${{ steps.getResourceGroupName.outputs.rgName }}
       
     steps:
       - name: Checkout
@@ -37,3 +40,9 @@ jobs:
       - name: Terraform Apply
         run: terraform apply -auto-approve
         working-directory: ./terraform/terraform-create-resource
+
+      - name: Get Resource Group name
+        id: getResourceGroupName
+        run: |
+          echo "::set-output name=rgName::$(terraform output -raw rgName)"
+        

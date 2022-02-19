@@ -27,3 +27,7 @@ provider "azurerm" {
   features {}
 }
 
+output "rgName" {
+  value = azurerm_resource_group.rg.name
+}
+
