@@ -2,7 +2,7 @@ using System.Net.Http.Json;
 using Couple.Client.Adapters;
 using Couple.Client.Model.Issue;
 using Microsoft.AspNetCore.Components;
-using Microsoft.JSInterop;
+using Microsoft.EntityFrameworkCore;
 
 namespace Couple.Client.Pages.Issue;
 
@@ -26,8 +26,10 @@ public class UpdateIssueBase : CreateUpdateIssueBase
 
     protected async Task Delete()
     {
-        await Js.InvokeVoidAsync("deleteIssue", IssueId);
-        IssueStateContainer.Issues = await Js.InvokeAsync<List<IssueModel>>("getIssues");
+        await using var db = await DbContextProvider.GetPreparedDbContextAsync();
+        db.Issues.Remove(new(IssueId));
+        await db.SaveChangesAsync();
+        IssueStateContainer.Issues = await db.Issues.ToListAsync();
 
         NavigationManager.NavigateTo("/todo");
 
@@ -36,17 +38,19 @@ public class UpdateIssueBase : CreateUpdateIssueBase
 
     protected override async Task Save()
     {
-        var toPersist = new IssueModel(IssueId,
-            CreateUpdateIssueStateContainer.Title,
-            CreateUpdateIssueStateContainer.For,
-            IssueAdapter.ToTaskModel(CreateUpdateIssueStateContainer.Tasks),
-            _currentIssueModel.CreatedOn);
-        await Js.InvokeVoidAsync("updateIssue", toPersist);
+        var issue = IssueStateContainer.Issues.First(issues => issues.Id == IssueId);
+        await using var db = await DbContextProvider.GetPreparedDbContextAsync();
 
-        IssueStateContainer.Issues = await Js.InvokeAsync<List<IssueModel>>("getIssues");
+        db.Attach(issue);
+        issue.Title = CreateUpdateIssueStateContainer.Title;
+        issue.For = CreateUpdateIssueStateContainer.For;
+        issue.Tasks = IssueAdapter.ToTaskModel(CreateUpdateIssueStateContainer.Tasks);
+        await db.SaveChangesAsync();
+
+        IssueStateContainer.Issues = await db.Issues.ToListAsync();
         NavigationManager.NavigateTo("/todo");
 
-        var toUpdate = IssueAdapter.ToUpdateDto(toPersist);
+        var toUpdate = IssueAdapter.ToUpdateDto(issue);
         await HttpClient.PutAsJsonAsync("api/Issues", toUpdate);
     }
 }

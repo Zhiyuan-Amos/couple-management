@@ -1,13 +1,18 @@
-using Microsoft.JSInterop;
+using Couple.Client.Data;
 
 namespace Couple.Client.Services.Synchronizer;
 
 public class DeleteImageCommand : ICommand
 {
+    private readonly AppDbContext _dbContext;
     private readonly Guid _guid;
-    private readonly IJSRuntime _js;
 
-    public DeleteImageCommand(IJSRuntime js, Guid guid) => (_js, _guid) = (js, guid);
+    public DeleteImageCommand(AppDbContext dbContext, Guid guid) => (_dbContext, _guid) = (dbContext, guid);
 
-    public async Task Execute() => await _js.InvokeVoidAsync("deleteImage", _guid);
+    public async Task Execute()
+    {
+        var toDelete = await _dbContext.Images.FindAsync(_guid);
+        _dbContext.Images.Remove(toDelete);
+        await _dbContext.SaveChangesAsync();
+    }
 }

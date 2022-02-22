@@ -14,25 +14,25 @@ public class Program
     {
         var host = new HostBuilder()
             .ConfigureFunctionsWorkerDefaults()
-            .ConfigureServices(builder =>
+            .ConfigureServices(services =>
             {
-                builder.AddHttpClient("Image")
+                services.AddHttpClient("Image")
                     .AddTransientHttpErrorPolicy(p => p.CircuitBreakerAsync(2, TimeSpan.FromMinutes(1)));
-                builder.AddDbContext<ChangeContext>(options => DbParams(options));
-                builder.AddDbContext<ImageContext>(options => DbParams(options));
-                builder.AddAutoMapper(typeof(ChangeProfile));
+                services.AddDbContext<ChangeContext>(options => DbParams(options));
+                services.AddDbContext<ImageContext>(options => DbParams(options));
+                services.AddAutoMapper(typeof(ChangeProfile));
 
                 var environmentName = Environment.GetEnvironmentVariable("AZURE_FUNCTIONS_ENVIRONMENT");
                 if (environmentName == "Development")
                 {
-                    builder.AddScoped<ICurrentUserService, DevelopmentCurrentUserService>();
+                    services.AddScoped<ICurrentUserService, DevelopmentCurrentUserService>();
                 }
                 else
                 {
-                    builder.AddScoped<ICurrentUserService, CurrentUserService>();
+                    services.AddScoped<ICurrentUserService, CurrentUserService>();
                 }
 
-                builder.AddSingleton<IDateTimeService, DateTimeService>();
+                services.AddSingleton<IDateTimeService, DateTimeService>();
 
                 static DbContextOptionsBuilder DbParams(DbContextOptionsBuilder options)
                 {

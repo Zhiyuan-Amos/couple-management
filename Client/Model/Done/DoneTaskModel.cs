@@ -1,23 +1,23 @@
-using System.Text.Json.Serialization;
+﻿using System.Text.Json.Serialization;
 
-namespace Couple.Client.Model.Issue;
+namespace Couple.Client.Model.Done;
 
-public class TaskModel
+public class DoneTaskModel
 {
-    public TaskModel(string content)
+    public DoneTaskModel(string content)
     {
         Id = Guid.NewGuid();
         Content = content;
     }
 
     [JsonConstructor]
-    public TaskModel(Guid id, string content) =>
+    private DoneTaskModel(Guid id, string content) =>
         (Id, Content) = (id, content);
 
     public Guid Id { get; }
     public string Content { get; init; }
 
-    private bool Equals(TaskModel other) => Id.Equals(other.Id) && Content == other.Content;
+    protected bool Equals(DoneTaskModel other) => Id.Equals(other.Id) && Content == other.Content;
 
     public override bool Equals(object? obj)
     {
@@ -36,7 +36,7 @@ public class TaskModel
             return false;
         }
 
-        return Equals((TaskModel)obj);
+        return Equals((DoneTaskModel)obj);
     }
 
     public override int GetHashCode() => HashCode.Combine(Id, Content);

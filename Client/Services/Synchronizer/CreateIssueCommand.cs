@@ -1,14 +1,18 @@
+using Couple.Client.Data;
 using Couple.Client.Model.Issue;
-using Microsoft.JSInterop;
 
 namespace Couple.Client.Services.Synchronizer;
 
 public class CreateIssueCommand : ICommand
 {
-    private readonly IJSRuntime _js;
+    private readonly AppDbContext _dbContext;
     private readonly IssueModel _model;
 
-    public CreateIssueCommand(IJSRuntime js, IssueModel model) => (_js, _model) = (js, model);
+    public CreateIssueCommand(AppDbContext dbContext, IssueModel model) => (_dbContext, _model) = (dbContext, model);
 
-    public async Task Execute() => await _js.InvokeVoidAsync("createIssue", _model);
+    public async Task Execute()
+    {
+        _dbContext.Issues.Add(_model);
+        await _dbContext.SaveChangesAsync();
+    }
 }

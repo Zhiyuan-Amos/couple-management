@@ -1,42 +1,37 @@
 using System.Net.Http.Json;
 using Couple.Client.Infrastructure;
-using Couple.Client.Model.Calendar;
-using Couple.Client.Model.Issue;
-using Couple.Client.States.Calendar;
 using Couple.Client.States.Issue;
 using Couple.Shared.Model.Change;
-using Microsoft.JSInterop;
+using Microsoft.EntityFrameworkCore;
 
 namespace Couple.Client.Services.Synchronizer;
 
 public class Synchronizer
 {
-    private readonly EventStateContainer _eventStateContainer;
+    private readonly DbContextProvider _dbContextProvider;
 
     private readonly HttpClient _httpClient;
 
     private readonly IssueStateContainer _issueStateContainer;
-    private readonly IJSRuntime _js;
 
-    public Synchronizer(IJSRuntime js,
-        HttpClient httpClient,
+    public Synchronizer(HttpClient httpClient,
         IssueStateContainer issueStateContainer,
-        EventStateContainer eventStateContainer)
+        DbContextProvider dbContextProvider)
     {
-        _js = js;
         _httpClient = httpClient;
         _issueStateContainer = issueStateContainer;
-        _eventStateContainer = eventStateContainer;
+        _dbContextProvider = dbContextProvider;
     }
 
     public async Task SynchronizeAsync()
     {
         var toSynchronize = await _httpClient.GetFromJsonAsync<List<ChangeDto>>("api/Synchronize");
-        var parser = new CommandParser(_js);
+        var parser = new CommandParser();
 
         foreach (var change in toSynchronize)
         {
-            var command = parser.Parse(change);
+            await using var db = await _dbContextProvider.GetPreparedDbContextAsync();
+            var command = parser.Parse(change, db);
             await command.Execute();
         }
 
@@ -49,10 +44,8 @@ public class Synchronizer
             await _httpClient.DeleteAsJsonAsync("api/Changes", idsToDelete);
         }
 
-        var issues = _js.InvokeAsync<List<IssueModel>>("getIssues").AsTask();
-        var eventsTask = _js.InvokeAsync<List<EventModel>>("getAllEvents").AsTask();
-        await Task.WhenAll(issues, eventsTask);
-        _issueStateContainer.Issues = issues.Result;
-        _eventStateContainer.SetEvents(eventsTask.Result);
+        await using var anotherDb = await _dbContextProvider.GetPreparedDbContextAsync();
+        _issueStateContainer.Issues = await anotherDb.Issues
+            .ToListAsync();
     }
 }

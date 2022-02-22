@@ -23,6 +23,7 @@
 1. Install [Azure Storage Explorer](https://azure.microsoft.com/en-us/features/storage-explorer/#overview) to view the contents of Azure Blob Storage on a GUI. Follow this [tutorial](https://docs.microsoft.com/en-us/azure/storage/common/storage-use-azurite?tabs=visual-studio#connect-to-azurite-using-http) to connect Azure Storage Explorer to Azurite.
 1. Install [CleanupCode](https://www.jetbrains.com/help/rider/CleanupCode.html) to perform code cleanup based on `.editorconfig` by running `dotnet tool install -g JetBrains.ReSharper.GlobalTools`. Compared to [dotnet format](https://github.com/dotnet/format), `CleanupCode` formats additional file types, such as `razor`, `html`, `css` and `js`.
 1. Install [npm](https://nodejs.org/en/download/) and run `npm install` to install `husky` and `lint-staged`. These dependencies are required to automatically run `CleanupCode` before each commit on staged code.
+1. Install .NET WebAssembly Build Tools by running `dotnet workload install wasm-tools` to allow the Blazor WebAssembly application to use native dependencies such as `SQLite`.
 1. Create the relevant database(s) & container(s) using `Azure Cosmos DB Emulator`, and create the relevant Blob Container(s) using `Azure Storage Explorer`.
 
 ### Running the Application
@@ -90,3 +91,4 @@
     1. Reading data from EF Core minimally requires properties to have init-only setter & private parameterless constructor
     1. Deserializing through JS interop minimally requires properties to have init-only setter & public parameterless constructor
     1. `List` cannot be deserialized into `IEnumerable`
+1. It's unsure why adding custom Json Converters in Program.cs https://github.com/dotnet/runtime/issues/53539#issuecomment-970051936 don't work, so the properties are annotated with the attribute instead.

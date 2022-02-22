@@ -1,12 +1,12 @@
 using System.Net.Http.Json;
 using Couple.Client.Adapters;
 using Couple.Client.Model.Image;
+using Couple.Client.Services.Synchronizer;
 using Couple.Client.States.Image;
 using Couple.Shared;
 using Couple.Shared.Utility;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
-using Microsoft.JSInterop;
 
 namespace Couple.Client.Pages.Image;
 
@@ -14,9 +14,9 @@ public partial class CreateImage
 {
     private CreateUpdateImageStateContainer? CreateUpdateImageStateContainer { get; set; }
 
+    [Inject] private DbContextProvider DbContextProvider { get; init; }
     [Inject] private HttpClient? HttpClient { get; init; }
     [Inject] private NavigationManager? NavigationManager { get; init; }
-    [Inject] private IJSRuntime? Js { get; init; }
 
     private bool IsSaveEnabled => CreateUpdateImageStateContainer?.Data != null;
 
@@ -24,11 +24,13 @@ public partial class CreateImage
 
     private async Task Save()
     {
-        var date = CreateUpdateImageStateContainer.Date;
-        var toPersist = new ImageModel(Guid.NewGuid(),
-            new(date.Year, date.Month, date.Day),
-            CreateUpdateImageStateContainer.Data, CreateUpdateImageStateContainer.IsFavourite);
-        await Js.InvokeVoidAsync("createImage", toPersist);
+        var toPersist = new ImageModel(CreateUpdateImageStateContainer.DateTime,
+            CreateUpdateImageStateContainer.Data,
+            CreateUpdateImageStateContainer.IsFavourite);
+
+        await using var db = await DbContextProvider.GetPreparedDbContextAsync();
+        db.Images.Add(toPersist);
+        await db.SaveChangesAsync();
 
         NavigationManager.NavigateTo("/settings");
 
