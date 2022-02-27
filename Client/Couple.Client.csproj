@@ -6,7 +6,6 @@
     <InvariantGlobalization>true</InvariantGlobalization>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
 
   <ItemGroup>
@@ -18,11 +17,7 @@
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="6.0.0" PrivateAssets="all" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="6.0.0" />
     <PackageReference Include="System.Net.Http.Json" Version="6.0.0" />
-    <PackageReference Include="SQLitePCLRaw.Bundle_e_sqlite3" Version="2.0.6" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <NativeFileReference Include="Data\e_sqlite3.o" />
+    <PackageReference Include="SQLitePCLRaw.bundle_e_sqlite3" Version="2.1.0-pre20220207221914" />
   </ItemGroup>
 
   <ItemGroup>
