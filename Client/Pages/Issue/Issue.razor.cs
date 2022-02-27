@@ -1,15 +1,15 @@
 using Couple.Client.Model.Issue;
+using Couple.Client.Services.Synchronizer;
 using Couple.Client.States.Issue;
 using Microsoft.AspNetCore.Components;
-using Microsoft.JSInterop;
+using Microsoft.EntityFrameworkCore;
 
 namespace Couple.Client.Pages.Issue;
 
 public partial class Issue : IDisposable
 {
+    [Inject] protected DbContextProvider DbContextProvider { get; init; }
     [Inject] private NavigationManager NavigationManager { get; init; }
-
-    [Inject] private IJSRuntime Js { get; init; }
 
     [Inject] private IssueStateContainer IssueStateContainer { get; init; }
 
@@ -23,7 +23,8 @@ public partial class Issue : IDisposable
     protected override async Task OnInitializedAsync()
     {
         IssueStateContainer.OnChange += StateHasChanged;
-        IssueStateContainer.Issues = await Js.InvokeAsync<List<IssueModel>>("getIssues");
+        await using var db = await DbContextProvider.GetPreparedDbContextAsync();
+        IssueStateContainer.Issues = await db.Issues.ToListAsync();
     }
 
     private void AddIssue() => NavigationManager.NavigateTo("/todo/create");

@@ -1,14 +1,22 @@
+using Couple.Client.Data;
 using Couple.Client.Model.Image;
-using Microsoft.JSInterop;
 
 namespace Couple.Client.Services.Synchronizer;
 
 public class UpdateImageCommand : ICommand
 {
-    private readonly IJSRuntime _js;
+    private readonly AppDbContext _dbContext;
     private readonly ImageModel _model;
 
-    public UpdateImageCommand(IJSRuntime js, ImageModel model) => (_js, _model) = (js, model);
+    public UpdateImageCommand(AppDbContext dbContext, ImageModel model) => (_dbContext, _model) = (dbContext, model);
 
-    public async Task Execute() => await _js.InvokeVoidAsync("updateImage", _model);
+    public async Task Execute()
+    {
+        var image = await _dbContext.Images.FindAsync(_model.Id);
+        _dbContext.Attach(image);
+        image.TakenOn = _model.TakenOn;
+        image.Data = _model.Data;
+        image.IsFavourite = _model.IsFavourite;
+        await _dbContext.SaveChangesAsync();
+    }
 }

@@ -1,10 +1,13 @@
+using Couple.Client.Data;
 using Couple.Client.Services.Synchronizer;
 using Couple.Client.States.Calendar;
 using Couple.Client.States.Done;
 using Couple.Client.States.Issue;
+using Couple.Client.Utility;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
+using Microsoft.EntityFrameworkCore;
 
 namespace Couple.Client;
 
@@ -21,13 +24,16 @@ public class Program
             {
                 BaseAddress = new(builder.Configuration["API_Prefix"] ?? builder.HostEnvironment.BaseAddress)
             })
-            .AddSingleton<IssueStateContainer>()
-            .AddSingleton<DoneStateContainer>()
-            .AddSingleton<EventStateContainer>()
-            .AddSingleton<SelectedDateStateContainer>()
-            .AddSingleton<Synchronizer>();
+            .AddDbContextFactory<AppDbContext>(options => options.UseSqlite($"Filename={Constants.DatabaseFileName}"))
+            .AddScoped<DbContextProvider>()
+            .AddScoped<IssueStateContainer>()
+            .AddScoped<DoneStateContainer>()
+            .AddScoped<EventStateContainer>()
+            .AddScoped<SelectedDateStateContainer>()
+            .AddScoped<Synchronizer>();
 
         var host = builder.Build();
+
         var httpClient = host.Services.GetRequiredService<HttpClient>();
 
         if (builder.HostEnvironment.IsStaging() || builder.HostEnvironment.IsProduction())

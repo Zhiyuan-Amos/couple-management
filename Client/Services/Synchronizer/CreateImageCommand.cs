@@ -1,14 +1,18 @@
+using Couple.Client.Data;
 using Couple.Client.Model.Image;
-using Microsoft.JSInterop;
 
 namespace Couple.Client.Services.Synchronizer;
 
 public class CreateImageCommand : ICommand
 {
-    private readonly IJSRuntime _js;
+    private readonly AppDbContext _dbContext;
     private readonly ImageModel _model;
 
-    public CreateImageCommand(IJSRuntime js, ImageModel model) => (_js, _model) = (js, model);
+    public CreateImageCommand(AppDbContext dbContext, ImageModel model) => (_dbContext, _model) = (dbContext, model);
 
-    public async Task Execute() => await _js.InvokeVoidAsync("createImage", _model);
+    public async Task Execute()
+    {
+        _dbContext.Images.Add(_model);
+        await _dbContext.SaveChangesAsync();
+    }
 }

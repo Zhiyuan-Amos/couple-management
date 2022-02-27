@@ -54,7 +54,7 @@ public class CompleteTaskFunction
             Command.Complete,
             claims.PartnerId,
             _dateTimeService.Now,
-            form.Value.Id.ToString(),
+            form.Value.TaskId.ToString(),
             Entity.Task,
             form.Json);
 
@@ -70,12 +70,9 @@ public class CompleteTaskFunction
     {
         public Validator()
         {
-            RuleFor(dto => dto.Id).NotEmpty();
-            RuleFor(dto => dto.For).NotNull();
-            RuleFor(dto => dto.Content).NotEmpty();
+            RuleFor(dto => dto.TaskId).NotEmpty();
             RuleFor(dto => dto.IssueId).NotEmpty();
-            RuleFor(dto => dto.IssueTitle).NotEmpty();
-            RuleFor(dto => dto.CreatedOn).NotEmpty();
+            RuleFor(dto => dto.CompletedDate).NotEmpty();
         }
     }
 }

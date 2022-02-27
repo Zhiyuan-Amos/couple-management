@@ -4,8 +4,17 @@ namespace Couple.Client.Model.Issue;
 
 public class IssueModel
 {
-    public IssueModel()
+    // Required for EF Core
+    private IssueModel() { }
+
+    public IssueModel(Guid id) => Id = id;
+
+    public IssueModel(string title, For @for, IEnumerable<TaskModel> tasks, DateTime createdOn)
     {
+        Title = title;
+        For = @for;
+        Tasks = new List<TaskModel>(tasks);
+        CreatedOn = createdOn;
     }
 
     public IssueModel(Guid id, string title, For @for, IEnumerable<TaskModel> tasks, DateTime createdOn)
@@ -17,9 +26,9 @@ public class IssueModel
         CreatedOn = createdOn;
     }
 
-    public Guid Id { get; init; }
-    public string Title { get; init; }
-    public For For { get; init; }
-    public IReadOnlyList<TaskModel> Tasks { get; init; }
+    public Guid Id { get; }
+    public string Title { get; set; }
+    public For For { get; set; }
+    public IReadOnlyList<TaskModel> Tasks { get; set; }
     public DateTime CreatedOn { get; init; }
 }

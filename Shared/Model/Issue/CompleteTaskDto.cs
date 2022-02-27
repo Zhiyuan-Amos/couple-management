@@ -1,22 +1,20 @@
+using System.Text.Json.Serialization;
+using Couple.Shared.Utility;
+
 namespace Couple.Shared.Model.Issue;
 
 public class CompleteTaskDto
 {
-    public CompleteTaskDto(Guid id, For @for, string content, Guid issueId, string issueTitle, DateTime createdOn)
+    public CompleteTaskDto(Guid taskId, Guid issueId, DateOnly completedDate)
     {
-        Id = id;
-        For = @for;
-        Content = content;
+        TaskId = taskId;
         IssueId = issueId;
-        IssueTitle = issueTitle;
-        CreatedOn = createdOn;
+        CompletedDate = completedDate;
     }
 
-    public Guid Id { get; }
-    public For For { get; }
-    public string Content { get; }
-
+    public Guid TaskId { get; }
     public Guid IssueId { get; }
-    public string IssueTitle { get; }
-    public DateTime CreatedOn { get; }
+
+    [JsonConverter(typeof(DateOnlyConverter))]
+    public DateOnly CompletedDate { get; }
 }

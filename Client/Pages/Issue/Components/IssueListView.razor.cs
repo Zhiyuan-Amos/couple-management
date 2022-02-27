@@ -1,18 +1,20 @@
 using System.Net.Http.Json;
 using Couple.Client.Adapters;
 using Couple.Client.Model.Issue;
+using Couple.Client.Services.Synchronizer;
 using Couple.Client.States.Issue;
+using Couple.Client.Utility;
 using Microsoft.AspNetCore.Components;
-using Microsoft.JSInterop;
+using Microsoft.EntityFrameworkCore;
 
 namespace Couple.Client.Pages.Issue.Components;
 
 public partial class IssueListView
 {
+    [Inject] protected DbContextProvider DbContextProvider { get; init; }
     [Inject] protected IssueStateContainer? IssueStateContainer { get; init; }
     [Inject] protected HttpClient? HttpClient { get; init; }
     [Inject] private NavigationManager? NavigationManager { get; init; }
-    [Inject] private IJSRuntime? Js { get; init; }
 
     [EditorRequired] [Parameter] public List<IssueModel>? Issues { get; set; }
 
@@ -20,19 +22,15 @@ public partial class IssueListView
 
     private async Task OnCheckboxToggle(Guid id, TaskModel task)
     {
-        var viewModel = Issues.Single(x => x.Id == id);
+        var issue = Issues.Single(x => x.Id == id);
+        var date = DateOnly.FromDateTime(DateTime.Now);
+        await using var db = await DbContextProvider.GetPreparedDbContextAsync();
+        await CompleteTaskHelper.CompleteTaskAsync(issue, task.Id, date, db);
 
-        var toPersist = new CreateCompletedTaskModel(task.Id,
-            viewModel.For,
-            task.Content,
-            id,
-            viewModel.Title,
-            DateTime.Now);
+        IssueStateContainer.Issues = await db.Issues.ToListAsync();
 
-        await Js.InvokeVoidAsync("completeTask", toPersist);
-        IssueStateContainer.Issues = await Js.InvokeAsync<List<IssueModel>>("getIssues");
-
-        var toUpdate = IssueAdapter.ToCompleteDto(toPersist);
+        var toUpdate =
+            IssueAdapter.ToCompleteDto(new(task.Id, issue.Id, date));
         await HttpClient.PutAsJsonAsync("api/Tasks/Complete", toUpdate);
     }
 }

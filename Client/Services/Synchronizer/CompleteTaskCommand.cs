@@ -1,14 +1,17 @@
+using Couple.Client.Data;
 using Couple.Client.Model.Issue;
-using Microsoft.JSInterop;
+using Couple.Client.Utility;
 
 namespace Couple.Client.Services.Synchronizer;
 
 public class CompleteTaskCommand : ICommand
 {
-    private readonly IJSRuntime _js;
+    private readonly AppDbContext _dbContext;
     private readonly CreateCompletedTaskModel _model;
 
-    public CompleteTaskCommand(IJSRuntime js, CreateCompletedTaskModel model) => (_js, _model) = (js, model);
+    public CompleteTaskCommand(AppDbContext dbContext, CreateCompletedTaskModel model) =>
+        (_dbContext, _model) = (dbContext, model);
 
-    public async Task Execute() => await _js.InvokeVoidAsync("completeTask", _model);
+    public async Task Execute() =>
+        await CompleteTaskHelper.CompleteTaskAsync(_model.IssueId, _model.TaskId, _model.CompletedDate, _dbContext);
 }

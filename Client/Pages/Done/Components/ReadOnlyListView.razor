@@ -1,23 +1,23 @@
-﻿@using Couple.Client.ViewModel.Issue
-@using Couple.Client.Utility
+﻿@using Couple.Client.Model.Done
 @using Couple.Client.Model.Image
+@using Couple.Client.Utility
 <div class="mh-100 overflow-auto" style="padding-bottom: 56px;">
     @foreach (var (date, items) in DoneStateContainer.GetDateToItems().Reverse())
     {
         <h5 class="my-1 text-center">@date.ToString("dd MMM")</h5>
         @foreach (var item in items)
         {
-            if (item is CompletedTaskViewModel task)
+            if (item is DoneIssueModel issue)
             {
                 <div class="card bg-light mx-3 my-2">
                     <div class="card-body">
                         <div class="d-flex card-title">
-                            <i style="@CssHelper.GetIcon(task.For)"></i>
+                            <i style="@CssHelper.GetIcon(issue.For)"></i>
                             <h5 class="mb-0 ps-2">
-                                @task.IssueTitle
+                                @issue.Title
                             </h5>
                         </div>
-                        @foreach (var content in task.Contents)
+                        @foreach (var content in issue.Tasks.Select(dt => dt.Content))
                         {
                             <h6>
                                 @content
