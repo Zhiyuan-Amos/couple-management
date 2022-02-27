@@ -92,4 +92,3 @@
     1. Deserializing through JS interop minimally requires properties to have init-only setter & public parameterless constructor
     1. `List` cannot be deserialized into `IEnumerable`
 1. It's unsure why adding custom Json Converters in Program.cs https://github.com/dotnet/runtime/issues/53539#issuecomment-970051936 don't work, so the properties are annotated with the attribute instead.
-1. Properties tracked for changes require `set`, while properties to map in the database column require either `set` or `init`.

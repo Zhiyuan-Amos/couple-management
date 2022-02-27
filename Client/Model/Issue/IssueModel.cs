@@ -4,7 +4,6 @@ namespace Couple.Client.Model.Issue;
 
 public class IssueModel
 {
-    // Required for EF Core
     private IssueModel() { }
 
     public IssueModel(Guid id) => Id = id;
