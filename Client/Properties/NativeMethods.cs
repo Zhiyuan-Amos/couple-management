@@ -87,8 +87,8 @@ internal static class NativeMethods
     [DllImport(SQLITE_DLL, ExactSpelling = true, CallingConvention = CALLING_CONVENTION)]
     public static extern unsafe byte* sqlite3_bind_parameter_name(sqlite3_stmt stmt, int index);
 
-    //[DllImport(SQLITE_DLL, ExactSpelling = true, CallingConvention = CALLING_CONVENTION)]
-    //public static extern unsafe byte* sqlite3_column_database_name(sqlite3_stmt stmt, int index);
+    [DllImport(SQLITE_DLL, ExactSpelling = true, CallingConvention = CALLING_CONVENTION)]
+    public static extern unsafe byte* sqlite3_column_database_name(sqlite3_stmt stmt, int index);
 
     [DllImport(SQLITE_DLL, ExactSpelling = true, CallingConvention = CALLING_CONVENTION)]
     public static extern unsafe byte* sqlite3_column_decltype(sqlite3_stmt stmt, int index);
@@ -96,11 +96,11 @@ internal static class NativeMethods
     [DllImport(SQLITE_DLL, ExactSpelling = true, CallingConvention = CALLING_CONVENTION)]
     public static extern unsafe byte* sqlite3_column_name(sqlite3_stmt stmt, int index);
 
-    //[DllImport(SQLITE_DLL, ExactSpelling = true, CallingConvention = CALLING_CONVENTION)]
-    //public static extern unsafe byte* sqlite3_column_origin_name(sqlite3_stmt stmt, int index);
+    [DllImport(SQLITE_DLL, ExactSpelling = true, CallingConvention = CALLING_CONVENTION)]
+    public static extern unsafe byte* sqlite3_column_origin_name(sqlite3_stmt stmt, int index);
 
-    //[DllImport(SQLITE_DLL, ExactSpelling = true, CallingConvention = CALLING_CONVENTION)]
-    //public static extern unsafe byte* sqlite3_column_table_name(sqlite3_stmt stmt, int index);
+    [DllImport(SQLITE_DLL, ExactSpelling = true, CallingConvention = CALLING_CONVENTION)]
+    public static extern unsafe byte* sqlite3_column_table_name(sqlite3_stmt stmt, int index);
 
     [DllImport(SQLITE_DLL, ExactSpelling = true, CallingConvention = CALLING_CONVENTION)]
     public static extern unsafe byte* sqlite3_column_text(sqlite3_stmt stmt, int index);
@@ -439,20 +439,20 @@ internal static class NativeMethods
     [DllImport(SQLITE_DLL, ExactSpelling = true, CallingConvention = CALLING_CONVENTION)]
     public static extern int sqlite3_backup_finish(IntPtr backup);
 
-    //[DllImport(SQLITE_DLL, ExactSpelling = true, CallingConvention = CALLING_CONVENTION)]
-    //public static extern unsafe int sqlite3_snapshot_get(sqlite3 db, byte* schema, out IntPtr snap);
+    [DllImport(SQLITE_DLL, ExactSpelling = true, CallingConvention = CALLING_CONVENTION)]
+    public static extern unsafe int sqlite3_snapshot_get(sqlite3 db, byte* schema, out IntPtr snap);
 
-    //[DllImport(SQLITE_DLL, ExactSpelling = true, CallingConvention = CALLING_CONVENTION)]
-    //public static extern unsafe int sqlite3_snapshot_open(sqlite3 db, byte* schema, sqlite3_snapshot snap);
+    [DllImport(SQLITE_DLL, ExactSpelling = true, CallingConvention = CALLING_CONVENTION)]
+    public static extern unsafe int sqlite3_snapshot_open(sqlite3 db, byte* schema, sqlite3_snapshot snap);
 
-    //[DllImport(SQLITE_DLL, ExactSpelling = true, CallingConvention = CALLING_CONVENTION)]
-    //public static extern unsafe int sqlite3_snapshot_recover(sqlite3 db, byte* name);
+    [DllImport(SQLITE_DLL, ExactSpelling = true, CallingConvention = CALLING_CONVENTION)]
+    public static extern unsafe int sqlite3_snapshot_recover(sqlite3 db, byte* name);
 
-    //[DllImport(SQLITE_DLL, ExactSpelling = true, CallingConvention = CALLING_CONVENTION)]
-    //public static extern unsafe int sqlite3_snapshot_cmp(sqlite3_snapshot p1, sqlite3_snapshot p2);
+    [DllImport(SQLITE_DLL, ExactSpelling = true, CallingConvention = CALLING_CONVENTION)]
+    public static extern int sqlite3_snapshot_cmp(sqlite3_snapshot p1, sqlite3_snapshot p2);
 
-    //[DllImport(SQLITE_DLL, ExactSpelling = true, CallingConvention = CALLING_CONVENTION)]
-    //public static extern unsafe void sqlite3_snapshot_free(IntPtr snap);
+    [DllImport(SQLITE_DLL, ExactSpelling = true, CallingConvention = CALLING_CONVENTION)]
+    public static extern void sqlite3_snapshot_free(IntPtr snap);
 
     [DllImport(SQLITE_DLL, ExactSpelling = true, CallingConvention = CALLING_CONVENTION)]
     public static extern unsafe int sqlite3_blob_open(sqlite3 db, byte* sdb, byte* table, byte* col, long rowid,
