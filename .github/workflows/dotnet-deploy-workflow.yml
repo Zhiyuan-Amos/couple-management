@@ -48,11 +48,13 @@ jobs:
   fa-build-and-deploy:
     needs: terraform-create
     runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+      contents: read
     env:
       AZURE_FUNCTIONAPP_NAME: test-change-event
       AZURE_FUNCTIONAPP_PACKAGE_PATH: 'Messaging'
       DOTNET_VERSION: '6.0.x'
-
     steps:
       - name: 'Checkout GitHub Action'
         uses: actions/checkout@v2
@@ -69,10 +71,17 @@ jobs:
           dotnet build --configuration Release --output ./output
           popd
 
+      - name: 'Az CLI login'
+        uses: azure/login@v1
+        with:
+          client-id: ${{ secrets.ARM_CLIENT_ID }}
+          tenant-id: ${{ secrets.ARM_TENANT_ID }}
+          subscription-id: ${{ secrets.ARM_SUBSCRIPTION_ID }}
+
       - name: Get Pubilsh Profile
         id: getPublishProfile
         run: |
-          echo "::set-output name=PUBLISH_PROFILE::$(az webapp deployment list-publishing-profiles -g '${{ needs.terraform-create.outputs.rgName }}' -n '${{ env.AZURE_FUNCTIONAPP_NAME }}' --xml)"
+          echo "::set-output name=PUBLISH_PROFILE::$(az webapp deployment list-publishing-profiles -g '${{ needs.terraform-create.outputs.AZURE_RESOURCEGROUP_NAME }}' -n '${{ env.AZURE_FUNCTIONAPP_NAME }}' --xml)"
         
       - name: 'Run Azure Functions Action'
         uses: Azure/functions-action@v1
