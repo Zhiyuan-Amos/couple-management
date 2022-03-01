@@ -1,3 +1,4 @@
+using System.Diagnostics.CodeAnalysis;
 using Couple.Client.Data;
 using Couple.Client.Services.Synchronizer;
 using Couple.Client.States.Calendar;
@@ -13,6 +14,13 @@ namespace Couple.Client;
 
 public class Program
 {
+    /// <summary>
+    /// FIXME: This is required for EF Core 6.0 as it is not compatible with trimming.
+    /// See https://github.com/dotnet/efcore/issues/26288 & https://github.com/dotnet/efcore/issues/26860
+    /// </summary>
+    [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)]
+    private static Type _keepDateOnly = typeof(DateOnly);
+
     public static async Task Main(string[] args)
     {
         var builder = WebAssemblyHostBuilder.CreateDefault(args);

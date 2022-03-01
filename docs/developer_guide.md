@@ -65,11 +65,11 @@
 
 1. Blazor WASM on .NET 6
 1. Bootstrap
-1. IndexedDb
+1. Sqlite
 
 ### Backend
 
-1. Azure Functions on .NET Core 3.1. Azure Functions does not support newer versions of .NET Core i.e. .NET 5 and .NET 6 Previews; it will only support .NET 6 in the future.
+1. Azure Functions
 
 ### Hosting
 

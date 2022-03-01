@@ -4,7 +4,6 @@ namespace Couple.Client.Model.Image;
 
 public class ImageModel : IDone
 {
-    // Required for EF Core
     private ImageModel() { }
 
     public ImageModel(Guid id) => Id = id;
