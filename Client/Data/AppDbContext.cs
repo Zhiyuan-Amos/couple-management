@@ -100,8 +100,8 @@ public class AppDbContext : DbContext
                      .Where(e => e.Entity is IDone && e.State is EntityState.Modified)
                      .ToList())
         {
-            var oldDate = (entityEntry.OriginalValues["TakenOnDate"] as DateOnly?)!.Value;
-            var newDate = (entityEntry.CurrentValues["TakenOnDate"] as DateOnly?)!.Value;
+            var oldDate = (entityEntry.OriginalValues["DoneDate"] as DateOnly?)!.Value;
+            var newDate = (entityEntry.CurrentValues["DoneDate"] as DateOnly?)!.Value;
             if (oldDate == newDate)
             {
                 continue;
