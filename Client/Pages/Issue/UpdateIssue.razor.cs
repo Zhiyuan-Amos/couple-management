@@ -8,7 +8,7 @@ namespace Couple.Client.Pages.Issue;
 
 public class UpdateIssueBase : CreateUpdateIssueBase
 {
-    private IssueModel? _currentIssueModel;
+    private IReadOnlyIssueModel? _currentIssueModel;
     [EditorRequired] [Parameter] public Guid IssueId { get; set; }
 
     protected override void OnInitialized()
@@ -21,7 +21,7 @@ public class UpdateIssueBase : CreateUpdateIssueBase
 
         CreateUpdateIssueStateContainer = new(_currentIssueModel.Title,
             _currentIssueModel.For,
-            _currentIssueModel.Tasks);
+            _currentIssueModel.ReadOnlyTasks);
     }
 
     protected async Task Delete()
@@ -38,7 +38,8 @@ public class UpdateIssueBase : CreateUpdateIssueBase
 
     protected override async Task Save()
     {
-        var issue = IssueStateContainer.Issues.First(issues => issues.Id == IssueId);
+        var issue = new IssueModel(_currentIssueModel.Id, _currentIssueModel.Title, _currentIssueModel.For,
+            _currentIssueModel.ReadOnlyTasks, _currentIssueModel.CreatedOn);
         await using var db = await DbContextProvider.GetPreparedDbContextAsync();
 
         db.Attach(issue);

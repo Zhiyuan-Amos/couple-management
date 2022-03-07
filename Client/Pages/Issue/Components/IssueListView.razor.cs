@@ -16,13 +16,17 @@ public partial class IssueListView
     [Inject] protected HttpClient? HttpClient { get; init; }
     [Inject] private NavigationManager? NavigationManager { get; init; }
 
-    [EditorRequired] [Parameter] public List<IssueModel>? Issues { get; set; }
+    [EditorRequired] [Parameter] public List<IReadOnlyIssueModel>? Issues { get; set; }
 
-    private void EditIssue(IssueModel selectedIssue) => NavigationManager.NavigateTo($"/todo/{selectedIssue.Id}");
+    private void EditIssue(IReadOnlyIssueModel selectedIssue) =>
+        NavigationManager.NavigateTo($"/todo/{selectedIssue.Id}");
 
-    private async Task OnCheckboxToggle(Guid id, TaskModel task)
+    private async Task OnCheckboxToggle(Guid id, IReadOnlyTaskModel task)
     {
-        var issue = Issues.Single(x => x.Id == id);
+        var readOnlyIssue = Issues.Single(x => x.Id == id);
+        var issue = new IssueModel(readOnlyIssue.Id, readOnlyIssue.Title, readOnlyIssue.For,
+            readOnlyIssue.ReadOnlyTasks,
+            readOnlyIssue.CreatedOn);
         var date = DateOnly.FromDateTime(DateTime.Now);
         await using var db = await DbContextProvider.GetPreparedDbContextAsync();
         await CompleteTaskHelper.CompleteTaskAsync(issue, task.Id, date, db);

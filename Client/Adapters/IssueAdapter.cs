@@ -16,11 +16,11 @@ public static class IssueAdapter
     public static TaskModel ToTaskModel(IReadOnlyTaskViewModel model) => new(model.Id, model.Content);
 
     public static List<CreateUpdateTaskViewModel>
-        ToCreateUpdateTaskViewModel(IEnumerable<TaskModel> models) =>
+        ToCreateUpdateTaskViewModel(IEnumerable<IReadOnlyTaskModel> models) =>
         models.Select(ToCreateUpdateTaskViewModel)
             .ToList();
 
-    public static CreateUpdateTaskViewModel ToCreateUpdateTaskViewModel(TaskModel model) =>
+    public static CreateUpdateTaskViewModel ToCreateUpdateTaskViewModel(IReadOnlyTaskModel model) =>
         new(model.Id, model.Content);
 
     public static TaskDto ToTaskDto(TaskModel model) => new(model.Id, model.Content);

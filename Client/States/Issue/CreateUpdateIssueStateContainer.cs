@@ -9,7 +9,7 @@ public class CreateUpdateIssueStateContainer
 {
     private readonly List<CreateUpdateTaskViewModel> _tasks;
 
-    public CreateUpdateIssueStateContainer(string title, For @for, IEnumerable<TaskModel> tasks)
+    public CreateUpdateIssueStateContainer(string title, For @for, IEnumerable<IReadOnlyTaskModel> tasks)
     {
         Title = title;
         For = @for;

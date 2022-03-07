@@ -12,7 +12,7 @@
                         @issue.Title
                     </h5>
                 </div>
-                @foreach (var (task, index) in issue.Tasks.Select((item, index) => (item, index)))
+                @foreach (var (task, index) in issue.ReadOnlyTasks.Select((item, index) => (item, index)))
                 {
                     <div class="d-flex align-items-center"
                          style="margin-bottom: .25rem; min-height: 2rem;">

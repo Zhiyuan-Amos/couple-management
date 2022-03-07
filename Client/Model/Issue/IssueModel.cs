@@ -2,7 +2,7 @@ using Couple.Shared.Model;
 
 namespace Couple.Client.Model.Issue;
 
-public class IssueModel
+public class IssueModel : IReadOnlyIssueModel
 {
     private IssueModel() { }
 
@@ -12,22 +12,25 @@ public class IssueModel
     {
         Title = title;
         For = @for;
-        Tasks = new List<TaskModel>(tasks);
+        Tasks = new(tasks);
         CreatedOn = createdOn;
     }
 
-    public IssueModel(Guid id, string title, For @for, IEnumerable<TaskModel> tasks, DateTime createdOn)
+    public IssueModel(Guid id, string title, For @for, IEnumerable<IReadOnlyTaskModel> tasks, DateTime createdOn)
     {
         Id = id;
         Title = title;
         For = @for;
-        Tasks = new List<TaskModel>(tasks);
+        Tasks = tasks.Select(t => new TaskModel(t.Id, t.Content)).ToList();
         CreatedOn = createdOn;
     }
+
+    public List<TaskModel> Tasks { get; set; }
 
     public Guid Id { get; }
     public string Title { get; set; }
     public For For { get; set; }
-    public IReadOnlyList<TaskModel> Tasks { get; set; }
     public DateTime CreatedOn { get; init; }
+
+    public IReadOnlyList<IReadOnlyTaskModel> ReadOnlyTasks => Tasks.AsReadOnly();
 }

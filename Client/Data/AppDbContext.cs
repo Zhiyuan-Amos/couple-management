@@ -44,8 +44,8 @@ public class AppDbContext : DbContext
             .Property(i => i.Tasks)
             .HasConversion(
                 t => JsonSerializer.Serialize(t, (JsonSerializerOptions)null),
-                t => JsonSerializer.Deserialize<IReadOnlyList<TaskModel>>(t, (JsonSerializerOptions)null),
-                new ValueComparer<IReadOnlyList<TaskModel>>(
+                t => JsonSerializer.Deserialize<List<TaskModel>>(t, (JsonSerializerOptions)null),
+                new ValueComparer<List<TaskModel>>(
                     (c1, c2) => c1.SequenceEqual(c2),
                     c => c.Aggregate(0, (a, v) => HashCode.Combine(a, v.GetHashCode())),
                     c => c.ToList()));

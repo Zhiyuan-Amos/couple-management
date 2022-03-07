@@ -6,8 +6,8 @@ public class DoneIssueModel : IDone
 {
     private DoneIssueModel() { }
 
-    public DoneIssueModel(DateOnly doneDate, List<DoneTaskModel> doneTasks, For @for, string issueTitle) =>
-        (DoneDate, Tasks, For, Title) = (doneDate, doneTasks, @for, issueTitle);
+    public DoneIssueModel(DateOnly doneDate, IEnumerable<DoneTaskModel> doneTasks, For @for, string issueTitle) =>
+        (DoneDate, Tasks, For, Title) = (doneDate, new(doneTasks), @for, issueTitle);
 
     public Guid Id { get; }
     public string Title { get; init; }

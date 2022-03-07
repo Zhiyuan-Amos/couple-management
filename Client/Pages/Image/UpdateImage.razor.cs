@@ -10,7 +10,7 @@ namespace Couple.Client.Pages.Image;
 
 public partial class UpdateImage
 {
-    private ImageModel _imageModel;
+    private IReadOnlyImageModel _imageModel;
     [EditorRequired] [Parameter] public Guid ImageId { get; set; }
     private CreateUpdateImageStateContainer CreateUpdateImageStateContainer { get; set; }
 
@@ -21,7 +21,7 @@ public partial class UpdateImage
 
     protected override void OnInitialized()
     {
-        if (!DoneStateContainer.TryGetImage(ImageId, out _imageModel))
+        if (!DoneStateContainer.TryGetImage(ImageId, out _imageModel!))
         {
             NavigationManager.NavigateTo("/done");
         }
@@ -33,7 +33,8 @@ public partial class UpdateImage
     private async Task Delete()
     {
         await using var db = await DbContextProvider.GetPreparedDbContextAsync();
-        db.Images.Remove(_imageModel);
+        var toDelete = new ImageModel(_imageModel.Id, _imageModel.TakenOn, _imageModel.Data, _imageModel.IsFavourite);
+        db.Images.Remove(toDelete);
         await db.SaveChangesAsync();
 
         NavigationManager.NavigateTo("/done");

@@ -6,7 +6,7 @@ namespace Couple.Client.States.Done;
 public class DoneStateContainer : Notifier
 {
     private readonly SortedDictionary<DateOnly, IReadOnlyList<IDone>> _dateToItems = new();
-    private Dictionary<Guid, ImageModel> _idToImage = new();
+    private Dictionary<Guid, IReadOnlyImageModel> _idToImage = new();
 
     public IReadOnlyDictionary<DateOnly, IReadOnlyList<IDone>> GetDateToItems() => _dateToItems;
 
@@ -22,14 +22,14 @@ public class DoneStateContainer : Notifier
         }
 
         _idToImage = toSet
-            .OfType<ImageModel>()
+            .OfType<IReadOnlyImageModel>()
             .ToDictionary(image => image.Id);
         NotifyStateChanged();
     }
 
-    public bool TryGetImage(Guid id, out ImageModel image)
+    public bool TryGetImage(Guid id, out IReadOnlyImageModel readOnlyImage)
     {
-        if (!_idToImage.TryGetValue(id, out image))
+        if (!_idToImage.TryGetValue(id, out readOnlyImage))
         {
             return false;
         }

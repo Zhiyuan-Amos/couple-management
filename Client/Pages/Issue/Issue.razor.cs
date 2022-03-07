@@ -13,7 +13,7 @@ public partial class Issue : IDisposable
 
     [Inject] private IssueStateContainer IssueStateContainer { get; init; }
 
-    private List<IssueModel> Issues =>
+    private List<IReadOnlyIssueModel> Issues =>
         IssueStateContainer.Issues
             .OrderByDescending(issue => issue.CreatedOn)
             .ToList();

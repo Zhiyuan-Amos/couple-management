@@ -2,7 +2,7 @@ using System.Text.Json.Serialization;
 
 namespace Couple.Client.Model.Issue;
 
-public class TaskModel
+public class TaskModel : IReadOnlyTaskModel
 {
     public TaskModel(string content)
     {

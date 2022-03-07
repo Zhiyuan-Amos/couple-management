@@ -4,10 +4,10 @@ namespace Couple.Client.States.Issue;
 
 public class IssueStateContainer : Notifier
 {
-    private readonly List<IssueModel> _issues = new();
-    private Dictionary<Guid, IssueModel> _idToIssue = new();
+    private readonly List<IReadOnlyIssueModel> _issues = new();
+    private Dictionary<Guid, IReadOnlyIssueModel> _idToIssue = new();
 
-    public IReadOnlyList<IssueModel> Issues
+    public IReadOnlyList<IReadOnlyIssueModel> Issues
     {
         get => _issues.AsReadOnly();
         set
@@ -21,9 +21,9 @@ public class IssueStateContainer : Notifier
         }
     }
 
-    public bool TryGetIssue(Guid id, out IssueModel issue)
+    public bool TryGetIssue(Guid id, out IReadOnlyIssueModel readOnlyIssue)
     {
-        if (!_idToIssue.TryGetValue(id, out issue))
+        if (!_idToIssue.TryGetValue(id, out readOnlyIssue))
         {
             return false;
         }
