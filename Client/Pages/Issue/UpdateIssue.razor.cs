@@ -19,9 +19,13 @@ public class UpdateIssueBase : CreateUpdateIssueBase
             return;
         }
 
+        var tasks = _currentIssueModel.ReadOnlyTasks.Count == 0
+            ? new List<TaskModel> { new("") }
+            : _currentIssueModel.ReadOnlyTasks;
+
         CreateUpdateIssueStateContainer = new(_currentIssueModel.Title,
             _currentIssueModel.For,
-            _currentIssueModel.ReadOnlyTasks);
+            tasks);
     }
 
     protected async Task Delete()
