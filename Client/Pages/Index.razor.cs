@@ -13,21 +13,37 @@ public partial class Index
     [Inject] private DbContextProvider DbContextProvider { get; init; }
     [Inject] private NavigationManager NavigationManager { get; init; }
     [Inject] private DoneStateContainer DoneStateContainer { get; init; }
-    private List<ImageModel> FavouriteImages { get; set; } = new();
+
+    private List<ImageModel> FavouriteImages =>
+        DoneStateContainer.GetDateToItems()
+            .Values
+            .SelectMany(items => items)
+            .OfType<ImageModel>()
+            .Where(image => image.IsFavourite)
+            .OrderByDescending(image => image.DoneDate)
+            .ToList();
 
     protected override async Task OnInitializedAsync()
     {
+        DoneStateContainer.OnChange += StateHasChanged;
+
         if (s_isDataLoaded)
         {
             return;
         }
 
+        if (DoneStateContainer.GetDateToItems().Count != 0)
+        {
+            s_isDataLoaded = true;
+            return;
+        }
+
         await using var db = await DbContextProvider.GetPreparedDbContextAsync();
-        FavouriteImages = await db.Images
+        var favouriteImages = await db.Images
             .Where(i => i.IsFavourite)
             .ToListAsync();
 
-        if (FavouriteImages.Count > 0 && DoneStateContainer.GetDateToItems().Count == 0)
+        if (favouriteImages.Count > 0)
         {
             var toSet = FavouriteImages.Cast<IDone>().ToList();
             DoneStateContainer.SetItems(toSet);
