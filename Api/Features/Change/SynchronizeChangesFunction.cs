@@ -48,6 +48,7 @@ public class SynchronizeChangesFunction
             .Where(change => change.UserId == claims.Id)
             .Where(change => change.Ttl == -1)
             .OrderBy(change => change.Timestamp)
+            .AsNoTracking()
             .ToListAsync();
 
         var hyperlinkChanges = changes.OfType<HyperlinkChange>().ToList();
