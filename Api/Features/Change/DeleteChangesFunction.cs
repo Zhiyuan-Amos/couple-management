@@ -22,13 +22,13 @@ public class DeleteChangesFunction
         _context = context;
     }
 
-    [Function("DeleteChangeFunction")]
+    [Function("DeleteChangesFunction")]
     public async Task<HttpResponseData> Run(
         [HttpTrigger(AuthorizationLevel.Anonymous, "delete", Route = "Changes")]
         HttpRequestData req,
         FunctionContext executionContext)
     {
-        var form = await req.GetJsonBody<DeleteChangeDto, Validator>();
+        var form = await req.GetJsonBody<DeleteChangesDto, Validator>();
 
         if (!form.IsValid)
         {
@@ -79,7 +79,7 @@ public class DeleteChangesFunction
         return req.CreateResponse(HttpStatusCode.OK);
     }
 
-    public class Validator : AbstractValidator<DeleteChangeDto>
+    public class Validator : AbstractValidator<DeleteChangesDto>
     {
         public Validator()
         {

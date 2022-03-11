@@ -14,14 +14,14 @@ using Microsoft.Extensions.Logging;
 
 namespace Couple.Api.Features.Change;
 
-public class SynchronizeChangeFunction
+public class SynchronizeChangesFunction
 {
     private readonly HttpClient _client;
     private readonly ChangeContext _context;
     private readonly ICurrentUserService _currentUserService;
     private readonly IMapper _mapper;
 
-    public SynchronizeChangeFunction(ICurrentUserService currentUserService,
+    public SynchronizeChangesFunction(ICurrentUserService currentUserService,
         IHttpClientFactory httpClientFactory,
         IMapper mapper,
         ChangeContext context)
@@ -32,7 +32,7 @@ public class SynchronizeChangeFunction
         _context = context;
     }
 
-    [Function("SynchronizeChangeFunction")]
+    [Function("SynchronizeChangesFunction")]
     public async Task<HttpResponseData> Run(
         [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "Synchronize")]
         HttpRequestData req,

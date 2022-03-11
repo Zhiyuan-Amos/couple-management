@@ -35,7 +35,7 @@ public class Synchronizer
             await command.Execute();
         }
 
-        var idsToDelete = new DeleteChangeDto(toSynchronize
+        var idsToDelete = new DeleteChangesDto(toSynchronize
             .Select(change => change.Id)
             .ToList());
 
