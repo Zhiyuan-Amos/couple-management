@@ -70,10 +70,6 @@ public class DeleteChangesFunction
             change.Ttl = 3600;
         }
 
-        _context
-            .Changes
-            .UpdateRange(toDelete);
-
         await _context.SaveChangesAsync();
 
         return req.CreateResponse(HttpStatusCode.OK);
