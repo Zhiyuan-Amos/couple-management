@@ -8,6 +8,7 @@ namespace Couple.Client.Pages.Issue;
 
 public partial class Issue : IDisposable
 {
+    private static bool s_isDataLoaded;
     [Inject] protected DbContextProvider DbContextProvider { get; init; }
     [Inject] private NavigationManager NavigationManager { get; init; }
 
@@ -23,8 +24,16 @@ public partial class Issue : IDisposable
     protected override async Task OnInitializedAsync()
     {
         IssueStateContainer.OnChange += StateHasChanged;
+
+        if (s_isDataLoaded)
+        {
+            return;
+        }
+
         await using var db = await DbContextProvider.GetPreparedDbContextAsync();
         IssueStateContainer.Issues = await db.Issues.ToListAsync();
+
+        s_isDataLoaded = true;
     }
 
     private void AddIssue() => NavigationManager.NavigateTo("/todo/create");

@@ -7,6 +7,7 @@ namespace Couple.Client.Pages.Done.Components;
 
 public partial class ReadOnlyListView : IDisposable
 {
+    private static bool s_isDataLoaded;
     [Inject] private DbContextProvider DbContextProvider { get; init; }
     [Inject] private NavigationManager NavigationManager { get; init; }
     [Inject] private DoneStateContainer DoneStateContainer { get; init; }
@@ -16,9 +17,17 @@ public partial class ReadOnlyListView : IDisposable
     protected override async Task OnInitializedAsync()
     {
         DoneStateContainer.OnChange += StateHasChanged;
+
+        if (s_isDataLoaded)
+        {
+            return;
+        }
+
         await using var db = await DbContextProvider.GetPreparedDbContextAsync();
         var done = await db.GetIDone();
         DoneStateContainer.SetItems(done);
+
+        s_isDataLoaded = true;
     }
 
     private void EditImage(ImageModel selectedImage) => NavigationManager.NavigateTo($"/image/{selectedImage.Id}");
