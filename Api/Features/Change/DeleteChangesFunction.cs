@@ -47,6 +47,14 @@ public class DeleteChangesFunction
             .Where(change => model.Guids.Contains(change.Id))
             .ToListAsync();
 
+        var claims = _currentUserService.GetClaims(req.Headers);
+        var canDelete = toDelete.All(change => change.UserId == claims.Id);
+
+        if (!canDelete)
+        {
+            return req.CreateResponse(HttpStatusCode.Forbidden);
+        }
+
         var missingIds = model.Guids
             .Except(toDelete.Select(change => change.Id))
             .ToList();
@@ -55,14 +63,6 @@ public class DeleteChangesFunction
         {
             var logger = executionContext.GetLogger(GetType().Name);
             logger.LogWarning("Changes of {Ids} are not found", string.Join(", ", missingIds));
-        }
-
-        var claims = _currentUserService.GetClaims(req.Headers);
-        var canDelete = toDelete.All(change => change.UserId == claims.Id);
-
-        if (!canDelete)
-        {
-            return req.CreateResponse(HttpStatusCode.Forbidden);
         }
 
         foreach (var change in toDelete)
