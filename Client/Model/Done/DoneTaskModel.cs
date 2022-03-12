@@ -2,7 +2,7 @@
 
 namespace Couple.Client.Model.Done;
 
-public class DoneTaskModel
+public class DoneTaskModel : IReadOnlyDoneTaskModel
 {
     public DoneTaskModel(string content)
     {

@@ -17,6 +17,7 @@ public partial class Index
     private List<IReadOnlyImageModel> FavouriteImages =>
         DoneStateContainer.FavouriteImages
             .OrderByDescending(image => image.TakenOn)
+            .ThenBy(image => image.Order)
             .ToList();
 
     protected override async Task OnInitializedAsync()

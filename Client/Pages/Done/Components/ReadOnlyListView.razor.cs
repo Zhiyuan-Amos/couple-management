@@ -36,5 +36,6 @@ public partial class ReadOnlyListView : IDisposable
         s_isDataLoaded = true;
     }
 
-    private void EditImage(ImageModel selectedImage) => NavigationManager.NavigateTo($"/image/{selectedImage.Id}");
+    private void EditImage(IReadOnlyImageModel selectedImage) =>
+        NavigationManager.NavigateTo($"/image/{selectedImage.Id}");
 }

@@ -4,6 +4,7 @@ public interface IReadOnlyImageModel
 {
     public Guid Id { get; }
     public DateTime TakenOn { get; }
+    public int Order { get; }
     public byte[] Data { get; }
     public bool IsFavourite { get; }
 }

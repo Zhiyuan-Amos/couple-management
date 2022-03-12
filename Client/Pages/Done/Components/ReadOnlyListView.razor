@@ -7,7 +7,7 @@
         <h5 class="my-1 text-center">@date.ToString("dd MMM")</h5>
         @foreach (var item in items)
         {
-            if (item is DoneIssueModel issue)
+            if (item is IReadOnlyDoneIssueModel issue)
             {
                 <div class="card bg-light mx-3 my-2">
                     <div class="card-body">
@@ -17,7 +17,7 @@
                                 @issue.Title
                             </h5>
                         </div>
-                        @foreach (var content in issue.Tasks.Select(dt => dt.Content))
+                        @foreach (var content in issue.ReadOnlyTasks.Select(dt => dt.Content))
                         {
                             <h6>
                                 @content
@@ -26,7 +26,7 @@
                     </div>
                 </div>
             }
-            else if (item is ImageModel image)
+            else if (item is IReadOnlyImageModel image)
             {
                 <img class="w-100 h-auto"
                      @onclick="@(() => EditImage(image))"
