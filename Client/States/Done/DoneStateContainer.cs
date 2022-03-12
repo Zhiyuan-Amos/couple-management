@@ -7,6 +7,7 @@ public class DoneStateContainer : Notifier
 {
     private readonly SortedDictionary<DateOnly, IReadOnlyList<IDone>> _dateToItems = new();
     private Dictionary<Guid, IReadOnlyImageModel> _idToImage = new();
+    public IReadOnlyList<IReadOnlyImageModel> FavouriteImages { get; private set; } = new List<IReadOnlyImageModel>();
 
     public IReadOnlyDictionary<DateOnly, IReadOnlyList<IDone>> GetDateToItems() => _dateToItems;
 
@@ -24,6 +25,12 @@ public class DoneStateContainer : Notifier
         _idToImage = toSet
             .OfType<IReadOnlyImageModel>()
             .ToDictionary(image => image.Id);
+
+        FavouriteImages = toSet
+            .OfType<IReadOnlyImageModel>()
+            .Where(image => image.IsFavourite)
+            .ToList();
+
         NotifyStateChanged();
     }
 

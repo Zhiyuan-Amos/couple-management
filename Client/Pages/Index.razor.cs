@@ -14,13 +14,9 @@ public partial class Index
     [Inject] private NavigationManager NavigationManager { get; init; }
     [Inject] private DoneStateContainer DoneStateContainer { get; init; }
 
-    private List<ImageModel> FavouriteImages =>
-        DoneStateContainer.GetDateToItems()
-            .Values
-            .SelectMany(items => items)
-            .OfType<ImageModel>()
-            .Where(image => image.IsFavourite)
-            .OrderByDescending(image => image.DoneDate)
+    private List<IReadOnlyImageModel> FavouriteImages =>
+        DoneStateContainer.FavouriteImages
+            .OrderByDescending(image => image.TakenOn)
             .ToList();
 
     protected override async Task OnInitializedAsync()
@@ -52,5 +48,6 @@ public partial class Index
         s_isDataLoaded = true;
     }
 
-    private void EditImage(ImageModel selectedImage) => NavigationManager.NavigateTo($"/image/{selectedImage.Id}");
+    private void EditImage(IReadOnlyImageModel selectedImage) =>
+        NavigationManager.NavigateTo($"/image/{selectedImage.Id}");
 }
