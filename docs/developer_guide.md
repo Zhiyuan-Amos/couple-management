@@ -91,4 +91,5 @@
     1. Reading data from EF Core minimally requires properties to have init-only setter & private parameterless constructor or private parameterized constructor with parameter names and types that match those of mapped properties
     1. Deserializing through JS interop minimally requires properties to have init-only setter & public parameterless constructor
     1. `List` cannot be deserialized into `IEnumerable`
+    1. `OnInitialized(Async)` works like a constructor, so properties initialized there are assumed to be non-null
 1. It's unsure why adding custom Json Converters in Program.cs https://github.com/dotnet/runtime/issues/53539#issuecomment-970051936 don't work, so the properties are annotated with the attribute instead.
