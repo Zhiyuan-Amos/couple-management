@@ -17,5 +17,5 @@ public class CreateUpdateImageStateContainer
 
     public DateTime DateTime { get; set; }
     public bool IsFavourite { get; set; }
-    public byte[] Data { get; set; }
+    public byte[]? Data { get; set; }
 }

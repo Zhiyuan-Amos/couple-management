@@ -5,7 +5,7 @@ namespace Couple.Client.Shared;
 
 public partial class MainLayout
 {
-    [Inject] private Synchronizer Synchronizer { get; init; }
+    [Inject] private Synchronizer Synchronizer { get; init; } = default!;
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {

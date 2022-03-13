@@ -11,12 +11,12 @@ namespace Couple.Client.Pages.Issue.Components;
 
 public partial class IssueListView
 {
-    [Inject] protected DbContextProvider DbContextProvider { get; init; }
-    [Inject] protected IssueStateContainer? IssueStateContainer { get; init; }
-    [Inject] protected HttpClient? HttpClient { get; init; }
-    [Inject] private NavigationManager? NavigationManager { get; init; }
+    [Inject] private DbContextProvider DbContextProvider { get; init; } = default!;
+    [Inject] private IssueStateContainer IssueStateContainer { get; init; } = default!;
+    [Inject] private HttpClient HttpClient { get; init; } = default!;
+    [Inject] private NavigationManager NavigationManager { get; init; } = default!;
 
-    [EditorRequired] [Parameter] public List<IReadOnlyIssueModel>? Issues { get; set; }
+    [EditorRequired] [Parameter] public List<IReadOnlyIssueModel> Issues { get; set; } = default!;
 
     private void EditIssue(IReadOnlyIssueModel selectedIssue) =>
         NavigationManager.NavigateTo($"/todo/{selectedIssue.Id}");

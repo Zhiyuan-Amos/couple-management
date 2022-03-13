@@ -2,10 +2,6 @@ namespace Couple.Api.Model;
 
 public abstract class Change
 {
-    protected Change()
-    {
-    }
-
     protected Change(Guid id,
         string command,
         string userId,
@@ -20,7 +16,7 @@ public abstract class Change
         ContentId = contentId;
         ContentType = contentType;
 
-        // 1. Annotating this property with Json Attributes don't seem to work e.g.
+        // 1. Annotating this property with Json Attributes doesn't seem to work e.g.
         // [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)] and [JsonPropertyName("ttl")]
         // 2. The alternative is to implement the converter
         // https://docs.microsoft.com/en-us/dotnet/standard/serialization/system-text-json-migrate-from-newtonsoft-how-to?pivots=dotnet-6-0#conditionally-ignore-a-property

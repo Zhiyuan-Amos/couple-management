@@ -9,9 +9,9 @@ namespace Couple.Client.Pages.Done.Components;
 public partial class ReadOnlyListView : IDisposable
 {
     private static bool s_isDataLoaded;
-    [Inject] private DbContextProvider DbContextProvider { get; init; }
-    [Inject] private NavigationManager NavigationManager { get; init; }
-    [Inject] private DoneStateContainer DoneStateContainer { get; init; }
+    [Inject] private DbContextProvider DbContextProvider { get; init; } = default!;
+    [Inject] private NavigationManager NavigationManager { get; init; } = default!;
+    [Inject] private DoneStateContainer DoneStateContainer { get; init; } = default!;
 
     private IEnumerable<KeyValuePair<DateOnly, IReadOnlyList<IDone>>> DateToItems =>
         DoneStateContainer

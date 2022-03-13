@@ -18,7 +18,8 @@ public class Program
     ///     See https://github.com/dotnet/efcore/issues/26288 & https://github.com/dotnet/efcore/issues/26860
     /// </summary>
     [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)]
-    private static Type _keepDateOnly = typeof(DateOnly);
+    // ReSharper disable once UnusedMember.Local
+    private static Type s_keepDateOnly = typeof(DateOnly);
 
     public static async Task Main(string[] args)
     {

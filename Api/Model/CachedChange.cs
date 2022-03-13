@@ -2,10 +2,6 @@ namespace Couple.Api.Model;
 
 public class CachedChange : Change
 {
-    private CachedChange()
-    {
-    }
-
     public CachedChange(Guid id,
         string command,
         string userId,
@@ -15,5 +11,6 @@ public class CachedChange : Change
         string content) : base(id, command, userId, timestamp, contentId, contentType) =>
         Content = content;
 
+    // ReSharper disable once UnusedAutoPropertyAccessor.Global
     public string Content { get; init; }
 }

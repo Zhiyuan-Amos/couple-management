@@ -34,13 +34,6 @@ public class DoneStateContainer : Notifier
         NotifyStateChanged();
     }
 
-    public bool TryGetImage(Guid id, out IReadOnlyImageModel readOnlyImage)
-    {
-        if (!_idToImage.TryGetValue(id, out readOnlyImage))
-        {
-            return false;
-        }
-
-        return true;
-    }
+    public bool TryGetImage(Guid id, out IReadOnlyImageModel? readOnlyImage) =>
+        _idToImage.TryGetValue(id, out readOnlyImage);
 }

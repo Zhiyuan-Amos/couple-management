@@ -12,7 +12,7 @@ public class UpdateImageCommand : ICommand
 
     public async Task Execute()
     {
-        var image = await _dbContext.Images.FindAsync(_model.Id);
+        var image = (await _dbContext.Images.FindAsync(_model.Id))!;
         _dbContext.Attach(image);
         image.TakenOn = _model.TakenOn;
         image.Data = _model.Data;

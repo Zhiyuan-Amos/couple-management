@@ -27,7 +27,9 @@ public static class HttpRequestExtensions
         var requestBody = await request.ReadAsStringAsync();
         var requestObject = JsonSerializer.Deserialize<T>(requestBody, Options);
         var validator = new TV();
-        var validationResult = validator.Validate(requestObject);
+#pragma warning disable CS8604
+        var validationResult = await validator.ValidateAsync(requestObject);
+#pragma warning restore CS8604
 
         if (!validationResult.IsValid)
         {
@@ -58,9 +60,14 @@ public class ValidatableRequest<T>
     /// <summary>
     ///     The deserialized value of the request.
     /// </summary>
+#pragma warning disable CS8618
     public T Value { get; set; }
+#pragma warning restore CS8618
 
+#pragma warning disable CS8618
+    // ReSharper disable once UnusedAutoPropertyAccessor.Global
     public string Json { get; set; }
+#pragma warning restore CS8618
 
     /// <summary>
     ///     Whether or not the deserialized value was found to be valid.
@@ -70,10 +77,14 @@ public class ValidatableRequest<T>
     /// <summary>
     ///     The collection of validation errors.
     /// </summary>
+#pragma warning disable CS8618
     public IList<ValidationFailure> Errors { get; set; }
+#pragma warning restore CS8618
 
     public string ErrorMessage() =>
+#pragma warning disable CS8603
         Errors
             .Select(error => error.ToString())
             .ToString();
+#pragma warning restore CS8603
 }

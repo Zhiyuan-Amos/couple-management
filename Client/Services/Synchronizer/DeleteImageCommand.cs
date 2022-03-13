@@ -11,7 +11,7 @@ public class DeleteImageCommand : ICommand
 
     public async Task Execute()
     {
-        var toDelete = await _dbContext.Images.FindAsync(_guid);
+        var toDelete = (await _dbContext.Images.FindAsync(_guid))!;
         _dbContext.Images.Remove(toDelete);
         await _dbContext.SaveChangesAsync();
     }

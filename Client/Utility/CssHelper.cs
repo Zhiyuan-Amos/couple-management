@@ -18,6 +18,7 @@ public static class CssHelper
         {
             0 => "background-color:#FF99C8",
             1 => "background-color:#A6BFAD",
-            2 => "background-color:#FCF6BD"
+            2 => "background-color:#FCF6BD",
+            _ => throw new ArgumentOutOfRangeException(nameof(index), index, null)
         };
 }

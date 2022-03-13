@@ -12,20 +12,20 @@ namespace Couple.Client.Pages.Image;
 
 public partial class CreateImage
 {
-    private CreateUpdateImageStateContainer? CreateUpdateImageStateContainer { get; set; }
+    private CreateUpdateImageStateContainer CreateUpdateImageStateContainer { get; set; } = default!;
 
-    [Inject] private DbContextProvider DbContextProvider { get; init; }
-    [Inject] private HttpClient? HttpClient { get; init; }
-    [Inject] private NavigationManager? NavigationManager { get; init; }
+    [Inject] private DbContextProvider DbContextProvider { get; init; } = default!;
+    [Inject] private HttpClient HttpClient { get; init; } = default!;
+    [Inject] private NavigationManager NavigationManager { get; init; } = default!;
 
-    private bool IsSaveEnabled => CreateUpdateImageStateContainer?.Data != null;
+    private bool IsSaveEnabled => CreateUpdateImageStateContainer.Data != null;
 
     protected override void OnInitialized() => CreateUpdateImageStateContainer = new();
 
     private async Task Save()
     {
         var toPersist = new ImageModel(CreateUpdateImageStateContainer.DateTime,
-            CreateUpdateImageStateContainer.Data,
+            CreateUpdateImageStateContainer.Data!,
             CreateUpdateImageStateContainer.IsFavourite);
 
         await using var db = await DbContextProvider.GetPreparedDbContextAsync();

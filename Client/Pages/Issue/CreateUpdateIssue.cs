@@ -6,14 +6,14 @@ namespace Couple.Client.Pages.Issue;
 
 public abstract class CreateUpdateIssueBase : ComponentBase
 {
-    [Inject] protected HttpClient HttpClient { get; init; }
+    [Inject] protected HttpClient HttpClient { get; init; } = default!;
 
-    [Inject] protected NavigationManager NavigationManager { get; init; }
+    [Inject] protected NavigationManager NavigationManager { get; init; } = default!;
 
-    [Inject] protected IssueStateContainer IssueStateContainer { get; init; }
+    [Inject] protected IssueStateContainer IssueStateContainer { get; init; } = default!;
 
-    [Inject] protected DbContextProvider DbContextProvider { get; init; }
+    [Inject] protected DbContextProvider DbContextProvider { get; init; } = default!;
 
-    protected CreateUpdateIssueStateContainer CreateUpdateIssueStateContainer { get; set; }
+    protected CreateUpdateIssueStateContainer CreateUpdateIssueStateContainer { get; set; } = default!;
     protected abstract Task Save();
 }

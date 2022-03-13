@@ -10,9 +10,9 @@ public class ChangeContext : DbContext
     }
 
     // DbSet of sub-classes of Change are required to persist sub-class specific information
-    public DbSet<Change> Changes { get; set; }
-    public DbSet<CachedChange> CachedChanges { get; set; }
-    public DbSet<HyperlinkChange> HyperlinkChanges { get; set; }
+    public DbSet<Change> Changes { get; set; } = default!;
+    public DbSet<CachedChange> CachedChanges { get; set; } = default!;
+    public DbSet<HyperlinkChange> HyperlinkChanges { get; set; } = default!;
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

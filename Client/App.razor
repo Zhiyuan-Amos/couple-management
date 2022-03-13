@@ -1,4 +1,4 @@
-@inject NavigationManager NavigationManager
+@inject NavigationManager _navigationManager
 
 <Router AppAssembly="@typeof(Program).Assembly">
     <Found Context="routeData">
@@ -7,7 +7,7 @@
     <NotFound>
         <LayoutView Layout="@typeof(MainLayout)">
             @{
-                NavigationManager.NavigateTo("");
+                _navigationManager.NavigateTo("");
             }
         </LayoutView>
     </NotFound>

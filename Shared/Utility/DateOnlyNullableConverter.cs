@@ -14,7 +14,6 @@ public class DateOnlyNullableConverter : JsonConverter<DateOnly?>
             return DateOnly.FromDateTime(dt);
         }
 
-        ;
         var value = reader.GetString();
         if (value == null)
         {

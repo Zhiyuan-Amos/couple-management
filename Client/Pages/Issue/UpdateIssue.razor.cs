@@ -8,12 +8,12 @@ namespace Couple.Client.Pages.Issue;
 
 public class UpdateIssueBase : CreateUpdateIssueBase
 {
-    private IReadOnlyIssueModel? _currentIssueModel;
+    private IReadOnlyIssueModel _currentIssueModel = default!;
     [EditorRequired] [Parameter] public Guid IssueId { get; set; }
 
     protected override void OnInitialized()
     {
-        if (!IssueStateContainer.TryGetIssue(IssueId, out _currentIssueModel))
+        if (!IssueStateContainer.TryGetIssue(IssueId, out _currentIssueModel!))
         {
             NavigationManager.NavigateTo("/todo");
             return;
@@ -31,7 +31,7 @@ public class UpdateIssueBase : CreateUpdateIssueBase
     protected async Task Delete()
     {
         await using var db = await DbContextProvider.GetPreparedDbContextAsync();
-        db.Issues.Remove(new(IssueId));
+        db.Issues.Remove((_currentIssueModel as IssueModel)!);
         await db.SaveChangesAsync();
         IssueStateContainer.Issues = await db.Issues.ToListAsync();
 

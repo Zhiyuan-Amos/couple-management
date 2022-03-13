@@ -18,8 +18,8 @@ public class Program
             {
                 services.AddHttpClient("Image")
                     .AddTransientHttpErrorPolicy(p => p.CircuitBreakerAsync(2, TimeSpan.FromMinutes(1)));
-                services.AddDbContext<ChangeContext>(options => DbParams(options));
-                services.AddDbContext<ImageContext>(options => DbParams(options));
+                services.AddDbContext<ChangeContext>(DbParams);
+                services.AddDbContext<ImageContext>(DbParams);
                 services.AddAutoMapper(typeof(ChangeProfile));
 
                 var environmentName = Environment.GetEnvironmentVariable("AZURE_FUNCTIONS_ENVIRONMENT");
@@ -34,9 +34,9 @@ public class Program
 
                 services.AddSingleton<IDateTimeService, DateTimeService>();
 
-                static DbContextOptionsBuilder DbParams(DbContextOptionsBuilder options)
+                static void DbParams(DbContextOptionsBuilder options)
                 {
-                    return options.UseCosmos(
+                    options.UseCosmos(
                         Environment.GetEnvironmentVariable("AccountEndpoint")!,
                         Environment.GetEnvironmentVariable("AccountKey")!,
                         Environment.GetEnvironmentVariable("DatabaseName")!);

@@ -12,9 +12,11 @@ public class CurrentUserService : ICurrentUserService
     public Claims GetClaims(HttpHeaders headers)
     {
         var clientPrincipal = StaticWebAppsAuth.Parse(headers);
-        return new(clientPrincipal.FindFirstValue(ClaimTypes.NameIdentifier),
-            clientPrincipal.FindFirstValue(ClaimTypes.Email),
-            clientPrincipal.FindFirstValue(ClaimTypePartnerId));
+
+        var id = clientPrincipal.FindFirstValue(ClaimTypes.NameIdentifier)!;
+        var partnerId = clientPrincipal.FindFirstValue(ClaimTypePartnerId)!;
+
+        return new(id, partnerId);
     }
 
     // from https://docs.microsoft.com/en-us/azure/static-web-apps/user-information?tabs=csharp#api-functions
@@ -26,9 +28,11 @@ public class CurrentUserService : ICurrentUserService
             var decoded = Convert.FromBase64String(data);
             var json = Encoding.ASCII.GetString(decoded);
             var principal = JsonSerializer.Deserialize<ClientPrincipal>(json,
-                new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+                new JsonSerializerOptions { PropertyNameCaseInsensitive = true })!;
 
+#pragma warning disable CS8604
             var roles = principal.UserRoles
+#pragma warning restore CS8604
                 .Where(role => role != "anonymous"
                                && role != "authenticated"
                                && !role.StartsWith("id_")
@@ -57,7 +61,6 @@ public class CurrentUserService : ICurrentUserService
             // An alternative implementation is to return a custom Cookie / JWT, but that requires more effort
             // with little gains, given the current state of the project.
             identity.AddClaim(new(ClaimTypes.NameIdentifier, adminAssignedId[3..]));
-            identity.AddClaim(new(ClaimTypes.Email, principal.UserDetails));
             identity.AddClaim(new(ClaimTypePartnerId, partnerId[10..]));
             identity.AddClaims(roles);
             return new(identity);

@@ -7,9 +7,9 @@ namespace Couple.Client.Pages.Settings;
 
 public partial class Settings
 {
-    [Inject] private NavigationManager NavigationManager { get; init; }
-    [Inject] private HttpClient HttpClient { get; init; }
-    [Inject] private IJSRuntime Js { get; init; }
+    [Inject] private NavigationManager NavigationManager { get; init; } = default!;
+    [Inject] private HttpClient HttpClient { get; init; } = default!;
+    [Inject] private IJSRuntime Js { get; init; } = default!;
 
     private async Task OnImportSelected(InputFileChangeEventArgs e)
     {

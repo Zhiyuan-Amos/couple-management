@@ -12,7 +12,7 @@ public class UpdateIssueCommand : ICommand
 
     public async Task Execute()
     {
-        var issue = await _dbContext.Issues.FindAsync(_model.Id);
+        var issue = (await _dbContext.Issues.FindAsync(_model.Id))!;
         _dbContext.Attach(issue);
         issue.Title = _model.Title;
         issue.For = _model.For;

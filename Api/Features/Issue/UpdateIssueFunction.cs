@@ -45,10 +45,6 @@ public class UpdateIssueFunction
         }
 
         var claims = _currentUserService.GetClaims(req.Headers);
-        if (claims.PartnerId == null)
-        {
-            return req.CreateResponse(HttpStatusCode.BadRequest);
-        }
 
         var toCreate = new CachedChange(Guid.NewGuid(),
             Command.Update,

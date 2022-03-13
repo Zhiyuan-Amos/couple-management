@@ -21,13 +21,6 @@ public class IssueStateContainer : Notifier
         }
     }
 
-    public bool TryGetIssue(Guid id, out IReadOnlyIssueModel readOnlyIssue)
-    {
-        if (!_idToIssue.TryGetValue(id, out readOnlyIssue))
-        {
-            return false;
-        }
-
-        return true;
-    }
+    public bool TryGetIssue(Guid id, out IReadOnlyIssueModel? readOnlyIssue) =>
+        _idToIssue.TryGetValue(id, out readOnlyIssue);
 }

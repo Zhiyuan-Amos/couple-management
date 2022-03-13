@@ -23,9 +23,13 @@ public static class HttpRequestDataExtensions
         where TV : AbstractValidator<T>, new()
     {
         var requestBody = await request.ReadAsStringAsync();
+#pragma warning disable CS8604
         var requestObject = JsonSerializer.Deserialize<T>(requestBody, Options);
+#pragma warning restore CS8604
         var validator = new TV();
-        var validationResult = validator.Validate(requestObject);
+#pragma warning disable CS8604
+        var validationResult = await validator.ValidateAsync(requestObject);
+#pragma warning restore CS8604
 
         if (!validationResult.IsValid)
         {
@@ -44,9 +48,13 @@ public class ValidatableRequest<T>
     /// <summary>
     ///     The deserialized value of the request.
     /// </summary>
+#pragma warning disable CS8618
     public T Value { get; set; }
+#pragma warning restore CS8618
 
+#pragma warning disable CS8618
     public string Json { get; set; }
+#pragma warning restore CS8618
 
     /// <summary>
     ///     Whether or not the deserialized value was found to be valid.
@@ -56,7 +64,9 @@ public class ValidatableRequest<T>
     /// <summary>
     ///     The collection of validation errors.
     /// </summary>
+#pragma warning disable CS8618
     public IList<ValidationFailure> Errors { get; set; }
+#pragma warning restore CS8618
 
     public string ErrorMessage() =>
         string.Join('\n', Errors

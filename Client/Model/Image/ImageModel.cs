@@ -4,10 +4,6 @@ namespace Couple.Client.Model.Image;
 
 public class ImageModel : IDone, IReadOnlyImageModel
 {
-    private ImageModel() { }
-
-    public ImageModel(Guid id) => Id = id;
-
     public ImageModel(DateTime takenOn, byte[] data, bool isFavourite)
     {
         TakenOn = takenOn;
@@ -18,9 +14,13 @@ public class ImageModel : IDone, IReadOnlyImageModel
     public ImageModel(Guid id, DateTime takenOn, byte[] data, bool isFavourite) : this(takenOn, data, isFavourite) =>
         Id = id;
 
+    // ReSharper disable once UnusedMember.Local
+    private ImageModel(Guid id, DateTime takenOn, byte[] data, bool isFavourite, int order) : this(id, takenOn, data,
+        isFavourite) => Order = order;
+
     private DateTime _takenOn { get; set; }
 
-    public DateOnly TakenOnDate { get; private set; }
+    private DateOnly TakenOnDate { get; set; }
 
     public int Order { get; set; }
 

@@ -9,7 +9,7 @@ public class ImageContext : DbContext
     {
     }
 
-    public DbSet<Image> Images { get; set; }
+    public DbSet<Image> Images { get; set; } = default!;
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

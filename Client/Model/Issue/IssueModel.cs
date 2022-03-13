@@ -4,10 +4,6 @@ namespace Couple.Client.Model.Issue;
 
 public class IssueModel : IReadOnlyIssueModel
 {
-    private IssueModel() { }
-
-    public IssueModel(Guid id) => Id = id;
-
     public IssueModel(string title, For @for, IEnumerable<TaskModel> tasks, DateTime createdOn)
     {
         Title = title;
@@ -22,6 +18,16 @@ public class IssueModel : IReadOnlyIssueModel
         Title = title;
         For = @for;
         Tasks = tasks.Select(t => new TaskModel(t.Id, t.Content)).ToList();
+        CreatedOn = createdOn;
+    }
+
+    // ReSharper disable once UnusedMember.Local
+    private IssueModel(Guid id, string title, For @for, List<TaskModel> tasks, DateTime createdOn)
+    {
+        Id = id;
+        Title = title;
+        For = @for;
+        Tasks = tasks;
         CreatedOn = createdOn;
     }
 

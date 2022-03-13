@@ -25,7 +25,7 @@ public class Synchronizer
 
     public async Task SynchronizeAsync()
     {
-        var toSynchronize = await _httpClient.GetFromJsonAsync<List<ChangeDto>>("api/Synchronize");
+        var toSynchronize = (await _httpClient.GetFromJsonAsync<List<ChangeDto>>("api/Synchronize"))!;
         var parser = new CommandParser();
 
         foreach (var change in toSynchronize)

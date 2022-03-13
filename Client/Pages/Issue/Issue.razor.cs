@@ -9,10 +9,10 @@ namespace Couple.Client.Pages.Issue;
 public partial class Issue : IDisposable
 {
     private static bool s_isDataLoaded;
-    [Inject] protected DbContextProvider DbContextProvider { get; init; }
-    [Inject] private NavigationManager NavigationManager { get; init; }
+    [Inject] private DbContextProvider DbContextProvider { get; init; } = default!;
+    [Inject] private NavigationManager NavigationManager { get; init; } = default!;
 
-    [Inject] private IssueStateContainer IssueStateContainer { get; init; }
+    [Inject] private IssueStateContainer IssueStateContainer { get; init; } = default!;
 
     private List<IReadOnlyIssueModel> Issues =>
         IssueStateContainer.Issues

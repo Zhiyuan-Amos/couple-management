@@ -11,7 +11,7 @@ public class DeleteIssueCommand : ICommand
 
     public async Task Execute()
     {
-        var toDelete = await _dbContext.Issues.FindAsync(_guid);
+        var toDelete = (await _dbContext.Issues.FindAsync(_guid))!;
         _dbContext.Issues.Remove(toDelete);
         await _dbContext.SaveChangesAsync();
     }

@@ -2,10 +2,6 @@ namespace Couple.Api.Model;
 
 public class HyperlinkChange : Change
 {
-    private HyperlinkChange()
-    {
-    }
-
     public HyperlinkChange(Guid id,
         string command,
         string userId,

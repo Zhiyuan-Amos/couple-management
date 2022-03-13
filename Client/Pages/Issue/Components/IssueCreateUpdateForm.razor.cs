@@ -7,12 +7,12 @@ namespace Couple.Client.Pages.Issue.Components;
 
 public partial class IssueCreateUpdateForm
 {
-    [EditorRequired] [Parameter] public Func<Task> OnSaveCallback { get; set; }
+    [EditorRequired] [Parameter] public Func<Task> OnSaveCallback { get; set; } = default!;
 
     [CascadingParameter(Name = "CreateUpdateIssueStateContainer")]
-    private CreateUpdateIssueStateContainer CreateUpdateIssueStateContainer { get; init; }
+    private CreateUpdateIssueStateContainer CreateUpdateIssueStateContainer { get; init; } = default!;
 
-    private IReadOnlyList<IReadOnlyTaskViewModel> Tasks { get; set; }
+    private IReadOnlyList<IReadOnlyTaskViewModel> Tasks { get; set; } = default!;
 
     private bool IsAddNewTaskEnabled => Tasks.All(task => task.Content.Any());
 

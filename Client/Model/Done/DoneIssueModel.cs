@@ -4,10 +4,12 @@ namespace Couple.Client.Model.Done;
 
 public class DoneIssueModel : IDone, IReadOnlyDoneIssueModel
 {
-    private DoneIssueModel() { }
+    public DoneIssueModel(DateOnly doneDate, IEnumerable<DoneTaskModel> doneTasks, For @for, string title) =>
+        (DoneDate, Tasks, For, Title) = (doneDate, new(doneTasks), @for, title);
 
-    public DoneIssueModel(DateOnly doneDate, IEnumerable<DoneTaskModel> doneTasks, For @for, string issueTitle) =>
-        (DoneDate, Tasks, For, Title) = (doneDate, new(doneTasks), @for, issueTitle);
+    // ReSharper disable once UnusedMember.Local
+    private DoneIssueModel(Guid id, DateOnly doneDate, int order, List<DoneTaskModel> tasks, For @for, string title) =>
+        (Id, DoneDate, Order, Tasks, For, Title) = (id, doneDate, order, tasks, @for, title);
 
     public List<DoneTaskModel> Tasks { get; }
 

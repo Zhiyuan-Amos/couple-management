@@ -10,14 +10,14 @@ namespace Couple.Client.Pages.Image;
 
 public partial class UpdateImage
 {
-    private IReadOnlyImageModel _imageModel;
+    private IReadOnlyImageModel _imageModel = default!;
     [EditorRequired] [Parameter] public Guid ImageId { get; set; }
-    private CreateUpdateImageStateContainer CreateUpdateImageStateContainer { get; set; }
+    private CreateUpdateImageStateContainer CreateUpdateImageStateContainer { get; set; } = default!;
 
-    [Inject] private DbContextProvider DbContextProvider { get; init; }
-    [Inject] private HttpClient HttpClient { get; init; }
-    [Inject] private NavigationManager NavigationManager { get; init; }
-    [Inject] private DoneStateContainer DoneStateContainer { get; init; }
+    [Inject] private DbContextProvider DbContextProvider { get; init; } = default!;
+    [Inject] private HttpClient HttpClient { get; init; } = default!;
+    [Inject] private NavigationManager NavigationManager { get; init; } = default!;
+    [Inject] private DoneStateContainer DoneStateContainer { get; init; } = default!;
 
     protected override void OnInitialized()
     {
@@ -49,7 +49,7 @@ public partial class UpdateImage
         db.Attach(toUpdate);
 
         toUpdate.TakenOn = CreateUpdateImageStateContainer.DateTime;
-        toUpdate.Data = CreateUpdateImageStateContainer.Data;
+        toUpdate.Data = CreateUpdateImageStateContainer.Data!;
         toUpdate.IsFavourite = CreateUpdateImageStateContainer.IsFavourite;
         db.Images.Update(toUpdate);
         await db.SaveChangesAsync();

@@ -50,10 +50,6 @@ public class UpdateImageFunction
         }
 
         var claims = _currentUserService.GetClaims(req.Headers);
-        if (claims.PartnerId == null)
-        {
-            return req.CreateResponse(HttpStatusCode.BadRequest);
-        }
 
         var dto = form.Value;
 
@@ -63,7 +59,7 @@ public class UpdateImageFunction
             .Add(imageToCreate);
         await _imageContext.SaveChangesAsync();
 
-        var url = Environment.GetEnvironmentVariable("GetImageUrl");
+        var url = Environment.GetEnvironmentVariable("GetImageUrl")!;
         var toCreate = new HyperlinkChange(Guid.NewGuid(),
             Command.Update,
             claims.PartnerId,

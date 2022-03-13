@@ -12,11 +12,11 @@ public class Startup : FunctionsStartup
 {
     public override void Configure(IFunctionsHostBuilder builder)
     {
-        builder.Services.AddDbContext<ImageContext>(options => DbParams(options));
+        builder.Services.AddDbContext<ImageContext>(DbParams);
 
-        static DbContextOptionsBuilder DbParams(DbContextOptionsBuilder options)
+        static void DbParams(DbContextOptionsBuilder options)
         {
-            return options.UseCosmos(
+            options.UseCosmos(
                 Environment.GetEnvironmentVariable("AccountEndpoint")!,
                 Environment.GetEnvironmentVariable("AccountKey")!,
                 Environment.GetEnvironmentVariable("DatabaseName")!);

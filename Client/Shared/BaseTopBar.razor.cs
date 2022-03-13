@@ -5,11 +5,9 @@ namespace Couple.Client.Shared;
 
 public partial class BaseTopBar
 {
-    [Parameter] public RenderFragment Content { get; init; }
+    [EditorRequired] [Parameter] public RenderFragment Content { get; init; } = default!;
 
-    [Parameter] public EventCallback OnSynchronisationCallback { get; init; }
-
-    [Inject] private Synchronizer Synchronizer { get; init; }
+    [Inject] private Synchronizer Synchronizer { get; init; } = default!;
 
     private async Task Synchronize() => await Synchronizer.SynchronizeAsync();
 }

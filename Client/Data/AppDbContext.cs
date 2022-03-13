@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore.ChangeTracking;
 
 namespace Couple.Client.Data;
 
-public class AppDbContext : DbContext
+public sealed class AppDbContext : DbContext
 {
     public AppDbContext(DbContextOptions<AppDbContext> options)
         : base(options) =>
@@ -43,10 +43,10 @@ public class AppDbContext : DbContext
         modelBuilder.Entity<IssueModel>()
             .Property(i => i.Tasks)
             .HasConversion(
-                t => JsonSerializer.Serialize(t, (JsonSerializerOptions)null),
-                t => JsonSerializer.Deserialize<List<TaskModel>>(t, (JsonSerializerOptions)null),
+                t => JsonSerializer.Serialize(t, (JsonSerializerOptions)default!),
+                t => JsonSerializer.Deserialize<List<TaskModel>>(t, (JsonSerializerOptions)default!)!,
                 new ValueComparer<List<TaskModel>>(
-                    (c1, c2) => c1.SequenceEqual(c2),
+                    (c1, c2) => c1!.SequenceEqual(c2!),
                     c => c.Aggregate(0, (a, v) => HashCode.Combine(a, v.GetHashCode())),
                     c => c.ToList()));
 
@@ -59,10 +59,10 @@ public class AppDbContext : DbContext
         modelBuilder.Entity<DoneIssueModel>()
             .Property(di => di.Tasks)
             .HasConversion(
-                dt => JsonSerializer.Serialize(dt, (JsonSerializerOptions)null),
-                dt => JsonSerializer.Deserialize<List<DoneTaskModel>>(dt, (JsonSerializerOptions)null),
+                dt => JsonSerializer.Serialize(dt, (JsonSerializerOptions)default!),
+                dt => JsonSerializer.Deserialize<List<DoneTaskModel>>(dt, (JsonSerializerOptions)default!)!,
                 new ValueComparer<List<DoneTaskModel>>(
-                    (c1, c2) => c1.SequenceEqual(c2),
+                    (c1, c2) => c1!.SequenceEqual(c2!),
                     c => c.Aggregate(0, (a, v) => HashCode.Combine(a, v.GetHashCode())),
                     c => c.ToList()));
 
@@ -77,7 +77,7 @@ public class AppDbContext : DbContext
                      .Where(e => e.Entity is IDone && e.State is EntityState.Added)
                      .ToList())
         {
-            var iDone = entityEntry.Entity as IDone;
+            var iDone = (entityEntry.Entity as IDone)!;
             int order;
             var done = await Done.FindAsync(iDone.DoneDate);
             if (done == null)
@@ -107,8 +107,8 @@ public class AppDbContext : DbContext
                 continue;
             }
 
-            var oldDone = await Done
-                .FindAsync(oldDate);
+            var oldDone = (await Done
+                .FindAsync(oldDate))!;
             if (oldDone.Count == 1)
             {
                 Done.Remove(oldDone);
@@ -136,7 +136,7 @@ public class AppDbContext : DbContext
                 newDone.Count++;
             }
 
-            var iDone = entityEntry.Entity as IDone;
+            var iDone = (entityEntry.Entity as IDone)!;
             iDone.Order = order;
         }
 
@@ -145,8 +145,8 @@ public class AppDbContext : DbContext
                      .Select(e => e.Entity as IDone)
                      .ToList())
         {
-            var done = await Done
-                .FindAsync(iDone.DoneDate);
+            var done = (await Done
+                .FindAsync(iDone!.DoneDate))!;
             if (done.Count == 1)
             {
                 Done.Remove(done);

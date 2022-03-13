@@ -51,9 +51,8 @@
         @foreach (var (task, index) in Tasks.Select((item, index) => (item, index)))
         {
             <input class="form-control"
-                   @oninput="@(e => SetContent(index, e.Value!.ToString()))"
-                   value="@task.Content">
-            </input> // To appease Rider
+                   @oninput="@(e => SetContent(index, e.Value!.ToString()!))"
+                   value="@task.Content"/>
         }
     </div>
     <div class="d-grid px-3">
