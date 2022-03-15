@@ -5,19 +5,19 @@ namespace Couple.Client.States.Done;
 
 public class DoneStateContainer : Notifier
 {
-    private readonly SortedDictionary<DateOnly, IReadOnlyList<IDone>> _dateToItems = new();
+    private readonly SortedDictionary<DateOnly, ICollection<IDone>> _dateToItems = new();
     private List<IReadOnlyImageModel> _favouriteImages = new();
     private Dictionary<Guid, IReadOnlyImageModel> _idToImage = new();
 
     public IReadOnlyList<IReadOnlyImageModel> FavouriteImages => _favouriteImages;
-    public IReadOnlyDictionary<DateOnly, IReadOnlyList<IDone>> GetDateToItems() => _dateToItems;
+    public IReadOnlyDictionary<DateOnly, ICollection<IDone>> GetDateToItems() => _dateToItems;
 
     public void SetItems(IReadOnlyList<IDone> toSet)
     {
         _dateToItems.Clear();
 
         var toSetDict = toSet.GroupBy(d => d.DoneDate)
-            .ToDictionary(g => g.Key, g => (IReadOnlyList<IDone>)g.OrderByDescending(d => d.Order).ToList());
+            .ToDictionary(g => g.Key, g => (ICollection<IDone>)g.OrderByDescending(d => d.Order).ToList());
         foreach (var (key, value) in toSetDict)
         {
             _dateToItems.Add(key, value);

@@ -13,7 +13,7 @@ public partial class ReadOnlyListView : IDisposable
     [Inject] private NavigationManager NavigationManager { get; init; } = default!;
     [Inject] private DoneStateContainer DoneStateContainer { get; init; } = default!;
 
-    private IEnumerable<KeyValuePair<DateOnly, IReadOnlyList<IDone>>> DateToItems =>
+    private IEnumerable<KeyValuePair<DateOnly, ICollection<IDone>>> DateToItems =>
         DoneStateContainer
             .GetDateToItems()
             .Reverse();
