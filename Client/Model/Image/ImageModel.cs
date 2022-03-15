@@ -20,7 +20,7 @@ public class ImageModel : IDone, IReadOnlyImageModel
 
     private DateTime _takenOn { get; set; }
 
-    private DateOnly TakenOnDate { get; set; }
+    public DateOnly TakenOnDate { get; private set; }
 
     public int Order { get; set; }
 

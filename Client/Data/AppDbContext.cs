@@ -53,6 +53,10 @@ public sealed class AppDbContext : DbContext
         modelBuilder.Entity<ImageModel>()
             .HasKey(image => image.Id);
 
+        modelBuilder.Entity<ImageModel>()
+            .Property(image => image.TakenOnDate)
+            .HasColumnName("TakenOnDate");
+
         modelBuilder.Entity<DoneIssueModel>()
             .HasKey(di => di.Id);
 
