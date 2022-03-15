@@ -13,7 +13,8 @@ public static class CompleteTaskHelper
         await CompleteTaskAsync(issue!, taskId, doneDate, dbContext);
     }
 
-    public static async Task CompleteTaskAsync(IssueModel issue, Guid taskId, DateOnly doneDate, AppDbContext dbContext)
+    public static async Task<DoneIssueModel> CompleteTaskAsync(IssueModel issue, Guid taskId, DateOnly doneDate,
+        AppDbContext dbContext)
     {
         dbContext.Attach(issue);
 
@@ -38,5 +39,6 @@ public static class CompleteTaskHelper
         }
 
         await dbContext.SaveChangesAsync();
+        return doneIssue;
     }
 }

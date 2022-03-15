@@ -2,6 +2,7 @@ using System.Net.Http.Json;
 using Couple.Client.Adapters;
 using Couple.Client.Model.Image;
 using Couple.Client.Services.Synchronizer;
+using Couple.Client.States.Done;
 using Couple.Client.States.Image;
 using Couple.Shared;
 using Couple.Shared.Utility;
@@ -17,6 +18,7 @@ public partial class CreateImage
     [Inject] private DbContextProvider DbContextProvider { get; init; } = default!;
     [Inject] private HttpClient HttpClient { get; init; } = default!;
     [Inject] private NavigationManager NavigationManager { get; init; } = default!;
+    [Inject] private DoneStateContainer DoneStateContainer { get; init; } = default!;
 
     private bool IsSaveEnabled => CreateUpdateImageStateContainer.Data != null;
 
@@ -31,6 +33,8 @@ public partial class CreateImage
         await using var db = await DbContextProvider.GetPreparedDbContextAsync();
         db.Images.Add(toPersist);
         await db.SaveChangesAsync();
+
+        DoneStateContainer.AddImage(toPersist);
 
         NavigationManager.NavigateTo("/settings");
 

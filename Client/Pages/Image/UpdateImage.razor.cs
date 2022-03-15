@@ -37,6 +37,8 @@ public partial class UpdateImage
         db.Images.Remove(toDelete);
         await db.SaveChangesAsync();
 
+        DoneStateContainer.DeleteImage(toDelete.Id);
+
         NavigationManager.NavigateTo("/done");
 
         await HttpClient.DeleteAsync($"api/Images/{ImageId}");
@@ -53,6 +55,8 @@ public partial class UpdateImage
         toUpdate.IsFavourite = CreateUpdateImageStateContainer.IsFavourite;
 
         await db.SaveChangesAsync();
+
+        DoneStateContainer.UpdateImage(toUpdate);
 
         NavigationManager.NavigateTo("/done");
 

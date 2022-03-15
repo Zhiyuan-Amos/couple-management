@@ -21,6 +21,33 @@ public class IssueStateContainer : Notifier
         }
     }
 
+    public void AddIssue(IssueModel issue)
+    {
+        _issues.Add(issue);
+        _idToIssue.Add(issue.Id, issue);
+
+        NotifyStateChanged();
+    }
+
+    public void UpdateIssue(IssueModel issue)
+    {
+        _idToIssue.Remove(issue.Id, out var oldIssue);
+        _issues.Remove(oldIssue!);
+
+        _issues.Add(issue);
+        _idToIssue.Add(issue.Id, issue);
+
+        NotifyStateChanged();
+    }
+
+    public void DeleteIssue(Guid issueId)
+    {
+        _idToIssue.Remove(issueId, out var oldIssue);
+        _issues.Remove(oldIssue!);
+
+        NotifyStateChanged();
+    }
+
     public bool TryGetIssue(Guid id, out IReadOnlyIssueModel? readOnlyIssue) =>
         _idToIssue.TryGetValue(id, out readOnlyIssue);
 }

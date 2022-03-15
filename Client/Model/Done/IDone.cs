@@ -2,6 +2,7 @@
 
 public interface IDone
 {
+    Guid Id { get; }
     DateOnly DoneDate { get; }
 
     // Should not be manually set; automatically set by DbContext

@@ -2,7 +2,6 @@ using System.Net.Http.Json;
 using Couple.Client.Adapters;
 using Couple.Client.Model.Issue;
 using Couple.Shared.Model;
-using Microsoft.EntityFrameworkCore;
 
 namespace Couple.Client.Pages.Issue;
 
@@ -24,7 +23,7 @@ public class CreateIssueBase : CreateUpdateIssueBase
         db.Issues.Add(toPersist);
         await db.SaveChangesAsync();
 
-        IssueStateContainer.Issues = await db.Issues.ToListAsync();
+        IssueStateContainer.AddIssue(toPersist);
         NavigationManager.NavigateTo("/todo");
 
         var toCreate = IssueAdapter.ToCreateDto(toPersist);

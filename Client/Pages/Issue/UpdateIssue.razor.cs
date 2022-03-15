@@ -2,7 +2,6 @@ using System.Net.Http.Json;
 using Couple.Client.Adapters;
 using Couple.Client.Model.Issue;
 using Microsoft.AspNetCore.Components;
-using Microsoft.EntityFrameworkCore;
 
 namespace Couple.Client.Pages.Issue;
 
@@ -33,7 +32,7 @@ public class UpdateIssueBase : CreateUpdateIssueBase
         await using var db = await DbContextProvider.GetPreparedDbContextAsync();
         db.Issues.Remove((_currentIssueModel as IssueModel)!);
         await db.SaveChangesAsync();
-        IssueStateContainer.Issues = await db.Issues.ToListAsync();
+        IssueStateContainer.DeleteIssue(_currentIssueModel.Id);
 
         NavigationManager.NavigateTo("/todo");
 
@@ -52,7 +51,7 @@ public class UpdateIssueBase : CreateUpdateIssueBase
         issue.Tasks = IssueAdapter.ToTaskModel(CreateUpdateIssueStateContainer.Tasks);
         await db.SaveChangesAsync();
 
-        IssueStateContainer.Issues = await db.Issues.ToListAsync();
+        IssueStateContainer.UpdateIssue(issue);
         NavigationManager.NavigateTo("/todo");
 
         var toUpdate = IssueAdapter.ToUpdateDto(issue);
