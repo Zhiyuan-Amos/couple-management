@@ -51,7 +51,7 @@ public partial class UpdateImage
         toUpdate.TakenOn = CreateUpdateImageStateContainer.DateTime;
         toUpdate.Data = CreateUpdateImageStateContainer.Data!;
         toUpdate.IsFavourite = CreateUpdateImageStateContainer.IsFavourite;
-        db.Images.Update(toUpdate);
+
         await db.SaveChangesAsync();
 
         NavigationManager.NavigateTo("/done");
