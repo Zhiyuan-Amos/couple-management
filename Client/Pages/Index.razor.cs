@@ -42,7 +42,7 @@ public partial class Index
 
         if (favouriteImages.Count > 0)
         {
-            var toSet = FavouriteImages.Cast<IDone>().ToList();
+            var toSet = favouriteImages.Cast<IDone>().ToList();
             DoneStateContainer.SetItems(toSet);
         }
 
