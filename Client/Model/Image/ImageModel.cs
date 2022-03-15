@@ -26,6 +26,8 @@ public class ImageModel : IDone, IReadOnlyImageModel
 
     public DateOnly DoneDate => TakenOnDate;
 
+    public string DoneDatePropertyName => "TakenOnDate";
+
     public Guid Id { get; }
 
     public DateTime TakenOn

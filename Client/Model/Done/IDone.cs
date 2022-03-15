@@ -6,4 +6,7 @@ public interface IDone
 
     // Should not be manually set; automatically set by DbContext
     int Order { get; set; }
+
+    // Required by EF Core to retrieve original & current DoneDate, which is not a Property
+    string DoneDatePropertyName { get; }
 }

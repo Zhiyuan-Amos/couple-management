@@ -17,6 +17,8 @@ public class DoneIssueModel : IDone, IReadOnlyDoneIssueModel
 
     public DateOnly DoneDate { get; init; }
 
+    public string DoneDatePropertyName => "DoneDate";
+
     public Guid Id { get; }
     public string Title { get; init; }
     public For For { get; init; }

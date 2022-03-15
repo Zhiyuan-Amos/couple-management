@@ -104,8 +104,10 @@ public sealed class AppDbContext : DbContext
                      .Where(e => e.Entity is IDone && e.State is EntityState.Modified)
                      .ToList())
         {
-            var oldDate = (entityEntry.OriginalValues["DoneDate"] as DateOnly?)!.Value;
-            var newDate = (entityEntry.CurrentValues["DoneDate"] as DateOnly?)!.Value;
+            var iDone = (entityEntry.Entity as IDone)!;
+
+            var oldDate = (entityEntry.OriginalValues[iDone.DoneDatePropertyName] as DateOnly?)!.Value;
+            var newDate = (entityEntry.CurrentValues[iDone.DoneDatePropertyName] as DateOnly?)!.Value;
             if (oldDate == newDate)
             {
                 continue;
@@ -140,7 +142,6 @@ public sealed class AppDbContext : DbContext
                 newDone.Count++;
             }
 
-            var iDone = (entityEntry.Entity as IDone)!;
             iDone.Order = order;
         }
 
