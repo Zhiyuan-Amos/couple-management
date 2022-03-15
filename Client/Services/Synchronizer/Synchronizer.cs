@@ -30,6 +30,11 @@ public class Synchronizer
 
         foreach (var change in toSynchronize)
         {
+            // This implementation creates a new DbContext per change. An alternative implementation is to
+            // call db.ChangeTracker.Clear(), but it's slower. Synchronizing 10 images & 1 issue with 4 tasks
+            // take about 3 seconds, while the former implementation only takes 1.5 seconds. This implementation
+            // is also preferred as based on https://docs.microsoft.com/en-us/dotnet/api/microsoft.entityframeworkcore.changetracking.changetracker.clear?view=efcore-6.0
+            // "DbContext is designed to have a short lifetime where a new instance is created for each unit-of-work."
             await using var db = await _dbContextProvider.GetPreparedDbContextAsync();
             var command = parser.Parse(change, db);
             await command.Execute();
