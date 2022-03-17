@@ -7,19 +7,19 @@
             Date
         </label>
         <input type="date"
-               @bind="@CreateUpdateImageStateContainer.DateTime">
+               @bind="@UpdateImageStateContainer.DateTime">
     </div>
     <div class="m-3">
         <label class="mb-0 form-label">
             Favourite
         </label>
-        <input @bind="@CreateUpdateImageStateContainer.IsFavourite"
+        <input @bind="@UpdateImageStateContainer.IsFavourite"
                class="form-check-input"
                style="margin-top: 0; min-height: 2em; min-width: 2em;"
                type="checkbox">
     </div>
     <img class="w-100 h-auto"
-         src="data:image/bmp;base64, @Convert.ToBase64String(CreateUpdateImageStateContainer.Data!)"/>
+         src="data:image/bmp;base64, @Convert.ToBase64String(UpdateImageStateContainer.Data!)"/>
     <div class="d-grid px-3">
         <button class="btn btn-secondary"
                 @onclick="@Save"

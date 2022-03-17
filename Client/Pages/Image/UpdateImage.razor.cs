@@ -12,7 +12,7 @@ public partial class UpdateImage
 {
     private IReadOnlyImageModel _imageModel = default!;
     [EditorRequired] [Parameter] public Guid ImageId { get; set; }
-    private CreateUpdateImageStateContainer CreateUpdateImageStateContainer { get; set; } = default!;
+    private UpdateImageStateContainer UpdateImageStateContainer { get; set; } = default!;
 
     [Inject] private DbContextProvider DbContextProvider { get; init; } = default!;
     [Inject] private HttpClient HttpClient { get; init; } = default!;
@@ -26,7 +26,7 @@ public partial class UpdateImage
             NavigationManager.NavigateTo("/done");
         }
 
-        CreateUpdateImageStateContainer =
+        UpdateImageStateContainer =
             new(_imageModel.TakenOn, _imageModel.IsFavourite, _imageModel.Data);
     }
 
@@ -50,9 +50,9 @@ public partial class UpdateImage
         await using var db = await DbContextProvider.GetPreparedDbContextAsync();
         db.Attach(toUpdate);
 
-        toUpdate.TakenOn = CreateUpdateImageStateContainer.DateTime;
-        toUpdate.Data = CreateUpdateImageStateContainer.Data!;
-        toUpdate.IsFavourite = CreateUpdateImageStateContainer.IsFavourite;
+        toUpdate.TakenOn = UpdateImageStateContainer.DateTime;
+        toUpdate.Data = UpdateImageStateContainer.Data!;
+        toUpdate.IsFavourite = UpdateImageStateContainer.IsFavourite;
 
         await db.SaveChangesAsync();
 

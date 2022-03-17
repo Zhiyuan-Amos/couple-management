@@ -13,33 +13,36 @@ namespace Couple.Client.Pages.Image;
 
 public partial class CreateImage
 {
-    private CreateUpdateImageStateContainer CreateUpdateImageStateContainer { get; set; } = default!;
+    private CreateImageStateContainer CreateImageStateContainer { get; set; } = default!;
 
     [Inject] private DbContextProvider DbContextProvider { get; init; } = default!;
     [Inject] private HttpClient HttpClient { get; init; } = default!;
     [Inject] private NavigationManager NavigationManager { get; init; } = default!;
     [Inject] private DoneStateContainer DoneStateContainer { get; init; } = default!;
 
-    private bool IsSaveEnabled => CreateUpdateImageStateContainer.Data != null;
+    private bool IsSaveEnabled => CreateImageStateContainer.Data.Any();
 
-    protected override void OnInitialized() => CreateUpdateImageStateContainer = new();
+    protected override void OnInitialized() => CreateImageStateContainer = new();
 
     private async Task Save()
     {
-        var toPersist = new ImageModel(CreateUpdateImageStateContainer.DateTime,
-            CreateUpdateImageStateContainer.Data!,
-            CreateUpdateImageStateContainer.IsFavourite);
+        foreach (var data in CreateImageStateContainer.Data)
+        {
+            var toPersist = new ImageModel(CreateImageStateContainer.DateTime,
+                data,
+                CreateImageStateContainer.IsFavourite);
 
-        await using var db = await DbContextProvider.GetPreparedDbContextAsync();
-        db.Images.Add(toPersist);
-        await db.SaveChangesAsync();
+            await using var db = await DbContextProvider.GetPreparedDbContextAsync();
+            db.Images.Add(toPersist);
+            await db.SaveChangesAsync();
 
-        DoneStateContainer.AddImage(toPersist);
+            DoneStateContainer.AddImage(toPersist);
+
+            var toCreate = ImageAdapter.ToCreateDto(toPersist);
+            await HttpClient.PostAsJsonAsync("api/Images", toCreate);
+        }
 
         NavigationManager.NavigateTo("/settings");
-
-        var toCreate = ImageAdapter.ToCreateDto(toPersist);
-        await HttpClient.PostAsJsonAsync("api/Images", toCreate);
     }
 
     private async Task OnUploadImageSelected(InputFileChangeEventArgs e)
@@ -69,6 +72,6 @@ public partial class CreateImage
             return;
         }
 
-        CreateUpdateImageStateContainer.Data = ms.ToArray();
+        CreateImageStateContainer.Data.Add(ms.ToArray());
     }
 }

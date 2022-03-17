@@ -1,14 +1,8 @@
 namespace Couple.Client.States.Image;
 
-public class CreateUpdateImageStateContainer
+public class UpdateImageStateContainer
 {
-    public CreateUpdateImageStateContainer()
-    {
-        DateTime = DateTime.Now;
-        IsFavourite = false;
-    }
-
-    public CreateUpdateImageStateContainer(DateTime dateTime, bool isFavourite, byte[] data)
+    public UpdateImageStateContainer(DateTime dateTime, bool isFavourite, byte[] data)
     {
         DateTime = dateTime;
         IsFavourite = isFavourite;
