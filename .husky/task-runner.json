@@ -1,0 +1,28 @@
+{
+  "tasks": [
+    {
+      "name": "jb-cleanupcode",
+      "group": "pre-commit",
+      "command": "pwsh",
+      "args": [
+        "-Command",
+        "$Joined = \"",
+        "${staged}",
+        "\".Trim() -replace(' ', ';');",
+        "jb cleanupcode Couple.sln --include=$Joined;"
+      ],
+      "include": [
+        "**/*.cs",
+        "**/*.razor",
+        "**/*.html",
+        "**/*.css",
+        "**/*.js",
+        "**/*.json"
+      ],
+      "exclude": [
+        ".husky/*.json",
+        ".config/*.json"
+      ]
+    }
+  ]
+}
