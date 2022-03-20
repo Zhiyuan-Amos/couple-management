@@ -13,6 +13,7 @@ namespace Couple.Client.Pages.Image;
 
 public partial class CreateImage
 {
+    private bool _isSaveClicked;
     private CreateImageStateContainer CreateImageStateContainer { get; set; } = default!;
 
     [Inject] private DbContextProvider DbContextProvider { get; init; } = default!;
@@ -20,12 +21,14 @@ public partial class CreateImage
     [Inject] private NavigationManager NavigationManager { get; init; } = default!;
     [Inject] private DoneStateContainer DoneStateContainer { get; init; } = default!;
 
-    private bool IsSaveEnabled => CreateImageStateContainer.Data.Any();
+    private bool IsSaveEnabled => CreateImageStateContainer.Data.Any() && !_isSaveClicked;
 
     protected override void OnInitialized() => CreateImageStateContainer = new();
 
     private async Task Save()
     {
+        _isSaveClicked = true;
+
         foreach (var data in CreateImageStateContainer.Data)
         {
             var toPersist = new ImageModel(CreateImageStateContainer.DateTime,
