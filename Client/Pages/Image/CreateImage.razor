@@ -24,7 +24,7 @@
              src="data:image/bmp;base64, @(Convert.ToBase64String(data))"/>
     }
     <div class="px-3 py-3 border-bottom file-input-zone user-select-none">
-        <InputFile OnChange="OnUploadImageSelected"/>
+        <InputFile OnChange="OnUploadImageSelected" multiple/>
         Upload Image
     </div>
     <div class="d-grid px-3">

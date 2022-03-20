@@ -50,31 +50,32 @@ public partial class CreateImage
 
     private async Task OnUploadImageSelected(InputFileChangeEventArgs e)
     {
-        var file = e.File;
-
-        var extension = Path.GetExtension(file.Name);
-        if (!ImageExtensions.IsImage(extension))
+        foreach (var file in e.GetMultipleFiles(100))
         {
-            Console.Error.WriteLine("Invalid file type");
-            return;
+            var extension = Path.GetExtension(file.Name);
+            if (!ImageExtensions.IsImage(extension))
+            {
+                Console.Error.WriteLine("Invalid file type");
+                continue;
+            }
+
+            // The above check is necessary as this method fails silently (unsure why surrounding it with try-catch
+            // block does not trigger the code in the catch block) if a non-image file is uploaded.
+            var resizedFile = await file.RequestImageFileAsync(file.ContentType, 800, 800);
+
+            // `resizedFile` is untrusted, so validate against `resizedFile` as well.
+            // See `file.RequestImageFileAsync`'s documentation.
+            await using var ms = new MemoryStream();
+            await resizedFile.OpenReadStream(Constants.MaxFileSize).CopyToAsync(ms);
+            ms.Position = 0;
+
+            if (!ImageExtensions.IsImage(ms))
+            {
+                Console.Error.WriteLine("Something went wrong");
+                continue;
+            }
+
+            CreateImageStateContainer.Data.Add(ms.ToArray());
         }
-
-        // The above check is necessary as this method fails silently (unsure why surrounding it with try-catch
-        // block does not trigger the code in the catch block) if a non-image file is uploaded.
-        var resizedFile = await file.RequestImageFileAsync(file.ContentType, 800, 800);
-
-        // `resizedFile` is untrusted, so validate against `resizedFile` as well.
-        // See `file.RequestImageFileAsync`'s documentation.
-        await using var ms = new MemoryStream();
-        await resizedFile.OpenReadStream(Constants.MaxFileSize).CopyToAsync(ms);
-        ms.Position = 0;
-
-        if (!ImageExtensions.IsImage(ms))
-        {
-            Console.Error.WriteLine("Something went wrong");
-            return;
-        }
-
-        CreateImageStateContainer.Data.Add(ms.ToArray());
     }
 }
