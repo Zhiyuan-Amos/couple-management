@@ -19,7 +19,7 @@ public class Program
     /// </summary>
     [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)]
     // ReSharper disable once UnusedMember.Local
-    private static Type s_keepDateOnly = typeof(DateOnly);
+    private static readonly Type s_keepDateOnly = typeof(DateOnly);
 
     public static async Task Main(string[] args)
     {
