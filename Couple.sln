@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.30516.212
+# Visual Studio Version 17
+VisualStudioVersion = 17.1.32319.34
 MinimumVisualStudioVersion = 15.0.26124.0
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Couple.Client", "Client\Couple.Client.csproj", "{C5668E2B-BBEB-45D2-ADA0-B45079BD22C3}"
 EndProject
@@ -9,7 +9,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Couple.Api", "Api\Couple.Ap
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Couple.Shared", "Shared\Couple.Shared.csproj", "{BF40FDE1-00B3-420B-B3C8-3AC60A075A85}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Couple.Messaging", "Messaging\Couple.Messaging.csproj", "{B6CF82EB-15D6-4E71-BEAE-F52FC2190109}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Couple.Messaging", "Messaging\Couple.Messaging.csproj", "{B6CF82EB-15D6-4E71-BEAE-F52FC2190109}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
