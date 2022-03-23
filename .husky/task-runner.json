@@ -7,7 +7,7 @@
       "args": [
         "-Command",
         "dotnet format whitespace --include",
-        "${all-files}"
+        "${staged}"
       ],
       "include": [
         "**/*.cs",
@@ -21,7 +21,7 @@
       "args": [
         "-Command",
         "dotnet format style --include",
-        "${all-files}"
+        "${staged}"
       ],
       "include": [
         "**/*.cs",
@@ -35,7 +35,7 @@
       "args": [
         "-Command",
         "$Joined = \"",
-        "${all-files}",
+        "${staged}",
         "\".Trim() -replace(' ', ';');",
         "jb cleanupcode Couple.sln --include=$Joined;"
       ],
