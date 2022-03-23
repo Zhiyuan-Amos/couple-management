@@ -10,9 +10,11 @@ public class DoneTaskModel : IReadOnlyDoneTaskModel
         Content = content;
     }
 
+#pragma warning disable IDE0051
     [JsonConstructor]
     private DoneTaskModel(Guid id, string content) =>
         (Id, Content) = (id, content);
+#pragma warning restore IDE0051
 
     public Guid Id { get; }
     public string Content { get; init; }
@@ -21,7 +23,7 @@ public class DoneTaskModel : IReadOnlyDoneTaskModel
 
     public override bool Equals(object? obj)
     {
-        if (ReferenceEquals(null, obj))
+        if (obj is null)
         {
             return false;
         }

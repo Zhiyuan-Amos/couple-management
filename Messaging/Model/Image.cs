@@ -2,6 +2,7 @@ namespace Couple.Messaging.Model;
 
 public class Image
 {
+#pragma warning disable IDE0051
     // ReSharper disable once UnusedMember.Local
     private Image(Guid id, Guid objectId, DateTime takenOn, bool isFavourite, string timeSensitiveId)
     {
@@ -11,6 +12,7 @@ public class Image
         IsFavourite = isFavourite;
         TimeSensitiveId = timeSensitiveId;
     }
+#pragma warning restore IDE0051
 
     // ReSharper disable once UnusedAutoPropertyAccessor.Local
     public Guid Id { get; init; } // Unused, but required for integration with CosmosDB

@@ -19,7 +19,9 @@ public class Program
     /// </summary>
     [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)]
     // ReSharper disable once UnusedMember.Local
+#pragma warning disable IDE0052
     private static readonly Type s_keepDateOnly = typeof(DateOnly);
+#pragma warning restore IDE0052
 
     public static async Task Main(string[] args)
     {

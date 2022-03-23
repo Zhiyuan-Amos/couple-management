@@ -21,6 +21,7 @@ public class IssueModel : IReadOnlyIssueModel
         CreatedOn = createdOn;
     }
 
+#pragma warning disable IDE0051
     // ReSharper disable once UnusedMember.Local
     private IssueModel(Guid id, string title, For @for, List<TaskModel> tasks, DateTime createdOn)
     {
@@ -30,6 +31,7 @@ public class IssueModel : IReadOnlyIssueModel
         Tasks = tasks;
         CreatedOn = createdOn;
     }
+#pragma warning restore IDE0051
 
     public List<TaskModel> Tasks { get; set; }
 
