@@ -4,6 +4,8 @@ namespace Couple.Client.Model.Image;
 
 public class ImageModel : IDone, IReadOnlyImageModel
 {
+    private DateTime _takenOn;
+
     public ImageModel(DateTime takenOn, byte[] data, bool isFavourite)
     {
         TakenOn = takenOn;
@@ -19,8 +21,6 @@ public class ImageModel : IDone, IReadOnlyImageModel
     private ImageModel(Guid id, DateTime takenOn, byte[] data, bool isFavourite, int order) : this(id, takenOn, data,
         isFavourite) => Order = order;
 #pragma warning restore IDE0051
-
-    private DateTime _takenOn;
 
     public DateOnly TakenOnDate { get; private set; }
 

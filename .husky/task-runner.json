@@ -1,48 +1,19 @@
 {
   "tasks": [
     {
-      "name": "dotnet-format-whitespace",
-      "group": "pre-commit",
-      "command": "dotnet",
-      "args": [
-        "format",
-        "whitespace",
-        "--include",
-        "${staged}"
-      ],
-      "include": [
-        "**/*.cs",
-        "**/*.csproj"
-      ]
-    },
-    {
-      "name": "dotnet-format-style",
-      "group": "pre-commit",
-      "command": "dotnet",
-      "args": [
-        "format",
-        "style",
-        "--include",
-        "${staged}"
-      ],
-      "include": [
-        "**/*.cs",
-        "**/*.csproj"
-      ]
-    },
-    {
       "name": "jb-cleanupcode",
       "group": "pre-commit",
       "command": "pwsh",
       "args": [
         "-Command",
         "$Joined = \"",
-        "${staged}",
+        "${all-files}",
         "\".Trim() -replace(' ', ';');",
         "dotnet jb cleanupcode Couple.sln --include=$Joined;"
       ],
       "include": [
-        "**/*.razor.cs",
+        "**/*.csproj",
+        "**/*.cs",
         "**/*.razor",
         "**/*.html",
         "**/*.css",
