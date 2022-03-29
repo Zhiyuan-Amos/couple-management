@@ -39,7 +39,7 @@
         "$Joined = \"",
         "${staged}",
         "\".Trim() -replace(' ', ';');",
-        "jb cleanupcode Couple.sln --include=$Joined;"
+        "dotnet jb cleanupcode Couple.sln --include=$Joined;"
       ],
       "include": [
         "**/*.razor.cs",
