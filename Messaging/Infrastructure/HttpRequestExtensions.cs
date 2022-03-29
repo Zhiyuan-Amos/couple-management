@@ -35,10 +35,7 @@ public static class HttpRequestExtensions
         {
             return new()
             {
-                Value = requestObject,
-                Json = requestBody,
-                IsValid = false,
-                Errors = validationResult.Errors
+                Value = requestObject, Json = requestBody, IsValid = false, Errors = validationResult.Errors
             };
         }
 
