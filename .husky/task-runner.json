@@ -7,7 +7,7 @@
       "args": [
         "-Command",
         "$Joined = \"",
-        "${all-files}",
+        "${staged}",
         "\".Trim() -replace(' ', ';');",
         "dotnet jb cleanupcode Couple.sln --include=$Joined;"
       ],
