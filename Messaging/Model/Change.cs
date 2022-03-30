@@ -5,7 +5,12 @@ namespace Couple.Messaging.Model;
 public class Change
 {
     [JsonConstructor]
-    public Change(Guid id, string command, string userId, DateTime timestamp, string contentId, string contentType,
+    public Change(Guid id,
+        string command,
+        string userId,
+        DateTime timestamp,
+        string contentId,
+        string contentType,
         int? ttl) => (Id, Command, UserId, Timestamp, ContentId, ContentType, Ttl) =
         (id, command, userId, timestamp, contentId, contentType, ttl);
 

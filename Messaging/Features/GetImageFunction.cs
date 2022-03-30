@@ -24,7 +24,8 @@ public class GetImageFunction
     [FunctionName("GetImageFunction")]
     public async Task<IActionResult> Run(
         [HttpTrigger(AuthorizationLevel.Function, "post", Route = "Images")]
-        HttpRequest req, ILogger log)
+        HttpRequest req,
+        ILogger log)
     {
         var form = await req.GetJsonBody<List<string>, Validator>();
 

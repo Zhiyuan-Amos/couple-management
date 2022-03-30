@@ -167,5 +167,7 @@ csharp_space_between_parentheses = false
 csharp_space_between_square_brackets = false
 
 # ReSharper properties
+csharp_empty_block_style=together_same_line
 csharp_object_creation_when_type_not_evident = target_typed
+csharp_wrap_parameters_style=chop_if_long
 html_sort_attributes = true

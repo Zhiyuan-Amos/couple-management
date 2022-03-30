@@ -13,7 +13,9 @@ public static class CompleteTaskHelper
         await CompleteTaskAsync(issue!, taskId, doneDate, dbContext);
     }
 
-    public static async Task<DoneIssueModel> CompleteTaskAsync(IssueModel issue, Guid taskId, DateOnly doneDate,
+    public static async Task<DoneIssueModel> CompleteTaskAsync(IssueModel issue,
+        Guid taskId,
+        DateOnly doneDate,
         AppDbContext dbContext)
     {
         dbContext.Attach(issue);
