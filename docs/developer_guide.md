@@ -72,7 +72,7 @@
 
 ### Hosting
 
-1. Azure Static Web App
+1. Azure Storage
 
 ### Messaging
 
