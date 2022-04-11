@@ -1,0 +1,47 @@
+# https://docs.microsoft.com/en-us/azure/azure-functions/functions-how-to-github-actions?tabs=dotnet#deploy-the-function-app
+
+name: Deploy Api to Function App
+
+on:
+  [push]
+
+env:
+  AZURE_FUNCTIONAPP_NAME: couple-api
+  AZURE_FUNCTIONAPP_PROJ_PATH: 'Api'
+  DOTNET_VERSION: '6.0.x'
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 'Checkout'
+        uses: actions/checkout@v2
+
+      - name: Setup DotNet ${{ env.DOTNET_VERSION }} Environment
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: ${{ env.DOTNET_VERSION }}
+
+      - name: 'Build'
+        shell: bash
+        run: |
+          pushd './${{ env.AZURE_FUNCTIONAPP_PROJ_PATH }}'
+          dotnet build --configuration Release --output ./output
+          popd
+
+      - name: 'Install Azure Functions Core Tools'
+        run: npm i -g azure-functions-core-tools@4 --unsafe-perm true
+
+      - name: 'Login to Azure'
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+      - name: 'Publish'
+        run: func azure functionapp publish ${{ env.AZURE_FUNCTIONAPP_NAME }}
+        working-directory: ${{ env.AZURE_FUNCTIONAPP_PROJ_PATH }}
+
+      - name: 'Logout of Azure'
+        run: |
+          az logout
+        if: always()
