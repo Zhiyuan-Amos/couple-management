@@ -1,0 +1,48 @@
+# https://docs.microsoft.com/en-us/azure/storage/blobs/storage-blobs-static-site-github-actions
+
+name: Deploy Client to Azure Storage
+
+on:
+  [push]
+
+env:
+  AZURE_CLIENT_PATH: 'Client'
+  DOTNET_VERSION: '6.0.x'
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 'Checkout'
+        uses: actions/checkout@v2
+
+      - name: Setup DotNet ${{ env.DOTNET_VERSION }} Environment
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: ${{ env.DOTNET_VERSION }}
+
+      - name: 'Build'
+        shell: bash
+        run: |
+          pushd './${{ env.AZURE_CLIENT_PATH }}'
+          dotnet workload install wasm-tools
+          dotnet publish --configuration Release --output ./output
+          mv ./output/wwwroot/* ./output/
+          popd
+
+      - name: 'Login to Azure'
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+      - name: 'Deploy'
+        uses: azure/CLI@v1
+        with:
+          inlineScript: |
+            az storage blob delete-batch --account-name couple --auth-mode key --source '$web' 
+            az storage blob upload-batch --account-name couple --auth-mode key --destination '$web' --source ./Client/output
+
+      - name: 'Logout of Azure'
+        run: |
+          az logout
+        if: always()

@@ -1,10 +1,10 @@
 using System.Diagnostics.CodeAnalysis;
 using Couple.Client.Data;
+using Couple.Client.Infrastructure;
 using Couple.Client.Services.Synchronizer;
 using Couple.Client.States.Done;
 using Couple.Client.States.Issue;
 using Couple.Client.Utility;
-using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -30,34 +30,35 @@ public class Program
         builder.RootComponents.Add<HeadOutlet>("head::after");
 
         builder.Services
-            .AddTransient(_ => new HttpClient
-            {
-                BaseAddress = new(builder.Configuration["API_Prefix"] ?? builder.HostEnvironment.BaseAddress)
-            })
+            .AddTransient(_ => new HttpClient { BaseAddress = new(builder.Configuration[Constants.ApiPrefix]!) })
             .AddDbContextFactory<AppDbContext>(options => options.UseSqlite($"Filename={Constants.DatabaseFileName}"))
             .AddScoped<DbContextProvider>()
             .AddScoped<IssueStateContainer>()
             .AddScoped<DoneStateContainer>()
-            .AddScoped<Synchronizer>();
+            .AddScoped<Synchronizer>()
+            .AddScoped<ApiAuthorizationMessageHandler>();
+
+        const string httpClientName = "Api";
+        builder.Services.AddHttpClient(httpClientName,
+                client => client.BaseAddress = new(builder.Configuration[Constants.ApiPrefix]!))
+            .AddHttpMessageHandler<ApiAuthorizationMessageHandler>();
+
+        builder.Services.AddScoped(sp =>
+            sp.GetRequiredService<IHttpClientFactory>()
+                .CreateClient(httpClientName));
+
+        builder.Services.AddMsalAuthentication(options =>
+        {
+            builder.Configuration.Bind("AzureAdB2C", options.ProviderOptions.Authentication);
+
+            options.ProviderOptions.DefaultAccessTokenScopes.Add(ApiAuthorizationMessageHandler.Scope);
+            options.ProviderOptions.DefaultAccessTokenScopes.Add("openid");
+            options.ProviderOptions.DefaultAccessTokenScopes.Add("offline_access");
+
+            options.ProviderOptions.LoginMode = "redirect";
+        });
 
         var host = builder.Build();
-
-        var httpClient = host.Services.GetRequiredService<HttpClient>();
-
-        if (builder.HostEnvironment.IsStaging() || builder.HostEnvironment.IsProduction())
-        {
-            try
-            {
-                await httpClient.GetAsync("api/Ping");
-            }
-            catch (HttpRequestException)
-            {
-                var navigationManager = host.Services.GetRequiredService<NavigationManager>();
-                navigationManager.NavigateTo("/login", true);
-                return;
-            }
-        }
-
         await host.RunAsync();
     }
 }
