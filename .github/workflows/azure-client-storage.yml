@@ -25,6 +25,7 @@ jobs:
         shell: bash
         run: |
           pushd './${{ env.AZURE_CLIENT_PATH }}'
+          dotnet workload install wasm-tools
           dotnet publish --configuration Release --output ./output
           mv ./output/wwwroot/* ./output/
           popd
