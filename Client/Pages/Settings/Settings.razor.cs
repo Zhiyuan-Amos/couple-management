@@ -25,4 +25,6 @@ public partial class Settings
     private async Task OnDeleteDatabaseSelected() => await Js.InvokeVoidAsync("deleteDatabase");
 
     private void OnUploadImageSelected() => NavigationManager.NavigateTo("/image/create");
+
+    private void OnLogoutSelected() => NavigationManager.NavigateTo("/authentication/logout");
 }
