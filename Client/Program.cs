@@ -54,7 +54,6 @@ public class Program
             options.ProviderOptions.DefaultAccessTokenScopes.Add(ApiAuthorizationMessageHandler.Scope);
             options.ProviderOptions.DefaultAccessTokenScopes.Add("openid");
             options.ProviderOptions.DefaultAccessTokenScopes.Add("offline_access");
-            options.ProviderOptions.Cache.StoreAuthStateInCookie = true;
             options.ProviderOptions.Cache.CacheLocation = "localStorage";
 
             options.ProviderOptions.LoginMode = "redirect";
