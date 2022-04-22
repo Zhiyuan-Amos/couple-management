@@ -14,7 +14,7 @@ using Microsoft.Extensions.Logging;
 
 namespace Couple.Messaging.Features;
 
-// File is part of Messaging rather than Api so it doesn't interfere with Static Web App's auth
+// File is part of Messaging rather than Api so it doesn't interfere with Api's auth
 public class GetImageFunction
 {
     private readonly ImageContext _context;
