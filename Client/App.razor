@@ -1,18 +1,14 @@
-@inject NavigationManager _navigationManager
+@inject NavigationManager NavigationManager
 
 <CascadingAuthenticationState>
     <Router AppAssembly="@typeof(Program).Assembly">
         <Found Context="routeData">
-            <AuthorizeRouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)">
-                <NotAuthorized>
-                    @{ _navigationManager.NavigateTo("/authentication/login"); }
-                </NotAuthorized>
-            </AuthorizeRouteView>
+            <RouteView DefaultLayout="@typeof(MainLayout)" RouteData="@routeData"/>
         </Found>
         <NotFound>
             <LayoutView Layout="@typeof(MainLayout)">
                 @{
-                    _navigationManager.NavigateTo("");
+                    NavigationManager.NavigateTo("");
                 }
             </LayoutView>
         </NotFound>

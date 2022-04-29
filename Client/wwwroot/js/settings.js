@@ -28,3 +28,25 @@ async function exportDatabase(name) {
 async function deleteDatabase() {
     window.indexedDB.deleteDatabase("SqliteStorage");
 }
+
+async function logout(clientId, authority, knownAuthority, postLogoutRedirectUri) {
+    const msalConfig = {
+        auth: {
+            clientId: clientId,
+            authority: authority,
+            knownAuthorities: [knownAuthority],
+            postLogoutRedirectUri: postLogoutRedirectUri,
+        },
+        cache: {
+            cacheLocation: "localStorage",
+            storeAuthStateInCookie: false,
+        },
+    };
+
+    const publicClientApplication = new msal.PublicClientApplication(msalConfig);
+    const logoutRequest = {
+        account: publicClientApplication.getAllAccounts()[0]
+    };
+
+    publicClientApplication.logoutRedirect(logoutRequest);
+}

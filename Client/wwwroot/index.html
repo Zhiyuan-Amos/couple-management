@@ -19,15 +19,17 @@
 <div id="app"
      style="height: 100%;">
     <div class="position-absolute top-50 start-50 translate-middle">
-        <img src="icons/app-icon.png" width="200" height=auto>
+        <img src="icons/app-icon.png" width="200" height="auto">
     </div>
 </div>
 
 <script src="_content/Microsoft.Authentication.WebAssembly.Msal/AuthenticationService.js"></script>
 <script src="_framework/blazor.webassembly.js"></script>
 <script>navigator.serviceWorker.register('service-worker.js');</script>
+<script src="js/mainLayout.js"></script>
 <script src="js/settings.js"></script>
 <script src="js/utility.js"></script>
+<script type="text/javascript" src="https://alcdn.msauth.net/browser/2.23.0/js/msal-browser.min.js"></script>
 </body>
 
 </html>

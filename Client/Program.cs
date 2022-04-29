@@ -1,6 +1,7 @@
 using System.Diagnostics.CodeAnalysis;
 using Couple.Client.Data;
 using Couple.Client.Infrastructure;
+using Couple.Client.Services.Settings;
 using Couple.Client.Services.Synchronizer;
 using Couple.Client.States.Done;
 using Couple.Client.States.Issue;
@@ -51,13 +52,13 @@ public class Program
         {
             builder.Configuration.Bind("AzureAdB2C", options.ProviderOptions.Authentication);
 
-            options.ProviderOptions.DefaultAccessTokenScopes.Add(ApiAuthorizationMessageHandler.Scope);
+            options.ProviderOptions.DefaultAccessTokenScopes.Add(Constants.Scope);
             options.ProviderOptions.DefaultAccessTokenScopes.Add("openid");
             options.ProviderOptions.DefaultAccessTokenScopes.Add("offline_access");
             options.ProviderOptions.Cache.CacheLocation = "localStorage";
-
-            options.ProviderOptions.LoginMode = "redirect";
         });
+
+        builder.Services.Configure<AuthenticationOptions>(builder.Configuration.GetSection("AzureAdB2C"));
 
         var host = builder.Build();
         await host.RunAsync();
