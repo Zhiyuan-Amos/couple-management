@@ -1,7 +1,8 @@
+using Couple.Client.Services.Settings;
 using Couple.Client.Utility;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
-using Microsoft.AspNetCore.Components.WebAssembly.Authentication;
+using Microsoft.Extensions.Options;
 using Microsoft.JSInterop;
 
 namespace Couple.Client.Pages.Settings;
@@ -9,9 +10,9 @@ namespace Couple.Client.Pages.Settings;
 public partial class Settings
 {
     [Inject] private NavigationManager NavigationManager { get; init; } = default!;
-    [Inject] private SignOutSessionStateManager SignOutManager { get; init; } = default!;
     [Inject] private HttpClient HttpClient { get; init; } = default!;
     [Inject] private IJSRuntime Js { get; init; } = default!;
+    [Inject] private IOptions<AuthenticationOptions> AuthOptions { get; init; } = default!;
 
     private async Task OnImportSelected(InputFileChangeEventArgs e)
     {
@@ -30,7 +31,8 @@ public partial class Settings
 
     private async Task OnLogoutSelected()
     {
-        await SignOutManager.SetSignOutState();
-        NavigationManager.NavigateTo("/authentication/logout");
+        // This seems necessary as https://stackoverflow.com/questions/64833025/blazor-webassembly-app-authentication-logout-results-in-there-was-an-error-try doesn't work
+        var ao = AuthOptions.Value;
+        await Js.InvokeVoidAsync("logout", ao.ClientId, ao.Authority, ao.KnownAuthority, ao.PostLogoutRedirectUri);
     }
 }
