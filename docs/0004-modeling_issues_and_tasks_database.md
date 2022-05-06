@@ -44,3 +44,7 @@ Embed Tasks in Issue, for the following reasons:
 
 1. Simplicity in development of Issues domain.
 1. Larger than required data transfer.
+
+## Updates
+
+Superseded by [replacing IndexedDB with SQLite](0007-replace_indexeddb_with_sqlite.md).

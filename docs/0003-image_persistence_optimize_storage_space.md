@@ -25,3 +25,7 @@ Accepted
 1. Some additional processing is required to convert each image from byte array to Base64 Encoded String.
 
 1. Additional logic is required to ensure Referential Integrity and to query images.
+
+## Updates
+
+Superseded by [replacing IndexedDB with SQLite](0007-replace_indexeddb_with_sqlite.md).
