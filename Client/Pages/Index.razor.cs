@@ -49,6 +49,10 @@ public partial class Index
         s_isDataLoaded = true;
     }
 
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+    }
+
     private void EditImage(IReadOnlyImageModel selectedImage) =>
         NavigationManager.NavigateTo($"/image/{selectedImage.Id}");
 }
