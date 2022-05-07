@@ -15,7 +15,7 @@ public partial class MainLayout
     [Inject] private IJSRuntime Js { get; init; } = default!;
     [Inject] private IOptions<AuthenticationOptions> AuthOptions { get; init; } = default!;
 
-    protected override async Task OnInitializedAsync()
+    protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         var ao = AuthOptions.Value;
         // This seems necessary as https://docs.microsoft.com/en-us/azure/active-directory/develop/msal-net-aad-b2c-considerations#acquire-a-token-to-apply-a-policy doesn't work
@@ -23,10 +23,7 @@ public partial class MainLayout
 
         // Ensures that background API calls are only done after authentication state has been set
         await AuthenticationStateTask;
-    }
 
-    protected override async Task OnAfterRenderAsync(bool firstRender)
-    {
         if (!s_isDataLoaded)
         {
             s_isDataLoaded = true;
