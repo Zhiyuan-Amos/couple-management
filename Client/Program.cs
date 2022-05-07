@@ -53,8 +53,6 @@ public class Program
             builder.Configuration.Bind("AzureAdB2C", options.ProviderOptions.Authentication);
 
             options.ProviderOptions.DefaultAccessTokenScopes.Add(Constants.Scope);
-            options.ProviderOptions.DefaultAccessTokenScopes.Add("openid");
-            options.ProviderOptions.DefaultAccessTokenScopes.Add("offline_access");
             options.ProviderOptions.Cache.CacheLocation = "localStorage";
         });
 
