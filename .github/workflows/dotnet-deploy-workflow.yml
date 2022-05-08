@@ -8,12 +8,6 @@ on:
     branches: 
       - master
 
-env:
-  ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
-  ARM_CLIENT_SECRET: ${{ secrets.ARM_CLIENT_SECRET }}
-  ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
-  ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
-
 jobs:
   terraform-create:
     runs-on: ubuntu-latest
@@ -27,6 +21,21 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2
+
+      - name: Azure CLI login
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+      - name: Prep TF environment variables
+        env: 
+          AZURE_CREDENTIALS: ${{ secrets.AZURE_CREDENTIALS }}
+        run: |
+          $servicePrincipal = fromJSON($env.AZURE_CREDENTIALS)
+          echo "ARM_CLIENT_ID=$servicePrincipal.clientId" >> $GITHUB_ENV
+          echo "ARM_CLIENT_SECRET=$servicePrincipal.clientSecret" >> $GITHUB_ENV
+          echo "ARM_SUBSCRIPTION_ID=$servicePrincipal.subscriptionID" >> $GITHUB_ENV
+          echo "ARM_TENANT_ID=$servicePrincipal.tenantId" >> $GITHUB_ENV
 
       - name: Terraform Init
         run: terraform init
@@ -71,7 +80,7 @@ jobs:
           dotnet build --configuration Release --output ./output
           popd
 
-      - name: 'Az CLI login'
+      - name: Azure CLI login
         uses: azure/login@v1
         with:
           client-id: ${{ secrets.ARM_CLIENT_ID }}
