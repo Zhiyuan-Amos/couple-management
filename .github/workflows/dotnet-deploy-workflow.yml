@@ -28,14 +28,17 @@ jobs:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
 
       - name: Prep TF environment variables
+        shell: pwsh
         env: 
           AZURE_CREDENTIALS: ${{ secrets.AZURE_CREDENTIALS }}
-        run: |
-          $servicePrincipal = ${{ fromJSON(env.AZURE_CREDENTIALS) }}
-          echo "ARM_CLIENT_ID=$servicePrincipal.clientId" >> $GITHUB_ENV
-          echo "ARM_CLIENT_SECRET=$servicePrincipal.clientSecret" >> $GITHUB_ENV
-          echo "ARM_SUBSCRIPTION_ID=$servicePrincipal.subscriptionID" >> $GITHUB_ENV
-          echo "ARM_TENANT_ID=$servicePrincipal.tenantId" >> $GITHUB_ENV
+        run: | 
+          $servicePrincipal = ($env:AZURE_CREDENTIALS | ConvertFrom-Json)
+          $env:ARM_CLIENT_ID = $servicePrincipal.clientId
+          $env:ARM_CLIENT_SECRET = $servicePrincipal.clientSecret
+          $env:ARM_SUBSCRIPTION_ID = $servicePrincipal.subscriptionId
+          $env:ARM_TENANT_ID = $servicePrincipal.tenantId
+          
+          Get-ChildItem -Path Env: -Recurse -Include ARM_*,TF_VAR_* | ForEach-Object {Write-Output "$($_.Name)=$($_.Value)"} >> $env:GITHUB_ENV
 
       - name: Terraform Init
         run: terraform init
