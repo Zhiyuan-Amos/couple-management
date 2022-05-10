@@ -8,7 +8,7 @@ namespace Couple.Client.Pages.Issue;
 public class UpdateIssueBase : CreateUpdateIssueBase
 {
     private IReadOnlyIssueModel _currentIssueModel = default!;
-    [EditorRequired] [Parameter] public Guid IssueId { get; set; }
+    [EditorRequired][Parameter] public Guid IssueId { get; set; }
 
     protected override void OnInitialized()
     {
