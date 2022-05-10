@@ -14,7 +14,7 @@ jobs:
         run: dotnet tool install jetbrains.resharper.globaltools -g --version 2022.1.1
 
       - name: Run CleanupCode
-        run: jb cleanupcode --include="**/*.cs;**/*.csproj;**/*.razor;**/*.html;**/*.css;**/*.js;**/*.json"
+        run: jb cleanupcode Couple.sln --include="**/*.cs;**/*.csproj;**/*.razor;**/*.html;**/*.css;**/*.js;**/*.json"
 
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v4
