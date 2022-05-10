@@ -3,6 +3,9 @@ name: Cleanup Code
 on:
   workflow_dispatch
 
+env:
+  DOTNET_VERSION: '6.0.x'
+
 jobs:
   cleanup-code:
     runs-on: ubuntu-latest
@@ -10,11 +13,16 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
 
+      - name: Setup DotNet ${{ env.DOTNET_VERSION }} Environment
+        uses: actions/setup-dotnet@v2
+        with:
+          dotnet-version: ${{ env.DOTNET_VERSION }}
+
       - name: Install CleanupCode
-        run: dotnet tool install jetbrains.resharper.globaltools -g --version 2022.1.1
+        run: dotnet tool install jetbrains.resharper.globaltools --version 2022.1.1 --tool-path ~/bin
 
       - name: Run CleanupCode
-        run: jb cleanupcode --include="**/*.cs;**/*.csproj;**/*.razor;**/*.html;**/*.css;**/*.js;**/*.json"
+        run: '~/bin/jb cleanupcode --include="**/*.cs;**/*.csproj;**/*.razor;**/*.html;**/*.css;**/*.js;**/*.json" --profile="Built-in: Full Cleanup"'
 
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v4
