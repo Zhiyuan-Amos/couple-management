@@ -17,7 +17,7 @@ public partial class IssueListView
     [Inject] private HttpClient HttpClient { get; init; } = default!;
     [Inject] private NavigationManager NavigationManager { get; init; } = default!;
 
-    [EditorRequired] [Parameter] public List<IReadOnlyIssueModel> Issues { get; set; } = default!;
+    [EditorRequired][Parameter] public List<IReadOnlyIssueModel> Issues { get; set; } = default!;
 
     private void EditIssue(IReadOnlyIssueModel selectedIssue) =>
         NavigationManager.NavigateTo($"/todo/{selectedIssue.Id}");
