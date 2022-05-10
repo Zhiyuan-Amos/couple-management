@@ -35,7 +35,10 @@ public static class HttpRequestDataExtensions
         {
             return new()
             {
-                Value = requestObject, Json = requestBody, IsValid = false, Errors = validationResult.Errors
+                Value = requestObject,
+                Json = requestBody,
+                IsValid = false,
+                Errors = validationResult.Errors
             };
         }
 

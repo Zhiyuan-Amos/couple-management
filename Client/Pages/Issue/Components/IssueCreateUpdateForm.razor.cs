@@ -7,7 +7,7 @@ namespace Couple.Client.Pages.Issue.Components;
 
 public partial class IssueCreateUpdateForm
 {
-    [EditorRequired] [Parameter] public Func<Task> OnSaveCallback { get; set; } = default!;
+    [EditorRequired][Parameter] public Func<Task> OnSaveCallback { get; set; } = default!;
 
     [CascadingParameter(Name = "CreateUpdateIssueStateContainer")]
     private CreateUpdateIssueStateContainer CreateUpdateIssueStateContainer { get; init; } = default!;

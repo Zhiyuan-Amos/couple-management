@@ -5,7 +5,7 @@ namespace Couple.Client.Shared;
 
 public partial class BaseTopBar
 {
-    [EditorRequired] [Parameter] public RenderFragment Content { get; init; } = default!;
+    [EditorRequired][Parameter] public RenderFragment Content { get; init; } = default!;
 
     [Inject] private Synchronizer Synchronizer { get; init; } = default!;
 
