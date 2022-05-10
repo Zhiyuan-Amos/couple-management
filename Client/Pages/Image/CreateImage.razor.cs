@@ -1,4 +1,3 @@
-using System.Net.Http.Json;
 using Couple.Client.Adapters;
 using Couple.Client.Model.Image;
 using Couple.Client.Services.Synchronizer;
@@ -6,12 +5,10 @@ using Couple.Client.States.Done;
 using Couple.Client.States.Image;
 using Couple.Shared;
 using Couple.Shared.Utility;
-using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.Components.Forms;
 
 namespace Couple.Client.Pages.Image;
 
-public partial class CreateImage
+public class CreateImage
 {
     private bool _isSaveClicked;
     private CreateImageStateContainer CreateImageStateContainer { get; set; } = default!;
@@ -23,7 +20,10 @@ public partial class CreateImage
 
     private bool IsSaveEnabled => CreateImageStateContainer.Data.Any() && !_isSaveClicked;
 
-    protected override void OnInitialized() => CreateImageStateContainer = new();
+    protected override void OnInitialized()
+    {
+        CreateImageStateContainer = new CreateImageStateContainer();
+    }
 
     private async Task Save()
     {

@@ -1,4 +1,3 @@
-using System.Text.Json.Serialization;
 using Couple.Shared.Utility;
 
 namespace Couple.Shared.Model.Issue;

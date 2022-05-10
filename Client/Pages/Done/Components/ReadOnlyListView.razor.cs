@@ -2,11 +2,10 @@ using Couple.Client.Model.Done;
 using Couple.Client.Model.Image;
 using Couple.Client.Services.Synchronizer;
 using Couple.Client.States.Done;
-using Microsoft.AspNetCore.Components;
 
 namespace Couple.Client.Pages.Done.Components;
 
-public partial class ReadOnlyListView : IDisposable
+public class ReadOnlyListView : IDisposable
 {
     private static bool s_isDataLoaded;
     [Inject] private DbContextProvider DbContextProvider { get; init; } = default!;
@@ -18,16 +17,16 @@ public partial class ReadOnlyListView : IDisposable
             .GetDateToItems()
             .Reverse();
 
-    public void Dispose() => DoneStateContainer.OnChange -= StateHasChanged;
+    public void Dispose()
+    {
+        DoneStateContainer.OnChange -= StateHasChanged;
+    }
 
     protected override async Task OnInitializedAsync()
     {
         DoneStateContainer.OnChange += StateHasChanged;
 
-        if (s_isDataLoaded)
-        {
-            return;
-        }
+        if (s_isDataLoaded) return;
 
         await using var db = await DbContextProvider.GetPreparedDbContextAsync();
         var done = await db.GetIDone();
@@ -36,6 +35,8 @@ public partial class ReadOnlyListView : IDisposable
         s_isDataLoaded = true;
     }
 
-    private void EditImage(IReadOnlyImageModel selectedImage) =>
+    private void EditImage(IReadOnlyImageModel selectedImage)
+    {
         NavigationManager.NavigateTo($"/image/{selectedImage.Id}");
+    }
 }

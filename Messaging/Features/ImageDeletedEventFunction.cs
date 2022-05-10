@@ -1,11 +1,5 @@
-using Azure.Storage.Blobs;
 using Couple.Messaging.Data;
 using Couple.Messaging.Model;
-using FluentValidation;
-using Microsoft.Azure.WebJobs;
-using Microsoft.Azure.WebJobs.Extensions.EventGrid;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Logging;
 
 namespace Couple.Messaging.Features;
 
@@ -13,7 +7,10 @@ public class ImageDeletedEventFunction
 {
     private readonly ImageContext _context;
 
-    public ImageDeletedEventFunction(ImageContext context) => _context = context;
+    public ImageDeletedEventFunction(ImageContext context)
+    {
+        _context = context;
+    }
 
     [FunctionName("ImageDeletedEventFunction")]
     public async Task Run([EventGridTrigger] Event @event, ILogger log)
@@ -45,6 +42,9 @@ public class ImageDeletedEventFunction
 
     public class Validator : AbstractValidator<Event>
     {
-        public Validator() => RuleFor(dto => dto.Subject).NotEmpty();
+        public Validator()
+        {
+            RuleFor(dto => dto.Subject).NotEmpty();
+        }
     }
 }

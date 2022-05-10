@@ -9,9 +9,14 @@ public class CompleteTaskCommand : ICommand
     private readonly AppDbContext _dbContext;
     private readonly CreateCompletedTaskModel _model;
 
-    public CompleteTaskCommand(AppDbContext dbContext, CreateCompletedTaskModel model) =>
+    public CompleteTaskCommand(AppDbContext dbContext, CreateCompletedTaskModel model)
+    {
         (_dbContext, _model) = (dbContext, model);
+    }
 
-    public async Task Execute() =>
-        await CompleteTaskHelper.CompleteTaskAsync(_model.IssueId, _model.TaskId, _model.CompletedDate, _dbContext);
+    public async Task Execute()
+    {
+        return await CompleteTaskHelper.CompleteTaskAsync(_model.IssueId, _model.TaskId, _model.CompletedDate,
+            _dbContext);
+    }
 }

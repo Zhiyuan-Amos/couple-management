@@ -10,7 +10,11 @@ public class DoneStateContainer : Notifier
     private Dictionary<Guid, IReadOnlyImageModel> _idToImage = new();
 
     public IReadOnlyList<IReadOnlyImageModel> FavouriteImages => _favouriteImages;
-    public IReadOnlyDictionary<DateOnly, ICollection<IDone>> GetDateToItems() => _dateToItems;
+
+    public IReadOnlyDictionary<DateOnly, ICollection<IDone>> GetDateToItems()
+    {
+        return _dateToItems;
+    }
 
     public void SetItems(IReadOnlyList<IDone> toSet)
     {
@@ -18,10 +22,7 @@ public class DoneStateContainer : Notifier
 
         var toSetDict = toSet.GroupBy(d => d.DoneDate)
             .ToDictionary(g => g.Key, g => (ICollection<IDone>)g.OrderByDescending(d => d.Order).ToList());
-        foreach (var (key, value) in toSetDict)
-        {
-            _dateToItems.Add(key, value);
-        }
+        foreach (var (key, value) in toSetDict) _dateToItems.Add(key, value);
 
         _idToImage = toSet
             .OfType<IReadOnlyImageModel>()
@@ -50,10 +51,7 @@ public class DoneStateContainer : Notifier
 
         _idToImage.Add(image.Id, image);
 
-        if (image.IsFavourite)
-        {
-            _favouriteImages.Add(image);
-        }
+        if (image.IsFavourite) _favouriteImages.Add(image);
 
         NotifyStateChanged();
     }
@@ -65,10 +63,7 @@ public class DoneStateContainer : Notifier
         var existingOldDone = (List<IDone>)_dateToItems[oldImage!.DoneDate];
         existingOldDone.Remove((ImageModel)oldImage);
 
-        if (oldImage.IsFavourite)
-        {
-            _favouriteImages.Remove(oldImage);
-        }
+        if (oldImage.IsFavourite) _favouriteImages.Remove(oldImage);
 
         var hasDoneOnDate = _dateToItems.TryGetValue(image.DoneDate, out var existingNewDone);
         if (hasDoneOnDate)
@@ -83,10 +78,7 @@ public class DoneStateContainer : Notifier
 
         _idToImage.Add(image.Id, image);
 
-        if (image.IsFavourite)
-        {
-            _favouriteImages.Add(image);
-        }
+        if (image.IsFavourite) _favouriteImages.Add(image);
 
         NotifyStateChanged();
     }
@@ -97,18 +89,11 @@ public class DoneStateContainer : Notifier
 
         var existingDone = (List<IDone>)_dateToItems[oldImage!.DoneDate];
         if (existingDone.Count == 1)
-        {
             _dateToItems.Remove(oldImage.DoneDate);
-        }
         else
-        {
             existingDone.Remove((ImageModel)oldImage);
-        }
 
-        if (oldImage.IsFavourite)
-        {
-            _favouriteImages.Remove(oldImage);
-        }
+        if (oldImage.IsFavourite) _favouriteImages.Remove(oldImage);
 
         NotifyStateChanged();
     }
@@ -121,10 +106,7 @@ public class DoneStateContainer : Notifier
             var list = (List<IDone>)existingDone!;
             var toRemove = list.SingleOrDefault(d => d.Id == issue.Id);
 
-            if (toRemove is not null)
-            {
-                list.Remove(toRemove);
-            }
+            if (toRemove is not null) list.Remove(toRemove);
 
             list.Add(issue);
         }
@@ -136,6 +118,8 @@ public class DoneStateContainer : Notifier
         NotifyStateChanged();
     }
 
-    public bool TryGetImage(Guid id, out IReadOnlyImageModel? readOnlyImage) =>
-        _idToImage.TryGetValue(id, out readOnlyImage);
+    public bool TryGetImage(Guid id, out IReadOnlyImageModel? readOnlyImage)
+    {
+        return _idToImage.TryGetValue(id, out readOnlyImage);
+    }
 }

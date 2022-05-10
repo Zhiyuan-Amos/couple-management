@@ -42,5 +42,8 @@ public static class ImageExtensions
     }
 
     // Less precise validation compared to IsImage(Stream)
-    public static bool IsImage(string fileExtension) => ImageSignatures.ContainsKey(fileExtension);
+    public static bool IsImage(string fileExtension)
+    {
+        return ImageSignatures.ContainsKey(fileExtension);
+    }
 }

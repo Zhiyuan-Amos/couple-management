@@ -8,7 +8,10 @@ public class UpdateIssueCommand : ICommand
     private readonly AppDbContext _dbContext;
     private readonly IssueModel _model;
 
-    public UpdateIssueCommand(AppDbContext dbContext, IssueModel model) => (_dbContext, _model) = (dbContext, model);
+    public UpdateIssueCommand(AppDbContext dbContext, IssueModel model)
+    {
+        (_dbContext, _model) = (dbContext, model);
+    }
 
     public async Task Execute()
     {

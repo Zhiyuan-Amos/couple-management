@@ -1,12 +1,6 @@
-using System.Net;
 using Couple.Api.Data;
 using Couple.Api.Infrastructure;
 using Couple.Shared.Model.Change;
-using FluentValidation;
-using Microsoft.Azure.Functions.Worker;
-using Microsoft.Azure.Functions.Worker.Http;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Logging;
 
 namespace Couple.Api.Features.Change;
 
@@ -50,10 +44,7 @@ public class DeleteChangesFunction
         var claims = _currentUserService.GetClaims(req.Headers);
         var canDelete = toDelete.All(change => change.UserId == claims.Id);
 
-        if (!canDelete)
-        {
-            return req.CreateResponse(HttpStatusCode.Forbidden);
-        }
+        if (!canDelete) return req.CreateResponse(HttpStatusCode.Forbidden);
 
         var missingIds = model.Guids
             .Except(toDelete.Select(change => change.Id))
@@ -65,10 +56,7 @@ public class DeleteChangesFunction
             logger.LogWarning("Changes of {Ids} are not found", string.Join(", ", missingIds));
         }
 
-        foreach (var change in toDelete)
-        {
-            change.Ttl = 3600;
-        }
+        foreach (var change in toDelete) change.Ttl = 3600;
 
         await _context.SaveChangesAsync();
 

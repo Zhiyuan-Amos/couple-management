@@ -1,7 +1,6 @@
-using System.Net.Http.Json;
 using Couple.Client.Adapters;
 using Couple.Client.Model.Issue;
-using Microsoft.AspNetCore.Components;
+using Couple.Client.States.Issue;
 
 namespace Couple.Client.Pages.Issue;
 
@@ -22,7 +21,7 @@ public class UpdateIssueBase : CreateUpdateIssueBase
             ? new List<TaskModel> { new("") }
             : _currentIssueModel.ReadOnlyTasks;
 
-        CreateUpdateIssueStateContainer = new(_currentIssueModel.Title,
+        CreateUpdateIssueStateContainer = new CreateUpdateIssueStateContainer(_currentIssueModel.Title,
             _currentIssueModel.For,
             tasks);
     }

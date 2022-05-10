@@ -13,13 +13,18 @@ public class ImageModel : IDone, IReadOnlyImageModel
         IsFavourite = isFavourite;
     }
 
-    public ImageModel(Guid id, DateTime takenOn, byte[] data, bool isFavourite) : this(takenOn, data, isFavourite) =>
+    public ImageModel(Guid id, DateTime takenOn, byte[] data, bool isFavourite) : this(takenOn, data, isFavourite)
+    {
         Id = id;
+    }
 
 #pragma warning disable IDE0051
     // ReSharper disable once UnusedMember.Local
     private ImageModel(Guid id, DateTime takenOn, byte[] data, bool isFavourite, int order) : this(id, takenOn, data,
-        isFavourite) => Order = order;
+        isFavourite)
+    {
+        Order = order;
+    }
 #pragma warning restore IDE0051
 
     public DateOnly TakenOnDate { get; private set; }

@@ -8,7 +8,10 @@ public class CreateImageCommand : ICommand
     private readonly AppDbContext _dbContext;
     private readonly ImageModel _model;
 
-    public CreateImageCommand(AppDbContext dbContext, ImageModel model) => (_dbContext, _model) = (dbContext, model);
+    public CreateImageCommand(AppDbContext dbContext, ImageModel model)
+    {
+        (_dbContext, _model) = (dbContext, model);
+    }
 
     public async Task Execute()
     {

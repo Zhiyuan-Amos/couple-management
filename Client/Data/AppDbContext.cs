@@ -1,17 +1,16 @@
-﻿using System.Text.Json;
-using Couple.Client.Model.Done;
+﻿using Couple.Client.Model.Done;
 using Couple.Client.Model.Image;
 using Couple.Client.Model.Issue;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.ChangeTracking;
 
 namespace Couple.Client.Data;
 
 public sealed class AppDbContext : DbContext
 {
     public AppDbContext(DbContextOptions<AppDbContext> options)
-        : base(options) =>
+        : base(options)
+    {
         ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
+    }
 
     public DbSet<IssueModel> Issues { get; set; } = default!;
     public DbSet<ImageModel> Images { get; set; } = default!;
@@ -108,10 +107,7 @@ public sealed class AppDbContext : DbContext
 
             var oldDate = (entityEntry.OriginalValues[iDone.DoneDatePropertyName] as DateOnly?)!.Value;
             var newDate = (entityEntry.CurrentValues[iDone.DoneDatePropertyName] as DateOnly?)!.Value;
-            if (oldDate == newDate)
-            {
-                continue;
-            }
+            if (oldDate == newDate) continue;
 
             var oldDone = (await Done
                 .FindAsync(oldDate))!;

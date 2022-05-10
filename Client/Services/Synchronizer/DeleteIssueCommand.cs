@@ -7,7 +7,10 @@ public class DeleteIssueCommand : ICommand
     private readonly AppDbContext _dbContext;
     private readonly Guid _guid;
 
-    public DeleteIssueCommand(AppDbContext dbContext, Guid guid) => (_dbContext, _guid) = (dbContext, guid);
+    public DeleteIssueCommand(AppDbContext dbContext, Guid guid)
+    {
+        (_dbContext, _guid) = (dbContext, guid);
+    }
 
     public async Task Execute()
     {

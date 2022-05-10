@@ -7,7 +7,10 @@ public class DeleteImageCommand : ICommand
     private readonly AppDbContext _dbContext;
     private readonly Guid _guid;
 
-    public DeleteImageCommand(AppDbContext dbContext, Guid guid) => (_dbContext, _guid) = (dbContext, guid);
+    public DeleteImageCommand(AppDbContext dbContext, Guid guid)
+    {
+        (_dbContext, _guid) = (dbContext, guid);
+    }
 
     public async Task Execute()
     {

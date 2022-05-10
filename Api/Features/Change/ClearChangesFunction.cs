@@ -1,9 +1,5 @@
-using System.Net;
 using Couple.Api.Data;
 using Couple.Api.Infrastructure;
-using Microsoft.Azure.Functions.Worker;
-using Microsoft.Azure.Functions.Worker.Http;
-using Microsoft.EntityFrameworkCore;
 
 namespace Couple.Api.Features.Change;
 
@@ -31,10 +27,7 @@ public class ClearChangesFunction
             .Where(change => change.UserId == claims.Id || change.UserId == claims.PartnerId)
             .ToListAsync();
 
-        foreach (var change in toDelete)
-        {
-            change.Ttl = 3600;
-        }
+        foreach (var change in toDelete) change.Ttl = 3600;
 
         await _context.SaveChangesAsync();
 

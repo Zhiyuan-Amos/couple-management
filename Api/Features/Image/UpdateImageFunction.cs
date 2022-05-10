@@ -1,15 +1,9 @@
-using System.Net;
-using Azure.Storage.Blobs;
 using Couple.Api.Data;
 using Couple.Api.Infrastructure;
 using Couple.Api.Model;
 using Couple.Shared.Model;
 using Couple.Shared.Model.Image;
 using Couple.Shared.Utility;
-using FluentValidation;
-using Microsoft.Azure.Functions.Worker;
-using Microsoft.Azure.Functions.Worker.Http;
-using Microsoft.Extensions.Logging;
 
 namespace Couple.Api.Features.Image;
 
@@ -88,10 +82,7 @@ public class UpdateImageFunction
             RuleFor(dto => dto.TakenOn).NotEmpty();
             RuleFor(dto => dto.Data).Custom((data, context) =>
             {
-                if (!ImageExtensions.IsImage(new MemoryStream(data)))
-                {
-                    context.AddFailure("Invalid file type");
-                }
+                if (!ImageExtensions.IsImage(new MemoryStream(data))) context.AddFailure("Invalid file type");
             });
         }
     }

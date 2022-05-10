@@ -21,9 +21,18 @@ public class CreateUpdateIssueStateContainer
 
     public IReadOnlyList<IReadOnlyTaskViewModel> Tasks => _tasks;
 
-    public void AddTask(string content) => _tasks.Add(new(content));
+    public void AddTask(string content)
+    {
+        _tasks.Add(new(content));
+    }
 
-    public void RemoveEmptyTasks() => _tasks.RemoveAll(task => !task.Content.Any());
+    public void RemoveEmptyTasks()
+    {
+        _tasks.RemoveAll(task => !task.Content.Any());
+    }
 
-    public void SetContent(int index, string content) => _tasks[index].Content = content;
+    public void SetContent(int index, string content)
+    {
+        _tasks[index].Content = content;
+    }
 }

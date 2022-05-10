@@ -1,16 +1,18 @@
-using System.Net.Http.Json;
 using Couple.Client.Adapters;
 using Couple.Client.Model.Issue;
+using Couple.Client.States.Issue;
 using Couple.Shared.Model;
 
 namespace Couple.Client.Pages.Issue;
 
 public class CreateIssueBase : CreateUpdateIssueBase
 {
-    protected override void OnInitialized() =>
-        CreateUpdateIssueStateContainer = new("",
+    protected override void OnInitialized()
+    {
+        CreateUpdateIssueStateContainer = new CreateUpdateIssueStateContainer("",
             For.Him,
             new List<TaskModel> { new("") });
+    }
 
     protected override async Task Save()
     {

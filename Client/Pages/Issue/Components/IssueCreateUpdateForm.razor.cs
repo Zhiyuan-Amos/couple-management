@@ -1,11 +1,10 @@
 using Couple.Client.States.Issue;
 using Couple.Client.ViewModel.Issue;
 using Couple.Shared.Model;
-using Microsoft.AspNetCore.Components;
 
 namespace Couple.Client.Pages.Issue.Components;
 
-public partial class IssueCreateUpdateForm
+public class IssueCreateUpdateForm
 {
     [EditorRequired] [Parameter] public Func<Task> OnSaveCallback { get; set; } = default!;
 
@@ -19,13 +18,25 @@ public partial class IssueCreateUpdateForm
     private bool IsSaveEnabled => CreateUpdateIssueStateContainer.Title.Any()
                                   && Tasks.Any(task => task.Content.Any());
 
-    protected override void OnInitialized() => Tasks = CreateUpdateIssueStateContainer.Tasks;
+    protected override void OnInitialized()
+    {
+        Tasks = CreateUpdateIssueStateContainer.Tasks;
+    }
 
-    private void OnForChange(For @for) => CreateUpdateIssueStateContainer.For = @for;
+    private void OnForChange(For @for)
+    {
+        CreateUpdateIssueStateContainer.For = @for;
+    }
 
-    private void AddNewTask() => CreateUpdateIssueStateContainer.AddTask("");
+    private void AddNewTask()
+    {
+        CreateUpdateIssueStateContainer.AddTask("");
+    }
 
-    private void SetContent(int index, string content) => CreateUpdateIssueStateContainer.SetContent(index, content);
+    private void SetContent(int index, string content)
+    {
+        CreateUpdateIssueStateContainer.SetContent(index, content);
+    }
 
     private void Save()
     {

@@ -1,14 +1,12 @@
-using System.Net.Http.Json;
 using Couple.Client.Adapters;
 using Couple.Client.Model.Image;
 using Couple.Client.Services.Synchronizer;
 using Couple.Client.States.Done;
 using Couple.Client.States.Image;
-using Microsoft.AspNetCore.Components;
 
 namespace Couple.Client.Pages.Image;
 
-public partial class UpdateImage
+public class UpdateImage
 {
     private IReadOnlyImageModel _imageModel = default!;
     [EditorRequired] [Parameter] public Guid ImageId { get; set; }
@@ -21,13 +19,10 @@ public partial class UpdateImage
 
     protected override void OnInitialized()
     {
-        if (!DoneStateContainer.TryGetImage(ImageId, out _imageModel!))
-        {
-            NavigationManager.NavigateTo("/done");
-        }
+        if (!DoneStateContainer.TryGetImage(ImageId, out _imageModel!)) NavigationManager.NavigateTo("/done");
 
         UpdateImageStateContainer =
-            new(_imageModel.TakenOn, _imageModel.IsFavourite, _imageModel.Data);
+            new UpdateImageStateContainer(_imageModel.TakenOn, _imageModel.IsFavourite, _imageModel.Data);
     }
 
     private async Task Delete()

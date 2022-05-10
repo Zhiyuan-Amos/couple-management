@@ -1,8 +1,5 @@
-using System.Net.Http.Json;
-using Couple.Client.Infrastructure;
 using Couple.Client.States.Issue;
 using Couple.Shared.Model.Change;
-using Microsoft.EntityFrameworkCore;
 
 namespace Couple.Client.Services.Synchronizer;
 
@@ -44,10 +41,7 @@ public class Synchronizer
             .Select(change => change.Id)
             .ToList());
 
-        if (idsToDelete.Guids.Any())
-        {
-            await _httpClient.DeleteAsJsonAsync("api/Changes", idsToDelete);
-        }
+        if (idsToDelete.Guids.Any()) await _httpClient.DeleteAsJsonAsync("api/Changes", idsToDelete);
 
         await using var anotherDb = await _dbContextProvider.GetPreparedDbContextAsync();
         _issueStateContainer.Issues = await anotherDb.Issues

@@ -1,10 +1,3 @@
-using System.Text.Json;
-using FluentValidation;
-using FluentValidation.Results;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.Azure.WebJobs.Extensions.Http;
-
 namespace Couple.Messaging.Infrastructure;
 
 // https://www.tomfaltesek.com/azure-functions-input-validation/
@@ -32,12 +25,10 @@ public static class HttpRequestExtensions
 #pragma warning restore CS8604
 
         if (!validationResult.IsValid)
-        {
             return new()
             {
                 Value = requestObject, Json = requestBody, IsValid = false, Errors = validationResult.Errors
             };
-        }
 
         return new() { Value = requestObject, Json = requestBody, IsValid = true };
     }
@@ -51,8 +42,10 @@ public static class ValidationExtensions
     /// </summary>
     /// <param name="request"></param>
     /// <returns></returns>
-    public static BadRequestObjectResult ToBadRequest<T>(this ValidatableRequest<T> request) =>
-        new(request.Errors.Select(e => new { Field = e.PropertyName, Error = e.ErrorMessage }));
+    public static BadRequestObjectResult ToBadRequest<T>(this ValidatableRequest<T> request)
+    {
+        return new(request.Errors.Select(e => new { Field = e.PropertyName, Error = e.ErrorMessage }));
+    }
 }
 
 public class ValidatableRequest<T>

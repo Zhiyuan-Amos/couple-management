@@ -1,11 +1,12 @@
 using Couple.Api.Model;
-using Microsoft.EntityFrameworkCore;
 
 namespace Couple.Api.Data;
 
 public class ChangeContext : DbContext
 {
-    public ChangeContext(DbContextOptions<ChangeContext> options) : base(options) { }
+    public ChangeContext(DbContextOptions<ChangeContext> options) : base(options)
+    {
+    }
 
     // DbSet of sub-classes of Change are required to persist sub-class specific information
     public DbSet<Change> Changes { get; set; } = default!;

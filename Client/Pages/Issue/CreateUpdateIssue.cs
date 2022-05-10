@@ -1,6 +1,5 @@
 using Couple.Client.Services.Synchronizer;
 using Couple.Client.States.Issue;
-using Microsoft.AspNetCore.Components;
 
 namespace Couple.Client.Pages.Issue;
 

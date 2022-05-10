@@ -1,13 +1,9 @@
 using Couple.Client.Services.Settings;
 using Couple.Client.Services.Synchronizer;
-using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.Components.Authorization;
-using Microsoft.Extensions.Options;
-using Microsoft.JSInterop;
 
 namespace Couple.Client.Shared;
 
-public partial class MainLayout
+public class MainLayout
 {
     private static bool s_isDataLoaded;
     [CascadingParameter] private Task<AuthenticationState> AuthenticationStateTask { get; set; } = default!;

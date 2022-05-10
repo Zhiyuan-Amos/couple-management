@@ -1,24 +1,14 @@
-﻿using System.Text.Json;
-using System.Text.Json.Serialization;
-using System.Text.RegularExpressions;
-
-namespace Couple.Shared.Utility;
+﻿namespace Couple.Shared.Utility;
 
 // https://github.com/dotnet/runtime/issues/53539#issuecomment-965275504
 public class DateOnlyConverter : JsonConverter<DateOnly>
 {
     public override DateOnly Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
     {
-        if (reader.TryGetDateTime(out var dt))
-        {
-            return DateOnly.FromDateTime(dt);
-        }
+        if (reader.TryGetDateTime(out var dt)) return DateOnly.FromDateTime(dt);
 
         var value = reader.GetString();
-        if (value == null)
-        {
-            return default;
-        }
+        if (value == null) return default;
 
         var match = new Regex("^(\\d\\d\\d\\d)-(\\d\\d)-(\\d\\d)(T|\\s|\\z)").Match(value);
         return match.Success
@@ -28,5 +18,7 @@ public class DateOnlyConverter : JsonConverter<DateOnly>
     }
 
     public override void Write(Utf8JsonWriter writer, DateOnly value, JsonSerializerOptions options)
-        => writer.WriteStringValue(value.ToString("yyyy-MM-dd"));
+    {
+        writer.WriteStringValue(value.ToString("yyyy-MM-dd"));
+    }
 }

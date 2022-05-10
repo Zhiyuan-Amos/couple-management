@@ -1,8 +1,5 @@
-﻿using System.Runtime.InteropServices;
-using Couple.Client.Data;
+﻿using Couple.Client.Data;
 using Couple.Client.Utility;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.JSInterop;
 
 namespace Couple.Client.Services.Synchronizer;
 
@@ -28,9 +25,7 @@ public class DbContextProvider
         var module = await js.InvokeAsync<IJSObjectReference>("import", "./js/dbstorage.js");
 
         if (RuntimeInformation.IsOSPlatform(OSPlatform.Create("browser")))
-        {
             await module.InvokeVoidAsync("synchronizeFileWithIndexedDb", Constants.DatabaseFileName);
-        }
 
         await using var db = await _dbContextFactory.CreateDbContextAsync();
         await db.Database.EnsureCreatedAsync();

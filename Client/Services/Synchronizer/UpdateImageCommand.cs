@@ -8,7 +8,10 @@ public class UpdateImageCommand : ICommand
     private readonly AppDbContext _dbContext;
     private readonly ImageModel _model;
 
-    public UpdateImageCommand(AppDbContext dbContext, ImageModel model) => (_dbContext, _model) = (dbContext, model);
+    public UpdateImageCommand(AppDbContext dbContext, ImageModel model)
+    {
+        (_dbContext, _model) = (dbContext, model);
+    }
 
     public async Task Execute()
     {

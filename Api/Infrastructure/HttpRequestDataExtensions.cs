@@ -1,8 +1,3 @@
-using System.Text.Json;
-using FluentValidation;
-using FluentValidation.Results;
-using Microsoft.Azure.Functions.Worker.Http;
-
 namespace Couple.Api.Infrastructure;
 
 // Adapted from https://www.tomfaltesek.com/azure-functions-input-validation/
@@ -32,12 +27,10 @@ public static class HttpRequestDataExtensions
 #pragma warning restore CS8604
 
         if (!validationResult.IsValid)
-        {
             return new()
             {
                 Value = requestObject, Json = requestBody, IsValid = false, Errors = validationResult.Errors
             };
-        }
 
         return new() { Value = requestObject, Json = requestBody, IsValid = true };
     }
@@ -68,8 +61,10 @@ public class ValidatableRequest<T>
     public IList<ValidationFailure> Errors { get; set; }
 #pragma warning restore CS8618
 
-    public string ErrorMessage() =>
-        string.Join('\n', Errors
+    public string ErrorMessage()
+    {
+        return string.Join('\n', Errors
             .Select(error => error.ToString())
             .ToList());
+    }
 }

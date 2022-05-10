@@ -1,5 +1,3 @@
-using System.Text.Json.Serialization;
-
 namespace Couple.Messaging.Model;
 
 public class Change
@@ -11,8 +9,11 @@ public class Change
         DateTime timestamp,
         string contentId,
         string contentType,
-        int? ttl) => (Id, Command, UserId, Timestamp, ContentId, ContentType, Ttl) =
-        (id, command, userId, timestamp, contentId, contentType, ttl);
+        int? ttl)
+    {
+        (Id, Command, UserId, Timestamp, ContentId, ContentType, Ttl) =
+            (id, command, userId, timestamp, contentId, contentType, ttl);
+    }
 
     // ReSharper disable once UnusedAutoPropertyAccessor.Global
     public Guid Id { get; }

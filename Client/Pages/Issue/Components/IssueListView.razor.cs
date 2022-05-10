@@ -1,15 +1,13 @@
-using System.Net.Http.Json;
 using Couple.Client.Adapters;
 using Couple.Client.Model.Issue;
 using Couple.Client.Services.Synchronizer;
 using Couple.Client.States.Done;
 using Couple.Client.States.Issue;
 using Couple.Client.Utility;
-using Microsoft.AspNetCore.Components;
 
 namespace Couple.Client.Pages.Issue.Components;
 
-public partial class IssueListView
+public class IssueListView
 {
     [Inject] private DbContextProvider DbContextProvider { get; init; } = default!;
     [Inject] private IssueStateContainer IssueStateContainer { get; init; } = default!;
@@ -19,8 +17,10 @@ public partial class IssueListView
 
     [EditorRequired] [Parameter] public List<IReadOnlyIssueModel> Issues { get; set; } = default!;
 
-    private void EditIssue(IReadOnlyIssueModel selectedIssue) =>
+    private void EditIssue(IReadOnlyIssueModel selectedIssue)
+    {
         NavigationManager.NavigateTo($"/todo/{selectedIssue.Id}");
+    }
 
     private async Task OnCheckboxToggle(Guid id, IReadOnlyTaskModel task)
     {
@@ -36,7 +36,7 @@ public partial class IssueListView
         DoneStateContainer.UpdateIssue(doneIssueModel);
 
         var toUpdate =
-            IssueAdapter.ToCompleteDto(new(task.Id, issue.Id, date));
+            IssueAdapter.ToCompleteDto(new CreateCompletedTaskModel(task.Id, issue.Id, date));
         await HttpClient.PutAsJsonAsync("api/Tasks/Complete", toUpdate);
     }
 }

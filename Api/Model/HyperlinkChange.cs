@@ -8,8 +8,10 @@ public class HyperlinkChange : Change
         DateTime timestamp,
         string contentId,
         string contentType,
-        string url) : base(id, command, userId, timestamp, contentId, contentType) =>
+        string url) : base(id, command, userId, timestamp, contentId, contentType)
+    {
         Url = url;
+    }
 
     public string Url { get; init; }
 }

@@ -1,16 +1,6 @@
-using System.Web.Http;
-using Azure.Storage.Blobs;
 using Couple.Messaging.Data;
-using Couple.Messaging.Infrastructure;
 using Couple.Messaging.Model;
 using Couple.Shared.Model;
-using FluentValidation;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.Azure.WebJobs;
-using Microsoft.Azure.WebJobs.Extensions.Http;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Logging;
 
 namespace Couple.Messaging.Features;
 
@@ -19,7 +9,10 @@ public class GetImageFunction
 {
     private readonly ImageContext _context;
 
-    public GetImageFunction(ImageContext context) => _context = context;
+    public GetImageFunction(ImageContext context)
+    {
+        _context = context;
+    }
 
     [FunctionName("GetImageFunction")]
     public async Task<IActionResult> Run(
@@ -41,10 +34,7 @@ public class GetImageFunction
             .Where(image => model.Contains(image.TimeSensitiveId))
             .ToDictionaryAsync(image => image.TimeSensitiveId, image => image);
 
-        if (model.Count != imageIdToImage.Count)
-        {
-            return new InternalServerErrorResult();
-        }
+        if (model.Count != imageIdToImage.Count) return new InternalServerErrorResult();
 
         var connectionString = Environment.GetEnvironmentVariable("ImagesConnectionString");
         List<HyperlinkContent> toReturn = new();
@@ -66,6 +56,9 @@ public class GetImageFunction
 
     public class Validator : AbstractValidator<List<string>>
     {
-        public Validator() => RuleFor(dto => dto).NotEmpty();
+        public Validator()
+        {
+            RuleFor(dto => dto).NotEmpty();
+        }
     }
 }

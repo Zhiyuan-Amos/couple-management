@@ -1,11 +1,7 @@
-using System.Net;
-using System.Text.Json;
 using Couple.Api.Data;
 using Couple.Api.Infrastructure;
 using Couple.Api.Model;
 using Couple.Shared.Model;
-using Microsoft.Azure.Functions.Worker;
-using Microsoft.Azure.Functions.Worker.Http;
 
 namespace Couple.Api.Features.Issue;
 

@@ -2,12 +2,10 @@ using Couple.Client.Model.Done;
 using Couple.Client.Model.Image;
 using Couple.Client.Services.Synchronizer;
 using Couple.Client.States.Done;
-using Microsoft.AspNetCore.Components;
-using Microsoft.EntityFrameworkCore;
 
 namespace Couple.Client.Pages;
 
-public partial class Index
+public class Index
 {
     private static bool s_isDataLoaded;
     [Inject] private DbContextProvider DbContextProvider { get; init; } = default!;
@@ -24,10 +22,7 @@ public partial class Index
     {
         DoneStateContainer.OnChange += StateHasChanged;
 
-        if (s_isDataLoaded)
-        {
-            return;
-        }
+        if (s_isDataLoaded) return;
 
         if (DoneStateContainer.GetDateToItems().Count != 0)
         {
@@ -49,6 +44,8 @@ public partial class Index
         s_isDataLoaded = true;
     }
 
-    private void EditImage(IReadOnlyImageModel selectedImage) =>
+    private void EditImage(IReadOnlyImageModel selectedImage)
+    {
         NavigationManager.NavigateTo($"/image/{selectedImage.Id}");
+    }
 }

@@ -48,6 +48,8 @@ public class IssueStateContainer : Notifier
         NotifyStateChanged();
     }
 
-    public bool TryGetIssue(Guid id, out IReadOnlyIssueModel? readOnlyIssue) =>
-        _idToIssue.TryGetValue(id, out readOnlyIssue);
+    public bool TryGetIssue(Guid id, out IReadOnlyIssueModel? readOnlyIssue)
+    {
+        return _idToIssue.TryGetValue(id, out readOnlyIssue);
+    }
 }

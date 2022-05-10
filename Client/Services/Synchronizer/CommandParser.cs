@@ -1,4 +1,3 @@
-using System.Text.Json;
 using Couple.Client.Adapters;
 using Couple.Client.Data;
 using Couple.Shared.Model;
@@ -12,8 +11,9 @@ public class CommandParser
 {
     private static readonly JsonSerializerOptions Options = new() { PropertyNameCaseInsensitive = true };
 
-    public ICommand Parse(ChangeDto change, AppDbContext dbContext) =>
-        change switch
+    public ICommand Parse(ChangeDto change, AppDbContext dbContext)
+    {
+        return change switch
         {
             { Command: Command.Create, ContentType: Entity.Issue }
                 => new CreateIssueCommand(dbContext,
@@ -41,4 +41,5 @@ public class CommandParser
                     JsonSerializer.Deserialize<Guid>(change.Content, Options)),
             _ => throw new ArgumentOutOfRangeException(nameof(change), change, null)
         };
+    }
 }

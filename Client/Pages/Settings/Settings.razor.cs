@@ -1,13 +1,9 @@
 using Couple.Client.Services.Settings;
 using Couple.Client.Utility;
-using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.Components.Forms;
-using Microsoft.Extensions.Options;
-using Microsoft.JSInterop;
 
 namespace Couple.Client.Pages.Settings;
 
-public partial class Settings
+public class Settings
 {
     [Inject] private NavigationManager NavigationManager { get; init; } = default!;
     [Inject] private HttpClient HttpClient { get; init; } = default!;
@@ -23,11 +19,20 @@ public partial class Settings
         await HttpClient.DeleteAsync("api/Changes/all");
     }
 
-    private async Task OnExportSelected() => await Js.InvokeVoidAsync("exportDatabase", Constants.DatabaseFileName);
+    private async Task OnExportSelected()
+    {
+        return await Js.InvokeVoidAsync("exportDatabase", Constants.DatabaseFileName);
+    }
 
-    private async Task OnDeleteDatabaseSelected() => await Js.InvokeVoidAsync("deleteDatabase");
+    private async Task OnDeleteDatabaseSelected()
+    {
+        return await Js.InvokeVoidAsync("deleteDatabase");
+    }
 
-    private void OnUploadImageSelected() => NavigationManager.NavigateTo("/image/create");
+    private void OnUploadImageSelected()
+    {
+        NavigationManager.NavigateTo("/image/create");
+    }
 
     private async Task OnLogoutSelected()
     {

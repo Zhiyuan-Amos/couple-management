@@ -1,12 +1,12 @@
-using Microsoft.AspNetCore.Components;
-using Microsoft.JSInterop;
-
 namespace Couple.Client.Shared;
 
-public partial class CreateTopBar
+public class CreateTopBar
 {
     [EditorRequired] [Parameter] public string Title { get; init; } = default!;
     [Inject] private IJSRuntime Js { get; init; } = default!;
 
-    private async Task Cancel() => await Js.InvokeVoidAsync("navigateBack");
+    private async Task Cancel()
+    {
+        return await Js.InvokeVoidAsync("navigateBack");
+    }
 }

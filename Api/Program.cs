@@ -1,10 +1,6 @@
 using Couple.Api.Data;
 using Couple.Api.Infrastructure;
 using Couple.Api.Profiles;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
-using Polly;
 
 namespace Couple.Api;
 
@@ -24,13 +20,9 @@ public class Program
 
                 var environmentName = Environment.GetEnvironmentVariable("AZURE_FUNCTIONS_ENVIRONMENT");
                 if (environmentName == "Development")
-                {
                     services.AddScoped<ICurrentUserService, DevelopmentCurrentUserService>();
-                }
                 else
-                {
                     services.AddScoped<ICurrentUserService, CurrentUserService>();
-                }
 
                 services.AddSingleton<IDateTimeService, DateTimeService>();
 
