@@ -1,5 +1,4 @@
 using Couple.Api.Model;
-using Microsoft.EntityFrameworkCore;
 
 namespace Couple.Api.Data;
 

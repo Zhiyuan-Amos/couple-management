@@ -1,7 +1,4 @@
 using System.Text.Json;
-using FluentValidation;
-using FluentValidation.Results;
-using Microsoft.Azure.Functions.Worker.Http;
 
 namespace Couple.Api.Infrastructure;
 

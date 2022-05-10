@@ -1,18 +1,14 @@
 using Couple.Client.Services.Settings;
 using Couple.Client.Utility;
-using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.Components.Forms;
-using Microsoft.Extensions.Options;
-using Microsoft.JSInterop;
 
 namespace Couple.Client.Pages.Settings;
 
 public partial class Settings
 {
-    [Inject] private NavigationManager NavigationManager { get; init; } = default!;
-    [Inject] private HttpClient HttpClient { get; init; } = default!;
-    [Inject] private IJSRuntime Js { get; init; } = default!;
-    [Inject] private IOptions<AuthenticationOptions> AuthOptions { get; init; } = default!;
+    [Inject] private NavigationManager NavigationManager { get; } = default!;
+    [Inject] private HttpClient HttpClient { get; } = default!;
+    [Inject] private IJSRuntime Js { get; } = default!;
+    [Inject] private IOptions<AuthenticationOptions> AuthOptions { get; } = default!;
 
     private async Task OnImportSelected(InputFileChangeEventArgs e)
     {

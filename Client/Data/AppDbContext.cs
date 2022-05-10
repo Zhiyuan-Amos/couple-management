@@ -2,8 +2,6 @@
 using Couple.Client.Model.Done;
 using Couple.Client.Model.Image;
 using Couple.Client.Model.Issue;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.ChangeTracking;
 
 namespace Couple.Client.Data;
 

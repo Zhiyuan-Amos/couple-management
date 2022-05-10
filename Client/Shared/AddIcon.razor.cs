@@ -1,5 +1,3 @@
-using Microsoft.AspNetCore.Components;
-
 namespace Couple.Client.Shared;
 
 public partial class AddIcon

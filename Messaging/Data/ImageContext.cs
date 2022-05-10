@@ -1,5 +1,4 @@
 using Couple.Messaging.Model;
-using Microsoft.EntityFrameworkCore;
 
 namespace Couple.Messaging.Data;
 
