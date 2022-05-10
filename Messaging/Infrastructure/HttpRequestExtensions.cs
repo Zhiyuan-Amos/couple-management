@@ -1,9 +1,4 @@
 using System.Text.Json;
-using FluentValidation;
-using FluentValidation.Results;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.Azure.WebJobs.Extensions.Http;
 
 namespace Couple.Messaging.Infrastructure;
 

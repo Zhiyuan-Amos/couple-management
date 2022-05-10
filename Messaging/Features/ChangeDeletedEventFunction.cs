@@ -1,10 +1,6 @@
 using System.Text.Json;
-using Azure.Messaging.EventGrid;
 using Couple.Messaging.Model;
 using Couple.Shared.Model;
-using Microsoft.Azure.Documents;
-using Microsoft.Azure.WebJobs;
-using Microsoft.Azure.WebJobs.Extensions.EventGrid;
 
 namespace Couple.Messaging.Features;
 

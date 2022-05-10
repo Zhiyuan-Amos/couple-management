@@ -1,11 +1,5 @@
-using Azure.Storage.Blobs;
 using Couple.Messaging.Data;
 using Couple.Messaging.Model;
-using FluentValidation;
-using Microsoft.Azure.WebJobs;
-using Microsoft.Azure.WebJobs.Extensions.EventGrid;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Logging;
 
 namespace Couple.Messaging.Features;
 

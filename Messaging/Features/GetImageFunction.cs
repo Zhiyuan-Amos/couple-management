@@ -1,16 +1,6 @@
-using System.Web.Http;
-using Azure.Storage.Blobs;
 using Couple.Messaging.Data;
-using Couple.Messaging.Infrastructure;
 using Couple.Messaging.Model;
 using Couple.Shared.Model;
-using FluentValidation;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.Azure.WebJobs;
-using Microsoft.Azure.WebJobs.Extensions.Http;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Logging;
 
 namespace Couple.Messaging.Features;
 

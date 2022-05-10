@@ -2,7 +2,6 @@ using System.Net.Http.Json;
 using Couple.Client.Infrastructure;
 using Couple.Client.States.Issue;
 using Couple.Shared.Model.Change;
-using Microsoft.EntityFrameworkCore;
 
 namespace Couple.Client.Services.Synchronizer;
 

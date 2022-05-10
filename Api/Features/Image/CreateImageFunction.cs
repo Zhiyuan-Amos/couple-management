@@ -1,5 +1,4 @@
 using System.Net;
-using Azure.Storage.Blobs;
 using Couple.Api.Data;
 using Couple.Api.Infrastructure;
 using Couple.Api.Model;
@@ -7,10 +6,6 @@ using Couple.Shared;
 using Couple.Shared.Model;
 using Couple.Shared.Model.Image;
 using Couple.Shared.Utility;
-using FluentValidation;
-using Microsoft.Azure.Functions.Worker;
-using Microsoft.Azure.Functions.Worker.Http;
-using Microsoft.Extensions.Logging;
 
 namespace Couple.Api.Features.Image;
 

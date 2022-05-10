@@ -5,17 +5,16 @@ using Couple.Client.Services.Synchronizer;
 using Couple.Client.States.Done;
 using Couple.Client.States.Issue;
 using Couple.Client.Utility;
-using Microsoft.AspNetCore.Components;
 
 namespace Couple.Client.Pages.Issue.Components;
 
 public partial class IssueListView
 {
-    [Inject] private DbContextProvider DbContextProvider { get; init; } = default!;
-    [Inject] private IssueStateContainer IssueStateContainer { get; init; } = default!;
-    [Inject] private DoneStateContainer DoneStateContainer { get; init; } = default!;
-    [Inject] private HttpClient HttpClient { get; init; } = default!;
-    [Inject] private NavigationManager NavigationManager { get; init; } = default!;
+    [Inject] private DbContextProvider DbContextProvider { get; } = default!;
+    [Inject] private IssueStateContainer IssueStateContainer { get; } = default!;
+    [Inject] private DoneStateContainer DoneStateContainer { get; } = default!;
+    [Inject] private HttpClient HttpClient { get; } = default!;
+    [Inject] private NavigationManager NavigationManager { get; } = default!;
 
     [EditorRequired] [Parameter] public List<IReadOnlyIssueModel> Issues { get; set; } = default!;
 

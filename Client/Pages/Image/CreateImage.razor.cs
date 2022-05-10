@@ -6,8 +6,6 @@ using Couple.Client.States.Done;
 using Couple.Client.States.Image;
 using Couple.Shared;
 using Couple.Shared.Utility;
-using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.Components.Forms;
 
 namespace Couple.Client.Pages.Image;
 
@@ -16,10 +14,10 @@ public partial class CreateImage
     private bool _isSaveClicked;
     private CreateImageStateContainer CreateImageStateContainer { get; set; } = default!;
 
-    [Inject] private DbContextProvider DbContextProvider { get; init; } = default!;
-    [Inject] private HttpClient HttpClient { get; init; } = default!;
-    [Inject] private NavigationManager NavigationManager { get; init; } = default!;
-    [Inject] private DoneStateContainer DoneStateContainer { get; init; } = default!;
+    [Inject] private DbContextProvider DbContextProvider { get; } = default!;
+    [Inject] private HttpClient HttpClient { get; } = default!;
+    [Inject] private NavigationManager NavigationManager { get; } = default!;
+    [Inject] private DoneStateContainer DoneStateContainer { get; } = default!;
 
     private bool IsSaveEnabled => CreateImageStateContainer.Data.Any() && !_isSaveClicked;
 

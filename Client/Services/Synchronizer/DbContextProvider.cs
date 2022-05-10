@@ -1,8 +1,6 @@
 ﻿using System.Runtime.InteropServices;
 using Couple.Client.Data;
 using Couple.Client.Utility;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.JSInterop;
 
 namespace Couple.Client.Services.Synchronizer;
 

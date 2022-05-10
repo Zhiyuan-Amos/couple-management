@@ -1,6 +1,4 @@
 ﻿using Couple.Client.Utility;
-using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.Components.WebAssembly.Authentication;
 
 namespace Couple.Client.Infrastructure;
 

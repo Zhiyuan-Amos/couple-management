@@ -2,16 +2,15 @@ using Couple.Client.Model.Done;
 using Couple.Client.Model.Image;
 using Couple.Client.Services.Synchronizer;
 using Couple.Client.States.Done;
-using Microsoft.AspNetCore.Components;
 
 namespace Couple.Client.Pages.Done.Components;
 
 public partial class ReadOnlyListView : IDisposable
 {
     private static bool s_isDataLoaded;
-    [Inject] private DbContextProvider DbContextProvider { get; init; } = default!;
-    [Inject] private NavigationManager NavigationManager { get; init; } = default!;
-    [Inject] private DoneStateContainer DoneStateContainer { get; init; } = default!;
+    [Inject] private DbContextProvider DbContextProvider { get; } = default!;
+    [Inject] private NavigationManager NavigationManager { get; } = default!;
+    [Inject] private DoneStateContainer DoneStateContainer { get; } = default!;
 
     private IEnumerable<KeyValuePair<DateOnly, ICollection<IDone>>> DateToItems =>
         DoneStateContainer

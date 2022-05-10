@@ -1,10 +1,6 @@
 using Couple.Api.Data;
 using Couple.Api.Infrastructure;
 using Couple.Api.Profiles;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
-using Polly;
 
 namespace Couple.Api;
 

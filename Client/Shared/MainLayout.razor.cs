@@ -1,19 +1,15 @@
 using Couple.Client.Services.Settings;
 using Couple.Client.Services.Synchronizer;
-using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.Components.Authorization;
-using Microsoft.Extensions.Options;
-using Microsoft.JSInterop;
 
 namespace Couple.Client.Shared;
 
 public partial class MainLayout
 {
     private static bool s_isDataLoaded;
-    [CascadingParameter] private Task<AuthenticationState> AuthenticationStateTask { get; set; } = default!;
-    [Inject] private Synchronizer Synchronizer { get; init; } = default!;
-    [Inject] private IJSRuntime Js { get; init; } = default!;
-    [Inject] private IOptions<AuthenticationOptions> AuthOptions { get; init; } = default!;
+    [CascadingParameter] private Task<AuthenticationState> AuthenticationStateTask { get; } = default!;
+    [Inject] private Synchronizer Synchronizer { get; } = default!;
+    [Inject] private IJSRuntime Js { get; } = default!;
+    [Inject] private IOptions<AuthenticationOptions> AuthOptions { get; } = default!;
 
     protected override async Task OnInitializedAsync()
     {
