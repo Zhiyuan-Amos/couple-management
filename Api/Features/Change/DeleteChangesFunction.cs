@@ -2,11 +2,6 @@ using System.Net;
 using Couple.Api.Data;
 using Couple.Api.Infrastructure;
 using Couple.Shared.Model.Change;
-using FluentValidation;
-using Microsoft.Azure.Functions.Worker;
-using Microsoft.Azure.Functions.Worker.Http;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Logging;
 
 namespace Couple.Api.Features.Change;
 

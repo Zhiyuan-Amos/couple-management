@@ -6,9 +6,6 @@ using Couple.Client.Services.Synchronizer;
 using Couple.Client.States.Done;
 using Couple.Client.States.Issue;
 using Couple.Client.Utility;
-using Microsoft.AspNetCore.Components.Web;
-using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
-using Microsoft.EntityFrameworkCore;
 
 namespace Couple.Client;
 

@@ -1,16 +1,11 @@
 using System.Net;
 using System.Net.Http.Json;
 using System.Text.Json;
-using AutoMapper;
 using Couple.Api.Data;
 using Couple.Api.Infrastructure;
 using Couple.Api.Model;
 using Couple.Shared.Model;
 using Couple.Shared.Model.Change;
-using Microsoft.Azure.Functions.Worker;
-using Microsoft.Azure.Functions.Worker.Http;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Logging;
 
 namespace Couple.Api.Features.Change;
 

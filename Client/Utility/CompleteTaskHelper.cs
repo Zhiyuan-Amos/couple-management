@@ -1,7 +1,6 @@
 ﻿using Couple.Client.Data;
 using Couple.Client.Model.Done;
 using Couple.Client.Model.Issue;
-using Microsoft.EntityFrameworkCore;
 
 namespace Couple.Client.Utility;
 

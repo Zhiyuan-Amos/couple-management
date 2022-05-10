@@ -1,7 +1,6 @@
 using System.Net.Http.Json;
 using Couple.Client.Adapters;
 using Couple.Client.Model.Issue;
-using Microsoft.AspNetCore.Components;
 
 namespace Couple.Client.Pages.Issue;
 

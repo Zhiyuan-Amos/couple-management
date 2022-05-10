@@ -4,10 +4,6 @@ using Couple.Api.Infrastructure;
 using Couple.Api.Model;
 using Couple.Shared.Model;
 using Couple.Shared.Model.Issue;
-using FluentValidation;
-using Microsoft.Azure.Functions.Worker;
-using Microsoft.Azure.Functions.Worker.Http;
-using Microsoft.Extensions.Logging;
 
 namespace Couple.Api.Features.Issue;
 

@@ -1,18 +1,16 @@
 using Couple.Client.Model.Issue;
 using Couple.Client.Services.Synchronizer;
 using Couple.Client.States.Issue;
-using Microsoft.AspNetCore.Components;
-using Microsoft.EntityFrameworkCore;
 
 namespace Couple.Client.Pages.Issue;
 
 public partial class Issue : IDisposable
 {
     private static bool s_isDataLoaded;
-    [Inject] private DbContextProvider DbContextProvider { get; init; } = default!;
-    [Inject] private NavigationManager NavigationManager { get; init; } = default!;
+    [Inject] private DbContextProvider DbContextProvider { get; } = default!;
+    [Inject] private NavigationManager NavigationManager { get; } = default!;
 
-    [Inject] private IssueStateContainer IssueStateContainer { get; init; } = default!;
+    [Inject] private IssueStateContainer IssueStateContainer { get; } = default!;
 
     private List<IReadOnlyIssueModel> Issues =>
         IssueStateContainer.Issues

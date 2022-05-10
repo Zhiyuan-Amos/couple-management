@@ -1,9 +1,6 @@
 using System.Net;
 using Couple.Api.Data;
 using Couple.Api.Infrastructure;
-using Microsoft.Azure.Functions.Worker;
-using Microsoft.Azure.Functions.Worker.Http;
-using Microsoft.EntityFrameworkCore;
 
 namespace Couple.Api.Features.Change;
 

@@ -1,4 +1,3 @@
-using AutoMapper;
 using Couple.Api.Model;
 using Couple.Shared.Model.Change;
 

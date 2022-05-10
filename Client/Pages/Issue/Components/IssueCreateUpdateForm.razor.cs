@@ -1,7 +1,6 @@
 using Couple.Client.States.Issue;
 using Couple.Client.ViewModel.Issue;
 using Couple.Shared.Model;
-using Microsoft.AspNetCore.Components;
 
 namespace Couple.Client.Pages.Issue.Components;
 
@@ -10,7 +9,7 @@ public partial class IssueCreateUpdateForm
     [EditorRequired] [Parameter] public Func<Task> OnSaveCallback { get; set; } = default!;
 
     [CascadingParameter(Name = "CreateUpdateIssueStateContainer")]
-    private CreateUpdateIssueStateContainer CreateUpdateIssueStateContainer { get; init; } = default!;
+    private CreateUpdateIssueStateContainer CreateUpdateIssueStateContainer { get; } = default!;
 
     private IReadOnlyList<IReadOnlyTaskViewModel> Tasks { get; set; } = default!;
 
