@@ -18,11 +18,8 @@ jobs:
         with:
           dotnet-version: ${{ env.DOTNET_VERSION }}
 
-      - name: Install CleanupCode
-        run: dotnet tool install jetbrains.resharper.globaltools --version 2022.1.1 --tool-path ~/bin
-
-      - name: Run CleanupCode
-        run: '~/bin/jb cleanupcode Couple.sln --include="**/*.cs;**/*.csproj;**/*.razor;**/*.html;**/*.css;**/*.js;**/*.json" --profile="Built-in: Full Cleanup"'
+      - name: Run dotnet format
+        run: dotnet format
 
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v4
