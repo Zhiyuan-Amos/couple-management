@@ -21,6 +21,12 @@ jobs:
       - name: Run dotnet format
         run: dotnet format
 
+      - name: Install CleanupCode
+        run: dotnet tool install jetbrains.resharper.globaltools --version 2022.1.1 --tool-path c:\dotnet-tools
+
+      - name: Run CleanupCode
+        run: 'c:\dotnet-tools\jb cleanupcode Couple.sln --include="**/*.razor;**/*.html;**/*.css;**/*.js" --profile="Built-in: Full Cleanup"'
+
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v4
         with:
