@@ -11,7 +11,7 @@ namespace Couple.Client.Pages.Image;
 public partial class UpdateImage
 {
     private IReadOnlyImageModel _imageModel = default!;
-    [EditorRequired] [Parameter] public Guid ImageId { get; set; }
+    [EditorRequired][Parameter] public Guid ImageId { get; set; }
     private UpdateImageStateContainer UpdateImageStateContainer { get; set; } = default!;
 
     [Inject] private DbContextProvider DbContextProvider { get; init; } = default!;
