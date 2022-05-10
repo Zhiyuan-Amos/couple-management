@@ -1,15 +1,15 @@
 {
-  "name": "Couple",
-  "short_name": "Couple",
-  "start_url": "./",
-  "display": "standalone",
-  "background_color": "#ffffff",
-  "theme_color": "#03173d",
-  "icons": [
-    {
-      "src": "icons/app-icon.png",
-      "type": "image/png",
-      "sizes": "512x512"
-    }
-  ]
+    "name": "Couple",
+    "short_name": "Couple",
+    "start_url": "./",
+    "display": "standalone",
+    "background_color": "#ffffff",
+    "theme_color": "#03173d",
+    "icons": [
+        {
+            "src": "icons/app-icon.png",
+            "type": "image/png",
+            "sizes": "512x512"
+        }
+    ]
 }
