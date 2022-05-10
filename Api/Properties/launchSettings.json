@@ -1,9 +1,9 @@
 {
-  "profiles": {
-    "Api": {
-      "commandName": "Executable",
-      "executablePath": "func.dll",
-      "commandLineArgs": "start"
+    "profiles": {
+        "Api": {
+            "commandName": "Executable",
+            "executablePath": "func.dll",
+            "commandLineArgs": "start"
+        }
     }
-  }
 }

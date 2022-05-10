@@ -1,42 +1,43 @@
 <Project Sdk="Microsoft.NET.Sdk.BlazorWebAssembly">
 
-  <PropertyGroup>
-    <TargetFramework>net6.0</TargetFramework>
-    <ServiceWorkerAssetsManifest>service-worker-assets.js</ServiceWorkerAssetsManifest>
-    <InvariantGlobalization>true</InvariantGlobalization>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <Nullable>enable</Nullable>
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-    <EmccExtraLDFlags>-s WARN_ON_UNDEFINED_SYMBOLS=0</EmccExtraLDFlags>
-  </PropertyGroup>
+    <PropertyGroup>
+        <TargetFramework>net6.0</TargetFramework>
+        <ServiceWorkerAssetsManifest>service-worker-assets.js</ServiceWorkerAssetsManifest>
+        <InvariantGlobalization>true</InvariantGlobalization>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+        <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+        <EmccExtraLDFlags>-s WARN_ON_UNDEFINED_SYMBOLS=0</EmccExtraLDFlags>
+    </PropertyGroup>
 
-  <ItemGroup>
-    <Content Update="wwwroot\appsettings.Development.json" CopyToPublishDirectory="Never" />
-  </ItemGroup>
+    <ItemGroup>
+        <Content Update="wwwroot\appsettings.Development.json" CopyToPublishDirectory="Never" />
+    </ItemGroup>
 
-  <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.Components.Authorization" Version="6.0.4" />
-    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="6.0.4" />
-    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="6.0.4" PrivateAssets="all" />
-    <PackageReference Include="Microsoft.Authentication.WebAssembly.Msal" Version="6.0.4" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="6.0.4" />
-    <PackageReference Include="Microsoft.Extensions.Http" Version="6.0.0" />
-    <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="6.0.0" />
-    <PackageReference Include="System.Net.Http.Json" Version="6.0.0" />
-    <PackageReference Include="SQLitePCLRaw.bundle_e_sqlite3" Version="2.1.0-pre20220318192836" />
-  </ItemGroup>
+    <ItemGroup>
+        <PackageReference Include="Microsoft.AspNetCore.Components.Authorization" Version="6.0.4" />
+        <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="6.0.4" />
+        <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="6.0.4"
+                          PrivateAssets="all" />
+        <PackageReference Include="Microsoft.Authentication.WebAssembly.Msal" Version="6.0.4" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="6.0.4" />
+        <PackageReference Include="Microsoft.Extensions.Http" Version="6.0.0" />
+        <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="6.0.0" />
+        <PackageReference Include="System.Net.Http.Json" Version="6.0.0" />
+        <PackageReference Include="SQLitePCLRaw.bundle_e_sqlite3" Version="2.1.0-pre20220318192836" />
+    </ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\Shared\Couple.Shared.csproj" />
-  </ItemGroup>
+    <ItemGroup>
+        <ProjectReference Include="..\Shared\Couple.Shared.csproj" />
+    </ItemGroup>
 
-  <ItemGroup>
-    <ServiceWorker Include="wwwroot\service-worker.js" PublishedContent="wwwroot\service-worker.published.js" />
-  </ItemGroup>
+    <ItemGroup>
+        <ServiceWorker Include="wwwroot\service-worker.js" PublishedContent="wwwroot\service-worker.published.js" />
+    </ItemGroup>
 
-  <!-- Remove after https://github.com/dotnet/aspnetcore/issues/38082 is fixed -->
-  <ItemGroup>
-    <TrimmerRootAssembly Include="Microsoft.Authentication.WebAssembly.Msal" />
-  </ItemGroup>
+    <!-- Remove after https://github.com/dotnet/aspnetcore/issues/38082 is fixed -->
+    <ItemGroup>
+        <TrimmerRootAssembly Include="Microsoft.Authentication.WebAssembly.Msal" />
+    </ItemGroup>
 
 </Project>
