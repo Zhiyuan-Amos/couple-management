@@ -36,8 +36,6 @@ Within the same page, use `Parameters` or `Cascading Parameters`. Across Pages, 
 
 1. It's unsure why adding custom Json Converters in Program.cs https://github.com/dotnet/runtime/issues/53539#issuecomment-970051936 don't work, so the properties are annotated with the attribute instead.
 
-1. The command `jb-cleanupcode` in `task-runner.json` doesn't look clean because of how `husky` populates the pre-defined variables such as `${staged}`. `${staged}` is a string consisting of file names, delimited by a space. As PowerShell delimits commands by a space as well, `${staged}` has to be surrounded by double-quotes. Pre-defined variables are only correctly interpreted by `husky` when used as a standalone argument, so the double-quotes have to be added as separate arguments directly before and after the `${staged}` argument. As the resultant string is formed by joining each argument with a space in between, quoting `${staged}` results in a leading and trailing space. Therefore, the resultant string has to be trimmed.
-
 1. `Model` classes are usually named without having `Model` as the suffix, unlike other types of classes such as `ViewModel` and `State`. However, the Pages and the Controllers are named without suffixes as well; a Page and its Controller has to have the same names so that the Controller could use the `partial` keyword to indicate that it is a code-behind file of that Page.
 
 1. `Messaging` project runs `in-process` while `Api` project runs `out-of-process`. This is because `Messaging` uses non-HTTP Triggers which are not well-documented for running `out-of-process`.
