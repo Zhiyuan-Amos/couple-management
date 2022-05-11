@@ -3,7 +3,10 @@
 name: Deploy Messaging to Function App
 
 on:
-  [push]
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
 
 env:
   AZURE_FUNCTIONAPP_NAME: change-event
