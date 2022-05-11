@@ -14,31 +14,16 @@ jobs:
     defaults:
       run:
         working-directory: ./terraform/terraform-create-resource
-
+    env:
+      ARM_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
+      ARM_CLIENT_SECRET: ${{ secrets.AZURE_CLIENT_SECRET }}
+      ARM_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+      ARM_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
     outputs:
       AZURE_RESOURCEGROUP_NAME: ${{ steps.getResourceGroupName.outputs.rgName }}
-      
     steps:
       - name: Checkout
         uses: actions/checkout@v2
-
-      - name: Azure CLI login
-        uses: azure/login@v1
-        with:
-          creds: ${{ secrets.AZURE_CREDENTIALS }}
-
-      - name: Prep TF environment variables
-        shell: pwsh
-        env: 
-          AZURE_CREDENTIALS: ${{ secrets.AZURE_CREDENTIALS }}
-        run: | 
-          $servicePrincipal = ($env:AZURE_CREDENTIALS | ConvertFrom-Json)
-          $env:ARM_CLIENT_ID = $servicePrincipal.clientId
-          $env:ARM_CLIENT_SECRET = $servicePrincipal.clientSecret
-          $env:ARM_SUBSCRIPTION_ID = $servicePrincipal.subscriptionId
-          $env:ARM_TENANT_ID = $servicePrincipal.tenantId
-          
-          Get-ChildItem -Path Env: -Recurse -Include ARM_*,TF_VAR_* | ForEach-Object {Write-Output "$($_.Name)=$($_.Value)"} >> $env:GITHUB_ENV
 
       - name: Terraform Init
         run: terraform init
