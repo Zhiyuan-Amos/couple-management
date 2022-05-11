@@ -4,9 +4,9 @@ name: Deploy Client to Azure Storage
 
 on:
   push:
-    branches: [ main ]
+    branches: [ master ]
   pull_request:
-    branches: [ main ]
+    branches: [ master ]
 
 env:
   AZURE_CLIENT_PATH: 'Client'
