@@ -3,7 +3,10 @@
 name: Deploy Api to Function App
 
 on:
-  [push]
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
 
 env:
   AZURE_FUNCTIONAPP_NAME: couple-api
