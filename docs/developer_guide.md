@@ -61,9 +61,9 @@
 
 ### Frontend
 
-1. Blazor WASM on .NET 6 (see [decision](0001-use_blazor_webassembly))
+1. Blazor WASM on .NET 6 (see [decision](0001-use_blazor_webassembly.md))
 1. Bootstrap
-1. Sqlite (see [decision](0007-replace_indexeddb_with_sqlite))
+1. Sqlite (see [decision](0007-replace_indexeddb_with_sqlite.md))
 
 ### Backend
 
