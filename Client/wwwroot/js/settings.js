@@ -38,7 +38,6 @@ async function logout(clientId, authority, knownAuthority, postLogoutRedirectUri
             postLogoutRedirectUri: postLogoutRedirectUri,
         },
         cache: {
-            cacheLocation: "localStorage",
             storeAuthStateInCookie: false,
         },
     };
