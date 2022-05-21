@@ -1,6 +1,7 @@
 using System.Diagnostics.CodeAnalysis;
 using Couple.Client.Data;
 using Couple.Client.Infrastructure;
+using Couple.Client.Services.Initializer;
 using Couple.Client.Services.Settings;
 using Couple.Client.Services.Synchronizer;
 using Couple.Client.States.Done;
@@ -27,7 +28,14 @@ public class Program
     public static async Task Main(string[] args)
     {
         var builder = WebAssemblyHostBuilder.CreateDefault(args);
-        builder.RootComponents.Add<App>("#app");
+        if (builder.HostEnvironment.IsDevelopment())
+        {
+            builder.RootComponents.Add<DevelopmentApp>("#app");
+        }
+        else
+        {
+            builder.RootComponents.Add<ProductionApp>("#app");
+        }
         builder.RootComponents.Add<HeadOutlet>("head::after");
 
         builder.Services
@@ -38,23 +46,36 @@ public class Program
             .AddScoped<DoneStateContainer>()
             .AddScoped<Synchronizer>()
             .AddScoped<ApiAuthorizationMessageHandler>();
+        
+        if (builder.HostEnvironment.IsDevelopment())
+        {
+            builder.Services.AddScoped<Initializer, DevelopmentInitializer>();
+        }
+        else
+        {
+            builder.Services.AddScoped<Initializer, ProductionInitializer>();
+        }
 
         const string httpClientName = "Api";
-        builder.Services.AddHttpClient(httpClientName,
-                client => client.BaseAddress = new(builder.Configuration[Constants.ApiPrefix]!))
-            .AddHttpMessageHandler<ApiAuthorizationMessageHandler>();
+        var httpClientBuilder = builder.Services.AddHttpClient(httpClientName,
+            client => client.BaseAddress = new(builder.Configuration[Constants.ApiPrefix]!));
+
+        if (!builder.HostEnvironment.IsDevelopment())
+        {
+            httpClientBuilder.AddHttpMessageHandler<ApiAuthorizationMessageHandler>();
+
+            builder.Services.AddMsalAuthentication(options =>
+            {
+                builder.Configuration.Bind("AzureAdB2C", options.ProviderOptions.Authentication);
+                options.ProviderOptions.DefaultAccessTokenScopes.Add(Constants.Scope);
+            });
+
+            builder.Services.Configure<AuthenticationOptions>(builder.Configuration.GetSection("AzureAdB2C"));
+        }
 
         builder.Services.AddScoped(sp =>
             sp.GetRequiredService<IHttpClientFactory>()
                 .CreateClient(httpClientName));
-
-        builder.Services.AddMsalAuthentication(options =>
-        {
-            builder.Configuration.Bind("AzureAdB2C", options.ProviderOptions.Authentication);
-            options.ProviderOptions.DefaultAccessTokenScopes.Add(Constants.Scope);
-        });
-
-        builder.Services.Configure<AuthenticationOptions>(builder.Configuration.GetSection("AzureAdB2C"));
 
         var host = builder.Build();
         await host.RunAsync();
