@@ -1,5 +1,5 @@
 ﻿using Couple.Messaging;
-using Couple.Messaging.Data;
+using Couple.Messaging.Shared.Data;
 using Microsoft.Azure.Functions.Extensions.DependencyInjection;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;

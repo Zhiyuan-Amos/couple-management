@@ -1,9 +1,10 @@
 using System.Net;
-using Couple.Api.Data;
-using Couple.Api.Infrastructure;
-using Couple.Api.Model;
-using Couple.Shared.Model;
-using Couple.Shared.Model.Issue;
+using Couple.Api.Shared.Data;
+using Couple.Api.Shared.Extensions;
+using Couple.Api.Shared.Infrastructure;
+using Couple.Api.Shared.Models;
+using Couple.Shared.Models;
+using Couple.Shared.Models.Issue;
 using FluentValidation;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Http;

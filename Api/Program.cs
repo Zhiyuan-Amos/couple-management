@@ -1,6 +1,6 @@
-using Couple.Api.Data;
-using Couple.Api.Infrastructure;
-using Couple.Api.Profiles;
+using Couple.Api.ProgramHelper;
+using Couple.Api.Shared.Data;
+using Couple.Api.Shared.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;

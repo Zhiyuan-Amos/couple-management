@@ -1,0 +1,38 @@
+﻿@using Couple.Client.Features.Done.Models
+@using Couple.Client.Features.Image.Models
+@using Couple.Client.Shared.Helpers
+<div class="mh-100 overflow-auto" style="padding-bottom: 56px;">
+    @* Rider incorrectly detects `item` is not being used *@
+    @* ReSharper disable once UnusedParameter.Local *@
+    @foreach (var (date, items) in DateToItems)
+    {
+        <h5 class="my-1 text-center">@date.ToString("dd MMM")</h5>
+        <Virtualize Items="items" Context="item" TItem="IDone">
+            @if (item is IReadOnlyDoneIssueModel issue)
+            {
+                <div class="card bg-light mx-3 my-2">
+                    <div class="card-body">
+                        <div class="d-flex card-title">
+                            <i style="@CssHelper.GetIcon(issue.For)"></i>
+                            <h5 class="mb-0 ps-2">
+                                @issue.Title
+                            </h5>
+                        </div>
+                        @foreach (var content in issue.ReadOnlyTasks.Select(dt => dt.Content))
+                        {
+                            <h6>
+                                @content
+                            </h6>
+                        }
+                    </div>
+                </div>
+            }
+            else if (item is IReadOnlyImageModel image)
+            {
+                <img class="w-100 h-auto"
+                     @onclick="@(() => EditImage(image))"
+                     src="data:image/bmp;base64, @(Convert.ToBase64String(image.Data))"/>
+            }
+        </Virtualize>
+    }
+</div>

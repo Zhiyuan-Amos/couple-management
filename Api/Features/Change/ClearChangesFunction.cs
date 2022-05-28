@@ -1,6 +1,6 @@
 using System.Net;
-using Couple.Api.Data;
-using Couple.Api.Infrastructure;
+using Couple.Api.Shared.Data;
+using Couple.Api.Shared.Infrastructure;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Http;
 using Microsoft.EntityFrameworkCore;
