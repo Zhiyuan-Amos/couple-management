@@ -82,6 +82,21 @@
 1. Azure Cosmos DB
 1. Azure Blob Storage
 
+### CI / CD
+
+1. GitHub Actions
+
+### Identity Access Management
+
+1. Azure AD B2C (see [decision](0013-iam-azure-ad-b2c.md))
+
+## Codebase Organization
+
+1. `Client` for Client-side code
+1. `Api` for endpoints called by `Client`
+1. `Shared` for code common to both `Client` & backend
+1. `Messaging` for internal code that are triggered automatically by `CosmosDB` or called by `Api`. Should not be called by `Client`.
+
 ## Guidelines & Caveats
 
 See [docs](guidelines_and_caveats.md).
