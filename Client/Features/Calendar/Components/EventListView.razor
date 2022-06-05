@@ -1,0 +1,24 @@
+@using Couple.Client.Shared.Helpers
+<div class="mh-100 overflow-auto" style="padding-bottom: 56px;">
+    @foreach (var (e, eventIndex) in EventStateContainer.Events.Select((@event, index) => (@event, index)))
+    {
+        <div class="card mx-3 my-2"
+             @onclick="@(() => EditEvent(e))"
+             style="@CssHelper.GetBackgroundColor(eventIndex)">
+            <div class="card-body">
+                <div class="d-flex card-title">
+                    <i style="@CssHelper.GetIcon(e.For)"></i>
+                    <h5 class="mb-0 ps-2">
+                        @e.Title
+                    </h5>
+                </div>
+                <h5 class="mb-0 ps-2">
+                    @ToReadableDateTime(e.Start)
+                </h5>
+                <h5 class="mb-0 ps-2">
+                    @ToReadableDateTime(e.End)
+                </h5>
+            </div>
+        </div>
+    }
+</div>

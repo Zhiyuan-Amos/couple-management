@@ -59,6 +59,15 @@ Within the same page, use `Parameters` or `Cascading Parameters`. Across Pages, 
 
 1. For performance reasons (joins are expensive computationally), `Image` and `Task`, `DoneImage` and `DoneTask` are persisted in a denormalized manner (using JSON) as well. Both `Task` & `DoneTask` overrides `Equals` and `GetHashCode` to determine if the values have been [modified](https://github.com/Zhiyuan-Amos/couple-management/blob/master/Client/Data/AppDbContext.cs#L48-L51).
 
+1. Blazor Wasm doesn't seem to support migrations yet, so manual migration is performed by loading the new database, attaching the existing database, and executing SQL code like:
+
+    ```sqlite
+    INSERT INTO Done(Date, LargestOrder, Count) SELECT Date, LargestOrder, Count FROM app.Done;
+    INSERT INTO Images(Id, TakenOnDate, "Order", TakenOn, Data, IsFavourite) SELECT Id, TakenOnDate, "Order", TakenOn, Data, IsFavourite FROM app.Images;
+    INSERT INTO Issues(Id, Tasks, Title, "For", CreatedOn) SELECT Id, Tasks, Title, "For", CreatedOn FROM app.Issues;
+    INSERT INTO DoneIssues(Id, Tasks, "Order", DoneDate, Title, "For") SELECT Id, Tasks, "Order", DoneDate, Title, "For" FROM app.DoneIssues;
+    ```
+
 ## Miscellaneous
 
 1. It's unsure why adding custom Json Converters in Program.cs https://github.com/dotnet/runtime/issues/53539#issuecomment-970051936 don't work, so the properties are annotated with the attribute instead.

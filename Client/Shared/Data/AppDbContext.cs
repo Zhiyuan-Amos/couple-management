@@ -1,4 +1,5 @@
 ﻿using System.Reflection;
+using Couple.Client.Features.Calendar.Models;
 using Couple.Client.Features.Done.Models;
 using Couple.Client.Features.Image.Models;
 using Couple.Client.Features.Issue.Models;
@@ -17,6 +18,7 @@ public sealed class AppDbContext : DbContext
     public DbSet<ImageModel> Images { get; set; } = default!;
     public DbSet<DoneIssueModel> DoneIssues { get; set; } = default!;
     public DbSet<DoneModel> Done { get; set; } = default!;
+    public DbSet<EventModel> Events { get; set; } = default!;
 
     public async Task<List<IDone>> GetIDone()
     {

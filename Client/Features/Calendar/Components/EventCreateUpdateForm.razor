@@ -1,0 +1,73 @@
+@using Couple.Shared.Models
+<div class="d-flex flex-column mh-100 overflow-hidden" style="padding-bottom: 14px; padding-top: 56px;">
+    <div class="m-3">
+        <label class="mb-0 form-label">
+            Title
+        </label>
+        <input @bind="CreateUpdateEventStateContainer.Title"
+               @bind:event="oninput"
+               class="form-control">
+    </div>
+    <div class="px-3">
+        <label>
+            For
+        </label>
+    </div>
+    <div class="btn-group px-3 pb-3 w-100">
+        <input autocomplete="off"
+               checked="@(For.Him.Equals(CreateUpdateEventStateContainer.For))"
+               class="btn-check"
+               name="btnradio"
+               type="radio">
+        <label class="btn btn-outline-primary"
+               @onclick="@(() => OnForChange(For.Him))">
+            <i class="align-middle" style="content: url('icons/male.svg')"></i>
+        </label>
+        <input autocomplete="off"
+               checked="@(For.Her.Equals(CreateUpdateEventStateContainer.For))"
+               class="btn-check"
+               name="btnradio"
+               type="radio">
+        <label class="btn btn-outline-primary"
+               @onclick="@(() => OnForChange(For.Her))">
+            <i class="align-middle" style="content: url('icons/female.svg')"></i>
+        </label>
+        <input autocomplete="off"
+               checked="@(For.Us.Equals(CreateUpdateEventStateContainer.For))"
+               class="btn-check"
+               name="btnradio"
+               type="radio">
+        <label class="btn btn-outline-primary"
+               @onclick="@(() => OnForChange(For.Us))">
+            <i class="align-middle" style="content: url('icons/us.svg')"></i>
+        </label>
+    </div>
+    <div class="m-3">
+        <label class="mb-0 form-label">
+            Start
+        </label>
+        <input id="startDate"
+               type="datetime-local"
+               @bind="@CreateUpdateEventStateContainer.Start"
+               @bind:event="oninput"
+               class="form-control">
+    </div>
+    <div class="m-3">
+        <label class="mb-0 form-label">
+            End
+        </label>
+        <input id="endDate"
+               type="datetime-local"
+               @bind="@CreateUpdateEventStateContainer.End"
+               @bind:event="oninput"
+               class="form-control">
+    </div>
+    <div class="d-grid px-3">
+        <button class="btn btn-secondary"
+                disabled="@(!IsSaveEnabled)"
+                @onclick="@Save"
+                type="button">
+            Save
+        </button>
+    </div>
+</div>
