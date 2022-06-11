@@ -9,22 +9,38 @@ using Microsoft.AspNetCore.Components;
 
 namespace Couple.Client.Features.Issue.Components;
 
-public partial class IssueListView
+public partial class IssueListView : IDisposable
 {
     [Inject] private DbContextProvider DbContextProvider { get; init; } = default!;
     [Inject] private IssueStateContainer IssueStateContainer { get; init; } = default!;
     [Inject] private DoneStateContainer DoneStateContainer { get; init; } = default!;
     [Inject] private HttpClient HttpClient { get; init; } = default!;
     [Inject] private NavigationManager NavigationManager { get; init; } = default!;
+    
+    public void Dispose() => IssueStateContainer.OnChange -= StateHasChanged;
 
-    [EditorRequired][Parameter] public List<IReadOnlyIssueModel> Issues { get; set; } = default!;
+    private IReadOnlyList<IReadOnlyIssueModel> _issues = new List<IReadOnlyIssueModel>();
+
+    private List<IReadOnlyIssueModel> Issues
+    {
+        get
+        {
+            _issues = IssueStateContainer.Issues;
+            return _issues
+                .OrderByDescending(issue => issue.CreatedOn)
+                .ToList();
+        }
+    } 
+
+    protected override void OnInitialized() => 
+        IssueStateContainer.OnChange += StateHasChanged;
 
     private void EditIssue(IReadOnlyIssueModel selectedIssue) =>
         NavigationManager.NavigateTo($"/todo/{selectedIssue.Id}");
 
     private async Task OnCheckboxToggle(Guid id, IReadOnlyTaskModel task)
     {
-        var readOnlyIssue = Issues.Single(x => x.Id == id);
+        var readOnlyIssue = _issues.Single(x => x.Id == id);
         var issue = new IssueModel(readOnlyIssue.Id, readOnlyIssue.Title, readOnlyIssue.For,
             readOnlyIssue.ReadOnlyTasks,
             readOnlyIssue.CreatedOn);

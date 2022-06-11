@@ -1,4 +1,3 @@
-using Couple.Client.Features.Issue.Models;
 using Couple.Client.Features.Issue.States;
 using Couple.Client.Features.Synchronizer;
 using Microsoft.AspNetCore.Components;
@@ -6,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Couple.Client.Features.Issue;
 
-public partial class Issue : IDisposable
+public partial class Issue
 {
     private static bool s_isDataLoaded;
     [Inject] private DbContextProvider DbContextProvider { get; init; } = default!;
@@ -14,17 +13,8 @@ public partial class Issue : IDisposable
 
     [Inject] private IssueStateContainer IssueStateContainer { get; init; } = default!;
 
-    private List<IReadOnlyIssueModel> Issues =>
-        IssueStateContainer.Issues
-            .OrderByDescending(issue => issue.CreatedOn)
-            .ToList();
-
-    public void Dispose() => IssueStateContainer.OnChange -= StateHasChanged;
-
     protected override async Task OnInitializedAsync()
     {
-        IssueStateContainer.OnChange += StateHasChanged;
-
         if (s_isDataLoaded)
         {
             return;
