@@ -6,7 +6,10 @@
         // Therefore, update IndexedDb and restart reload instead, so that app.db gets updated
         const putRequest = db.result.transaction("Files", "readwrite").objectStore("Files").put(byteArray, "file");
         putRequest.onsuccess = () => {
-            window.location.reload();
+            // See https://github.com/Zhiyuan-Amos/couple-management/issues/153
+            setTimeout(() => {
+                window.location.reload();
+            }, 1000);
         };
     };
 }
@@ -38,7 +41,6 @@ async function logout(clientId, authority, knownAuthority, postLogoutRedirectUri
             postLogoutRedirectUri: postLogoutRedirectUri,
         },
         cache: {
-            cacheLocation: "localStorage",
             storeAuthStateInCookie: false,
         },
     };

@@ -61,9 +61,9 @@
 
 ### Frontend
 
-1. Blazor WASM on .NET 6 (see [decision](0001-use_blazor_webassembly))
+1. Blazor WASM on .NET 6 (see [decision](0001-use_blazor_webassembly.md))
 1. Bootstrap
-1. Sqlite (see [decision](0007-replace_indexeddb_with_sqlite))
+1. Sqlite (see [decision](0007-replace_indexeddb_with_sqlite.md))
 
 ### Backend
 
@@ -81,6 +81,21 @@
 
 1. Azure Cosmos DB
 1. Azure Blob Storage
+
+### CI / CD
+
+1. GitHub Actions
+
+### Identity Access Management
+
+1. Azure AD B2C (see [decision](0013-iam-azure-ad-b2c.md))
+
+## Codebase Organization
+
+1. `Client` for Client-side code
+1. `Api` for endpoints called by `Client`
+1. `Shared` for code common to both `Client` & backend
+1. `Messaging` for internal code that are triggered automatically by `CosmosDB` or called by `Api`. Should not be called by `Client`.
 
 ## Guidelines & Caveats
 

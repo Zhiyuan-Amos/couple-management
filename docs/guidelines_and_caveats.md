@@ -1,4 +1,5 @@
 - [Guidelines & Caveats](#guidelines--caveats)
+  - [Authentication & Authorization](#authentication--authorization)
   - [State Management](#state-management)
   - [Deserialization](#deserialization)
   - [SQLite](#sqlite)
@@ -7,6 +8,12 @@
 # Guidelines & Caveats
 
 This document provides a list of guidelines & caveats to be aware of when working on this codebase, and several minor design decisions.
+
+## Authentication & Authorization
+
+1. Unlike a .NET Core Web API application, endpoints in a Function App cannot be protected by different scope requirements.
+
+1. Login is disabled for Development environment, as it is mainly not required in the development of the application because there's no expected changes to AuthN or AuthZ in the near future. If testing logging in is subsequently required, explore creating a new tenant.
 
 ## State Management
 
@@ -24,13 +31,31 @@ Within the same page, use `Parameters` or `Cascading Parameters`. Across Pages, 
 
 1. Using integer as PK for entities allow for more efficient database operations, but that is not possible as this app requires [syncing between databases with occasionally connected apps](https://stackoverflow.com/a/404057/8828382).
 
-1. One possible way to design `Done*` is to create an abstract class `IDone` with implementing classes `DoneImage` & `DoneIssueIssue`. These classes are [join entity types](https://docs.microsoft.com/en-us/ef/core/modeling/relationships?tabs=fluent-api%2Cfluent-api-simple-key%2Csimple-key#many-to-many), referencing `Image` and `DoneIssue` correspondingly, and referencing `Done`.
+1. One possible way to design `Done*` is: 
 
-    However, this implementation is slow as it uses multiple joins; retrieving negligible data from the database takes about 1050ms, while the denormalized version only takes 650ms.
+    ```mermaid
+    classDiagram
+    IDone <|-- DoneImage
+    IDone <|-- DoneIssueIssue
+    <<interface>> IDone
+    DoneImage --> Image
+    DoneIssueIssue --> DoneIssue
+    DoneImage --> Done
+    DoneIssueIssue --> Done
+
+    IDone : Guid DoneId
+    DoneImage : Guid ImageId
+    DoneIssueIssue : Guid DoneIssueId
+    Done : Guid Id
+    Done : DateOnly DoneDate
+    Done : int Order
+    ```
+
+    Join entities (`DoneImage`, `DoneIssueIssue`) are used to decouple the database entities (`Image`, `DoneIssue`) from the relationship with `Done`. However, this implementation is slow as it uses multiple joins; retrieving even a small amount of data from the database takes about 1050ms, while the denormalized version only takes 650ms.
 
 1. The denormalized implementation (using JSON) teaches `Image` and `DoneIssue` to implement `IDone`. Apart from having better performance, the code is also simpler to read as there's lesser joins.
 
-1. For performance reasons, `Image` and `Task`, `DoneImage` and `DoneTask` are persisted in a denormalized manner (using JSON) as well. Both `Task` & `DoneTask` overrides `Equals` and `GetHashCode` to determine if the values have been [modified](https://github.com/Zhiyuan-Amos/couple-management/blob/master/Client/Data/AppDbContext.cs#L48-L51).
+1. For performance reasons (joins are expensive computationally), `Image` and `Task`, `DoneImage` and `DoneTask` are persisted in a denormalized manner (using JSON) as well. Both `Task` & `DoneTask` overrides `Equals` and `GetHashCode` to determine if the values have been [modified](https://github.com/Zhiyuan-Amos/couple-management/blob/master/Client/Data/AppDbContext.cs#L48-L51).
 
 ## Miscellaneous
 

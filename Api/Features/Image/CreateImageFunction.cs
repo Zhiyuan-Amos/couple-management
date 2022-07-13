@@ -1,12 +1,13 @@
 using System.Net;
 using Azure.Storage.Blobs;
-using Couple.Api.Data;
-using Couple.Api.Infrastructure;
-using Couple.Api.Model;
+using Couple.Api.Shared.Data;
+using Couple.Api.Shared.Extensions;
+using Couple.Api.Shared.Infrastructure;
+using Couple.Api.Shared.Models;
 using Couple.Shared;
-using Couple.Shared.Model;
-using Couple.Shared.Model.Image;
-using Couple.Shared.Utility;
+using Couple.Shared.Extensions;
+using Couple.Shared.Models;
+using Couple.Shared.Models.Image;
 using FluentValidation;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Http;
@@ -54,7 +55,7 @@ public class CreateImageFunction
 
         var dto = form.Value;
 
-        var imageToCreate = new Model.Image(dto.Id, dto.TakenOn, dto.IsFavourite);
+        var imageToCreate = new Image(dto.Id, dto.TakenOn, dto.IsFavourite);
         _imageContext
             .Images
             .Add(imageToCreate);

@@ -10,7 +10,6 @@ async function login(clientId, authority, knownAuthority, redirectUri) {
             redirectUri: redirectUri,
         },
         cache: {
-            cacheLocation: "localStorage",
             storeAuthStateInCookie: false,
         },
     };
@@ -21,7 +20,7 @@ async function login(clientId, authority, knownAuthority, redirectUri) {
     if (redirectResponse === null) {
         const account = publicClientApplication.getAllAccounts()[0];
         const accessTokenRequest = {
-            scopes: ["openid", "offline_access", "https://couplesg.onmicrosoft.com/api/all"],
+            scopes: ["https://couplesg.onmicrosoft.com/api/all"],
             account: account
         };
 
