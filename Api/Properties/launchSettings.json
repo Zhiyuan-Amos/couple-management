@@ -1,9 +1,12 @@
-{
+﻿{
   "profiles": {
     "Api": {
-      "commandName": "Executable",
-      "executablePath": "func.dll",
-      "commandLineArgs": "start"
+      "commandName": "Project",
+      "dotnetRunMessages": true,
+      "applicationUrl": "https://localhost:7071",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      }
     }
   }
 }

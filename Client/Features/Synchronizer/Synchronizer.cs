@@ -25,7 +25,7 @@ public class Synchronizer
 
     public async Task SynchronizeAsync()
     {
-        var toSynchronize = (await _httpClient.GetFromJsonAsync<List<ChangeDto>>("api/Synchronize"))!;
+        var toSynchronize = (await _httpClient.GetFromJsonAsync<List<ChangeDto>>("api/Change"))!;
         var parser = new CommandParser();
 
         foreach (var change in toSynchronize)
@@ -46,7 +46,7 @@ public class Synchronizer
 
         if (idsToDelete.Guids.Any())
         {
-            await _httpClient.DeleteAsJsonAsync("api/Changes", idsToDelete);
+            await _httpClient.DeleteAsJsonAsync("api/Change", idsToDelete);
         }
 
         await using var anotherDb = await _dbContextProvider.GetPreparedDbContextAsync();

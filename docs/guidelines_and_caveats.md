@@ -63,4 +63,6 @@ Within the same page, use `Parameters` or `Cascading Parameters`. Across Pages, 
 
 1. `Model` classes are usually named without having `Model` as the suffix, unlike other types of classes such as `ViewModel` and `State`. However, the Pages and the Controllers are named without suffixes as well; a Page and its Controller has to have the same names so that the Controller could use the `partial` keyword to indicate that it is a code-behind file of that Page.
 
-1. `Messaging` project runs `in-process` while `Api` project runs `out-of-process`. This is because `Messaging` uses non-HTTP Triggers which are not well-documented for running `out-of-process`.
+1. `Messaging` project runs `in-process` rather than `out-of-process`. This is because `Messaging` uses non-HTTP Triggers which are not well-documented for running `out-of-process`.
+
+1. Associated constant values of enum members should start from 1 instead of 0 if the enum does not have the concept of a default value. As C# sets the enum's value to 0 by default (i.e. value is not supplied), it's intuitive to not have an enum member that maps to 0, unless that enum member is really, a default value. 

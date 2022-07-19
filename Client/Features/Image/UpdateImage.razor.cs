@@ -41,7 +41,7 @@ public partial class UpdateImage
 
         NavigationManager.NavigateTo("/done");
 
-        await HttpClient.DeleteAsync($"api/Images/{ImageId}");
+        await HttpClient.DeleteAsync($"api/Image/{ImageId}");
     }
 
     private async Task Save()
@@ -61,6 +61,6 @@ public partial class UpdateImage
         NavigationManager.NavigateTo("/done");
 
         var toUpdateDto = ImageAdapter.ToUpdateDto(toUpdate);
-        await HttpClient.PutAsJsonAsync("api/Images", toUpdateDto);
+        await HttpClient.PutAsJsonAsync("api/Image", toUpdateDto);
     }
 }

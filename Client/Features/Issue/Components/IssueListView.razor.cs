@@ -53,6 +53,6 @@ public partial class IssueListView : IDisposable
 
         var toUpdate =
             IssueAdapter.ToCompleteDto(new(task.Id, issue.Id, date));
-        await HttpClient.PutAsJsonAsync("api/Tasks/Complete", toUpdate);
+        await HttpClient.PutAsJsonAsync("api/Task", toUpdate);
     }
 }

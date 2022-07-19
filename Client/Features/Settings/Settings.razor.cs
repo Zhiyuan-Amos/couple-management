@@ -20,7 +20,7 @@ public partial class Settings
         await using var ms = new MemoryStream();
         await stream.CopyToAsync(ms);
         await Js.InvokeVoidAsync("importDatabase", ms.ToArray());
-        await HttpClient.DeleteAsync("api/Changes/all");
+        await HttpClient.DeleteAsync("api/Changes");
     }
 
     private async Task OnExportSelected() => await Js.InvokeVoidAsync("exportDatabase", Constants.DatabaseFileName);

@@ -21,7 +21,7 @@
 
    Azurite can now be started by running `azr`.
 1. Install [Azure Storage Explorer](https://azure.microsoft.com/en-us/features/storage-explorer/#overview) to view the contents of Azure Blob Storage on a GUI. Follow this [tutorial](https://docs.microsoft.com/en-us/azure/storage/common/storage-use-azurite?tabs=visual-studio#connect-to-azurite-using-http) to connect Azure Storage Explorer to Azurite.
-1. Install .NET WebAssembly Build Tools by running `dotnet workload install wasm-tools` to allow the Blazor WebAssembly application to use native dependencies such as `SQLite`.
+1. Install .NET WebAssembly Build Tools by running `dotnet workload install wasm-tools` to allow the Blazor WebAssembly application to use native dependencies such as `SQLite`. Note: This command has to be executed whenever .NET is upgraded.
 1. Create the relevant database(s) & container(s) using `Azure Cosmos DB Emulator`, and create the relevant Blob Container(s) using `Azure Storage Explorer`.
 
 ### Running the Application
@@ -32,10 +32,10 @@
        cd Client
        dotnet run
        ```
-    1. Run Azure Functions (Api)
+    1. Run API Server
        ```
        cd Api
-       func start
+       dotnet run
        ```
     1. Run Azurite
        ```
@@ -67,6 +67,7 @@
 
 ### Backend
 
+1. Azure Container Apps
 1. Azure Functions
 
 ### Hosting

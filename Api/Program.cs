@@ -1,49 +1,67 @@
+using System.Reflection;
 using Couple.Api.ProgramHelper;
 using Couple.Api.Shared.Data;
 using Couple.Api.Shared.Infrastructure;
+using FluentValidation.AspNetCore;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
 using Polly;
 
 namespace Couple.Api;
 
 public class Program
 {
-    public static void Main()
+    public static void Main(string[] args)
     {
-        var host = new HostBuilder()
-            .ConfigureFunctionsWorkerDefaults()
-            .ConfigureServices(services =>
-            {
-                services.AddHttpClient("Image")
-                    .AddTransientHttpErrorPolicy(p => p.CircuitBreakerAsync(2, TimeSpan.FromMinutes(1)));
-                services.AddDbContext<ChangeContext>(DbParams);
-                services.AddDbContext<ImageContext>(DbParams);
-                services.AddAutoMapper(typeof(ChangeProfile));
+        var builder = WebApplication.CreateBuilder(args);
+        builder.Services
+            .AddControllers(options => options.UseNamespaceRouteToken())
+            .LogInvalidModelState()
+            .AddFluentValidation(fv => fv.RegisterValidatorsFromAssembly(Assembly.GetExecutingAssembly()));
 
-                var environmentName = Environment.GetEnvironmentVariable("AZURE_FUNCTIONS_ENVIRONMENT");
-                if (environmentName == "Development")
-                {
-                    services.AddScoped<ICurrentUserService, DevelopmentCurrentUserService>();
-                }
-                else
-                {
-                    services.AddScoped<ICurrentUserService, CurrentUserService>();
-                }
+        builder.Services
+            .AddHttpClient("Image")
+            .AddTransientHttpErrorPolicy(p => p.CircuitBreakerAsync(2, TimeSpan.FromMinutes(1)));
 
-                services.AddSingleton<IDateTimeService, DateTimeService>();
+        builder.Services
+            .AddCors(builder.Environment);
 
-                static void DbParams(DbContextOptionsBuilder options)
-                {
-                    options.UseCosmos(
-                        Environment.GetEnvironmentVariable("AccountEndpoint")!,
-                        Environment.GetEnvironmentVariable("AccountKey")!,
-                        Environment.GetEnvironmentVariable("DatabaseName")!);
-                }
-            })
-            .Build();
+        if (!builder.Environment.IsDevelopment())
+        {
+            builder.Services
+                .AddB2CAuthentication(builder.Configuration)
+                .AddDefaultAuthorization();
+        }
 
-        host.Run();
+        builder.Services
+            .AddHealthChecks();
+        
+        builder.Services
+            .AddDbContext<ChangeContext>(DbParams)
+            .AddDbContext<ImageContext>(DbParams)
+            .AddAutoMapper(typeof(ChangeProfile))
+            .AddSingleton<IDateTimeService, DateTimeService>()
+            .AddUserService(builder.Environment);
+
+        var app = builder.Build();
+
+        app.UseCustomExceptionHandler()
+            .UseRouting()
+            .UseCors()
+            .UseAuthentication()
+            .UseAuthorization()
+            .UseEndpoints(endpoints => endpoints.MapControllers());
+
+        app.MapHealthChecks("/health")
+            .AllowAnonymous();
+
+        app.Run();
+
+        void DbParams(DbContextOptionsBuilder options)
+        {
+            options.UseCosmos(
+                builder.Configuration.GetValue<string>("Database:Endpoint")!,
+                builder.Configuration.GetValue<string>("Database:Key")!,
+                builder.Configuration.GetValue<string>("Database:Name")!);
+        }
     }
 }
