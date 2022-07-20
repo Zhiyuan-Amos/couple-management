@@ -63,8 +63,14 @@ public class DoneStateContainer : Notifier
     {
         _idToImage.Remove(image.Id, out var oldImage);
 
-        var existingOldDone = (List<IDone>)_dateToItems[oldImage!.DoneDate];
+        var oldImageDoneDate = oldImage!.DoneDate;
+        var existingOldDone = (List<IDone>)_dateToItems[oldImageDoneDate];
         existingOldDone.Remove((ImageModel)oldImage);
+
+        if (!existingOldDone.Any())
+        {
+            _dateToItems.Remove(oldImageDoneDate);
+        }
 
         if (oldImage.IsFavourite)
         {
