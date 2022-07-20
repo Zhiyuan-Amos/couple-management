@@ -42,7 +42,7 @@ public class DoneStateContainer : Notifier
         if (hasDoneOnDate)
         {
             var list = (existingDone as List<IDone>)!;
-            list.Add(image);
+            list.Insert(0, image);
         }
         else
         {
@@ -75,7 +75,7 @@ public class DoneStateContainer : Notifier
         if (hasDoneOnDate)
         {
             var list = (existingNewDone as List<IDone>)!;
-            list.Add(image);
+            list.Insert(0, image);
         }
         else
         {
@@ -127,7 +127,7 @@ public class DoneStateContainer : Notifier
                 list.Remove(toRemove);
             }
 
-            list.Add(issue);
+            list.Insert(0, issue);
         }
         else
         {
