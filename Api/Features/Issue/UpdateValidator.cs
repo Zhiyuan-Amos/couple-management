@@ -14,6 +14,5 @@ public class UpdateValidator : AbstractValidator<UpdateIssueDto>
         RuleForEach(dto => dto.Tasks)
             .ChildRules(tasks =>
                 tasks.RuleFor(task => task.Content).NotEmpty());
-        RuleFor(dto => dto.CreatedOn).NotEmpty();
     }
 }

@@ -21,7 +21,7 @@ public class CommandParser
                     IssueAdapter.ToModel(JsonSerializer.Deserialize<CreateIssueDto>(change.Content, Options)!)),
             { Command: Command.Update, ContentType: Entity.Issue }
                 => new UpdateIssueCommand(dbContext,
-                    IssueAdapter.ToModel(JsonSerializer.Deserialize<UpdateIssueDto>(change.Content, Options)!)),
+                    JsonSerializer.Deserialize<UpdateIssueDto>(change.Content, Options)!),
             { Command: Command.Delete, ContentType: Entity.Issue }
                 => new DeleteIssueCommand(dbContext,
                     JsonSerializer.Deserialize<Guid>(change.Content, Options)),
@@ -35,8 +35,7 @@ public class CommandParser
                         JsonSerializer.Deserialize<CreateImageDto>(change.Content, Options)!)),
             { Command: Command.Update, ContentType: Entity.Image }
                 => new UpdateImageCommand(dbContext,
-                    ImageAdapter.ToUpdateModel(
-                        JsonSerializer.Deserialize<UpdateImageDto>(change.Content, Options)!)),
+                    JsonSerializer.Deserialize<UpdateImageDto>(change.Content, Options)!),
             { Command: Command.Delete, ContentType: Entity.Image }
                 => new DeleteImageCommand(dbContext,
                     JsonSerializer.Deserialize<Guid>(change.Content, Options)),

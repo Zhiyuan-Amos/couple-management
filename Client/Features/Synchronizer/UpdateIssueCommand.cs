@@ -1,14 +1,15 @@
-using Couple.Client.Features.Issue.Models;
+using Couple.Client.Features.Issue.Adapters;
 using Couple.Client.Shared.Data;
+using Couple.Shared.Models.Issue;
 
 namespace Couple.Client.Features.Synchronizer;
 
 public class UpdateIssueCommand : ICommand
 {
     private readonly AppDbContext _dbContext;
-    private readonly IssueModel _model;
+    private readonly UpdateIssueDto _model;
 
-    public UpdateIssueCommand(AppDbContext dbContext, IssueModel model) => (_dbContext, _model) = (dbContext, model);
+    public UpdateIssueCommand(AppDbContext dbContext, UpdateIssueDto model) => (_dbContext, _model) = (dbContext, model);
 
     public async Task Execute()
     {
@@ -16,7 +17,7 @@ public class UpdateIssueCommand : ICommand
         _dbContext.Attach(issue);
         issue.Title = _model.Title;
         issue.For = _model.For;
-        issue.Tasks = _model.Tasks;
+        issue.Tasks = IssueAdapter.ToTaskModel(_model.Tasks);
         await _dbContext.SaveChangesAsync();
     }
 }

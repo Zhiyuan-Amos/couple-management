@@ -29,10 +29,6 @@ public static class IssueAdapter
         new(model.Id, model.Title, model.For,
             ToTaskModel(model.Tasks), model.CreatedOn);
 
-    public static IssueModel ToModel(UpdateIssueDto model) =>
-        new(model.Id, model.Title, model.For,
-            ToTaskModel(model.Tasks), model.CreatedOn);
-
     public static CreateCompletedTaskModel ToCompletedModel(CompleteTaskDto model) =>
         new(model.TaskId, model.IssueId, model.CompletedDate);
 
@@ -42,7 +38,7 @@ public static class IssueAdapter
 
     public static UpdateIssueDto ToUpdateDto(IssueModel model) =>
         new(model.Id, model.Title, model.For,
-            model.Tasks.Select(ToTaskDto).ToList(), model.CreatedOn);
+            model.Tasks.Select(ToTaskDto).ToList());
 
     public static CompleteTaskDto ToCompleteDto(CreateCompletedTaskModel model) =>
         new(model.TaskId, model.IssueId, model.CompletedDate);
