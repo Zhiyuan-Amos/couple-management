@@ -1,4 +1,3 @@
-# azurerm_cosmosdb_account.db:
 resource "azurerm_cosmosdb_account" "db" {
     access_key_metadata_writes_enabled    = true
     analytical_storage_enabled            = false
@@ -18,7 +17,7 @@ resource "azurerm_cosmosdb_account" "db" {
     resource_group_name                   = azurerm_resource_group.rg.name
 
     capabilities {
-    name = "EnableServerless"
+        name = "EnableServerless"
     }
 
     backup {
@@ -38,6 +37,4 @@ resource "azurerm_cosmosdb_account" "db" {
         location          = "southeastasia"
         zone_redundant    = false
     }
-
-    timeouts {}
 }

@@ -2,7 +2,7 @@ terraform {
   required_version = ">=0.12"
   required_providers {
     azurerm = {
-      source = "hashicorp/azurerm"
+      source  = "hashicorp/azurerm"
       version = "~>2.91.0"
     }
   }
@@ -15,8 +15,7 @@ terraform {
     }
 }
 
-resource "random_uuid" "test" {
-}
+resource "random_uuid" "test" {}
 
 resource "azurerm_resource_group" "rg" {
   name      = "${random_uuid.test.result}-rg-${var.prefix}"
