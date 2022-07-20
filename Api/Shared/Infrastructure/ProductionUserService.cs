@@ -3,11 +3,11 @@ using System.Net.Http.Headers;
 
 namespace Couple.Api.Shared.Infrastructure;
 
-public class CurrentUserService : ICurrentUserService
+public class ProductionUserService : IUserService
 {
-    public Claims GetClaims(HttpHeaders headers)
+    public Claims GetClaims(IHeaderDictionary headers)
     {
-        var authValues = headers.GetValues("authorization");
+        var authValues = headers["authorization"];
         var authHeader = AuthenticationHeaderValue.Parse(authValues.ToArray().First());
         var jwt = new JwtSecurityTokenHandler().ReadJwtToken(authHeader.Parameter);
         return new(jwt.Subject, jwt.Claims.First(c => c.Type == "name").Value);

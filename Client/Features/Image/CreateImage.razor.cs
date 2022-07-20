@@ -42,7 +42,7 @@ public partial class CreateImage
             DoneStateContainer.AddImage(toPersist);
 
             var toCreate = ImageAdapter.ToCreateDto(toPersist);
-            await HttpClient.PostAsJsonAsync("api/Images", toCreate);
+            await HttpClient.PostAsJsonAsync("api/Image", toCreate);
         }
 
         NavigationManager.NavigateTo("/settings");

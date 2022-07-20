@@ -1,6 +1,6 @@
 {
   "profiles": {
-    "Api": {
+    "Messaging": {
       "commandName": "Executable",
       "executablePath": "func",
       "commandLineArgs": "start"

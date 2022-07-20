@@ -1,55 +1,54 @@
-using System.Net;
-using System.Net.Http.Json;
 using System.Text.Json;
+using Ardalis.ApiEndpoints;
 using AutoMapper;
 using Couple.Api.Shared.Data;
 using Couple.Api.Shared.Infrastructure;
 using Couple.Api.Shared.Models;
 using Couple.Shared.Models;
 using Couple.Shared.Models.Change;
-using Microsoft.Azure.Functions.Worker;
-using Microsoft.Azure.Functions.Worker.Http;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Logging;
 
 namespace Couple.Api.Features.Change;
 
-public class SynchronizeChangesFunction
+public class Synchronize : EndpointBaseAsync
+    .WithoutRequest
+    .WithActionResult
 {
     private readonly HttpClient _client;
     private readonly ChangeContext _context;
-    private readonly ICurrentUserService _currentUserService;
+    private readonly IUserService _userService;
     private readonly IMapper _mapper;
-
-    public SynchronizeChangesFunction(ICurrentUserService currentUserService,
-        IHttpClientFactory httpClientFactory,
+    private readonly ILogger<Synchronize> _logger;
+    
+    public Synchronize(IHttpClientFactory httpClientFactory,
+        ChangeContext context, 
+        IUserService userService,
         IMapper mapper,
-        ChangeContext context)
+        ILogger<Synchronize> logger)
     {
-        _currentUserService = currentUserService;
         _client = httpClientFactory.CreateClient("Image");
-        _mapper = mapper;
         _context = context;
+        _userService = userService;
+        _mapper = mapper;
+        _logger = logger;
     }
 
-    [Function("SynchronizeChangesFunction")]
-    public async Task<HttpResponseData> Run(
-        [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "Synchronize")]
-        HttpRequestData req,
-        FunctionContext executionContext)
+    [HttpGet("api/[namespace]")]
+    public override async Task<ActionResult> HandleAsync(CancellationToken cancellationToken)
     {
-        // Running out of memory (1.5GB, see https://docs.microsoft.com/en-us/azure/azure-resource-manager/management/azure-subscription-service-limits#azure-functions-limits)
-        // or sending massive amounts of data to the Client in an instance is not expected to occur
-        // as Synchronization is expected to happen frequently, and the synchronized data is deleted from the
-        // database.
-        var claims = _currentUserService.GetClaims(req.Headers);
+        // Sending massive amounts of data to the Client in an instance 
+        // is not expected to occur as Synchronization is expected to happen frequently, 
+        // and the synchronized data is deleted from the database.
+        // Therefore, it should be unlikely for the Server to run into OOM.
+        var claims = _userService.GetClaims(Request.Headers);
         var changes = await _context
             .Changes
             .Where(change => change.UserId == claims.Id)
             .Where(change => change.Ttl == -1)
             .OrderBy(change => change.Timestamp)
             .AsNoTracking()
-            .ToListAsync();
+            .ToListAsync(cancellationToken);
 
         var hyperlinkChanges = changes.OfType<HyperlinkChange>().ToList();
         Dictionary<string, HyperlinkContent> imageIdToImage = new();
@@ -60,15 +59,13 @@ public class SynchronizeChangesFunction
                 .Select(hyperlinkChange => hyperlinkChange.ContentId)
                 .ToList();
             // See https://www.elastic.co/guide/en/elasticsearch/guide/current/_empty_search.html
-            var httpResponseMessage = await _client.PostAsJsonAsync(url, ids);
+            var httpResponseMessage = await _client.PostAsJsonAsync(url, ids, cancellationToken);
             if (!httpResponseMessage.IsSuccessStatusCode)
             {
-                var errorResponse = req.CreateResponse(HttpStatusCode.InternalServerError);
-                await errorResponse.WriteStringAsync("Request to retrieve images is unsuccessful");
-                return errorResponse;
+                return StatusCode(StatusCodes.Status500InternalServerError, "Request to retrieve images is unsuccessful");
             }
 
-            var images = (await httpResponseMessage.Content.ReadFromJsonAsync<List<HyperlinkContent>>())!;
+            var images = (await httpResponseMessage.Content.ReadFromJsonAsync<List<HyperlinkContent>>(cancellationToken: cancellationToken))!;
             imageIdToImage = images.ToDictionary(image => image.ContentId, image => image);
         }
 
@@ -84,8 +81,7 @@ public class SynchronizeChangesFunction
             {
                 if (!imageIdToImage.TryGetValue(change.ContentId, out var image))
                 {
-                    var logger = executionContext.GetLogger(GetType().Name);
-                    logger.LogWarning("Image of {Id} is not found", change.ContentId);
+                    _logger.LogWarning("Image of {Id} is not found", change.ContentId);
                     continue;
                 }
 
@@ -95,8 +91,6 @@ public class SynchronizeChangesFunction
             }
         }
 
-        var response = req.CreateResponse(HttpStatusCode.OK);
-        await response.WriteAsJsonAsync(toReturn);
-        return response;
+        return Ok(toReturn);
     }
 }

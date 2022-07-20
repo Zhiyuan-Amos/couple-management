@@ -27,6 +27,6 @@ public class CreateIssueBase : CreateUpdateIssueBase
         NavigationManager.NavigateTo("/todo");
 
         var toCreate = IssueAdapter.ToCreateDto(toPersist);
-        await HttpClient.PostAsJsonAsync("api/Issues", toCreate);
+        await HttpClient.PostAsJsonAsync("api/Issue", toCreate);
     }
 }

@@ -36,7 +36,7 @@ public class UpdateIssueBase : CreateUpdateIssueBase
 
         NavigationManager.NavigateTo("/todo");
 
-        await HttpClient.DeleteAsync($"api/Issues/{IssueId}");
+        await HttpClient.DeleteAsync($"api/Issue/{IssueId}");
     }
 
     protected override async Task Save()
@@ -55,6 +55,6 @@ public class UpdateIssueBase : CreateUpdateIssueBase
         NavigationManager.NavigateTo("/todo");
 
         var toUpdate = IssueAdapter.ToUpdateDto(issue);
-        await HttpClient.PutAsJsonAsync("api/Issues", toUpdate);
+        await HttpClient.PutAsJsonAsync("api/Issue", toUpdate);
     }
 }

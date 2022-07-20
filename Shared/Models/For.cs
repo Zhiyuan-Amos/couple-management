@@ -2,7 +2,7 @@ namespace Couple.Shared.Models;
 
 public enum For
 {
-    Him,
+    Him = 1,
     Her,
     Us
 }
