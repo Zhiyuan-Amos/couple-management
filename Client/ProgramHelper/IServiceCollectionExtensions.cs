@@ -6,9 +6,11 @@ namespace Couple.Client.ProgramHelper;
 
 public static class IServiceCollectionExtensions
 {
-    public static IServiceCollection AddInitializer(this IServiceCollection services, IWebAssemblyHostEnvironment environment)
+    public static IServiceCollection AddInitializer(this IServiceCollection services, 
+        IWebAssemblyHostEnvironment environment,
+        WebAssemblyHostConfiguration configuration)
     {
-        if (environment.IsDevelopment())
+        if (environment.IsDevelopment() && !configuration.GetValue<bool>(Constants.IsAuthEnabled))
         {
             services.AddScoped<Initializer, DevelopmentInitializer>();
         }
@@ -28,7 +30,8 @@ public static class IServiceCollectionExtensions
         var httpClientBuilder = services.AddHttpClient(httpClientName,
             client => client.BaseAddress = new(configuration[Constants.ApiPrefix]!));
 
-        if (!environment.IsDevelopment())
+        if (!environment.IsDevelopment()
+            || (environment.IsDevelopment() && configuration.GetValue<bool>(Constants.IsAuthEnabled)))
         {
             httpClientBuilder.AddHttpMessageHandler<ApiAuthorizationMessageHandler>();
         }

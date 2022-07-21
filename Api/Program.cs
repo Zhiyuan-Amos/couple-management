@@ -1,5 +1,6 @@
 using System.Reflection;
 using Couple.Api.ProgramHelper;
+using Couple.Api.Shared;
 using Couple.Api.Shared.Data;
 using Couple.Api.Shared.Infrastructure;
 using FluentValidation.AspNetCore;
@@ -25,7 +26,9 @@ public class Program
         builder.Services
             .AddCors(builder.Environment);
 
-        if (!builder.Environment.IsDevelopment())
+        if (!builder.Environment.IsDevelopment()
+            || (builder.Environment.IsDevelopment() 
+                && builder.Configuration.GetValue<bool>(Constants.IsAuthEnabled)))
         {
             builder.Services
                 .AddB2CAuthentication(builder.Configuration)
@@ -40,7 +43,7 @@ public class Program
             .AddDbContext<ImageContext>(DbParams)
             .AddAutoMapper(typeof(ChangeProfile))
             .AddSingleton<IDateTimeService, DateTimeService>()
-            .AddUserService(builder.Environment);
+            .AddUserService(builder.Environment, builder.Configuration);
 
         var app = builder.Build();
 

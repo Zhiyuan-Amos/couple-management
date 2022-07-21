@@ -26,7 +26,7 @@ public class Program
     public static async Task Main(string[] args)
     {
         var builder = WebAssemblyHostBuilder.CreateDefault(args);
-        builder.RootComponents.AddApp(builder.HostEnvironment);
+        builder.RootComponents.AddApp(builder.HostEnvironment, builder.Configuration);
         builder.RootComponents.Add<HeadOutlet>("head::after");
 
         builder.Services
@@ -37,10 +37,12 @@ public class Program
             .AddScoped<DoneStateContainer>()
             .AddScoped<Synchronizer>()
             .AddScoped<ApiAuthorizationMessageHandler>()
-            .AddInitializer(builder.HostEnvironment)
+            .AddInitializer(builder.HostEnvironment, builder.Configuration)
             .AddHttpClient(builder.HostEnvironment, builder.Configuration);
 
-        if (!builder.HostEnvironment.IsDevelopment())
+        if (!builder.HostEnvironment.IsDevelopment() 
+            || (builder.HostEnvironment.IsDevelopment() 
+                && builder.Configuration.GetValue<bool>(Constants.IsAuthEnabled)))
         {
             builder.Services
                 .AddB2CAuthentication(builder.Configuration);

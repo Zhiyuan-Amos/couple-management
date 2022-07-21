@@ -7,9 +7,11 @@ namespace Couple.Api.ProgramHelper;
 
 public static class IServiceCollectionExtensions
 {
-    public static IServiceCollection AddUserService(this IServiceCollection services, IWebHostEnvironment environment)
+    public static IServiceCollection AddUserService(this IServiceCollection services, 
+        IWebHostEnvironment environment,
+        ConfigurationManager configuration)
     {
-        if (environment.IsDevelopment())
+        if (environment.IsDevelopment() && !configuration.GetValue<bool>(Shared.Constants.IsAuthEnabled))
         {
             services.AddScoped<IUserService, DevelopmentUserService>();
         }
