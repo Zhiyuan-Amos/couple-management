@@ -30,7 +30,6 @@ public class Program
         builder.RootComponents.Add<HeadOutlet>("head::after");
 
         builder.Services
-            .AddTransient(_ => new HttpClient { BaseAddress = new(builder.Configuration[Constants.ApiPrefix]!) })
             .AddDbContextFactory<AppDbContext>(options => options.UseSqlite($"Filename={Constants.DatabaseFileName}"))
             .AddScoped<DbContextProvider>()
             .AddScoped<IssueStateContainer>()
