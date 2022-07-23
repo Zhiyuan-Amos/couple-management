@@ -35,7 +35,7 @@ public class Program
             .AddScoped<IssueStateContainer>()
             .AddScoped<DoneStateContainer>()
             .AddScoped<Synchronizer>()
-            .AddScoped<ApiAuthorizationMessageHandler>()
+            .AddTransient<ApiAuthorizationMessageHandler>()
             .AddInitializer(builder.HostEnvironment, builder.Configuration)
             .AddHttpClient(builder.HostEnvironment, builder.Configuration);
 
