@@ -1,4 +1,5 @@
 using System.Text.Json.Serialization;
+using Couple.Shared.Models;
 
 namespace Couple.Messaging.Features.Change;
 
@@ -6,21 +7,19 @@ public class Change
 {
     [JsonConstructor]
     public Change(Guid id,
-        string command,
+        Command command,
         string userId,
         DateTime timestamp,
         string contentId,
-        string contentType,
-        int? ttl) => (Id, Command, UserId, Timestamp, ContentId, ContentType, Ttl) =
-        (id, command, userId, timestamp, contentId, contentType, ttl);
+        int? ttl) => (Id, Command, UserId, Timestamp, ContentId, Ttl) =
+        (id, command, userId, timestamp, contentId, ttl);
 
     // ReSharper disable once UnusedAutoPropertyAccessor.Global
     public Guid Id { get; }
-    public string Command { get; }
+    public Command Command { get; }
     public string UserId { get; }
     public DateTime Timestamp { get; }
     public string ContentId { get; }
-    public string ContentType { get; }
 
     [JsonPropertyName("ttl")] public int? Ttl { get; set; }
 }

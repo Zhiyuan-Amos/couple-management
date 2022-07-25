@@ -33,11 +33,10 @@ public class Create : EndpointBaseAsync
         var claims = _userService.GetClaims(Request.Headers);
 
         var toCreate = new CachedChange(Guid.NewGuid(),
-            Command.Create,
+            Command.CreateIssue,
             claims.PartnerId,
             _dateTimeService.Now,
             request.Id.ToString(),
-            Entity.Issue,
             JsonSerializer.Serialize(request));
         
         _context

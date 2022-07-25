@@ -16,16 +16,18 @@ public class ChangeContext : DbContext
     {
         base.OnModelCreating(modelBuilder);
 
-        modelBuilder.Entity<Change>()
-            .ToContainer("change");
-
-        modelBuilder.Entity<Change>()
-            .Property(change => change.Id)
-            .ToJsonProperty("id")
-            .HasConversion<string>();
-
-        modelBuilder.Entity<Change>()
-            .Property(change => change.Ttl)
-            .ToJsonProperty("ttl");
+        modelBuilder.Entity<Change>(builder =>
+        {
+            builder.ToContainer("change");
+            
+            builder.Property(change => change.Id)
+                .ToJsonProperty("id")
+                .HasConversion<string>();
+            
+            builder.Property(change => change.Ttl)
+                .ToJsonProperty("ttl");
+            
+            builder.OwnsOne(c => c.Command);
+        });
     }
 }

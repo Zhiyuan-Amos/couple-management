@@ -47,11 +47,10 @@ public class Create : EndpointBaseAsync
 
         var url = _configuration.GetValue<string>("Image:GetImageUrl");
         var toCreate = new HyperlinkChange(Guid.NewGuid(),
-            Command.Create,
+            Command.CreateImage,
             claims.PartnerId,
             _dateTimeService.Now,
             imageToCreate.TimeSensitiveId,
-            Entity.Image,
             url);
 
         _changeContext

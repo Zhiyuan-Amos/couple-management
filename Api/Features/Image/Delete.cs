@@ -32,11 +32,10 @@ public class Delete : EndpointBaseAsync
         var claims = _userService.GetClaims(Request.Headers);
 
         var toCreate = new CachedChange(Guid.NewGuid(),
-            Command.Delete,
+            Command.DeleteImage,
             claims.PartnerId,
             _dateTimeService.Now,
             id.ToString(),
-            Entity.Image,
             JsonSerializer.Serialize(id));
 
         _context

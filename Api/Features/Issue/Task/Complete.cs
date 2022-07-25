@@ -33,11 +33,10 @@ public class Complete : EndpointBaseAsync
         var claims = _userService.GetClaims(Request.Headers);
 
         var toComplete = new CachedChange(Guid.NewGuid(),
-            Command.Complete,
+            Command.CompleteTask,
             claims.PartnerId,
             _dateTimeService.Now,
             request.TaskId.ToString(),
-            Entity.Task,
             JsonSerializer.Serialize(request));
         
         _context

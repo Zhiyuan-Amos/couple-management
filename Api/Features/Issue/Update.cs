@@ -33,11 +33,10 @@ public class Update : EndpointBaseAsync
         var claims = _userService.GetClaims(Request.Headers);
 
         var toUpdate = new CachedChange(Guid.NewGuid(),
-            Command.Update,
+            Command.UpdateIssue,
             claims.PartnerId,
             _dateTimeService.Now,
             request.Id.ToString(),
-            Entity.Issue,
             JsonSerializer.Serialize(request));
         
         _context

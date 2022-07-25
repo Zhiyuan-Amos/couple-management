@@ -85,8 +85,7 @@ public class Synchronize : EndpointBaseAsync
                     continue;
                 }
 
-                var toAdd = new ChangeDto(change.Id, change.Command, change.ContentType,
-                    JsonSerializer.Serialize(image.Content));
+                var toAdd = new ChangeDto(change.Id, change.Command, JsonSerializer.Serialize(image.Content));
                 toReturn.Add(toAdd);
             }
         }

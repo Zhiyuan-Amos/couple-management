@@ -47,11 +47,10 @@ public class Update : EndpointBaseAsync
 
         var url = _configuration.GetValue<string>("Image:GetImageUrl");
         var toUpdate = new HyperlinkChange(Guid.NewGuid(),
-            Command.Update,
+            Command.UpdateImage,
             claims.PartnerId,
             _dateTimeService.Now,
             imageToUpdate.TimeSensitiveId,
-            Entity.Image,
             url);
 
         _changeContext

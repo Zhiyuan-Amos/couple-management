@@ -22,7 +22,7 @@ public class ChangeDeletedEventFunction
         var changes = documents.Select(d => d.ToString())
             .Select(json => JsonSerializer.Deserialize<Change>(json)!)
             .Where(change => change.Ttl != -1)
-            .Where(change => change.ContentType == Entity.Image && change.Command is Command.Create or Command.Update)
+            .Where(change => change.Command.Equals(Command.CreateImage) || change.Command.Equals(Command.UpdateImage))
             .ToList();
 
         List<Task> tasks = new();
