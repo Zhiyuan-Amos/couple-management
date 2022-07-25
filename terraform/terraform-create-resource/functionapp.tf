@@ -1,6 +1,6 @@
 resource "azurerm_app_service_plan" "change_event_asp" {
   name                = "${var.prefix}-change-event"
-  location            = azurerm_resource_group.rg.location
+  location            = var.azurerm_region
   resource_group_name = azurerm_resource_group.rg.name
   kind                = "FunctionApp"
 
@@ -12,7 +12,7 @@ resource "azurerm_app_service_plan" "change_event_asp" {
 
 resource "azurerm_function_app" "change_event_fa" {
   name                       = "${var.prefix}-change-event"
-  location                   = azurerm_resource_group.rg.location
+  location                   = var.azurerm_region
   resource_group_name        = azurerm_resource_group.rg.name
   app_service_plan_id        = azurerm_app_service_plan.change_event_asp.id
   storage_account_name       = azurerm_storage_account.storage.name
@@ -31,7 +31,7 @@ resource "azurerm_function_app" "change_event_fa" {
 
 resource "azurerm_app_service_plan" "couple_api_asp" {
   name                = "${var.prefix}-couple-api"
-  location            = azurerm_resource_group.rg.location
+  location            = var.azurerm_region
   resource_group_name = azurerm_resource_group.rg.name
   kind                = "FunctionApp"
 
@@ -43,7 +43,7 @@ resource "azurerm_app_service_plan" "couple_api_asp" {
 
 resource "azurerm_function_app" "couple_api_fa" {
   name                       = "${var.prefix}-couple-api"
-  location                   = azurerm_resource_group.rg.location
+  location                   = var.azurerm_region
   resource_group_name        = azurerm_resource_group.rg.name
   app_service_plan_id        = azurerm_app_service_plan.couple_api_asp.id
   storage_account_name       = azurerm_storage_account.storage.name

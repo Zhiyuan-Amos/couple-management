@@ -14,5 +14,5 @@ provider "azurerm" {
 
 resource "azurerm_resource_group" "rg" {
   name      = "StateResource"
-  location  = var.location
+  location  = var.azurerm_region
 }

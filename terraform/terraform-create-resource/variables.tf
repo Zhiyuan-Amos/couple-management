@@ -1,7 +1,7 @@
 # Shortnames for regions can be found here:
 # https://github.com/claranet/terraform-azurerm-regions/blob/master/REGIONS.md
-variable "location" {
-  description = "Location of the resources"
+variable "azurerm_region" {
+  description = "Standard Azure region in shortname format for resource naming purpose"
   type        = string
   default     = "southeastasia"
 }

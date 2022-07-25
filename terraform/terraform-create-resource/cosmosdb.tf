@@ -8,7 +8,7 @@ resource "azurerm_cosmosdb_account" "db" {
     is_virtual_network_filter_enabled     = false
     kind                                  = "GlobalDocumentDB"
     local_authentication_disabled         = false
-    location                              = "southeastasia"
+    location                              = var.azurerm_region
     name                                  = "${var.prefix}-couple-management-storage"
     network_acl_bypass_for_azure_services = false
     network_acl_bypass_ids                = []

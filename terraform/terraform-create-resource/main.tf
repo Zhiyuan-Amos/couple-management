@@ -19,7 +19,7 @@ resource "random_uuid" "test" {}
 
 resource "azurerm_resource_group" "rg" {
   name      = "${random_uuid.test.result}-rg-${var.prefix}"
-  location  = var.location
+  location  = var.azurerm_region
 }
 
 provider "azurerm" {
