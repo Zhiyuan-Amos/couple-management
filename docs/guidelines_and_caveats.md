@@ -23,7 +23,9 @@ Within the same page, use `Parameters` or `Cascading Parameters`. Across Pages, 
 
 1. Reading data from EF Core minimally requires properties to have init-only setter & private parameterless constructor or private parameterized constructor with parameter names and types that match those of mapped properties
 
-1. Deserializing through JSInterop minimally requires properties to have init-only setter & public parameterless constructor
+1. Writing data to EF Core minimally requires properties to have a public getter
+
+1. Deserializing JSON minimally requires properties to have init-only setter & public parameterless constructor. If any of the property's accessors (`get` or `set`) are non-public, the property has to be annotated with the `[JsonInclude]` attribute
 
 1. `List` cannot be deserialized into `IEnumerable`
 
