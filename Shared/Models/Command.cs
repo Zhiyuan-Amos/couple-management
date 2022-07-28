@@ -13,7 +13,6 @@ public class Command
     [JsonInclude]
     public string Name { get; private init; }
     
-    // Required for deserialization
 #pragma warning disable CS8618
     public Command() { }
 #pragma warning restore CS8618

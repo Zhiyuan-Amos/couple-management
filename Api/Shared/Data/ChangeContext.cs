@@ -26,8 +26,6 @@ public class ChangeContext : DbContext
             
             builder.Property(change => change.Ttl)
                 .ToJsonProperty("ttl");
-            
-            builder.OwnsOne(c => c.Command);
         });
     }
 }
