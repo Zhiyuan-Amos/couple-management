@@ -40,7 +40,7 @@ public partial class IssueListView : IDisposable
 
     private async Task OnCheckboxToggle(Guid id, IReadOnlyTaskModel task)
     {
-        var readOnlyIssue = _issues.Single(x => x.Id == id);
+        var readOnlyIssue = _issues.First(x => x.Id == id);
         var issue = new IssueModel(readOnlyIssue.Id, readOnlyIssue.Title, readOnlyIssue.For,
             readOnlyIssue.ReadOnlyTasks,
             readOnlyIssue.CreatedOn);

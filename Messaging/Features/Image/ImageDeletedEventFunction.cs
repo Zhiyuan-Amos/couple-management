@@ -33,7 +33,7 @@ public class ImageDeletedEventFunction
         await client.DeleteIfExistsAsync();
 
         var toDelete = await _context.Images
-            .SingleOrDefaultAsync(image => image.TimeSensitiveId == @event.Subject);
+            .FirstOrDefaultAsync(image => image.TimeSensitiveId == @event.Subject);
 
         if (toDelete != null)
         {

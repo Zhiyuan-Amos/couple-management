@@ -126,7 +126,7 @@ public class DoneStateContainer : Notifier
         if (hasDoneOnDate)
         {
             var list = (List<IDone>)existingDone!;
-            var toRemove = list.SingleOrDefault(d => d.Id == issue.Id);
+            var toRemove = list.FirstOrDefault(d => d.Id == issue.Id);
 
             if (toRemove is not null)
             {
