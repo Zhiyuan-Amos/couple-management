@@ -1,0 +1,7 @@
+@page "/calendar/{eventId:guid}"
+@inherits UpdateEventBase
+
+<CascadingValue Name="CreateUpdateEventStateContainer" Value="@CreateUpdateEventStateContainer">
+    <UpdateTopBar OnDeleteCallback="@Delete" Title="Update Event"/>
+    <EventCreateUpdateForm OnSaveCallback="@Save"/>
+</CascadingValue>

@@ -1,4 +1,5 @@
 using System.Diagnostics.CodeAnalysis;
+using Couple.Client.Features.Calendar.States;
 using Couple.Client.Features.Done.States;
 using Couple.Client.Features.Issue.States;
 using Couple.Client.Features.Synchronizer;
@@ -32,6 +33,7 @@ public class Program
         builder.Services
             .AddDbContextFactory<AppDbContext>(options => options.UseSqlite($"Filename={Constants.DatabaseFileName}"))
             .AddScoped<DbContextProvider>()
+            .AddScoped<EventStateContainer>()
             .AddScoped<IssueStateContainer>()
             .AddScoped<DoneStateContainer>()
             .AddScoped<Synchronizer>()

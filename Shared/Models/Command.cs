@@ -26,6 +26,9 @@ public class Command
     public static readonly Command CreateImage = new("CreateImage");
     public static readonly Command UpdateImage = new("UpdateImage");
     public static readonly Command DeleteImage = new("DeleteImage");
+    public static readonly Command CreateEvent = new("CreateEvent");
+    public static readonly Command UpdateEvent = new("UpdateEvent");
+    public static readonly Command DeleteEvent = new("DeleteEvent");
 
     private bool Equals(Command other) => Name == other.Name;
 
