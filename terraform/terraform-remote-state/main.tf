@@ -12,7 +12,7 @@ provider "azurerm" {
   features {}
 }
 
-resource "azurerm_resource_group" "rg" {
-  name      = "StateResource"
+resource "azurerm_resource_group" "tfstate" {
+  name      = "rg-couplemgmt-tfstate"
   location  = var.azurerm_region
 }

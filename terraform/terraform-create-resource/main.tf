@@ -8,20 +8,18 @@ terraform {
   }
 
   backend "azurerm" {
-        resource_group_name  = "StateResource"
-        storage_account_name = "couplemgmtstates"
-        container_name       = "tfstates"
-        key                  = "test.terraform.tfstate"
+        resource_group_name  = "rg-remote-tfstate"
+        storage_account_name = "stcouplemgmtstate"
+        container_name       = "container-remote-tfstate"
+        key                  = "terraform.tfstate"
     }
-}
-
-resource "random_uuid" "test" {}
-
-resource "azurerm_resource_group" "rg" {
-  name      = "${random_uuid.test.result}-rg-${var.prefix}"
-  location  = var.azurerm_region
 }
 
 provider "azurerm" {
   features {}
+}
+
+resource "azurerm_resource_group" "app" {
+  name      = "rg-couplemgmt"
+  location  = var.azurerm_region
 }

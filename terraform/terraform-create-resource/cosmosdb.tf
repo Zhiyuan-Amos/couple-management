@@ -1,20 +1,20 @@
-resource "azurerm_cosmosdb_account" "db" {
+resource "azurerm_cosmosdb_account" "storage" {
+    name                                  = "cosmos-couplemgmt-${var.prefix}"
     access_key_metadata_writes_enabled    = true
     analytical_storage_enabled            = false
     enable_automatic_failover             = false
-    # Only one free tier cosmosDB per subscription
-    # enable_free_tier                      = true
     enable_multiple_write_locations       = false
     is_virtual_network_filter_enabled     = false
     kind                                  = "GlobalDocumentDB"
     local_authentication_disabled         = false
     location                              = var.azurerm_region
-    name                                  = "${var.prefix}-couple-management-storage"
     network_acl_bypass_for_azure_services = false
     network_acl_bypass_ids                = []
     offer_type                            = "Standard"
     public_network_access_enabled         = true
-    resource_group_name                   = azurerm_resource_group.rg.name
+    resource_group_name                   = azurerm_resource_group.app.name
+    # Only one free tier cosmosDB per subscription
+    # enable_free_tier                      = true
 
     capabilities {
         name = "EnableServerless"
