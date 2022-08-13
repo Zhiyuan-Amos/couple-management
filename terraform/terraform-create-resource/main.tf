@@ -8,9 +8,9 @@ terraform {
   }
 
   backend "azurerm" {
-        resource_group_name  = "rg-remote-tfstate"
+        resource_group_name  = "rg-couplemgmt-tfstate"
         storage_account_name = "stcouplemgmtstate"
-        container_name       = "container-remote-tfstate"
+        container_name       = "container-tfstate"
         key                  = "terraform.tfstate"
     }
 }
