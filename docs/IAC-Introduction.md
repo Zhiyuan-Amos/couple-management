@@ -18,8 +18,8 @@ flowchart TB
         Provisioners
     end
     id1[Terraform Core] -- RPC --> Plugins
-    Plugins -- golang --> id3[Client Libraries]
-    id3 -- "HTTP(s)" --> id4[Upstream APIs]
+    Plugins -- golang --> id2[Client Libraries]
+    id2 -- "HTTP(s)" --> id3[Upstream APIs]
 ```
 Terraform is mainly split into several parts:
 
@@ -30,4 +30,16 @@ Terraform is mainly split into several parts:
 **Client Libraries:** Client libraries make it easier to communicate with services from a supported language. While it is possible to call the services' API directly, client libraries simplify the code you need to call them
 
 ## Terraform Workflow
-The workflow for using Terraform consists of five stages: Write, Init, Plan, Apply/Destroy
+The workflow for using Terraform consists of five stages: **Write, Initialisation, Plan, Apply/Destroy**
+
+**Writing Terraform configuration files**
+
+Writing the configuration files is the first step of using Terraform. The working directory should have at least include one `.tf` file written using HCL. 
+
+Several common practices when writing the config files are:
+1. Store your config files in version control and make small incremental changes to them as you write them.
+1.  Repeatedly run commands `terraform init` or `terraform plan` to check and fix the syntax errors.
+
+**Initialization** 
+
+When `terraform init` command is executed, Terraform Core reads the configuration files in the working directory, downloads the plugins from several sources,  and generates a lock file for subsequent `terraform init` executions to decide which plugin versions to be used. 
