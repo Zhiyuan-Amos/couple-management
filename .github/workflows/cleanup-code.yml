@@ -22,7 +22,7 @@ jobs:
         run: dotnet format
 
       - name: Install CleanupCode
-        run: dotnet tool install jetbrains.resharper.globaltools --version 2022.1.1 --tool-path c:\dotnet-tools
+        run: dotnet tool install jetbrains.resharper.globaltools --version 2022.3.2 --tool-path c:\dotnet-tools
 
       - name: Run CleanupCode
         run: 'c:\dotnet-tools\jb cleanupcode Couple.sln --include="**/*.razor;**/*.html;**/*.css;**/*.js" --profile="Built-in: Full Cleanup"'
